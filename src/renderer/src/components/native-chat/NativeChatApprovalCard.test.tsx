@@ -7,10 +7,10 @@ import { NativeChatApprovalCard } from './NativeChatApprovalCard'
 afterEach(cleanup)
 
 describe('NativeChatApprovalCard', () => {
-  describe("a subject of a kind this build cannot draw: a newer Orca's", () => {
+  describe("a subject of a kind this build cannot draw: a newer OCC's", () => {
     // A subject kind a newer build wrote; this build draws only plans.
     const NEWER_SUBJECT = JSON.parse('{"kind":"diff","path":"a.ts"}')
-    const NEEDS_NEWER_ORCA = 'This request needs a newer version of Orca.'
+    const NEEDS_NEWER_ORCA = 'This request needs a newer version of OCC.'
 
     function renderNewer(detail: string | undefined) {
       const onChoose = vi.fn()

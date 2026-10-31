@@ -200,7 +200,7 @@ export function findUnsupportedMigrationBlobKind(
 }
 
 export function orcadMigrationBlobKindUnsupportedBlocker(kind: OrcadMigrationBlobKind): string {
-  return `${ORCAD_MIGRATION_DESTINATION_BLOB_KIND_UNSUPPORTED}:${kind}:Update Orca on this host to move this project's ${kind} to it.`
+  return `${ORCAD_MIGRATION_DESTINATION_BLOB_KIND_UNSUPPORTED}:${kind}:Update OCC on this host to move this project's ${kind} to it.`
 }
 
 export function decodeOrcadMigrationBlobChunk(bytesBase64: string): Buffer {

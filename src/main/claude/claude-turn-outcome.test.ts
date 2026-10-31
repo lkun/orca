@@ -181,7 +181,7 @@ describe('a turn end the host inferred', () => {
     expect(readAgentJournalTurnOutcome(readAgentJournalTurn(settled?.body))).toBeNull()
   })
 
-  // Any dispatched send can supersede a turn; its sender need not be the person using Orca.
+  // Any dispatched send can supersede a turn; its sender need not be the person using OCC.
   it('records a turn a newer send superseded as superseded, folded as interrupted', () => {
     const state = sinkState()
     const translator = createClaudeJournalTranslator({ sink: state.sink })

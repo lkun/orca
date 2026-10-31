@@ -95,7 +95,7 @@ describe('turning hooks off while turning them on still waits for Codex', () => 
   it.each([
     ['~/.codex', true],
     ['a custom CODEX_HOME', false]
-  ])('leaves no Orca entry or approval with %s selected', async (_name, realHome) => {
+  ])('leaves no OCC entry or approval with %s selected', async (_name, realHome) => {
     usesRealHome = realHome
     let answer!: () => void
     mocks.deriveCodexHookHashes.mockReturnValue(

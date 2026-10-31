@@ -42,7 +42,7 @@ type UseSourceControlAgentActionStartArgs = {
   groupId?: string | null
   promptDelivery: 'auto-submit' | 'draft' | 'submit-after-ready'
   launchPlatform?: NodeJS.Platform
-  /** SSH uses plain orca; omit the local Linux orca-ide rename in its preview. */
+  /** SSH uses plain orca; omit the local Linux occ-ide rename in its preview. */
   isRemote?: boolean
   launchSource: LaunchSource
   recoveryContext?: RuntimeGitContext | null

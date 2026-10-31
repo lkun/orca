@@ -76,7 +76,7 @@ export function registerJournalDispatchReasonBoundTests(): void {
 
     it('marks the clipped reason rather than truncating it silently', async () => {
       const stored = await settle(HUGE)
-      expect(stored).toContain('[Orca: output truncated')
+      expect(stored).toContain('[OCC: output truncated')
     })
 
     it('leaves a reason that already fits exactly as written', async () => {

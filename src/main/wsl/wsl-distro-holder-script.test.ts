@@ -173,7 +173,7 @@ describe.skipIf(process.platform === 'win32')('WSL distro holder script', () => 
   })
 
   it('keeps the distro while the user still runs something, and lets go once it ends', async () => {
-    // e.g. a detached tmux server or a nohup'd job started from an Orca terminal.
+    // e.g. a detached tmux server or a nohup'd job started from an OCC terminal.
     const job = fakeProcess(4242)
     const { exited } = await holderWithRequest()
     expect(await within(2_500, exited)).toBe('running')

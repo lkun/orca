@@ -208,7 +208,7 @@ test.describe('terminal link click ownership', () => {
     await sendToTerminal(orcaPage, ptyId, 'q')
   })
 
-  test('an Orca-owned plain link click emits no child PTY mouse frames', async ({
+  test('an OCC-owned plain link click emits no child PTY mouse frames', async ({
     orcaPage
   }, testInfo) => {
     const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(orcaPage, testInfo)
@@ -222,7 +222,7 @@ test.describe('terminal link click ownership', () => {
     await sendToTerminal(orcaPage, ptyId, 'q')
   })
 
-  test('an Orca-owned OSC link click emits no child PTY mouse frames', async ({
+  test('an OCC-owned OSC link click emits no child PTY mouse frames', async ({
     orcaPage
   }, testInfo) => {
     const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(

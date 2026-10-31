@@ -28,7 +28,7 @@ afterEach(() => {
   }
 })
 
-/** User-global hooks also run outside Orca, where they must stay inert and silent. */
+/** User-global hooks also run outside OCC, where they must stay inert and silent. */
 function runHook(dir: string, extraEnv: NodeJS.ProcessEnv = {}) {
   const script = join(dir, 'codex-hook.sh')
   writeFileSync(script, getManagedScript('posix'))
@@ -47,8 +47,8 @@ function runHook(dir: string, extraEnv: NodeJS.ProcessEnv = {}) {
   })
 }
 
-describe.skipIf(process.platform === 'win32')('managed hook outside an Orca terminal', () => {
-  it('no Orca env at all: silent, exit 0, writes nothing', () => {
+describe.skipIf(process.platform === 'win32')('managed hook outside an OCC terminal', () => {
+  it('no OCC env at all: silent, exit 0, writes nothing', () => {
     const dir = createTempDir('orca-outside-')
     const res = runHook(dir)
     expect(res.status).toBe(0)
@@ -66,7 +66,7 @@ describe.skipIf(process.platform === 'win32')('managed hook outside an Orca term
     expect(res.status).toBe(0)
     expect(res.stdout).toBe('')
     expect(res.stderr).toBe('')
-    // a stale env var must not create a spool tree for an Orca that is not installed here
+    // a stale env var must not create a spool tree for an OCC that is not installed here
     expect(readdirSync(dir)).toEqual(['codex-hook.sh'])
   })
 

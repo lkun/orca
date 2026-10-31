@@ -13,7 +13,7 @@ import {
 } from '../browser-extension-profile-state-store'
 
 /**
- * chrome.privacy as types.ChromeSetting objects. Orca has no built-in password manager or
+ * chrome.privacy as types.ChromeSetting objects. OCC has no built-in password manager or
  * autofill, so the `services` values are bookkeeping that password managers read back; the
  * network and websites settings report Chrome's defaults and are not controllable here.
  */
@@ -33,7 +33,7 @@ const FIXED_DEFAULTS: Record<string, unknown> = {
   'websites.referrersEnabled': true,
   'websites.doNotTrackEnabled': false,
   'websites.protectedContentEnabled': true,
-  // Off in Orca: no Google error-page suggestions, and Electron ships no Privacy Sandbox APIs.
+  // Off in OCC: no Google error-page suggestions, and Electron ships no Privacy Sandbox APIs.
   'services.alternateErrorPagesEnabled': false,
   'websites.topicsEnabled': false,
   'websites.fledgeEnabled': false,
@@ -92,7 +92,7 @@ function changeSetting(
   value: { value: unknown } | null
 ): void {
   if (!(setting in CONTROLLABLE_DEFAULTS)) {
-    throw new BrowserExtensionApiError(`${setting} cannot be changed in Orca`)
+    throw new BrowserExtensionApiError(`${setting} cannot be changed in OCC`)
   }
   const before = readProfile(caller)
   getBrowserExtensionProfileStateStore().update(

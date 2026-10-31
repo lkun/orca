@@ -269,7 +269,7 @@ describe('MobileHostCard', () => {
 
     const navigationButton = findAllByHostType(renderer.root, 'Pressable')[0]
     expect(navigationButton.props.accessibilityLabel).toBe(
-      'Open Desk, Connected, Orca Relay, Worktree list unavailable'
+      'Open Desk, Connected, OCC Relay, Worktree list unavailable'
     )
     expect(
       findAllByHostType(renderer.root, 'Text').some((node) =>
@@ -304,7 +304,7 @@ describe('MobileHostCard', () => {
 
     const navigationButton = findAllByHostType(renderer.root, 'Pressable')[0]
     expect(navigationButton.props.accessibilityLabel).toBe(
-      "Open Desk, Can't reach desktop, Update desktop Orca and sign in to connect from anywhere"
+      "Open Desk, Can't reach desktop, Update desktop OCC and sign in to connect from anywhere"
     )
   })
 
@@ -332,7 +332,7 @@ describe('MobileHostCard', () => {
           kind: 'unreachable',
           label: 'Host 1 is offline',
           reason: 'never-connected',
-          detail: "Check it's awake, Orca is running, and you're signed in"
+          detail: "Check it's awake, OCC is running, and you're signed in"
         },
         path: 'lan',
         onPress: vi.fn(),
@@ -342,9 +342,9 @@ describe('MobileHostCard', () => {
     )
 
     const texts = findAllByHostType(renderer.root, 'Text').map((node) => node.props.children)
-    expect(texts).toContainEqual("Check it's awake, Orca is running, and you're signed in")
+    expect(texts).toContainEqual("Check it's awake, OCC is running, and you're signed in")
     expect(findAllByHostType(renderer.root, 'Pressable')[0]?.props.accessibilityLabel).toBe(
-      "Open Host 1, Host 1 is offline, Check it's awake, Orca is running, and you're signed in"
+      "Open Host 1, Host 1 is offline, Check it's awake, OCC is running, and you're signed in"
     )
   })
 })

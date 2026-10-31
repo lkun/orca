@@ -149,7 +149,7 @@ describe('OrcaRuntimeService', () => {
     ).rejects.toThrow('selector_not_found')
   })
 
-  it('rejects local lineage updates when Orca worktree identity is missing', async () => {
+  it('rejects local lineage updates when OCC worktree identity is missing', async () => {
     const tempRoot = await mkdtemp(join(tmpdir(), 'orca-runtime-lineage-'))
     const repoPath = join(tempRoot, 'repo')
     const childPath = join(tempRoot, 'child')

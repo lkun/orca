@@ -1,4 +1,4 @@
-// Continue interrupted work only after opt-in; verify prior actions and attribute the instruction to Orca.
+// Continue interrupted work only after opt-in; verify prior actions and attribute the instruction to OCC.
 
 import {
   AGENT_JOURNAL_THREAD_SCOPE,

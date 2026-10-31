@@ -429,7 +429,7 @@ it('keeps the old Codex workspace-write Ask literal and explains that terminal t
   expect(screen.queryByRole('button', { name: /Remove -a/ })).toBeNull()
   expect(
     screen.getByText(
-      'These arguments may control Codex’s terminal permissions, so Orca adds no flag. Chats use the Permissions choice above.'
+      'These arguments may control Codex’s terminal permissions, so OCC adds no flag. Chats use the Permissions choice above.'
     )
   ).toBeDefined()
 })

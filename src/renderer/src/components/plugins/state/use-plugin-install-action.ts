@@ -33,7 +33,7 @@ function catalogInstallErrorMessage(cause: unknown): string {
   if (detail.includes('safety list')) {
     return translate(
       'auto.components.settings.pluginInstallAction.blocked',
-      'Orca’s safety list blocks this plugin.'
+      'OCC’s safety list blocks this plugin.'
     )
   }
   return pluginInstallErrorMessage(cause)

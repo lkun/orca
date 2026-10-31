@@ -20,7 +20,7 @@ describe('AgentHookServer /statusline/claude', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'X-Orca-Agent-Hook-Token': token ?? env.ORCA_AGENT_HOOK_TOKEN
+        'X-OCC-Agent-Hook-Token': token ?? env.ORCA_AGENT_HOOK_TOKEN
       },
       body
     })

@@ -6,7 +6,7 @@ const { spawnProcessMock } = vi.hoisted(() => ({ spawnProcessMock: vi.fn() }))
 
 vi.mock('electron', () => ({
   app: {
-    getPath: () => '/Applications/Orca.app/Contents/MacOS/Orca',
+    getPath: () => '/Applications/OCC.app/Contents/MacOS/OCC',
     dock: { hide: vi.fn() },
     setActivationPolicy: vi.fn()
   }
@@ -38,7 +38,7 @@ describe('handOffToDesktopApp', () => {
 
     expect(spawnProcessMock).toHaveBeenCalledWith({
       program: '/usr/bin/open',
-      args: ['-n', '/Applications/Orca.app'],
+      args: ['-n', '/Applications/OCC.app'],
       env: {},
       detached: true,
       stdio: 'ignore'
@@ -49,18 +49,18 @@ describe('handOffToDesktopApp', () => {
   it('passes buffered links and documents to the new instance', () => {
     spawnProcessMock.mockReturnValue(makeChild())
 
-    handOffToDesktopApp(['orca://skills/share/abc', '/Users/me/notes.md'], {
+    handOffToDesktopApp(['occ://skills/share/abc', '/Users/me/notes.md'], {
       platform: 'darwin',
       env: {},
-      executablePath: '/Users/me/Applications/Orca.app/Contents/MacOS/Orca',
+      executablePath: '/Users/me/Applications/OCC.app/Contents/MacOS/OCC',
       reapplyActivationPolicy: vi.fn()
     })
 
     expect(spawnProcessMock.mock.calls[0][0].args).toEqual([
       '-n',
-      '/Users/me/Applications/Orca.app',
+      '/Users/me/Applications/OCC.app',
       '--args',
-      'orca://skills/share/abc',
+      'occ://skills/share/abc',
       '/Users/me/notes.md'
     ])
   })
@@ -164,13 +164,13 @@ describe('desktopHandoffArguments', () => {
   it('turns the buffered share id into a link the desktop app reads from argv', () => {
     const args = desktopHandoffArguments({
       skillShareDeepLinks: { consume: () => 'abc_123' },
-      pluginInstallLinks: { consume: () => 'orca://plugins/acme.dusk?catalog=community' },
+      pluginInstallLinks: { consume: () => 'occ://plugins/acme.dusk?catalog=community' },
       osOpenedDocuments: { consume: () => ['/Users/me/notes.md'] }
     })
 
     expect(args).toEqual([
-      'orca://skills/share/abc_123',
-      'orca://plugins/acme.dusk?catalog=community',
+      'occ://skills/share/abc_123',
+      'occ://plugins/acme.dusk?catalog=community',
       '/Users/me/notes.md'
     ])
     expect(skillShareIdFromArguments(args)).toBe('abc_123')

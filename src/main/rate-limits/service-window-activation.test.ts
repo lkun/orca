@@ -474,7 +474,7 @@ describe('RateLimitService', () => {
       await service.refresh()
       expect(service.getState().claude?.status).toBe('ok')
 
-      // Why: Orca never refreshes a Claude login, so an idle account's usage 401s until Claude runs again.
+      // Why: OCC never refreshes a Claude login, so an idle account's usage 401s until Claude runs again.
       await vi.advanceTimersByTimeAsync(2 * 60 * 60 * 1000)
       await service.refresh()
 

@@ -75,7 +75,7 @@ function buildConflictPromptFileLines(
   })
 }
 
-// Orca checks only its own Git work before launching; the agent runs where Git does, at the moment it acts.
+// OCC checks only its own Git work before launching; the agent runs where Git does, at the moment it acts.
 const GIT_STILL_RUNNING_RULE =
   '- First make sure Git is not still working in this repository: if the file at git rev-parse --git-path index.lock exists or another git command is still running here, stop and tell the user instead of continuing.'
 

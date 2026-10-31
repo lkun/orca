@@ -139,7 +139,7 @@ describe('Claude managed hook events by resolved version', () => {
   )
 
   it.each([undefined, '11.17.0', '2.1.310\nwrapper for (Claude Code)'])(
-    'leaves Orca entries a version-aware install wrote untouched when the version is %s',
+    'leaves OCC entries a version-aware install wrote untouched when the version is %s',
     (output) => {
       const version = parseClaudeCliVersionOutput(output) ?? undefined
       const current = install(userOwnedSettings(), '2.1.261')
@@ -178,7 +178,7 @@ describe('Claude managed hook events by resolved version', () => {
     expect(upgraded.hooks?.StopFailure).toEqual([{ hooks: [managedHook] }])
   })
 
-  it('removes only Orca entries for events a downgraded Claude does not know', () => {
+  it('removes only OCC entries for events a downgraded Claude does not know', () => {
     const current = install({ hooks: {} }, '2.1.261')
     expect(managedEvents(current)).toContain('SessionEnd')
 

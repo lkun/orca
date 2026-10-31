@@ -242,7 +242,7 @@ describe('CrashReportStore', () => {
       const report = await store.record(input())
 
       const updated = await store.attachDetails(report.id, {
-        minidumpPath: '/Users/alice/Library/Application Support/Orca/reports/abc.dmp'
+        minidumpPath: '/Users/alice/Library/Application Support/OCC/reports/abc.dmp'
       })
 
       expect(updated?.details.minidumpPath).toBe('[redacted-path]')

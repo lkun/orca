@@ -9,7 +9,7 @@ const firstSeenSchema = z.record(
 )
 
 /**
- * When this Orca first saw each plugin's newest catalog release. Why local: catalogs carry no
+ * When this OCC first saw each plugin's newest catalog release. Why local: catalogs carry no
  * listed-at time, and the auto-update hold-back must survive restarts so takedowns get time to land.
  */
 export class PluginReleaseFirstSeenStore {

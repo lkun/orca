@@ -123,7 +123,7 @@ function shellProbeEnv(): NodeJS.ProcessEnv {
   return env
 }
 
-/** Run a synchronous launcher without passing Orca's seeded PATH to its child. */
+/** Run a synchronous launcher without passing OCC's seeded PATH to its child. */
 export function runWithLaunchPath<T>(action: () => T): T {
   const key = launchPathOverride?.key ?? LAUNCH_PATH_KEY
   const value = launchPathOverride?.value ?? LAUNCH_PATH

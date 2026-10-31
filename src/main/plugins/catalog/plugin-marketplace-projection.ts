@@ -45,7 +45,7 @@ export type PluginMarketplaceListing = {
   bundled: boolean
   blockedByKillList?: { reason: string; advisoryUrl?: string }
   /** The release offered to this host: the newest it can install, else the one needing the least
-   *  newer Orca. Absent for v1 catalogs. */
+   *  newer OCC. Absent for v1 catalogs. */
   release?: PluginCatalogRelease
   /** Every release the catalog lists for this plugin, newest first. */
   releases?: PluginCatalogRelease[]

@@ -59,7 +59,7 @@ describe('what a rejection does to the draft it was consumed from', () => {
     ])
   })
 
-  it('a Stop waits it again only where Orca proves the agent never got it', () => {
+  it('a Stop waits it again only where OCC proves the agent never got it', () => {
     expect(settle('cancelled', { held: true })).toBe('waiting')
     expect(settle('cancelled', { unrun: true })).toBe('waiting')
     expect(settle('cancelled')).toBe('inDoubt')

@@ -151,7 +151,7 @@ describe('describeInstallDirAclPoison', () => {
   it('offers the copyable commands, and drops them once the repair lands', async () => {
     await probeThenRecover(() => [ORPHAN_PACKAGE_ACE])
     const repaired = describeInstallDirAclPoison()
-    expect(repaired?.detail).toContain('Orca repaired the permissions')
+    expect(repaired?.detail).toContain('OCC repaired the permissions')
     expect(repaired?.detail).not.toContain('Administrator Command Prompt')
     expect(repaired?.commands).toEqual([
       `icacls "${INSTALL_DIR}" /grant "*S-1-15-2-2:(OI)(CI)(RX)"`,
@@ -236,7 +236,7 @@ describe('install-dir ACL repair vs the GPU safe-graphics marker', () => {
     expect(readActiveGpuFallbackMarker(userDataPath, GPU_ENV)).toBeNull()
   })
 
-  // Preserve user-confirmed safe graphics; only Orca's automatic latch may be retired.
+  // Preserve user-confirmed safe graphics; only OCC's automatic latch may be retired.
   it('leaves a user-confirmed safe-graphics marker alone', async () => {
     const userDataPath = mkdtempSync(join(tmpdir(), 'orca-acl-gpu-'))
     writeGpuFallbackMarker(

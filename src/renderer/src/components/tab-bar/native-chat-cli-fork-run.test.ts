@@ -157,24 +157,24 @@ it.each([
   {
     agent: 'claude' as const,
     message: 'execution_owner_reconciling',
-    expected: 'Orca could not prepare this Claude conversation. Start a new chat to continue.'
+    expected: 'OCC could not prepare this Claude conversation. Start a new chat to continue.'
   },
   {
     agent: 'codex' as const,
     message:
       "Error invoking remote method 'aiVault:prepareSessionResume': Error: execution_owner_reconciling",
-    expected: 'Orca could not prepare this Codex conversation. Start a new chat to continue.'
+    expected: 'OCC could not prepare this Codex conversation. Start a new chat to continue.'
   },
   {
     agent: 'claude' as const,
     message: 'agent_session_conflict',
-    expected: 'Update Orca on the host that runs this chat to resume it in a new CLI.'
+    expected: 'Update OCC on the host that runs this chat to resume it in a new CLI.'
   },
   {
     agent: 'codex' as const,
     message:
       "Error invoking remote method 'aiVault:prepareSessionResume': Error: agent_session_ownership_unknown",
-    expected: 'Update Orca on the host that runs this chat to resume it in a new CLI.'
+    expected: 'Update OCC on the host that runs this chat to resume it in a new CLI.'
   },
   {
     agent: 'claude' as const,

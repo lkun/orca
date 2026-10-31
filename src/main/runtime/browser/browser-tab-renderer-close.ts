@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { ipcMain } from 'electron'
 import { BrowserError } from '../../browser/browser-error'
 
-/** Asks the renderer, which owns Orca's tab model, to close one browser page. */
+/** Asks the renderer, which owns OCC's tab model, to close one browser page. */
 export async function closeBrowserTabInRenderer(
   win: Electron.BrowserWindow,
   tabId: string | null,

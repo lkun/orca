@@ -62,7 +62,7 @@ function setup() {
     value: { forBranch: branchLookup }
   })
   store.setState({
-    repos: [{ id: 'repo', path: '/repo', displayName: 'Orca', addedAt: 0, badgeColor: '' }],
+    repos: [{ id: 'repo', path: '/repo', displayName: 'OCC', addedAt: 0, badgeColor: '' }],
     worktreesByRepo: {
       repo: [makeWorktree({ id: workspaceId, repoId: 'repo', linkedPR: 7 })]
     },

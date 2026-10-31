@@ -254,7 +254,7 @@ export function getWorkspaceCleanupInactivityReasons(
   return reasons
 }
 
-/** Newest activity stamp Orca itself persisted; 0 when it never observed the workspace. */
+/** Newest activity stamp OCC itself persisted; 0 when it never observed the workspace. */
 export function getPersistedWorkspaceCleanupActivityAt(workspace: {
   createdAt?: number
   lastActivityAt: number

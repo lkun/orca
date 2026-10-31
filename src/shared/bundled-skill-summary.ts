@@ -36,12 +36,12 @@ const OP_PLAN_STATE: Readonly<Record<BundledSkillOpKind, BundledSkillPlanState>>
 }
 
 export const BUNDLED_SKILL_LEAVE_REASON_TEXT: Readonly<Record<BundledSkillLeaveReason, string>> = {
-  edited: 'Skill edited outside Orca',
+  edited: 'Skill edited outside OCC',
   other: 'A different skill uses this name',
-  unwritable: "Orca can't write to this folder",
-  unreadable: "Orca can't read every file",
+  unwritable: "OCC can't write to this folder",
+  unreadable: "OCC can't read every file",
   busy: 'Another install is still running',
-  'shared-not-current': "The shared copy isn't Orca's"
+  'shared-not-current': "The shared copy isn't OCC's"
 }
 
 /** What Update does at one location, for plain-text surfaces; the app translates its own. */
@@ -213,7 +213,7 @@ export type BundledSkillOutcomeSummary = {
   text: BundledSkillOutcomeText
   /** Printed as warnings; never part of the exit code. */
   leftAlone: BundledSkillLeftAlone[]
-  /** e.g. "Updated - 1 skipped: Skill edited outside Orca". */
+  /** e.g. "Updated - 1 skipped: Skill edited outside OCC". */
   line: string
 }
 

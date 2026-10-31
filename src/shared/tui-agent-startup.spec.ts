@@ -230,7 +230,7 @@ describe('tui agent startup plans', () => {
     expect(tokens.ok && tokens.tokens.at(-1)).toMatch(/\\0[0-7]{3}/)
   })
 
-  it('does not launch Codex with the Orca profile when agent status hooks are enabled', () => {
+  it('does not launch Codex with the OCC profile when agent status hooks are enabled', () => {
     const plan = buildAgentStartupPlan({
       agent: 'codex',
       prompt: 'fix it',
@@ -260,7 +260,7 @@ describe('tui agent startup plans', () => {
     })
   })
 
-  it('launches Claude without Orca settings injection', () => {
+  it('launches Claude without OCC settings injection', () => {
     const plan = buildAgentStartupPlan({
       agent: 'claude',
       prompt: 'fix it',
@@ -272,7 +272,7 @@ describe('tui agent startup plans', () => {
     expect(plan?.launchCommand).not.toContain('--settings')
   })
 
-  it('uses the Linux Orca CLI command for Claude Agent Teams launches', () => {
+  it('uses the Linux OCC CLI command for Claude Agent Teams launches', () => {
     const plan = buildAgentStartupPlan({
       agent: 'claude-agent-teams',
       prompt: '',
@@ -281,11 +281,11 @@ describe('tui agent startup plans', () => {
       allowEmptyPromptLaunch: true
     })
 
-    expect(plan?.launchCommand).toBe('orca-ide claude-teams')
+    expect(plan?.launchCommand).toBe('occ-ide claude-teams')
   })
 
   it('uses the plain orca shim for Claude Agent Teams on Linux SSH remotes', () => {
-    // Remote Linux deploys orca, never local-only orca-ide; using the renamed desktop wrapper breaks relay launches (#6500).
+    // Remote Linux deploys orca, never local-only occ-ide; using the renamed desktop wrapper breaks relay launches (#6500).
     const plan = buildAgentStartupPlan({
       agent: 'claude-agent-teams',
       prompt: '',
@@ -298,8 +298,8 @@ describe('tui agent startup plans', () => {
     expect(plan?.launchCommand).toBe('orca claude-teams')
   })
 
-  it('keeps the Windows orca.cmd shim for Claude Agent Teams on SSH remotes', () => {
-    // Windows remote and local shims are both orca.cmd; remoteness must preserve that override.
+  it('keeps the Windows occ.cmd shim for Claude Agent Teams on SSH remotes', () => {
+    // Windows remote and local shims are both occ.cmd; remoteness must preserve that override.
     const plan = buildAgentStartupPlan({
       agent: 'claude-agent-teams',
       prompt: '',
@@ -309,11 +309,11 @@ describe('tui agent startup plans', () => {
       allowEmptyPromptLaunch: true
     })
 
-    expect(plan?.launchCommand).toBe('orca.cmd claude-teams')
+    expect(plan?.launchCommand).toBe('occ.cmd claude-teams')
   })
 
-  it('keeps the Linux orca-ide wrapper for local (non-remote) Claude Agent Teams', () => {
-    // Local Linux keeps orca-ide to avoid the GNOME screen-reader command clash.
+  it('keeps the Linux occ-ide wrapper for local (non-remote) Claude Agent Teams', () => {
+    // Local Linux keeps occ-ide to avoid the GNOME screen-reader command clash.
     const plan = buildAgentStartupPlan({
       agent: 'claude-agent-teams',
       prompt: '',
@@ -323,7 +323,7 @@ describe('tui agent startup plans', () => {
       allowEmptyPromptLaunch: true
     })
 
-    expect(plan?.launchCommand).toBe('orca-ide claude-teams')
+    expect(plan?.launchCommand).toBe('occ-ide claude-teams')
   })
 
   it('launches OpenClaude as a distinct argv agent', () => {

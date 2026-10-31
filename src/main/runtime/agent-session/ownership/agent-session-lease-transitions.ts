@@ -103,7 +103,7 @@ export function commitAgentSessionProcessIdentity(
     })
   }
   if (record.lease.reservedSpawnToken !== args.process.spawnToken) {
-    // The child must echo this reservation's token to prove Orca started it.
+    // The child must echo this reservation's token to prove OCC started it.
     throw agentSessionRefusalError('agent_session_ownership_unknown', {
       reason: 'spawnIdentityMismatch'
     })

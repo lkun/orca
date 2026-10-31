@@ -50,7 +50,7 @@ function installWorkspaceState(): void {
   )
 }
 
-/** The restored tab's file loaded under a sibling workspace, and Orca moved the tab there (F42). */
+/** The restored tab's file loaded under a sibling workspace, and OCC moved the tab there (F42). */
 async function openAndMoveToOwner(main: TabsDrawnFromMain): Promise<void> {
   const fileId = useAppStore.getState().openFile(
     {
@@ -63,7 +63,7 @@ async function openAndMoveToOwner(main: TabsDrawnFromMain): Promise<void> {
     },
     { suppressActiveRuntimeFallback: true }
   )
-  // A layout-owner build draws the restored tab from main's frame before Orca can move it.
+  // A layout-owner build draws the restored tab from main's frame before OCC can move it.
   await main.settle()
   const state = useAppStore.getState()
   state.setRestoredEditorOwnerMigrationPending(fileId, true)
@@ -79,7 +79,7 @@ async function openAndMoveToOwner(main: TabsDrawnFromMain): Promise<void> {
   await main.settle()
 }
 
-describe('an editor tab Orca moved to the workspace owning its file', () => {
+describe('an editor tab OCC moved to the workspace owning its file', () => {
   it('is still open in that workspace after a restart', async () => {
     installWorkspaceState()
     const main = await drawTabsFromMain(useAppStore)

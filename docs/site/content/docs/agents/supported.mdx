@@ -1,11 +1,11 @@
 ---
 title: Supported agents
-description: Every agent Orca ships with out of the box.
+description: Every agent OCC ships with out of the box.
 ---
 
 import { Callout } from '@/components/docs/prose'
 
-Orca works with **any CLI agent** — the agent combobox just launches a process in a terminal. The following ship preconfigured in the built-in agent picker with one-click launch/setup; deeper hooks, status, usage tracking, and account switching are noted where supported.
+OCC works with **any CLI agent** — the agent combobox just launches a process in a terminal. The following ship preconfigured in the built-in agent picker with one-click launch/setup; deeper hooks, status, usage tracking, and account switching are noted where supported.
 
 <Callout title="Permission safety">
   The defaults below pass each agent's permission-bypass flag for new launches. A worktree is an
@@ -16,11 +16,11 @@ Orca works with **any CLI agent** — the agent combobox just launches a process
 
 ## Permissions default
 
-For new launches, Orca pre-fills each supported CLI's permission-bypass flag — `--dangerously-skip-permissions` for Claude, `--dangerously-bypass-approvals-and-sandbox` for Codex, `--yolo` for Gemini / Cursor / Crush / Kimi / Muse / Rovo Dev / Hermes / GitHub Copilot / Command Code, `--mode yolo` for ZCode, plus the equivalent flag for every other agent that exposes one. These flags allow an agent to act without confirming every shell command; review the trust boundary before using them.
+For new launches, OCC pre-fills each supported CLI's permission-bypass flag — `--dangerously-skip-permissions` for Claude, `--dangerously-bypass-approvals-and-sandbox` for Codex, `--yolo` for Gemini / Cursor / Crush / Kimi / Muse / Rovo Dev / Hermes / GitHub Copilot / Command Code, `--mode yolo` for ZCode, plus the equivalent flag for every other agent that exposes one. These flags allow an agent to act without confirming every shell command; review the trust boundary before using them.
 
-Use **Settings → Agents → Agent Permissions** when you want to switch all uncustomized agents between **Yolo** and **Manual** launches. If you already overrode a specific agent's launch arguments or environment, Orca leaves that agent alone so the global switch doesn't erase your custom command.
+Use **Settings → Agents → Agent Permissions** when you want to switch all uncustomized agents between **Yolo** and **Manual** launches. If you already overrode a specific agent's launch arguments or environment, OCC leaves that agent alone so the global switch doesn't erase your custom command.
 
-To restore prompts for one agent only, edit that agent's default arguments or environment in Settings. Orca treats a non-empty custom value as an explicit override and opts that agent out of future permission-mode migrations.
+To restore prompts for one agent only, edit that agent's default arguments or environment in Settings. OCC treats a non-empty custom value as an explicit override and opts that agent out of future permission-mode migrations.
 
 | Agent              | Notes                                                                                                                      | Docs                                                                                              |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
@@ -67,7 +67,7 @@ To restore prompts for one agent only, edit that agent's default arguments or en
 
 ## ZCode: pick a CLI that ships the TUI
 
-Orca drives ZCode through the `zcode` terminal CLI, so `zcode` on your `PATH` has to be a build that
+OCC drives ZCode through the `zcode` terminal CLI, so `zcode` on your `PATH` has to be a build that
 includes ZCode's TUI.
 
 The ZCode **desktop app** bundles the agent runtime without it. Pointing `zcode` at
@@ -77,10 +77,10 @@ The ZCode **desktop app** bundles the agent runtime without it. Pointing `zcode`
 Cannot find package '@zcode/tui' imported from .../zcode.cjs
 ```
 
-Orca's hooks still install correctly in that state, so the symptom looks like a broken integration when
+OCC's hooks still install correctly in that state, so the symptom looks like a broken integration when
 it is really a CLI that cannot render a session. Use a `zcode` that carries the TUI — build the CLI from
 [`zai-org/ZCode`](https://github.com/zai-org/ZCode) (`apps/zcode-cli`), or install a distribution that
 packages the runtime together with the TUI.
 
-Check what you have with `zcode --version`, and confirm `zcode` opens a session outside Orca before
+Check what you have with `zcode --version`, and confirm `zcode` opens a session outside OCC before
 reporting a harness problem.

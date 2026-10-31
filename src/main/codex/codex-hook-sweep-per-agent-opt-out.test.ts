@@ -61,7 +61,7 @@ function realHomeStopHooks(systemHooksPath: string): unknown {
 }
 
 describe('Codex turned off per agent', () => {
-  it('removes the Orca entry from the real ~/.codex and keeps user hooks', async () => {
+  it('removes the OCC entry from the real ~/.codex and keeps user hooks', async () => {
     const systemHooksPath = seedRealHomeHooks()
 
     await new CodexHookService().remove()

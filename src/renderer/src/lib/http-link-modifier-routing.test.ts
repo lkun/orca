@@ -32,7 +32,7 @@ describe('modifier routing across link source owners', () => {
     vi.unstubAllGlobals()
   })
 
-  it('still lets the inverting modifier pull a local link into Orca', () => {
+  it('still lets the inverting modifier pull a local link into OCC', () => {
     registerWorkspaceHttpLinkBrowserOpener(null)
     storeState.settings = { openLinksInApp: false, openLinksInAppModifierInverts: true }
 
@@ -47,7 +47,7 @@ describe('modifier routing across link source owners', () => {
     })
   })
 
-  it('lets an inverting modifier reach Orca on the owning runtime', () => {
+  it('lets an inverting modifier reach OCC on the owning runtime', () => {
     storeState.settings = {
       openLinksInApp: false,
       openLinksInAppModifierInverts: true,

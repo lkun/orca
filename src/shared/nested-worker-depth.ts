@@ -18,7 +18,7 @@ export function nestedWorkerDepthExceededMessage(childDepth: number, maxDepth: n
 
 export const NESTED_WORKER_DEPTH_EXCEEDED_NEXT_STEPS: readonly string[] = [
   'Do the work in this terminal instead of dispatching a sub-worker.',
-  'To allow deeper nesting, open Settings → Orchestration in the Orca desktop app and raise "Nested worker depth".'
+  'To allow deeper nesting, open Settings → Orchestration in the OCC desktop app and raise "Nested worker depth".'
 ]
 
 /** Reject unsafe/noninteger values below one to the default; malformed settings cannot disable the depth fence. */

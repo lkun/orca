@@ -125,7 +125,7 @@ describe('orca cli automation extra agent args', () => {
       ok: false,
       error: {
         code: 'incompatible_runtime',
-        message: expect.stringContaining('Update Orca on this host to use extra arguments.')
+        message: expect.stringContaining('Update OCC on this host to use extra arguments.')
       }
     })
   })

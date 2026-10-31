@@ -64,7 +64,7 @@ export abstract class AgentHookServerStatusHookLifecycle extends AgentHookServer
         if (this.token !== token || this.statusHookGeneration !== statusHookGeneration) {
           return
         }
-        // Replayed owners may have died while Orca was down; probe each pane once.
+        // Replayed owners may have died while OCC was down; probe each pane once.
         for (const paneKey of replayedPaneKeys) {
           void this.checkAgentPresence(paneKey)
         }

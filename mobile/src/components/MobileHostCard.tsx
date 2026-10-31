@@ -74,7 +74,7 @@ export function MobileHostCard(props: {
     props.verdict.kind === 'unreachable' && !props.host.relay
       ? t(
           'components.hostCard.updateDesktopHint',
-          'Update desktop Orca and sign in to connect from anywhere'
+          'Update desktop OCC and sign in to connect from anywhere'
         )
       : null
   const credentialHint = credentialMissing

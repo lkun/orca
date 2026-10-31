@@ -143,7 +143,7 @@ describe('a restored WSL bridge pane whose distro is stopped (E9)', () => {
     expect(await mountAt(1_500)).not.toHaveProperty('wslPassiveRestore')
   })
 
-  // e9 review: switch at 10:00, distro stops at 12:00, Orca remounts at 12:01.
+  // e9 review: switch at 10:00, distro stops at 12:00, OCC remounts at 12:01.
   it('makes a remount after that switch passive again, so a stopped distro holds it', async () => {
     vi.spyOn(Date, 'now').mockReturnValue(1_000)
     noteUserWorkspaceSwitch('wt')

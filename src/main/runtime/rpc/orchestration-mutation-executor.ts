@@ -48,7 +48,7 @@ export class OrchestrationMutationExecutor {
     params: unknown,
     invoke: (mutation?: DurableMutationInvocation) => unknown,
     callerFingerprintOverride?: string,
-    /** The resolved session's Orca session id; it joins the payload so another caller cannot replay it. */
+    /** The resolved session's OCC session id; it joins the payload so another caller cannot replay it. */
     callerOrcaSessionId?: OrcaSessionId
   ): Promise<unknown> {
     const requestId = request.orchestrationRequestId

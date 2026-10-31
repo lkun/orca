@@ -1,6 +1,6 @@
 import { BROWSER_SITE_PERMISSION_LOCAL_FILES_ORIGIN } from './browser-site-permission'
 
-/** A site's own color scheme; a site with none matches Orca's theme. */
+/** A site's own color scheme; a site with none matches OCC's theme. */
 export type BrowserSiteColorScheme = 'light' | 'dark'
 
 /** What a browser profile remembers about how one site is shown. */

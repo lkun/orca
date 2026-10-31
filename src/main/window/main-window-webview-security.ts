@@ -105,7 +105,7 @@ export function installMainWindowWebviewSecurity(mainWindow: BrowserWindow): voi
     // Electron 43 omits inherited arguments; clear defensively so future inheritance cannot leak browser-host identity.
     delete webPreferences.additionalArguments
     webPreferences.nodeIntegration = false
-    // Why every local profile: a framed extension page needs Orca's extension preload, and
+    // Why every local profile: a framed extension page needs OCC's extension preload, and
     // extensions can be switched on after the tab opens. Sandboxed and without Node, the flag only
     // runs the same preloads per frame; the close guard keeps to the top frame and the extension
     // preload, registered only while extensions run, acts only in chrome-extension:// frames.

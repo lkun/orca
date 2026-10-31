@@ -138,7 +138,7 @@ export function finalizeFromAgentOutput(args: {
         : agentCliFailure(
             label,
             stdout,
-            // Orca's own parse failures (coded) say nothing about why the agent exited.
+            // OCC's own parse failures (coded) say nothing about why the agent exited.
             parsed && !parsed.ok && parsed.errorCode === undefined ? parsed.error : stderr,
             code,
             args

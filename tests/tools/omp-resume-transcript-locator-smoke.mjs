@@ -60,7 +60,7 @@ try {
   assert.equal(
     argv[2],
     original.getSessionFile(),
-    'Orca must retain the recorded transcript locator'
+    'OCC must retain the recorded transcript locator'
   )
   const resumed = await createSessionManager(parseArgs(argv.slice(1)), cwd, settings)
   managers.push(resumed)

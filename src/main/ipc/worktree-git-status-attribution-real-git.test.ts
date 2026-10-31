@@ -49,7 +49,7 @@ beforeEach(async () => {
   primary = join(scratch, 'repo')
   await git(['init', '-q', '-b', 'main', primary], scratch)
   for (const [key, value] of [
-    ['user.name', 'Orca Test'],
+    ['user.name', 'OCC Test'],
     ['user.email', 'orca@example.test'],
     ['commit.gpgSign', 'false']
   ]) {

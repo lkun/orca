@@ -1,4 +1,4 @@
-/** Features an extension can ask for that Orca's browser does not provide yet. */
+/** Features an extension can ask for that OCC's browser does not provide yet. */
 export type UnsupportedBrowserExtensionFeature = 'identity'
 
 function featureFor(permission: string): UnsupportedBrowserExtensionFeature | null {

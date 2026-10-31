@@ -7,7 +7,7 @@ function desktopOnlyExtensionsResult(): { ok: false; error: string } {
     ok: false,
     error: translate(
       'settings.browser.extensions.desktopOnly',
-      'Browser extensions run only in the Orca desktop app.'
+      'Browser extensions run only in the OCC desktop app.'
     )
   }
 }

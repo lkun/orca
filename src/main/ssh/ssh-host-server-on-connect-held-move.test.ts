@@ -34,10 +34,10 @@ describe('a move to the managed server that stops short', () => {
     const { deps } = fencedHost('source-fenced', true)
     const d = deps({
       convert: vi.fn(async () => {
-        throw new Error('Could not connect to the remote Orca runtime.')
+        throw new Error('Could not connect to the remote OCC runtime.')
       }),
       abandonConversion: vi.fn(async () => {
-        throw new Error('Could not connect to the remote Orca runtime.')
+        throw new Error('Could not connect to the remote OCC runtime.')
       })
     })
     const result = await resolveHostServerOnConnect(target, d)
@@ -102,7 +102,7 @@ describe('a move to the managed server that stops short', () => {
     })
     if (result.route === 'unserved') {
       expect(unservedHostServerMessage(result)).toBe(
-        'Orca couldn’t start its server on this host. Try connecting again.'
+        'OCC couldn’t start its server on this host. Try connecting again.'
       )
     }
     warn.mockRestore()

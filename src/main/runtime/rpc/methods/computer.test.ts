@@ -69,7 +69,7 @@ describe('computer RPC methods', () => {
   it('opens computer-use permission setup', async () => {
     const result = {
       platform: 'darwin',
-      helperAppPath: '/Applications/Orca Computer Use.app',
+      helperAppPath: '/Applications/OCC Computer Use.app',
       openedSettings: false,
       launchedHelper: true
     }
@@ -82,7 +82,7 @@ describe('computer RPC methods', () => {
   it('returns computer-use permission status', async () => {
     const result = {
       platform: 'darwin',
-      helperAppPath: '/Applications/Orca Computer Use.app',
+      helperAppPath: '/Applications/OCC Computer Use.app',
       helperUnavailableReason: null,
       permissions: [{ id: 'accessibility', status: 'granted' }]
     }

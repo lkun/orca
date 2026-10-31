@@ -87,7 +87,7 @@ export async function installCodexHooksRemote(
         handlerIndex: 0,
         command,
         timeoutSec: hook.timeout,
-        // Orca's setting overrides Codex's /hooks off switch for this hook, as local installs do.
+        // OCC's setting overrides Codex's /hooks off switch for this hook, as local installs do.
         enabled: true
       })
     }

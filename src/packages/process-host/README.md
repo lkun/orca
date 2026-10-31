@@ -1,4 +1,4 @@
-# Orca process host
+# OCC process host
 
 This Node package owns subprocess spawning, forked children, bounded output, cancellation, Windows argument handling, and process-tree termination. Desktop, the headless server, CLI, SSH relay, and daemon use the same implementation. It has no runtime npm dependencies, Electron imports, or native addons.
 

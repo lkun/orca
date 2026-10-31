@@ -23,7 +23,7 @@ function formatCookieImportWarning(warning: CookieImportWarning): string {
   if (!isHandledWireDiscriminant(code, HANDLED_WARNING_CODES)) {
     return translate(
       'auto.lib.browser.cookie.import.toast.unrecognizedWarning',
-      'The cookie import finished with a warning this version of Orca does not recognize. Update Orca to see the details, then check this profile before relying on its cookies.'
+      'The cookie import finished with a warning this version of OCC does not recognize. Update OCC to see the details, then check this profile before relying on its cookies.'
     )
   }
   switch (warning.code) {
@@ -32,7 +32,7 @@ function formatCookieImportWarning(warning: CookieImportWarning): string {
       if (!isHandledWireDiscriminant(reason, HANDLED_UNDECRYPTABLE_REASONS)) {
         return translate(
           'auto.lib.browser.cookie.import.toast.undecryptableUnrecognizedReason',
-          '{{value0}} cookies could not be decrypted and were skipped for a reason this version of Orca does not recognize. Update Orca to see the details, then try the import again.',
+          '{{value0}} cookies could not be decrypted and were skipped for a reason this version of OCC does not recognize. Update OCC to see the details, then try the import again.',
           { value0: warning.failedCookies }
         )
       }
@@ -41,12 +41,12 @@ function formatCookieImportWarning(warning: CookieImportWarning): string {
           return warning.otherFailedCookies
             ? translate(
                 'auto.lib.browser.cookie.import.toast.undecryptableAppBoundMixed',
-                "Orca cannot decrypt {{value0}} of this browser's cookies because they use app-bound encryption; {{value1}} more could not be decrypted for another reason. You can import cookies from a file using “From File…”.",
+                "OCC cannot decrypt {{value0}} of this browser's cookies because they use app-bound encryption; {{value1}} more could not be decrypted for another reason. You can import cookies from a file using “From File…”.",
                 { value0: warning.failedCookies, value1: warning.otherFailedCookies }
               )
             : translate(
                 'auto.lib.browser.cookie.import.toast.undecryptableAppBound',
-                "Orca cannot decrypt {{value0}} of this browser's cookies because they use app-bound encryption. You can import cookies from a file using “From File…”.",
+                "OCC cannot decrypt {{value0}} of this browser's cookies because they use app-bound encryption. You can import cookies from a file using “From File…”.",
                 { value0: warning.failedCookies }
               )
         case 'linux-keyring-unavailable':
@@ -60,21 +60,21 @@ function formatCookieImportWarning(warning: CookieImportWarning): string {
               case 'secret-tool-missing':
                 message = translate(
                   'auto.lib.browser.cookie.import.toast.secretToolMissing',
-                  "Orca couldn't read {{count}} of {{browser}}'s encrypted cookies because secret-tool isn't installed. Install libsecret-tools (or your distribution's equivalent) and import again.",
+                  "OCC couldn't read {{count}} of {{browser}}'s encrypted cookies because secret-tool isn't installed. Install libsecret-tools (or your distribution's equivalent) and import again.",
                   values
                 )
                 break
               case 'keyring-locked':
                 message = translate(
                   'auto.lib.browser.cookie.import.toast.cookieKeyLocked',
-                  "Orca couldn't read {{count}} of {{browser}}'s encrypted cookies because access to the system keyring was locked or denied. Unlock your login keyring, allow access if prompted, and import again.",
+                  "OCC couldn't read {{count}} of {{browser}}'s encrypted cookies because access to the system keyring was locked or denied. Unlock your login keyring, allow access if prompted, and import again.",
                   values
                 )
                 break
               case 'key-unavailable':
                 message = translate(
                   'auto.lib.browser.cookie.import.toast.cookieKeyUnavailable',
-                  "Orca couldn't read {{count}} of {{browser}}'s encrypted cookies because the cookie encryption key couldn't be read. Try importing again, import cookies using “From File…”, or sign in directly in Orca.",
+                  "OCC couldn't read {{count}} of {{browser}}'s encrypted cookies because the cookie encryption key couldn't be read. Try importing again, import cookies using “From File…”, or sign in directly in OCC.",
                   values
                 )
                 break
@@ -143,11 +143,11 @@ function emitGoogleCookieImportWarning(
   if (!summary.googleCookiesSkipped) {
     return
   }
-  // Sign-in must use the populated jar: the named workspace remotely, any Orca browser locally; client-hosted pages stay on this desktop.
+  // Sign-in must use the populated jar: the named workspace remotely, any OCC browser locally; client-hosted pages stay on this desktop.
   const message = !execution.executionRemoteEnvironment
     ? translate(
         'auto.lib.browser.cookie.import.toast.googleCookiesSkippedLocal',
-        'Google cookies were not imported. Open a browser in Orca with this profile, then sign into Google.'
+        'Google cookies were not imported. Open a browser in OCC with this profile, then sign into Google.'
       )
     : execution.executionMachine === 'client'
       ? translate(
@@ -193,7 +193,7 @@ function emitPartitionSkippedImportWarning(summary: BrowserCookieImportSummary):
   toast.warning(
     translate(
       'auto.lib.browser.cookie.import.toast.partitionSkipped',
-      '{{value0}} cookies were not imported because their site-partition could not be read. Sign in to those sites again in Orca.',
+      '{{value0}} cookies were not imported because their site-partition could not be read. Sign in to those sites again in OCC.',
       { value0: summary.partitionSkippedCookies }
     ),
     { duration: 12000 }

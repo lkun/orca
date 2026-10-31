@@ -36,7 +36,7 @@ export const PetManifestSchema = z
       )
       .optional()
   })
-  // Accept generator metadata beyond the fields Orca consumes.
+  // Accept generator metadata beyond the fields OCC consumes.
   .loose()
 
 export type PetManifest = z.infer<typeof PetManifestSchema> & PetManifestLike

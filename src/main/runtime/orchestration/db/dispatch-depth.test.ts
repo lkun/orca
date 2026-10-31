@@ -282,7 +282,7 @@ describe('nested worker depth', () => {
   })
 
   // Equal session ids mean self-bookkeeping; different ids mean delegation.
-  it('records equal Orca session ids exactly when a structured session dispatches to itself', () => {
+  it('records equal OCC session ids exactly when a structured session dispatches to itself', () => {
     db = new OrchestrationDb(':memory:')
     const sessionId = '5c7e9a1d-3f6b-4c8e-8d2a-4b6c8e0a2d36'
     const self = {

@@ -2,7 +2,7 @@
 
 `COMPAT(legacy-relay-bridge)` · revisit **2027-01-15**, decided by telemetry.
 
-Orca 1.4.224 kept SSH terminals alive inside a `relay.js --detached` process on the host.
+OCC 1.4.224 kept SSH terminals alive inside a `relay.js --detached` process on the host.
 1.4.225 runs every SSH host on orcad and has no relay client, so this folder keeps those
 terminals working in their old tabs until each one exits. New terminals open on orcad, and
 nobody is prompted.

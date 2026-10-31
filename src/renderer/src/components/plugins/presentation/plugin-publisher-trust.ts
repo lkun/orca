@@ -6,7 +6,7 @@ import {
 import type { PluginManifest } from '../../../../../shared/plugins/manifest/plugin-manifest'
 
 type PluginSafetySubject = {
-  /** Orca's verified profile (installed list entry, catalog release or preview); null while unknown. */
+  /** OCC's verified profile (installed list entry, catalog release or preview); null while unknown. */
   execution: PluginExecutionProfile | null
   /** The plugin's manifest once read; its contents must derive `data` too. */
   manifest?: Pick<PluginManifest, 'main' | 'capabilities' | 'contributes'> | null
@@ -40,7 +40,7 @@ export function pluginPublisherNotice(
   if (!isSafeContentOnlyPlugin(subject)) {
     return 'code'
   }
-  // Why translations still warn: they speak with Orca's voice and can reword any text in it.
+  // Why translations still warn: they speak with OCC's voice and can reword any text in it.
   const translates = subject.manifest
     ? subject.manifest.contributes.languagePacks.length > 0
     : (subject.types?.includes('interface-language') ?? true)

@@ -4,7 +4,7 @@ import type {
   MobilePushPlatform
 } from '../../../src/shared/mobile-push-contract'
 
-// Use raw APNs/FCM tokens because Orca’s gateway talks directly to providers, not Expo’s push service.
+// Use raw APNs/FCM tokens because OCC’s gateway talks directly to providers, not Expo’s push service.
 
 export type MobilePushToken = {
   readonly platform: MobilePushPlatform

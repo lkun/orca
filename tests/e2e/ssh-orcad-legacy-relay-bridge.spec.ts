@@ -163,7 +163,7 @@ async function verifyRunningRelayUpgrade(
     const terminalTabId = seeded.terminalTabId!
     if (unreadableScrollback) {
       const ref = makeTerminalScrollbackSnapshotRef(terminalTabId, seeded.terminalLeafId)
-      // A missing file is no history at all; an over-limit one is saved history Orca cannot read.
+      // A missing file is no history at all; an over-limit one is saved history OCC cannot read.
       writeOverLimitScrollbackSnapshot(session.userDataDir, ref)
       mutateStoppedProfileState(session.userDataDir, (state) => {
         const partitions = z
@@ -226,7 +226,7 @@ async function verifyRunningRelayUpgrade(
       })
       await move.click()
       const dialog = page.getByRole('dialog')
-      await expect(dialog).toContainText('saved terminal history Orca could not read')
+      await expect(dialog).toContainText('saved terminal history OCC could not read')
       await page.screenshot({
         path: testInfo.outputPath('unreadable-history-recovery-confirm.png'),
         animations: 'disabled'

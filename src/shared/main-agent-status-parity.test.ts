@@ -25,7 +25,7 @@ type Published = {
 }
 
 const RUNNING_SHELL = { id: 'shell-1', type: 'shell', status: 'running' }
-/** Not a hook: current Claude sends none on a cancel, so Orca infers it from the keystroke. */
+/** Not a hook: current Claude sends none on a cancel, so OCC infers it from the keystroke. */
 const ORCA_INFERRED_INTERRUPT = { orca_inferred_interrupt: true }
 const RUNNING_AGENT = { id: 'agent-1', type: 'subagent', status: 'running' }
 const AGENT_TASK: AgentSessionBackgroundTask = { id: 'agent-1', kind: 'agent', state: 'working' }
@@ -282,7 +282,7 @@ const STORIES: Story[] = [
     }
   },
   {
-    // Neither CLI reports cancellation on Stop; keep Orca’s inferred verdict at the late boundary.
+    // Neither CLI reports cancellation on Stop; keep OCC’s inferred verdict at the late boundary.
     name: 'interrupted, then the late turn boundary',
     claude: {
       events: [
@@ -317,7 +317,7 @@ const STORIES: Story[] = [
     }
   },
   {
-    // The cancel itself, before any Stop: the row Orca synthesizes must fold the same way.
+    // The cancel itself, before any Stop: the row OCC synthesizes must fold the same way.
     name: 'interrupted while a watch loop is already registered',
     claude: {
       events: [

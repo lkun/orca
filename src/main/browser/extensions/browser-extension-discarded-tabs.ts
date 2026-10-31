@@ -12,9 +12,9 @@ import {
 import { getBrowserExtensionMainWindow } from './browser-extension-window-model'
 
 /**
- * Orca mounts a browser page's <webview> only when the page is first shown, so a restored page
+ * OCC mounts a browser page's <webview> only when the page is first shown, so a restored page
  * nobody visited has no guest webContents and no tab id. Chrome lists such a page as a discarded
- * tab. Orca reads them from the saved workspace session (the renderer's browser tabs, in every
+ * tab. OCC reads them from the saved workspace session (the renderer's browser tabs, in every
  * host partition) and names each with a synthetic tab id until its guest loads (tabs.onReplaced).
  */
 

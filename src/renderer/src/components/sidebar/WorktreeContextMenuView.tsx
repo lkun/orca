@@ -366,7 +366,7 @@ export default function WorktreeContextMenuView({ model }: { model: WorktreeCont
                   : removesProject
                     ? translate(
                         'auto.components.sidebar.WorktreeContextMenu.f5ac91531d',
-                        'Remove Project from Orca'
+                        'Remove Project from OCC'
                       )
                     : lineageDescendantCount > 0
                       ? translate(

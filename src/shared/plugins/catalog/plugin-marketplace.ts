@@ -116,7 +116,7 @@ export const marketplaceEntryFields = {
     )
     .meta(
       pluginFieldDoc(
-        "`<publisher>.<id>`: the publisher is the repository owner, lowercased (Orca installs under this key, whatever the manifest's deprecated `publisher` says), and the id is the manifest's `id`. Each half is at most 64 characters, and the reserved names `constructor` and `prototype` are refused.",
+        "`<publisher>.<id>`: the publisher is the repository owner, lowercased (OCC installs under this key, whatever the manifest's deprecated `publisher` says), and the id is the manifest's `id`. Each half is at most 64 characters, and the reserved names `constructor` and `prototype` are refused.",
         NEXT,
         ['acme.gleam-syntax']
       )
@@ -186,7 +186,7 @@ const pluginMarketplaceListingEntrySchema = z
 
 export const marketplaceHeaderFields = {
   name: safePluginDisplayText(z.string().min(1).max(256)).meta(
-    pluginFieldDoc('Catalog display name.', NEXT, ['Orca Plugins'])
+    pluginFieldDoc('Catalog display name.', NEXT, ['OCC Plugins'])
   ),
   owner: marketplaceOwnerSchema.meta(
     pluginFieldDoc('Account that publishes the catalog.', NEXT, ['stablyai'])
@@ -252,7 +252,7 @@ export function isReservedPluginIdentity(pluginKey: string): boolean {
   )
 }
 
-/** Orca's own publisher; reserved, so only the official catalog and bundled content carry it. */
+/** OCC's own publisher; reserved, so only the official catalog and bundled content carry it. */
 export function hasOfficialPluginPublisher(pluginKey: string): boolean {
   return splitQualifiedPluginKey(pluginKey)?.publisher === OFFICIAL_PLUGIN_PUBLISHER
 }

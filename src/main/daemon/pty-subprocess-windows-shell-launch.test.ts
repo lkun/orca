@@ -76,7 +76,7 @@ import {
 } from './pty-subprocess-test-harness'
 
 const POWERSHELL_OSC133_COMMAND_ARGS = ['-NoLogo', '-NoExit', '-EncodedCommand', expect.any(String)]
-const CODEX_LAUNCH_PREFLIGHT = 'C:\\Program Files\\Orca\\orca.exe'
+const CODEX_LAUNCH_PREFLIGHT = 'C:\\Program Files\\OCC\\orca.exe'
 
 describe('createPtySubprocess', () => {
   useDaemonPtySubprocessEnv({

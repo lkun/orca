@@ -34,7 +34,7 @@ function formatGrants(report: PluginValidationReport): string[] {
     ...plugin.grants.capabilities.map((capability) => `  - ${capability.description}`),
     ...plugin.grants.contributions.map((item) => `  adds ${item.kind}: ${item.name}`),
     plugin.needsApproval
-      ? '  Loading or enabling it needs --approve <fingerprint>; Orca prints the fingerprint.'
+      ? '  Loading or enabling it needs --approve <fingerprint>; OCC prints the fingerprint.'
       : '  Content only: loads without approval.'
   ]
 }
@@ -48,7 +48,7 @@ function invalidError(report: PluginValidationReport): RuntimeClientError {
     ].join('\n'),
     {
       ...report,
-      nextSteps: ['Fix the listed problems, then run `orca plugin validate` again.']
+      nextSteps: ['Fix the listed problems, then run `occ plugin validate` again.']
     }
   )
 }
@@ -112,7 +112,7 @@ export const PLUGIN_AUTHORING_HANDLERS: Record<string, CommandHandler> = {
         `Created ${created.pluginKey} from the ${template} template in ${created.path}`,
         ...created.files.map((file) => `  ${file}`),
         ...formatGrants(report),
-        'Next: orca plugin dev load <dir>'
+        'Next: occ plugin dev load <dir>'
       ].join('\n')
     )
   },

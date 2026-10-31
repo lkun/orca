@@ -11,7 +11,7 @@ import { openEnum } from './zod-salvage'
 
 export const AGENT_SESSION_AVAILABILITY_METHOD = 'agentSession.subscribeAvailability'
 
-/** Whether the program a chat start runs is on this host: `installable` is absent but Orca can
+/** Whether the program a chat start runs is on this host: `installable` is absent but OCC can
  *  download it; `unknown` depends on the workspace or could not be read. Older hosts omit it. */
 export type AgentSessionChatProgram = 'available' | 'installable' | 'missing' | 'unknown'
 

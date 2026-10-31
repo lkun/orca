@@ -15,7 +15,7 @@ export function toastSshHostMoveRefused(
     toast.error(
       translate(
         'auto.hooks.ipcEvents.sshManagedServer.refusedBlocked',
-        'Orca couldn’t set itself up on this SSH host. SSH Hosts in Settings shows why.'
+        'OCC couldn’t set itself up on this SSH host. SSH Hosts in Settings shows why.'
       )
     )
     return

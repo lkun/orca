@@ -9,7 +9,7 @@ import {
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { translate } from '@/i18n/i18n'
 
-// Why: Orca terminals already provide the `orca` command, so agent control only needs the skill.
+// Why: OCC terminals already provide the `orca` command, so agent control only needs the skill.
 export function useMobileEmulatorAgentSetupState(enabled = true): {
   skillRuntime: ReturnType<typeof useActiveProjectSkillRuntime>
   cliSkillError: string | null
@@ -70,7 +70,7 @@ export function useMobileEmulatorAgentSetupState(enabled = true): {
       toast.message(
         translate(
           'auto.components.emulator.pane.use.mobile.emulator.agent.setup.state.skillNotInstalled',
-          'The Orca CLI skill is not installed yet.'
+          'The OCC CLI skill is not installed yet.'
         )
       )
     } catch (error) {

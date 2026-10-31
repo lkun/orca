@@ -16,7 +16,7 @@ export class CdpTargetDiscovery {
     const url = req.url ?? ''
     if (url === '/json/version' || url === '/json/version/') {
       res.writeHead(200, { 'Content-Type': 'application/json' })
-      // Report the bundled Chrome version without exposing Orca’s automation identity.
+      // Report the bundled Chrome version without exposing OCC’s automation identity.
       const chromeVersion = process.versions.chrome ?? '134.0.0.0'
       res.end(
         JSON.stringify({

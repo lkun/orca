@@ -10,7 +10,7 @@ export function createRun(
     objective: string
     coordinatorHandle: string | null
     coordinatorPaneKey: string | null
-    /** The coordinator's bare Orca session id when it is a structured session; see orca-session-address. */
+    /** The coordinator's bare OCC session id when it is a structured session; see orca-session-address. */
     coordinatorOrcaSessionId?: OrcaSessionId | null
   }
 ): RunRow {

@@ -4,7 +4,7 @@ import {
   type AgentStatusState
 } from './agent-status-types'
 
-/** Row states: the hook-reported statuses plus the two Orca derives when an entry goes stale. */
+/** Row states: the hook-reported statuses plus the two OCC derives when an entry goes stale. */
 export type AgentRowState = AgentStatusState | 'idle' | 'unverifiable'
 
 type DecayInput = Pick<AgentStatusEntry, 'state' | 'restoredUnconfirmed'>
@@ -32,7 +32,7 @@ export function formatCompactDuration(deltaMs: number): string {
   return `${Math.floor(hours / 24)}d`
 }
 
-/** Report last-observed age rather than claiming current activity; the user may know a long-running task Orca cannot verify. */
+/** Report last-observed age rather than claiming current activity; the user may know a long-running task OCC cannot verify. */
 export function agentNoUpdateLabel(
   entry: Pick<AgentStatusEntry, 'updatedAt' | 'evidenceObservedAt'>,
   now: number

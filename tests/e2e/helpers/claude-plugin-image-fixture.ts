@@ -43,7 +43,7 @@ export function createClaudePluginImageFixture(
       name: 'orca-image-acceptance',
       version: '0.1.0',
       description: 'Session-only terminal image acceptance fixture',
-      author: { name: 'Orca contributors' }
+      author: { name: 'OCC contributors' }
     })
   )
   writeFileSync(join(plugin, 'hooks', 'hooks.json'), '{"modules":["./register.js"]}')

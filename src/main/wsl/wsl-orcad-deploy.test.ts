@@ -234,7 +234,7 @@ describe('deployAndLaunchWslOrcad', () => {
     expect(options.preRead).toBeUndefined()
     const newer = { ...emptyOrcadActivationRecord(), active: '2.0.0+cd', activeAppVersion: '2.0.0' }
     expect(options.admitRecord(newer, '1.5.0+ab')).toBe(
-      "Orca 2.0.0 last ran this host's server, newer than this Orca (1.5.0). Update Orca to start it."
+      "OCC 2.0.0 last ran this host's server, newer than this OCC (1.5.0). Update OCC to start it."
     )
   })
 
@@ -265,7 +265,7 @@ describe('deployAndLaunchWslOrcad', () => {
 
   it('surfaces an unsupported libc as the SSH host refusal does', async () => {
     const refusal = Object.assign(
-      new Error('No Orca runtime supports linux-x64-glibc with glibc 2.17.'),
+      new Error('No OCC runtime supports linux-x64-glibc with glibc 2.17.'),
       {
         name: 'OrcadHostUnsupportedError'
       }

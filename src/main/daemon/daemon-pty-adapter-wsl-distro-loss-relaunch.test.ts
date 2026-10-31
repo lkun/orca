@@ -84,7 +84,7 @@ describe('a WSL bridge pane whose distro was terminated, after a relaunch', () =
     return Boolean(restored.coldRestore)
   }
 
-  it('restores when the distro stopped while Orca was quit and the daemon kept running', async () => {
+  it('restores when the distro stopped while OCC was quit and the daemon kept running', async () => {
     const app = launch()
     const bridge = await openBridgePane(app)
     await app.disconnectOnly()
@@ -96,7 +96,7 @@ describe('a WSL bridge pane whose distro was terminated, after a relaunch', () =
     await expect(relaunchAndRestore()).resolves.toBe(true)
   })
 
-  it('restores when the distro stopped while Orca was quit and the daemon exited with it', async () => {
+  it('restores when the distro stopped while OCC was quit and the daemon exited with it', async () => {
     const app = launch()
     await app.spawn({ cols: 80, rows: 24, cwd: '/project', sessionId: PANE })
     lastSubprocess._simulateData('user@host:~/project$ echo KEPT\r\nKEPT\r\n')
@@ -123,7 +123,7 @@ describe('a WSL bridge pane whose distro was terminated, after a relaunch', () =
       [{ status: 'unavailable' }, { status: 'confirmed', distros: [] }],
       ['boot-1']
     ]
-  ] as const)('restores when %s while Orca ran', async (_name, answers, ids) => {
+  ] as const)('restores when %s while OCC ran', async (_name, answers, ids) => {
     const reads: WslRunningDistrosRead[] = answers.map((answer) => ({
       ...answer,
       ...('distros' in answer ? { distros: [...answer.distros] } : {})

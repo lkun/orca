@@ -32,7 +32,7 @@ export type StructuredClaudeRuntimeAdapterDeps = {
   /** The binary and env the startup version prewarm asks, as a launch would. */
   resolveClaudeCommand?: ClaudeEnvDeps['resolveCommand']
   resolveClaudeLaunchEnv?: () => Promise<Record<string, string>> | Record<string, string>
-  /** The env a Claude child inherits before auth stripping; absent inherits Orca's own. */
+  /** The env a Claude child inherits before auth stripping; absent inherits OCC's own. */
   resolveClaudeInheritedEnv?: () => Promise<Record<string, string>>
   /** Asks Claude for a chat's `/` menu while it isn't running; absent reads the folders. */
   atRestCommandProbe?: ClaudeCommandCatalogProbe

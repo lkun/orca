@@ -49,7 +49,7 @@ export function resolveClaudePaneFolder(
 
 /**
  * Whether a pane runs on an account (null is System default). A System default pane also counts
- * when that folder is signed in to the account's own login, as an older Orca's copied login is.
+ * when that folder is signed in to the account's own login, as an older OCC's copied login is.
  * Managed folders are never compared by login: two saved accounts may share one on purpose.
  */
 export function isClaudePaneOnAccount(

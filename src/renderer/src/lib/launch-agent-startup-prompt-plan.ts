@@ -30,7 +30,7 @@ export function planLaunchAgentStartupPrompt(args: {
       ...base,
       prompt: '',
       allowEmptyPromptLaunch: true,
-      // Why: Orca's own Enter must not answer a startup update prompt.
+      // Why: OCC's own Enter must not answer a startup update prompt.
       suppressStartupUpdatePrompt: submit
     }),
     pasteDraftAfterLaunch: prompt,

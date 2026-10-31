@@ -135,7 +135,7 @@ export abstract class AgentBrowserBridgeLifecycle extends AgentBrowserBridgeRawP
         )
       }
 
-      // Reset daemon sessions that may retain a CDP port from an earlier Orca process.
+      // Reset daemon sessions that may retain a CDP port from an earlier OCC process.
       await this.closeStaleAgentBrowserSession(sessionName)
 
       const proxy = new CdpWsProxy(

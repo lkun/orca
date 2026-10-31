@@ -11,12 +11,12 @@ export function localizedWslDistroHoldMessage(hold: {
   return hold.state === 'stopped'
     ? translate(
         'wslDistroHold.terminalStopped',
-        "The WSL distro {{distro}} is stopped, so Orca didn't start this terminal. Start the distro, then try again.",
+        "The WSL distro {{distro}} is stopped, so OCC didn't start this terminal. Start the distro, then try again.",
         { distro: hold.distro }
       )
     : translate(
         'wslDistroHold.terminalUnverifiable',
-        "Orca couldn't check whether the WSL distro {{distro}} is running, so it didn't start this terminal. Start the distro, then try again.",
+        "OCC couldn't check whether the WSL distro {{distro}} is running, so it didn't start this terminal. Start the distro, then try again.",
         { distro: hold.distro }
       )
 }

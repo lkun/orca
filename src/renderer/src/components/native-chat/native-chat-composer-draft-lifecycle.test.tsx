@@ -594,7 +594,7 @@ describe('native-chat composer draft lifecycle', () => {
     expect(seen.api?.attachments.imageAttachments).toEqual([stored])
   })
 
-  it('shows a restored paste from Orca’s paste folder once main confirms it is kept, and marks the rest', async () => {
+  it('shows a restored paste from OCC’s paste folder once main confirms it is kept, and marks the rest', async () => {
     const folder = '/Users/me/Library/Application Support/orca/native-chat-pastes'
     let answer: () => void = () => {}
     const answered = new Promise<void>((resolve) => {

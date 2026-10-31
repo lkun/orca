@@ -46,7 +46,7 @@ export function cliServeProfile(parent: string): { userDataDir: string; env: Nod
     userDataDir,
     env: {
       ...isolation.env,
-      // How `orca serve` from a dev checkout finds its app (config/scripts/orca-dev.mjs).
+      // How `orca serve` from a dev checkout finds its app (config/scripts/occ-dev.mjs).
       ORCA_APP_EXECUTABLE: resolveElectronExecutable(process.cwd()),
       ORCA_APP_EXECUTABLE_NEEDS_APP_ROOT: '1',
       ORCA_USER_DATA_PATH: userDataDir

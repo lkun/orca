@@ -23,7 +23,7 @@ it('forwards host-confirmed Codex interruption without requiring a local rollout
     const { port, token } = server.getCoordinates()
     const response = await fetch(`http://127.0.0.1:${port}/hook/codex`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+      headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
       body: JSON.stringify({
         paneKey: PANE_KEY,
         tabId: 'tab-1',
@@ -40,7 +40,7 @@ it('forwards host-confirmed Codex interruption without requiring a local rollout
     expect(desktop.getStatusSnapshot()[0].state).toBe('working')
     const sideResponse = await fetch(`http://127.0.0.1:${port}/hook/codex`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+      headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
       body: JSON.stringify({
         paneKey: PANE_KEY,
         tabId: 'tab-1',

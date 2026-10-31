@@ -10,7 +10,7 @@ describe('isTestCodePath', () => {
       'app/models/user_spec.rb',
       'tools/test_migration.py',
       'src/main/java/com/orca/GitTest.java',
-      'src/Orca.Core/GitStatusTests.cs',
+      'src/OCC.Core/GitStatusTests.cs',
       'src/UserTest.kt',
       'AppTests.swift',
       'FooSpec.rb',

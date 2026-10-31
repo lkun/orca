@@ -83,7 +83,7 @@ export async function restartFromNewAppImage(
   watch: AppImageBuildWatch,
   deps: AppImageRestartDeps
 ): Promise<string> {
-  deps.log(`[serve] ${watch.appImagePath} holds a new Orca build; restarting from it.`)
+  deps.log(`[serve] ${watch.appImagePath} holds a new OCC build; restarting from it.`)
   const env = appImageEnv(deps.env)
   // Probe FUSE support first to keep mount failures from causing a service restart loop.
   const refusal = await (deps.probe ?? probeAppImage)(watch.appImagePath, env)
@@ -197,7 +197,7 @@ export function createSupervisedAppImageUpdate(
       if (!reportedFailedAttempt) {
         reportedFailedAttempt = true
         deps.log(
-          `[serve] Keeping the running build: ${watch.appImagePath} was started once and did not come up. Replace it again, or run \`orca serve --supervise --force\` once to retry it.`
+          `[serve] Keeping the running build: ${watch.appImagePath} was started once and did not come up. Replace it again, or run \`occ serve --supervise --force\` once to retry it.`
         )
       }
       return 'current'

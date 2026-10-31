@@ -39,10 +39,10 @@ import {
   RENDERER_RECOVERY_LOAD_TIMEOUT_MS
 } from './renderer-recovery-reload-watchdog'
 
-const DOCUMENT_URL = 'file:///opt/orca/renderer/index.html'
+const DOCUMENT_URL = 'file:///opt/occ/renderer/index.html'
 // Use an install file URL the current crash-report path redactor cannot remove.
 const INSTALL_PATH_LOAD_ERROR =
-  "ERR_FILE_NOT_FOUND (-6) loading 'file:///Users/jane.doe/Applications/Orca.app/Contents/Resources/app.asar/out/renderer/index.html'"
+  "ERR_FILE_NOT_FOUND (-6) loading 'file:///Users/jane.doe/Applications/OCC.app/Contents/Resources/app.asar/out/renderer/index.html'"
 const CRASH = { reason: 'crashed', exitCode: 5 } as Electron.RenderProcessGoneDetails
 
 /** Reproduce a recovery load with no document or failure event; renderer-death accounting alone cannot detect its stall. */
@@ -298,7 +298,7 @@ describe('renderer recovery reload watchdog', () => {
 
     createMainWindow(null, { onRecoveryReloadOutcome })
     crashRenderer()
-    settleLoad[1]?.reject(new Error("ERR_FILE_NOT_FOUND (-6) loading 'file:///opt/orca'"))
+    settleLoad[1]?.reject(new Error("ERR_FILE_NOT_FOUND (-6) loading 'file:///opt/occ'"))
     await vi.advanceTimersByTimeAsync(0)
 
     expect(onRecoveryReloadOutcome).toHaveBeenCalledWith(

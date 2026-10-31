@@ -19,7 +19,7 @@ afterEach(() => {
   }
 })
 
-/** Builds a temporary Orca-style project fixture with a compiled CLI entrypoint. */
+/** Builds a temporary OCC-style project fixture with a compiled CLI entrypoint. */
 function makeProjectWithCli(
   content,
   { mode = 0o755, rootPackageType, writeOutPackageJson = true } = {}

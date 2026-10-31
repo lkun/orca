@@ -122,7 +122,7 @@ describe('sparse-checkout cache invalidation across the worktree lifecycle', () 
       const sparseRow = beforeRemoval.find((worktree) => worktree.branch.endsWith('sparse-branch'))
       expect(sparseRow?.isSparse).toBe(true)
 
-      // Exercise Orca's invalidation hook rather than removing through raw Git.
+      // Exercise OCC's invalidation hook rather than removing through raw Git.
       await removeWorktree(repoPath, linkedPath, true)
       git(repoPath, ['worktree', 'add', '-b', 'full-branch', linkedPath])
 

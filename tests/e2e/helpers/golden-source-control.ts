@@ -8,7 +8,7 @@ import { expect } from './orca-app'
 export const GOLDEN_CHANGED_PATH = 'src/index.ts'
 export const GOLDEN_REMOVED_LINE = 'export const hello = "world"'
 export const GOLDEN_ADDED_LINE = 'export const hello = "golden daily loop"'
-export const GOLDEN_GIT_AUTHOR_NAME = 'Orca E2E'
+export const GOLDEN_GIT_AUTHOR_NAME = 'OCC E2E'
 export const GOLDEN_GIT_AUTHOR_EMAIL = 'orca-e2e@example.invalid'
 const GOLDEN_PRE_COMMIT_MARKER = '.e2e-pre-commit-ran'
 

@@ -58,7 +58,7 @@ describe('the host-stamped turn end', () => {
     expect(row()).toMatchObject({ state: 'done', turnEndDisposition: 'ambiguous' })
     expect(row()).not.toHaveProperty('turnEndedAt')
 
-    // A cancel Orca inferred from Ctrl+C ends the turn, so the turn's late Stop is no second end.
+    // A cancel OCC inferred from Ctrl+C ends the turn, so the turn's late Stop is no second end.
     await post({ hook_event_name: 'UserPromptSubmit', prompt: 'Fix it' })
     const working = row()!
     expect(

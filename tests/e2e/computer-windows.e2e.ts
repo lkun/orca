@@ -133,7 +133,7 @@ describe.skipIf(!isWindows || !e2eOptIn)('computer-use Windows e2e (Notepad)', (
 
   test('paste-text mutates the test-owned document', async () => {
     const app = getNotepadAppSelector()
-    const marker = `orca-windows-paste-${Date.now()}`
+    const marker = `occ-windows-paste-${Date.now()}`
     await focusNotepadDocument(app)
     const action = parseJsonOutput<{ result: ComputerActionResult }>(
       (
@@ -184,7 +184,7 @@ describe.skipIf(!isWindows || !e2eOptIn)('computer-use Windows e2e (Notepad)', (
 
   test('hotkey and paste-text can replace the document selection', async () => {
     const app = getNotepadAppSelector()
-    const first = `orca-windows-first-${Date.now()}`
+    const first = `occ-windows-first-${Date.now()}`
     await focusNotepadDocument(app)
     await runOrcaCli([
       'computer',
@@ -215,7 +215,7 @@ describe.skipIf(!isWindows || !e2eOptIn)('computer-use Windows e2e (Notepad)', (
     )
     expect(selectAll.result.action?.actionName).toBe('hotkey')
 
-    const marker = `orca-windows-replaced-${Date.now()}`
+    const marker = `occ-windows-replaced-${Date.now()}`
     const second = parseJsonOutput<{ result: ComputerActionResult }>(
       (
         await runOrcaCli([

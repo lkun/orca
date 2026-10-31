@@ -9,7 +9,7 @@ export function managedUpdateLine(update: SshManagedServerUpdateNote): SshHostSe
         tone: 'muted',
         text: translate(
           'auto.components.settings.sshHostServer.hostNewer',
-          'Runs a newer version of Orca’s server than this app; it keeps that version.'
+          'Runs a newer version of OCC’s server than this app; it keeps that version.'
         )
       }
     case 'deferred':
@@ -17,7 +17,7 @@ export function managedUpdateLine(update: SshManagedServerUpdateNote): SshHostSe
         tone: 'muted',
         text: translate(
           'auto.components.settings.sshHostServer.updateDeferredLater',
-          'Runs Orca’s server; it updates on a later connect.'
+          'Runs OCC’s server; it updates on a later connect.'
         ),
         ...withDetail(update.detail)
       }
@@ -26,7 +26,7 @@ export function managedUpdateLine(update: SshManagedServerUpdateNote): SshHostSe
         tone: 'warning',
         text: translate(
           'auto.components.settings.sshHostServer.updateFailedPrevious',
-          'Runs Orca’s server on its previous version; updating it failed.'
+          'Runs OCC’s server on its previous version; updating it failed.'
         ),
         ...withDetail(update.detail)
       }
@@ -35,7 +35,7 @@ export function managedUpdateLine(update: SshManagedServerUpdateNote): SshHostSe
         tone: 'warning',
         text: translate(
           'auto.components.settings.sshHostServer.behindRolledBack',
-          'Runs an older version of Orca’s server than this app; the last update was rolled back. Use Update server to try again.'
+          'Runs an older version of OCC’s server than this app; the last update was rolled back. Use Update server to try again.'
         )
       }
     case 'no-template':
@@ -43,7 +43,7 @@ export function managedUpdateLine(update: SshManagedServerUpdateNote): SshHostSe
         tone: 'muted',
         text: translate(
           'auto.components.settings.sshHostServer.behindNoTemplate',
-          'Runs a version of Orca’s server this app can’t update; this build has no server for this host.'
+          'Runs a version of OCC’s server this app can’t update; this build has no server for this host.'
         )
       }
     case 'migrating':
@@ -51,7 +51,7 @@ export function managedUpdateLine(update: SshManagedServerUpdateNote): SshHostSe
         tone: 'muted',
         text: translate(
           'auto.components.settings.sshHostServer.behindMigrating',
-          'Runs Orca’s server, which updates after its project move finishes.'
+          'Runs OCC’s server, which updates after its project move finishes.'
         )
       }
     case 'check-failed':
@@ -59,7 +59,7 @@ export function managedUpdateLine(update: SshManagedServerUpdateNote): SshHostSe
         tone: 'warning',
         text: translate(
           'auto.components.settings.sshHostServer.behindCheckFailed',
-          'Runs Orca’s server; Orca couldn’t check whether it is behind this app.'
+          'Runs OCC’s server; OCC couldn’t check whether it is behind this app.'
         ),
         ...withDetail(update.detail)
       }

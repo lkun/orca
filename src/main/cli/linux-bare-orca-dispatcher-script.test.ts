@@ -27,7 +27,7 @@ async function writeProgram(path: string, output: string): Promise<void> {
   await chmod(path, 0o755)
 }
 
-/** A home with Orca's dispatcher installed, and a second `orca` (as GNOME's screen reader). */
+/** A home with OCC's dispatcher installed, and a second `orca` (as GNOME's screen reader). */
 async function makeFixture(): Promise<{
   root: string
   homePath: string
@@ -41,11 +41,11 @@ async function makeFixture(): Promise<{
   created.push(root)
   const homePath = join(root, 'home')
   const resourcesPath = join(root, 'resources')
-  const launcherPath = join(resourcesPath, 'bin', 'orca-ide')
+  const launcherPath = join(resourcesPath, 'bin', 'occ-ide')
   const screenReaderDir = join(root, 'usr-bin')
   await writeProgram(launcherPath, 'ORCA_CLI')
   await writeProgram(join(screenReaderDir, 'orca'), 'SCREEN_READER')
-  // Only bash on the base PATH, so a runner's own /usr/bin/orca cannot answer.
+  // Only bash on the base PATH, so a runner's own /usr/bin/occ cannot answer.
   const toolsDir = join(root, 'tools')
   await mkdir(toolsDir)
   const bash = spawnSync('/bin/sh', ['-c', 'command -v bash'], { encoding: 'utf8' }).stdout.trim()
@@ -81,7 +81,7 @@ function runOrca(
 }
 
 describe.runIf(process.platform !== 'win32')('the bare orca dispatcher as a shell runs it', () => {
-  it("leaves another `orca` on PATH (GNOME's screen reader) to everyone but Orca's children", async () => {
+  it("leaves another `orca` on PATH (GNOME's screen reader) to everyone but OCC's children", async () => {
     const fixture = await makeFixture()
     const binDir = join(fixture.homePath, '.local', 'bin')
 
@@ -103,7 +103,7 @@ describe.runIf(process.platform !== 'win32')('the bare orca dispatcher as a shel
     expect(runOrca(fixture, ['', binDir]).stdout).toBe('ORCA_CLI status\n')
   })
 
-  it('says Orca is gone instead of failing to exec once the launcher is removed', async () => {
+  it('says OCC is gone instead of failing to exec once the launcher is removed', async () => {
     const fixture = await makeFixture()
     const binDir = join(fixture.homePath, '.local', 'bin')
     await rm(fixture.resourcesPath, { recursive: true, force: true })
@@ -111,7 +111,7 @@ describe.runIf(process.platform !== 'win32')('the bare orca dispatcher as a shel
     const alone = runOrca(fixture, [binDir], { ORCA_PANE_KEY: 'tab:1' })
     expect(alone.status).toBe(127)
     expect(alone.stdout).toBe('')
-    expect(alone.stderr).toContain(`Orca is no longer installed at ${fixture.launcherPath}`)
+    expect(alone.stderr).toContain(`OCC is no longer installed at ${fixture.launcherPath}`)
     expect(alone.stderr).toContain(`Remove ${fixture.dispatcherPath}`)
 
     expect(runOrca(fixture, [binDir, fixture.screenReaderDir]).stdout).toBe(
@@ -128,7 +128,7 @@ describe.runIf(process.platform !== 'win32')('the bare orca dispatcher as a shel
     return otherBin
   }
 
-  it('skips a second Orca dispatcher ahead of it and reaches the real `orca`', async () => {
+  it('skips a second OCC dispatcher ahead of it and reaches the real `orca`', async () => {
     const fixture = await makeFixture()
     const otherBin = await addSecondDispatcher(fixture)
     const binDir = join(fixture.homePath, '.local', 'bin')
@@ -142,7 +142,7 @@ describe.runIf(process.platform !== 'win32')('the bare orca dispatcher as a shel
   })
 
   it.each(['ORCA_PANE_KEY', 'ORCA_CLI_BIN_DIR', 'ORCA_USER_DATA_PATH'])(
-    'never starts the screen reader for Orca children (%s) once Orca is gone',
+    'never starts the screen reader for OCC children (%s) once OCC is gone',
     async (variable) => {
       const fixture = await makeFixture()
       const otherBin = await addSecondDispatcher(fixture)
@@ -155,7 +155,7 @@ describe.runIf(process.platform !== 'win32')('the bare orca dispatcher as a shel
       )
       expect(result.status).toBe(127)
       expect(result.stdout).toBe('')
-      expect(result.stderr).toContain('Orca is no longer installed')
+      expect(result.stderr).toContain('OCC is no longer installed')
     }
   )
 
@@ -223,7 +223,7 @@ describe.runIf(process.platform !== 'win32')('the bare orca dispatcher as a shel
 
     const result = runOrca(fixture, [join(fixture.homePath, '.local', 'bin'), otherBin])
     expect(result.status).toBe(127)
-    expect(result.stderr).toContain('Orca is no longer installed')
+    expect(result.stderr).toContain('OCC is no longer installed')
   })
 
   it('adds nothing to the environment of the `orca` it hands over to', async () => {
@@ -245,7 +245,7 @@ describe.runIf(process.platform !== 'win32')('the bare orca dispatcher as a shel
 })
 
 describe.runIf(process.platform !== 'win32')('removing the bare orca dispatcher', () => {
-  it("removes Orca's dispatcher and keeps a user's own `orca`", async () => {
+  it("removes OCC's dispatcher and keeps a user's own `orca`", async () => {
     const fixture = await makeFixture()
 
     await expect(removeLinuxBareOrcaDispatcher(fixture.homePath)).resolves.toBe(true)

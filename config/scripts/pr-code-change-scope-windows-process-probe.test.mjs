@@ -4,8 +4,8 @@ import { classifyPrJobs } from './pr-code-change-scope.mjs'
 describe('Windows installer process probe routing', () => {
   it.each([
     [],
-    ['config/nsis/orca-process-check.nsh'],
-    ['config/nsis/orca-installer-hooks.nsh'],
+    ['config/nsis/occ-process-check.nsh'],
+    ['config/nsis/occ-installer-hooks.nsh'],
     ['config/scripts/nsis-process-check.test.mjs'],
     ['config/scripts/idle-cpu-process-sampling.mjs'],
     ['config/scripts/idle-cpu-process-sampling.test.mjs'],
@@ -17,7 +17,7 @@ describe('Windows installer process probe routing', () => {
     ['.github/workflows/pr.yml'],
     ['package.json'],
     ['pnpm-lock.yaml'],
-    ['src/renderer/src/App.tsx', 'config/nsis/orca-process-check.nsh']
+    ['src/renderer/src/App.tsx', 'config/nsis/occ-process-check.nsh']
   ])('routes Windows probe inputs to their containing job for %j', (...files) => {
     expect(classifyPrJobs(files)).toMatchObject({
       windows_process_probe: true,

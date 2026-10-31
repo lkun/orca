@@ -42,7 +42,7 @@ describe('published schema and runtime agree on rejection', () => {
     ],
     ['a wrong-typed name', { name: 5 }],
     ['a wrong-typed contributes', { contributes: [] }],
-    ['a range Orca cannot gate on', { engines: { orca: '^1.4.0' } }],
+    ['a range OCC cannot gate on', { engines: { orca: '^1.4.0' } }],
     ['an unknown execution profile', { execution: 'root' }],
     ['an unknown contribution point', { contributes: { widgets: [] } }],
     ['an http homepage', { homepage: 'http://example.com' }]
@@ -96,11 +96,11 @@ describe('published schema and runtime agree on rejection', () => {
     expect(pluginCatalogSchema.parse(raw).plugins.map((plugin) => plugin.description)).toEqual([
       'first'
     ])
-    expect(descriptionAt(catalogSchema, '/properties/plugins')).toContain('Orca keeps the first')
+    expect(descriptionAt(catalogSchema, '/properties/plugins')).toContain('OCC keeps the first')
   })
 })
 
-/** Rules a JSON Schema cannot state, so only Orca enforces them. Each must be named in the
+/** Rules a JSON Schema cannot state, so only OCC enforces them. Each must be named in the
  *  description of the field an editor shows, so authors still learn the rule. Adding a runtime
  *  rule the schema misses means adding it here. */
 const RUNTIME_ONLY_RULES = [
@@ -196,7 +196,7 @@ const RUNTIME_ONLY_RULES = [
 ]
 
 describe('runtime-only rules', () => {
-  it.each(RUNTIME_ONLY_RULES)('$rule: schema allows, Orca refuses, docs say so', (rule) => {
+  it.each(RUNTIME_ONLY_RULES)('$rule: schema allows, OCC refuses, docs say so', (rule) => {
     const isCatalog = 'plugins' in rule.raw
     const schema = isCatalog ? catalogSchema : manifestSchema
     const raw = JSON.parse(JSON.stringify(rule.raw))

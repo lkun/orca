@@ -28,7 +28,7 @@ afterEach(async () => {
 describe('Slack thread status and posts', () => {
   it('edits one status message as the turn moves, and posts the last message when the agent didn’t reply', async () => {
     const harness = await startedThread()
-    expect(await harness.status()).toBe('Waiting for your Orca on build-box…')
+    expect(await harness.status()).toBe('Waiting for your OCC on build-box…')
     await harness.machine.ack([{ deliveryId: harness.start?.deliveryId, step: 'received' }])
     await harness.events(turnStarted)
     expect(await harness.status()).toBe('Working on build-box…')
@@ -38,7 +38,7 @@ describe('Slack thread status and posts', () => {
       paneKey: 'pane-1',
       prompt: { kind: 'approval', promptId: 'p1', tool: 'Bash', options: [] }
     })
-    expect(await harness.status()).toBe('Waiting for your answer in Orca on build-box.')
+    expect(await harness.status()).toBe('Waiting for your answer in OCC on build-box.')
     await harness.events(turnEnded)
     expect(await harness.status()).toBe('Done on build-box.')
     const [fallback] = await harness.database.query(
@@ -91,7 +91,7 @@ describe('Slack thread status and posts', () => {
       }
     ])
     // A code with no line of its own reads generically; the code itself stays out of the channel.
-    expect(await harness.status()).toBe('Your Orca on build-box couldn’t take this.')
+    expect(await harness.status()).toBe('Your OCC on build-box couldn’t take this.')
   })
 
   it('records a refusal whose code is an inherited property name, and reads it generically', async () => {
@@ -107,7 +107,7 @@ describe('Slack thread status and posts', () => {
       expect(response.status).toBe(204)
       const [row] = await harness.database.query('SELECT state FROM connector_inbox')
       expect(row?.state).toBe('done')
-      expect(await harness.status()).toBe('Your Orca on build-box couldn’t take this.')
+      expect(await harness.status()).toBe('Your OCC on build-box couldn’t take this.')
     }
   })
 
@@ -118,7 +118,7 @@ describe('Slack thread status and posts', () => {
     ])
     await harness.events(turnStarted)
     await harness.events({ kind: 'snapshot', conversations: [] })
-    expect(await harness.status()).toBe('No update from your Orca; check Orca.')
+    expect(await harness.status()).toBe('No update from your OCC; check OCC.')
   })
 
   it('sends the reaction and status, then edits the status in place', async () => {
@@ -135,7 +135,7 @@ describe('Slack thread status and posts', () => {
     expect(postArgs).toMatchObject({
       channel: CHANNEL,
       thread_ts: THREAD,
-      text: 'Waiting for your Orca on build-box…',
+      text: 'Waiting for your OCC on build-box…',
       metadata: { event_type: 'orca_post', event_payload: { post_id: `status:${EXTERNAL_ID}` } }
     })
 
@@ -506,7 +506,7 @@ describe('Slack thread status and posts', () => {
         args: {
           channel: CHANNEL,
           ts: expect.any(String),
-          text: `Couldn’t reach <@${OWNER}>’s Orca on build-box. Send again when it’s back.`
+          text: `Couldn’t reach <@${OWNER}>’s OCC on build-box. Send again when it’s back.`
         }
       }
     ])

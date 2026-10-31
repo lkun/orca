@@ -4,7 +4,7 @@ import type { AgentSessionProviderTransport } from '../../agent-session-provider
 
 /** What an agent's definition says its records pin. */
 export type AgentSessionStoredAgent = {
-  /** The Orca agent a record names as its `provider`. */
+  /** The OCC agent a record names as its `provider`. */
   agent: string
   /** The protocol whose id space this agent's provider handles live in. */
   handleTransport: AgentSessionProviderTransport

@@ -64,7 +64,7 @@ function fakePowerShell(spec: { env: NodeJS.ProcessEnv }, failed = false): Event
   return child
 }
 
-/** Windows without the registry addon (an Orca server slot); `savedPath` is each key's saved
+/** Windows without the registry addon (an OCC server slot); `savedPath` is each key's saved
  *  Path value, null when the key has none, answered the way reg.exe answers. */
 async function withSimulatedWindowsServer(
   savedPath: (key: string) => string | null,
@@ -142,7 +142,7 @@ describe('structuredAgentBaseEnvironment', () => {
     })
   })
 
-  it('passes only the baseline and listed shell names over Orca env when off', () => {
+  it('passes only the baseline and listed shell names over OCC env when off', () => {
     expect(
       structuredAgentBaseEnvironment({
         shellEnv,
@@ -310,7 +310,7 @@ describe('createStructuredAgentEnvironmentResolvers', () => {
   })
 
   it('keeps the machine PATH when the user has no saved Path value and reg.exe reads it', async () => {
-    // An Orca server slot ships no registry addon, so this is the path a Windows SSH host takes.
+    // An OCC server slot ships no registry addon, so this is the path a Windows SSH host takes.
     await withSimulatedWindowsServer(
       (key) => (key.startsWith('HKLM') ? 'C:\\Program Files\\nodejs\\;C:\\NewMachineTool' : null),
       async () => {
@@ -365,7 +365,7 @@ describe('createStructuredAgentEnvironmentResolvers', () => {
         }
         expect(Number(await readFile(counter, 'utf8'))).toBeGreaterThanOrEqual(3)
         expect(served.at(-1)).toBe('/profile/B')
-        // The failed run never served Orca's own env in place of the profile's.
+        // The failed run never served OCC's own env in place of the profile's.
         expect(served.filter((path) => path !== '/profile/A' && path !== '/profile/B')).toEqual([])
       } finally {
         vi.useRealTimers()

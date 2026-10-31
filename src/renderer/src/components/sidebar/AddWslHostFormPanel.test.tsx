@@ -37,7 +37,7 @@ function render(props: Partial<Parameters<typeof AddWslHostFormPanel>[0]> = {}):
 describe('AddWslHostFormPanel', () => {
   it('says this build cannot run WSL hosts and offers nothing to add', () => {
     const html = render({ selectedDistro: 'Ubuntu', serverFilesMissing: true })
-    expect(html).toContain('This build of Orca can’t run WSL hosts (server files missing).')
+    expect(html).toContain('This build of OCC can’t run WSL hosts (server files missing).')
     expect(html).toContain('role="alert"')
     expect(html).not.toContain('wsl --install')
     expect(html).toMatch(/<button[^>]*disabled=""[^>]*>Add host<\/button>/)

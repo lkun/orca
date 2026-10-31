@@ -17,7 +17,7 @@ export type AgentHookEventPayload = {
   agentPresence?: AgentProcessPresence
   /** Authenticated hook route that produced this event. */
   source?: AgentHookSource
-  /** Ephemeral Orca launch identity stamped into the PTY env for this process. */
+  /** Ephemeral OCC launch identity stamped into the PTY env for this process. */
   launchToken?: string
   /** Host-minted live turn revision for guarded interrupt commands; never persisted. */
   hostTurnRevision?: string

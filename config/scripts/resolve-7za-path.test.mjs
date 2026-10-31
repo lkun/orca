@@ -38,7 +38,7 @@ describe('7za path resolution for the Windows signing gates (#6487)', () => {
     try {
       const payloadDir = join(scratch, 'payload')
       mkdirSync(payloadDir, { recursive: true })
-      writeFileSync(join(payloadDir, 'Orca.exe'), 'not-a-real-pe')
+      writeFileSync(join(payloadDir, 'OCC.exe'), 'not-a-real-pe')
 
       const archive = join(scratch, 'bundle.7z')
       const created = spawnSync(path7za, ['a', archive, payloadDir], { encoding: 'utf8' })
@@ -49,7 +49,7 @@ describe('7za path resolution for the Windows signing gates (#6487)', () => {
         encoding: 'utf8'
       })
       expect(extracted.status).toBe(0)
-      expect(existsSync(join(outDir, 'payload', 'Orca.exe'))).toBe(true)
+      expect(existsSync(join(outDir, 'payload', 'OCC.exe'))).toBe(true)
     } finally {
       rmSync(scratch, { recursive: true, force: true })
     }

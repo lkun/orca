@@ -39,10 +39,10 @@ describe('parseDaemonPidFile spawnerExecPath', () => {
       serializeDaemonPidFile({
         pid: 123,
         startedAtMs: 1,
-        spawnerExecPath: '/Applications/Orca.app/Contents/MacOS/Orca'
+        spawnerExecPath: '/Applications/OCC.app/Contents/MacOS/OCC'
       })
     )
-    expect(parsed?.spawnerExecPath).toBe('/Applications/Orca.app/Contents/MacOS/Orca')
+    expect(parsed?.spawnerExecPath).toBe('/Applications/OCC.app/Contents/MacOS/OCC')
   })
 
   it('reads legacy records without a spawner exec path as null', () => {
@@ -95,7 +95,7 @@ describe('macOS daemon TCC attribution health', () => {
       return
     }
     await withDaemonLikeProcess(async (writePidFile) => {
-      writePidFile({ spawnerExecPath: join(dir, 'deleted-bundle', 'Orca') })
+      writePidFile({ spawnerExecPath: join(dir, 'deleted-bundle', 'OCC') })
       expect(await getMacDaemonTccAttributionHealth(dir, socketPath, tokenPath)).toBe('severed')
     })
   })
@@ -105,7 +105,7 @@ describe('macOS daemon TCC attribution health', () => {
       return
     }
     await withDaemonLikeProcess(async (writePidFile) => {
-      const spawnerPath = join(dir, 'Orca')
+      const spawnerPath = join(dir, 'OCC')
       writeFileSync(spawnerPath, '', 'utf8')
       writePidFile({ spawnerExecPath: spawnerPath, appVersion: '1.2.3' })
       expect(await getMacDaemonTccAttributionHealth(dir, socketPath, tokenPath)).toBe('intact')
@@ -117,7 +117,7 @@ describe('macOS daemon TCC attribution health', () => {
       return
     }
     await withDaemonLikeProcess(async (writePidFile) => {
-      const spawnerPath = join(dir, 'Orca')
+      const spawnerPath = join(dir, 'OCC')
       writeFileSync(spawnerPath, '', 'utf8')
       writePidFile({ spawnerExecPath: spawnerPath, appVersion: '1.2.2' })
       expect(await getMacDaemonTccAttributionHealth(dir, socketPath, tokenPath)).toBe('intact')

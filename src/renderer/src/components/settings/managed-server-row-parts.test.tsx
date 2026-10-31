@@ -205,7 +205,7 @@ describe('managed server row', () => {
           ? { outcome: 'updated', activeVersion: '0.1.0+b', environment: { id: 'env-1' } }
           : terminalsRunning
     )
-    expect(container.textContent).toContain('Orca on this host: 1.4.0')
+    expect(container.textContent).toContain('OCC on this host: 1.4.0')
     await act(async () => button(container, 'Update')?.click())
     expect(update).toHaveBeenLastCalledWith({ selector: 'env-1' })
     expect(container.textContent).toContain('keep running through the update')
@@ -219,7 +219,7 @@ describe('managed server row', () => {
   it('confirms past running terminals for a menu Update the row does not advertise', async () => {
     const retried = { ...status, migration: null, deferredUpdate: null, availableUpdate: null }
     const { container, update } = await render(retried, async () => retried)
-    await act(async () => button(container, 'Update Orca on this host')?.click())
+    await act(async () => button(container, 'Update OCC on this host')?.click())
     await act(async () => button(container, 'Update anyway')?.click())
     expect(update).toHaveBeenLastCalledWith({
       selector: 'env-1',

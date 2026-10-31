@@ -71,7 +71,7 @@ describe('Use a Node.js mirror', () => {
     expect(screen.getByRole('dialog', { name: 'Use a Node.js mirror' })).toBeInTheDocument()
     expect(input).toHaveValue('https://npmmirror.com/mirrors/node/')
     expect(input).toHaveFocus()
-    expect(screen.getByText(/checked against the checksum Orca pins/)).toBeInTheDocument()
+    expect(screen.getByText(/checked against the checksum OCC pins/)).toBeInTheDocument()
   })
 
   it('saves to the mirror setting, then retries the connect and closes', async () => {

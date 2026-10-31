@@ -1,6 +1,6 @@
 import type { WebContents } from 'electron'
 
-/** Preload privilege boundary: exact file host/path (query/hash may vary), or same HTTP(S) origin. Broadening this grants foreign pages the Orca bridge. */
+/** Preload privilege boundary: exact file host/path (query/hash may vary), or same HTTP(S) origin. Broadening this grants foreign pages the OCC bridge. */
 export function isRendererDocumentNavigation(currentUrl: string, nextUrl: string): boolean {
   try {
     const current = new URL(currentUrl)

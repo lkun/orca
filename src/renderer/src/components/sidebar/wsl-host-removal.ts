@@ -34,13 +34,13 @@ async function removeWslHostImpl(environmentId: string): Promise<void> {
 /** Says what a WSL host's Remove left behind; true when it warned. Shared by every Remove entry. */
 export function warnWslHostServerStop(serverStop: WslHostServerStop | undefined): boolean {
   if (serverStop?.stopped === true && serverStop.keptForOtherDesktops?.length) {
-    // R39: another Orca on this computer shares the server, so only this Orca let go of it.
-    // Several unnamed peers all read "another Orca"; say it once.
+    // R39: another OCC on this computer shares the server, so only this OCC let go of it.
+    // Several unnamed peers all read "another OCC"; say it once.
     const names = [...new Set(serverStop.keptForOtherDesktops)].join(', ')
     toast.info(
       translate(
         'auto.components.sidebar.wslHostRemoval.keptForOthers',
-        'Removed from this Orca. The host keeps running for {{value0}}.',
+        'Removed from this OCC. The host keeps running for {{value0}}.',
         { value0: names }
       )
     )
@@ -50,11 +50,11 @@ export function warnWslHostServerStop(serverStop: WslHostServerStop | undefined)
     return false
   }
   if (serverStop.kept) {
-    // E11: a stop Orca couldn't prove keeps the host listed, so Remove can retry it.
+    // E11: a stop OCC couldn't prove keeps the host listed, so Remove can retry it.
     toast.warning(
       translate(
         'auto.components.sidebar.wslHostRemoval.pending',
-        'Orca didn’t remove the host yet: {{value0}} Remove it again to retry, or connect it to keep it.',
+        'OCC didn’t remove the host yet: {{value0}} Remove it again to retry, or connect it to keep it.',
         { value0: wslHostStopReasonMessage(serverStop) }
       ),
       { duration: Infinity }

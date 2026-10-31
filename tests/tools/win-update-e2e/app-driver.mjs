@@ -54,7 +54,7 @@ export async function launchInstalledApp({
   // Isolate Codex home separately: relocating userData does not change Node home.
   const requestedIsolatedHome = path.join(userDataDir, 'home')
   mkdirSync(requestedIsolatedHome, { recursive: true })
-  // Canonicalize Windows 8.3 home aliases so Git worktree paths match Orca’s comparisons.
+  // Canonicalize Windows 8.3 home aliases so Git worktree paths match OCC’s comparisons.
   const isolatedHome = realpathSync.native(requestedIsolatedHome)
   const app = await electron.launch({
     executablePath: exePath,
@@ -242,7 +242,7 @@ async function createWorkspaceFromSeededRepo(page, timeoutMs) {
 
 const OVERLAY_DISMISS_LABELS = ['Got it', 'Dismiss setup scripts', 'Dismiss tip', 'Dismiss update']
 const FEATURE_TIP_DIALOG_TITLES = [
-  'Let agents drive Orca with the Orca CLI',
+  'Let agents drive OCC with the OCC CLI',
   'Search every agent session'
 ]
 

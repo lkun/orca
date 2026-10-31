@@ -119,7 +119,7 @@ export function PluginInstallConsent({
               <span>
                 {translate(
                   'auto.components.settings.PluginInstallConsent.editsFileTypes',
-                  'Opens and edits {{value0}} files in Orca. It can read the files it opens.',
+                  'Opens and edits {{value0}} files in OCC. It can read the files it opens.',
                   { value0: formatFileTypeList(editorFileTypes) }
                 )}
               </span>

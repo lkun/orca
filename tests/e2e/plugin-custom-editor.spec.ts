@@ -1,7 +1,7 @@
 /**
  * Invariant: a plugin custom editor opens matching files in the editor tab, edits (text or
- * bytes) flow into Orca's buffer without dirtying it on open, the save shortcut pressed inside
- * the frame saves through Orca, Source shows the same buffer (or the binary placeholder), and
+ * bytes) flow into OCC's buffer without dirtying it on open, the save shortcut pressed inside
+ * the frame saves through OCC, Source shows the same buffer (or the binary placeholder), and
  * turning plugins off falls back to Source.
  */
 
@@ -71,7 +71,7 @@ async function chooseView(page: Page, label: string): Promise<void> {
   await page.getByRole('radio', { name: label, exact: true }).click()
 }
 
-test('plugin custom editor edits and saves through Orca', async ({ orcaPage, seededRepoPath }) => {
+test('plugin custom editor edits and saves through OCC', async ({ orcaPage, seededRepoPath }) => {
   const pluginRoot = await mkdtemp(join(tmpdir(), 'orca-custom-editor-'))
   const filePath = join(seededRepoPath, FILE)
   try {
@@ -91,7 +91,7 @@ test('plugin custom editor edits and saves through Orca', async ({ orcaPage, see
     await textarea.pressSequentially('second line')
     await expect.poll(() => activeFileDirty(orcaPage)).toBe(true)
 
-    // Saved inside the debounce window: Orca must flush the frame first.
+    // Saved inside the debounce window: OCC must flush the frame first.
     await textarea.pressSequentially('!')
     await textarea.press(process.platform === 'darwin' ? 'Meta+s' : 'Control+s')
     await expect.poll(() => readFile(filePath, 'utf8')).toBe('first line\nsecond line!')
@@ -130,7 +130,7 @@ orca.document.onDidChange((doc) => {
     'v' + doc.version + ' ' + doc.fileType + ' ' + doc.readOnly + ' ' + bytes.length + ':' +
     Array.from(bytes.slice(0, 4), (byte) => byte.toString(16)).join(' ') +
     ' name=' + (window.name.includes('hexbook') ? 'leaks' : 'opaque')
-  // A text edit is the wrong kind for a bytes document: Orca refuses it.
+  // A text edit is the wrong kind for a bytes document: OCC refuses it.
   orca.document.applyEdit({ baseVersion: version, content: { kind: 'text', text: 'x' } }).catch(() => {})
 })
 document.getElementById('append').addEventListener('click', () => {
@@ -148,7 +148,7 @@ test('a bytes custom editor edits and saves a binary file', async ({
 }) => {
   const pluginRoot = await mkdtemp(join(tmpdir(), 'orca-bytes-editor-'))
   const filePath = join(seededRepoPath, BYTES_FILE)
-  // NULs make Orca treat it as binary, like a zip-based workbook.
+  // NULs make OCC treat it as binary, like a zip-based workbook.
   const original = Buffer.from([0x50, 0x4b, 0x03, 0x04, 0x00, 0x00, 0xff, 0x10])
   try {
     await mkdir(join(pluginRoot, 'editor'), { recursive: true })

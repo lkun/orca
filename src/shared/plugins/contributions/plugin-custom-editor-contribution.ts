@@ -58,7 +58,7 @@ export const pluginCustomEditorContributionSchema = z
       .optional()
       .meta(
         pluginFieldDoc(
-          '`default` (the default) opens matching files in this editor; `option` only offers it in the view toggle, so files open in Source. Files Orca opens itself (such as `.json`, `.ts`, `.md`, `.csv`, `.yaml`, lockfiles and `.env` files) always behave as `option`.',
+          '`default` (the default) opens matching files in this editor; `option` only offers it in the view toggle, so files open in Source. Files OCC opens itself (such as `.json`, `.ts`, `.md`, `.csv`, `.yaml`, lockfiles and `.env` files) always behave as `option`.',
           PLUGIN_MANIFEST_V2_SINCE,
           ['default']
         )

@@ -346,7 +346,7 @@ it.each(['task', 'mail'] as const)(
     }
     useAppStore.setState({ agentStatusByPaneKey: { [paneKey]: entry } })
     const prefix =
-      kind === 'task' ? 'You are working inside Orca, a multi-agent IDE.\n=== TASK ===\n' : ''
+      kind === 'task' ? 'You are working inside OCC, a multi-agent IDE.\n=== TASK ===\n' : ''
     const message: NativeChatMessage = {
       id: `progress-${kind}`,
       role: 'user',

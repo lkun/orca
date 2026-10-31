@@ -12,7 +12,7 @@ import type { MobileWebBundleCompatVerdict } from '../transport/mobile-web-bundl
 import type { PageRouteRefusalVerdict } from '../mobile-web-shell/page-route-policy'
 
 const RELEASES_URL = 'https://github.com/stablyai/orca/releases'
-const IOS_APP_STORE_URL = 'itms-apps://apps.apple.com/app/orca-ide/id6766130217'
+const IOS_APP_STORE_URL = 'itms-apps://apps.apple.com/app/occ-ide/id6766130217'
 
 // Protocol/bundle/page-route walls are terminal: no native workspace fallback; update the relevant app or bundle.
 export type BlockedVerdict =
@@ -45,9 +45,9 @@ function blockRemedy(verdict: BlockedVerdict): BlockRemedy {
 function blockTitle(remedy: BlockRemedy, t: Translate): string {
   switch (remedy) {
     case 'update-mobile':
-      return t('components.protocolBlockScreen.updateMobileTitle', 'Update Orca Mobile')
+      return t('components.protocolBlockScreen.updateMobileTitle', 'Update OCC Mobile')
     case 'update-desktop':
-      return t('components.protocolBlockScreen.updateDesktopTitle', 'Update Orca on your computer')
+      return t('components.protocolBlockScreen.updateDesktopTitle', 'Update OCC on your computer')
     case 'refresh-bundle':
       return t(
         'components.protocolBlockScreen.refreshWorkspaceTitle',
@@ -67,27 +67,27 @@ function blockBody(verdict: BlockedVerdict, remedy: BlockRemedy, t: Translate): 
     return Platform.OS === 'ios'
       ? t(
           'components.protocolBlockScreen.mobileTooOldAppStore',
-          'This desktop needs a newer Orca Mobile app. Update Orca Mobile from the App Store, then try this host again.'
+          'This desktop needs a newer OCC Mobile app. Update OCC Mobile from the App Store, then try this host again.'
         )
       : t(
           'components.protocolBlockScreen.mobileTooOldGitHubReleases',
-          'This desktop needs a newer Orca Mobile app. Update Orca Mobile from GitHub Releases, then try this host again.'
+          'This desktop needs a newer OCC Mobile app. Update OCC Mobile from GitHub Releases, then try this host again.'
         )
   }
   if (remedy === 'update-mobile') {
     return Platform.OS === 'ios'
       ? t(
           'components.protocolBlockScreen.workspaceNeedsUpdateAppStore',
-          "This desktop's mobile workspace needs a newer Orca Mobile app. Update Orca Mobile from the App Store, then try this host again."
+          "This desktop's mobile workspace needs a newer OCC Mobile app. Update OCC Mobile from the App Store, then try this host again."
         )
       : t(
           'components.protocolBlockScreen.workspaceNeedsUpdateGitHubReleases',
-          "This desktop's mobile workspace needs a newer Orca Mobile app. Update Orca Mobile from GitHub Releases, then try this host again."
+          "This desktop's mobile workspace needs a newer OCC Mobile app. Update OCC Mobile from GitHub Releases, then try this host again."
         )
   }
   return t(
     'components.protocolBlockScreen.desktopTooOldBody',
-    'This paired desktop app is too old for your current Orca Mobile app. Update Orca on your computer, then try this host again.'
+    'This paired desktop app is too old for your current OCC Mobile app. Update OCC on your computer, then try this host again.'
   )
 }
 
@@ -110,7 +110,7 @@ export function ProtocolBlockScreen({ verdict }: Props) {
         }
   const mobileAction = mobileUpdate
     ? {
-        label: t('components.protocolBlockScreen.getVersion', 'Get Orca {{version}}', {
+        label: t('components.protocolBlockScreen.getVersion', 'Get OCC {{version}}', {
           version: mobileUpdate.version
         }),
         url: mobileUpdate.url

@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 
-/** A stable UUID (v4 layout) for the Claude conversation behind an Orca chat. */
+/** A stable UUID (v4 layout) for the Claude conversation behind an OCC chat. */
 export function claudeSessionIdForOrcaSession(
   sessionId: string,
   clearOperationId?: string

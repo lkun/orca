@@ -44,7 +44,7 @@ export function NativeChatApprovalCard({
 }: NativeChatApprovalCardProps): React.JSX.Element {
   const cardRef = useRef<HTMLDivElement>(null)
   const neededPath = approvalBlockedPathToShow(approval)
-  // A newer Orca's subject: its detail is shown, and only the card's cancel answers.
+  // A newer OCC's subject: its detail is shown, and only the card's cancel answers.
   const newerSubject = isNewerApprovalSubject(approval.subject)
   const hasContext = Boolean(
     approval.description ||
@@ -160,7 +160,7 @@ export function NativeChatApprovalCard({
                   <p data-native-chat-approval-needs-newer-orca="true" className="break-words">
                     {translate(
                       'components.native-chat.approval.needsNewerOrca',
-                      'This request needs a newer version of Orca.'
+                      'This request needs a newer version of OCC.'
                     )}
                   </p>
                 ) : null}

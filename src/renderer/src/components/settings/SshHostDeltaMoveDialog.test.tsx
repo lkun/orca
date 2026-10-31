@@ -120,7 +120,7 @@ describe('moving what an older build added', () => {
     })
     const container = await render(managed)
     await act(async () => confirmButton(container).click())
-    expect(container.textContent).toContain('Orca couldn’t finish this on the server.')
+    expect(container.textContent).toContain('OCC couldn’t finish this on the server.')
     expect(container.textContent).not.toContain('orcad_')
   })
 

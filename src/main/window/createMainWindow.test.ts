@@ -110,7 +110,7 @@ describe('createMainWindow', () => {
       ;(windowHandlers[event] ??= []).push(handler)
     }
     const webContents = {
-      getURL: vi.fn(() => 'file:///opt/orca/renderer/index.html'),
+      getURL: vi.fn(() => 'file:///opt/occ/renderer/index.html'),
       isDestroyed: vi.fn(() => false),
       mainFrame: {},
       on: vi.fn((event, handler) => {
@@ -288,7 +288,7 @@ describe('createMainWindow', () => {
   it('stamps the browser host id into the renderer that owns the guests, and strips it from a guest that carries one', () => {
     const windowHandlers: Record<string, (...args: any[]) => void> = {}
     const webContents = {
-      getURL: vi.fn(() => 'file:///opt/orca/renderer/index.html'),
+      getURL: vi.fn(() => 'file:///opt/occ/renderer/index.html'),
       isDestroyed: vi.fn(() => false),
       mainFrame: {},
       on: vi.fn((event, handler) => {

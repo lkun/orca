@@ -18,61 +18,61 @@ const MAX_LISTED_OPTIONS = 10
 // A Map, so only these own entries match: a code like `toString` falls to the generic line.
 const refusals = (appName: string) =>
   new Map<string, (machine: string) => string>([
-    ['connectors_disabled', (machine) => `Connectors are turned off in Orca on ${machine}.`],
-    ['agent_not_reachable', (machine) => `Couldn’t reach the agent in Orca on ${machine}.`],
-    ['unsupported_agent', (machine) => `Orca on ${machine} can’t run that agent from ${appName}.`],
-    ['delivery_id_reused', (machine) => `Your Orca on ${machine} couldn’t take this.`],
-    ['delivery_backlog_full', (machine) => `Orca on ${machine} is busy. Send again in a moment.`],
+    ['connectors_disabled', (machine) => `Connectors are turned off in OCC on ${machine}.`],
+    ['agent_not_reachable', (machine) => `Couldn’t reach the agent in OCC on ${machine}.`],
+    ['unsupported_agent', (machine) => `OCC on ${machine} can’t run that agent from ${appName}.`],
+    ['delivery_id_reused', (machine) => `Your OCC on ${machine} couldn’t take this.`],
+    ['delivery_backlog_full', (machine) => `OCC on ${machine} is busy. Send again in a moment.`],
     [
       'agent_asleep_in_window',
-      (machine) => `The agent in Orca on ${machine} is asleep. Wake it in Orca, then send again.`
+      (machine) => `The agent in OCC on ${machine} is asleep. Wake it in OCC, then send again.`
     ],
     [
       'no_session_to_reopen',
       (machine) =>
-        `The earlier session in Orca on ${machine} is gone. Mention me to start a new one.`
+        `The earlier session in OCC on ${machine} is gone. Mention me to start a new one.`
     ],
-    ['reopen_refused', (machine) => `Orca on ${machine} couldn’t reopen the earlier session.`],
+    ['reopen_refused', (machine) => `OCC on ${machine} couldn’t reopen the earlier session.`],
     ['prompt_not_pending', () => 'Already answered or moved on.'],
-    ['prompt_unsupported', (machine) => `Answer this one in Orca on ${machine}.`],
+    ['prompt_unsupported', (machine) => `Answer this one in OCC on ${machine}.`],
     [
       'option_not_offered',
-      (machine) => `That option isn’t offered any more. Answer in Orca on ${machine}.`
+      (machine) => `That option isn’t offered any more. Answer in OCC on ${machine}.`
     ],
     ['conversation_cancelled', () => 'Stopped before it reached the agent.']
   ])
 
 export type ConnectorCopy = ReturnType<typeof connectorCopy>
 
-// Every line Orca posts in a source, in one place for review. Inputs are escaped here.
+// Every line OCC posts in a source, in one place for review. Inputs are escaped here.
 export function connectorCopy(style: CopyStyle) {
   const { appName, escape, bold } = style
   const refusal = refusals(appName)
   return {
-    paused: `Orca for ${appName} is paused.`,
-    unlinked: `Your ${appName} account isn’t linked to Orca yet. Ask an admin to link you.`,
-    updateOrca: 'Update Orca and turn on connectors, then send again.',
+    paused: `OCC for ${appName} is paused.`,
+    unlinked: `Your ${appName} account isn’t linked to OCC yet. Ask an admin to link you.`,
+    updateOrca: 'Update OCC and turn on connectors, then send again.',
     askPlace: (options: PlaceOption[]) => {
       const listed = [
         ...new Set(options.map((option) => `${option.project} on ${option.hostName}`))
       ]
       return listed.length === 0
-        ? 'None of your Orca machines lists a project yet. Open a project in Orca, then send again.'
+        ? 'None of your OCC machines lists a project yet. Open a project in OCC, then send again.'
         : [
             'Which project? Mention me again and name one (and the machine, if it’s on several):',
             ...listed.slice(0, MAX_LISTED_OPTIONS).map((entry) => `• ${escape(entry)}`)
           ].join('\n')
     },
     status: {
-      waiting: (hostName: string) => `Waiting for your Orca on ${escape(hostName)}…`,
+      waiting: (hostName: string) => `Waiting for your OCC on ${escape(hostName)}…`,
       working: (hostName: string) => `Working on ${escape(hostName)}…`,
-      needsAnswer: (hostName: string) => `Waiting for your answer in Orca on ${escape(hostName)}.`,
+      needsAnswer: (hostName: string) => `Waiting for your answer in OCC on ${escape(hostName)}.`,
       // The prompt's card in the thread has the buttons.
       needsAnswerHere: 'Waiting for your answer.',
       done: (hostName: string) => `Done on ${escape(hostName)}.`,
       // Q18, in the public status: the thread sees who it was waiting on (<@id> renders as a name).
       offline: (ownerUserId: string, hostName: string) =>
-        `Couldn’t reach <@${ownerUserId}>’s Orca on ${escape(hostName)}. Send again when it’s back.`,
+        `Couldn’t reach <@${ownerUserId}>’s OCC on ${escape(hostName)}. Send again when it’s back.`,
       // A machine's refusal, in words; a code we don't know shows the generic line and is logged.
       refused: (hostName: string, reason: string) => {
         const machine = escape(hostName)
@@ -82,13 +82,13 @@ export function connectorCopy(style: CopyStyle) {
             JSON.stringify({ event: 'orca_connector_unknown_refusal', source: appName, reason })
           )
         }
-        return line ?? `Your Orca on ${machine} couldn’t take this.`
+        return line ?? `Your OCC on ${machine} couldn’t take this.`
       },
       // The machine couldn't read what was sent: it predates that kind of delivery.
       unsupported: (hostName: string) =>
-        `Your Orca on ${escape(hostName)} can’t take this yet. Update Orca.`,
-      unknown: 'This may not have reached the agent; check Orca.',
-      noUpdate: 'No update from your Orca; check Orca.'
+        `Your OCC on ${escape(hostName)} can’t take this yet. Update OCC.`,
+      unknown: 'This may not have reached the agent; check OCC.',
+      noUpdate: 'No update from your OCC; check OCC.'
     },
     // A prompt's card: what the agent asks, then its state once it stops taking answers.
     promptCard: (prompt: AnswerablePrompt) => {

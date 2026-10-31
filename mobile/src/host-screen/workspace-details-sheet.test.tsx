@@ -125,6 +125,6 @@ describe('the long-press details sheet', () => {
     act(() => renderer?.unmount())
     expect(texts(render({ automationCreated: true }).root)[2]).toBe('Created by automation')
     act(() => renderer?.unmount())
-    expect(texts(render({ cliCreated: true }).root)[2]).toBe('Created from Orca CLI')
+    expect(texts(render({ cliCreated: true }).root)[2]).toBe('Created from OCC CLI')
   })
 })

@@ -116,7 +116,7 @@ describe('preparing a chat for visuals', () => {
     )
   })
 
-  it("never hands a chat another chat's folder that Orca itself inherited", async () => {
+  it("never hands a chat another chat's folder that OCC itself inherited", async () => {
     const inherited = { PATH: '/bin', [NATIVE_CHAT_SCRATCH_DIR_ENV]: '/parent-chat' }
     const visuals = { folder: '/mine', skill: SKILL }
     for (const platform of ['darwin', 'win32'] as const) {

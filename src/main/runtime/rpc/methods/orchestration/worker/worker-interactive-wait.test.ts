@@ -19,7 +19,7 @@ const TAB_ID = 'tab-worker'
 const WORKTREE_ID = 'wt-worker'
 const PTY_ID = 'pty-worker'
 
-// Captured verbatim from cursor-agent 2026.08.11-e8db854 driven through Orca.
+// Captured verbatim from cursor-agent 2026.08.11-e8db854 driven through OCC.
 function fixture(name: string): string {
   return readFileSync(join(__dirname, '../../../../__fixtures__', `${name}.txt`), 'utf8')
 }

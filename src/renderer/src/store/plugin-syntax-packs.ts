@@ -54,10 +54,10 @@ const PLUGIN_PROTECTED_CORE_LANGUAGES = new Set([
   'html',
   'markdown'
 ])
-// Orca maps these to a protected language only as a stopgap (JSP shown as HTML).
+// OCC maps these to a protected language only as a stopgap (JSP shown as HTML).
 const PLUGIN_OVERRIDABLE_STOPGAP_EXTENSIONS = ['.jsp', '.jspf']
 
-/** Whether a plugin syntax that claims this file may replace Orca's own language for it. */
+/** Whether a plugin syntax that claims this file may replace OCC's own language for it. */
 export function canPluginSyntaxReplaceCoreLanguage(
   filePath: string,
   coreLanguage: string
@@ -69,7 +69,7 @@ export function canPluginSyntaxReplaceCoreLanguage(
   return PLUGIN_OVERRIDABLE_STOPGAP_EXTENSIONS.some((extension) => lowerPath.endsWith(extension))
 }
 
-/** The plugin syntax that should color a file, or null to keep Orca's language. */
+/** The plugin syntax that should color a file, or null to keep OCC's language. */
 export function resolvePluginSyntaxForFile(
   entries: readonly PluginSyntaxMetadata[],
   filePath: string,

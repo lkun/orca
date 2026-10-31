@@ -1,4 +1,4 @@
-# WinForms target for the cua-vs-Orca background bench. Writes its state to state.json every 30 ms
+# WinForms target for the cua-vs-OCC background bench. Writes its state to state.json every 30 ms
 # and acknowledges each JSON command after applying it.
 param([string]$StateDir)
 $ErrorActionPreference = "Stop"

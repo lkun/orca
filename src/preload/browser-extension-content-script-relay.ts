@@ -8,10 +8,10 @@ import type {
 } from './browser-extension-storage-sync'
 
 /**
- * Content scripts run in Chromium's per-extension isolated world, which no Orca preload reaches,
- * so their chrome.storage.sync is Electron's disabled one. Orca's content script sends those calls
+ * Content scripts run in Chromium's per-extension isolated world, which no OCC preload reaches,
+ * so their chrome.storage.sync is Electron's disabled one. OCC's content script sends those calls
  * as runtime messages to the extension's own worker, which makes them through main, and the worker
- * sends every sync change back to its tabs the same way. The messages carry this key; Orca hides
+ * sends every sync change back to its tabs the same way. The messages carry this key; OCC hides
  * them from the extension's own onMessage listeners.
  */
 export const CONTENT_SCRIPT_RELAY_KEY = 'orcaContentScriptRelay'
@@ -111,7 +111,7 @@ export function installContentScriptRelayFilter(answer?: BrowserExtensionStorage
       const from = typeof request.from === 'string' ? request.from : undefined
       answer(request.method, request.args, from).then(
         (reply) => sendResponse(reply),
-        () => sendResponse({ ok: false, error: 'Orca could not handle this extension call' })
+        () => sendResponse({ ok: false, error: 'OCC could not handle this extension call' })
       )
       return true
     })
@@ -178,7 +178,7 @@ export function createContentScriptRelayBridge(
     call: async (_namespace, method, args) => {
       try {
         const reply = await sendMessage({ [CONTENT_SCRIPT_RELAY_KEY]: { method, args, from } })
-        return isReply(reply) ? reply : { ok: false, error: 'Orca could not reach the extension' }
+        return isReply(reply) ? reply : { ok: false, error: 'OCC could not reach the extension' }
       } catch (error) {
         return { ok: false, error: error instanceof Error ? error.message : String(error) }
       }
@@ -200,7 +200,7 @@ export function createContentScriptRelayBridge(
 /**
  * In the worker: sends each sync change to the extension's content scripts in every tab, except
  * the one that made it. Null when the extension has no manifest content scripts (the only ones
- * Orca's content script runs with).
+ * OCC's content script runs with).
  */
 export function createContentScriptSyncForward(): BrowserExtensionStorageSyncForward | null {
   const root: { chrome?: unknown } = globalThis

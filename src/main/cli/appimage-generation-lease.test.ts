@@ -24,7 +24,7 @@ async function makeCache(): Promise<{ cacheRootPath: string; rootPath: string; e
   const cacheRootPath = join(base, 'cache')
   const rootPath = join(cacheRootPath, NAMESPACE, GENERATION)
   await mkdir(rootPath, { recursive: true })
-  return { cacheRootPath, rootPath, execPath: join(rootPath, 'orca-ide') }
+  return { cacheRootPath, rootPath, execPath: join(rootPath, 'occ-ide') }
 }
 
 function reader(
@@ -100,7 +100,7 @@ describe('AppImage generation leases', () => {
 
   it('ignores leases on other generations', async () => {
     const { cacheRootPath, rootPath } = await makeCache()
-    const otherExec = join(cacheRootPath, NAMESPACE, 'c'.repeat(24), 'orca-ide')
+    const otherExec = join(cacheRootPath, NAMESPACE, 'c'.repeat(24), 'occ-ide')
     const live = reader({ 10: { status: 'present', startTicks: '500' } })
     await leaseAppImageGenerationForCurrentProcess({
       execPath: otherExec,

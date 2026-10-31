@@ -82,7 +82,7 @@ export function isCodexMethodNotFoundError(error: unknown): boolean {
   )
 }
 
-/** Runs a bounded JSONL session; the POSIX supervisor also stops its group if Orca dies. */
+/** Runs a bounded JSONL session; the POSIX supervisor also stops its group if OCC dies. */
 export async function runCodexAppServerSession<T>(
   invocation: CodexAppServerInvocation,
   body: (rpc: CodexAppServerRpc) => Promise<T>,
@@ -293,7 +293,7 @@ export async function runCodexAppServerSession<T>(
   try {
     const session = async (): Promise<T> => {
       await requestRpc('initialize', {
-        clientInfo: { name: 'orca_desktop', title: 'Orca', version: '0.0.0' }
+        clientInfo: { name: 'orca_desktop', title: 'OCC', version: '0.0.0' }
       })
       notify('initialized')
       return body({ request: requestRpc, notify, signal: lifetime.signal })

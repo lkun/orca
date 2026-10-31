@@ -79,4 +79,4 @@ ORCA orchestration worker-start --task <task_id> --run <owning_run_id> --worktre
 Use that terminal's workspace; omit `--agent`, `--model`, `--effort`, and
 new-worktree creation. Follow [Placement and remote execution](placement-and-remote.md)
 for execution-host selection and Dispatch-addressed follow-ups. After starting
-independent work, end your turn; Orca wakes you. Follow a receipt's `next` action.
+independent work, end your turn; OCC wakes you. Follow a receipt's `next` action.

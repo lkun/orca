@@ -18,7 +18,7 @@ type Step =
 
 /**
  * Git row of a WSL-runtime project on a Windows drive: WSL Git there is ~300x slower and misses
- * Windows-side edits, so Orca offers Windows Git while terminals and agents stay in WSL.
+ * Windows-side edits, so OCC offers Windows Git while terminals and agents stay in WSL.
  */
 export function WslDriveProjectGitRow({
   projectId,
@@ -45,7 +45,7 @@ export function WslDriveProjectGitRow({
         label={translate('wslDriveProject.label', 'Git')}
         description={translate(
           'wslDriveProject.converted',
-          'Orca runs Git on Windows for this project. Terminals and agents still run in {{distro}}.',
+          'OCC runs Git on Windows for this project. Terminals and agents still run in {{distro}}.',
           { distro: resolution.runtime.distro }
         )}
         control={null}
@@ -58,7 +58,7 @@ export function WslDriveProjectGitRow({
       setStep({ kind: 'review', preview: await window.api.wslDriveProject.preview(projectId) })
     } catch {
       setStep({ kind: 'idle' })
-      toast.error(translate('wslDriveProject.checkFailed', 'Orca could not check this project.'))
+      toast.error(translate('wslDriveProject.checkFailed', 'OCC could not check this project.'))
     }
   }
   const convert = async (preview: WslDriveProjectPreview): Promise<void> => {
@@ -73,7 +73,7 @@ export function WslDriveProjectGitRow({
       setStep({ kind: 'idle' })
     } catch {
       setStep({ kind: 'review', preview })
-      toast.error(translate('wslDriveProject.convertFailed', 'Orca could not switch Git.'))
+      toast.error(translate('wslDriveProject.convertFailed', 'OCC could not switch Git.'))
     }
   }
   const preview = step.kind === 'review' || step.kind === 'converting' ? step.preview : null
@@ -118,7 +118,7 @@ export function WslDriveProjectGitRow({
           <p className="text-xs text-muted-foreground">
             {translate(
               'wslDriveProject.review',
-              'Nothing in Orca changes for this project: its tabs, terminals, chats and workspaces stay as they are. Running terminals keep going.'
+              'Nothing in OCC changes for this project: its tabs, terminals, chats and workspaces stay as they are. Running terminals keep going.'
             )}
           </p>
           {offersLineEndings ? (

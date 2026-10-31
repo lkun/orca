@@ -42,7 +42,7 @@ describe('OMP prefill through the explicitly loaded status extension', () => {
     expect(h.processEnv.ORCA_PI_PREFILL).toBe('Pi only')
   })
 
-  it('leaves the draft alone outside an Orca pane', async () => {
+  it('leaves the draft alone outside an OCC pane', async () => {
     const h = createAgentStatusExtensionHarness({
       kind: 'omp',
       env: { ORCA_PANE_KEY: undefined, ORCA_OMP_PREFILL: 'Draft' }

@@ -134,7 +134,7 @@ export async function launchPackagedPairedClient(args: {
     ])
     // A capability check against a missing list would pass vacuously.
     if (!status.capabilities) {
-      throw new Error(`packaged Orca ${version} reported no runtime capabilities`)
+      throw new Error(`packaged OCC ${version} reported no runtime capabilities`)
     }
     const launched = app
     return {
@@ -170,7 +170,7 @@ export async function launchPackagedPairedClient(args: {
   }
 }
 
-/** The packaged build's bundled CLI entry, run the way its `bin/orca` launcher runs it. */
+/** The packaged build's bundled CLI entry, run the way its `bin/occ` launcher runs it. */
 function packagedCliEntry(executablePath: string): string {
   const resources =
     process.platform === 'darwin'

@@ -28,7 +28,7 @@ vi.mock('./local-builds/local-build-switch', () => moduleFactories.localBuildSwi
 vi.mock('./local-builds/local-build-feed-server', () => moduleFactories.localBuildFeedServer())
 
 const EXTERNALLY_MANAGED_MESSAGE =
-  'This copy of Orca is managed by your system package manager, so Orca cannot install updates itself. Update Orca through your distribution instead.'
+  'This copy of OCC is managed by your system package manager, so OCC cannot install updates itself. Update OCC through your distribution instead.'
 
 // Repackaged installs can retain the deb marker without a usable package manager.
 warmUpdaterModule()

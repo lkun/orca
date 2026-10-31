@@ -71,7 +71,7 @@ describe('orca cli worktree awareness', () => {
             worktreeId: 'repo::/tmp/repo/feature',
             worktreeName: 'feature',
             repoId: 'repo',
-            repoName: 'Orca',
+            repoName: 'OCC',
             cpu: 2.5,
             memory: 1024 * 1024,
             sessions: [
@@ -135,7 +135,7 @@ describe('orca cli worktree awareness', () => {
             worktreeId: 'repo::/tmp/repo/feature',
             worktreeName: 'feature',
             repoId: 'repo',
-            repoName: 'Orca',
+            repoName: 'OCC',
             cpu: 2.5,
             memory: 1024 * 1024,
             privateMemory: 14 * 1024 * 1024,

@@ -21,7 +21,7 @@ export function getPluginDir(home = getHermesHome()): string {
   return join(home, 'plugins', HERMES_PLUGIN_NAME)
 }
 
-/** Named profiles (`hermes -p <name>`) that carry an Orca-managed copy of the plugin. */
+/** Named profiles (`hermes -p <name>`) that carry an OCC-managed copy of the plugin. */
 export function listManagedProfileHomes(): string[] {
   const profilesDir = join(getHermesHome(), 'profiles')
   let names: string[]
@@ -75,7 +75,7 @@ export function getPluginFilesState(pluginDir = getPluginDir()): {
     return {
       present: true,
       managed,
-      detail: managed ? null : 'Hermes orca-status plugin exists but is not Orca-managed'
+      detail: managed ? null : 'Hermes orca-status plugin exists but is not OCC-managed'
     }
   } catch (error) {
     return {

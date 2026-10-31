@@ -6,9 +6,9 @@ import {
 
 // Reject POSIX scripts before cmd can leave setup half-applied.
 const WINDOWS_RUNNER_SHEBANG_REFUSAL = [
-  'echo Orca setup: this script starts with a "#!" interpreter line, so it needs a POSIX shell. 1>&2',
-  'echo Orca setup: this worktree runs setup through cmd.exe, which cannot execute it. 1>&2',
-  'echo Orca setup: set the Windows terminal shell to Git Bash, or rewrite the script in cmd syntax. 1>&2',
+  'echo OCC setup: this script starts with a "#!" interpreter line, so it needs a POSIX shell. 1>&2',
+  'echo OCC setup: this worktree runs setup through cmd.exe, which cannot execute it. 1>&2',
+  'echo OCC setup: set the Windows terminal shell to Git Bash, or rewrite the script in cmd syntax. 1>&2',
   'exit /b 1',
   ''
 ].join('\r\n')

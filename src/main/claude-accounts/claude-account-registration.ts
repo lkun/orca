@@ -22,7 +22,7 @@ import {
 export const CLAUDE_SIGN_IN_NOT_FINISHED_MESSAGE =
   'Claude has not finished signing in to this account yet. Finish the sign-in in the terminal, then try again.'
 const CLAUDE_LOGIN_WITHOUT_ACCOUNT_MESSAGE =
-  'Claude login completed, but Orca could not resolve the account email.'
+  'Claude login completed, but OCC could not resolve the account email.'
 
 /** Publish accounts only after login, so abandoned sign-ins never appear in the list. */
 export class ClaudeAccountRegistration {

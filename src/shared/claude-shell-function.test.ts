@@ -103,7 +103,7 @@ describe.each(SHELLS)('the claude function in %s', (shell) => {
     }
   })
 
-  it('runs System default for an empty or missing selection, dropping only Orca’s own value', () => {
+  it('runs System default for an empty or missing selection, dropping only OCC’s own value', () => {
     const f = fixture()
     expect(f.run(shell).stdout).toBe('HOME=default KEY=fake TWIN=none\n')
     expect(f.run(shell, injected(f.a)).stdout).toBe('HOME=default KEY=fake TWIN=none\n')
@@ -111,7 +111,7 @@ describe.each(SHELLS)('the claude function in %s', (shell) => {
     expect(f.run(shell, injected(f.a)).stdout).toBe('HOME=default KEY=fake TWIN=none\n')
   })
 
-  it('restores the user’s own value Orca replaced when switched back to System default', () => {
+  it('restores the user’s own value OCC replaced when switched back to System default', () => {
     const f = fixture()
     const own = ['ORCA_CLAUDE_USER_CONFIG_DIR=/user/own']
     writeFileSync(f.pointer, f.a)
@@ -184,7 +184,7 @@ describe.each(SHELLS)('the claude function in %s', (shell) => {
     expect(f.run(shell, deliberate).stdout).toBe('HOME=/somewhere/else KEY=fake TWIN=none\n')
   })
 
-  it('lets a CLAUDE_CONFIG_DIR win silently when Orca knows no user value', () => {
+  it('lets a CLAUDE_CONFIG_DIR win silently when OCC knows no user value', () => {
     const f = fixture()
     const own = f.run(shell, ['CLAUDE_CONFIG_DIR=/user/own'])
     expect(own.stdout).toBe('HOME=/user/own KEY=fake TWIN=none\n')
@@ -210,9 +210,9 @@ it('restores PowerShell process env without creating empty variables', () => {
   expect(script).not.toMatch(/SetEnvironmentVariable\([^)]*,\s*(\$null|''|"")\s*,/)
 })
 
-it('prints no Orca text from the PowerShell function and creates a missing account folder', () => {
+it('prints no OCC text from the PowerShell function and creates a missing account folder', () => {
   const script = getPowerShellClaudeShellFunction()
-  expect(script).not.toMatch(/Write-(Host|Output|Warning)|\bthrow\b|Orca:/)
+  expect(script).not.toMatch(/Write-(Host|Output|Warning)|\bthrow\b|OCC:/)
   expect(script.match(/Write-Error/g)).toHaveLength(1)
   expect(script).toContain(
     '} catch { $global:LASTEXITCODE = 1; Write-Error $_ -ErrorAction Continue }'

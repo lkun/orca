@@ -97,7 +97,7 @@ export function publishAgentStateRules({ repo, channel, text, target, gh = runGh
       '--title',
       `Agent state rules (${channel})`,
       '--notes',
-      'Agent state rules for Orca. Running apps download this file; it is not an app release.'
+      'Agent state rules for OCC. Running apps download this file; it is not an app release.'
     ])
   } else {
     // Keep fixed channel URL with --clobber; mid-upload 404 retains the app’s last good copy.

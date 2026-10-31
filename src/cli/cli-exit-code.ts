@@ -6,7 +6,7 @@ const PLUGIN_EXIT_CODES: Readonly<Record<string, number>> = {
   approval_stale: 3
 }
 
-/** `orca plugin` exit codes are a stable contract so scripts can tell "invalid" and "ask a human" apart from failure. */
+/** `occ plugin` exit codes are a stable contract so scripts can tell "invalid" and "ask a human" apart from failure. */
 export function cliErrorExitCode(error: unknown, commandPath: readonly string[]): number {
   const code = cliErrorCode(error)
   return commandPath[0] === 'plugin' && code ? (PLUGIN_EXIT_CODES[code] ?? 1) : 1

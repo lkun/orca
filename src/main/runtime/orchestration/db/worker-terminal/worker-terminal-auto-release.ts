@@ -11,7 +11,7 @@ export const WORKER_TERMINAL_AUTO_RELEASE_GRACE_MS = 2 * 60_000
 
 const RELEASABLE_STATES_SQL = WORKER_RELEASABLE_STATES.map((state) => `'${state}'`).join(', ')
 
-// The owner Dispatch, local or a paired host's attachment, finished in a state Orca may close.
+// The owner Dispatch, local or a paired host's attachment, finished in a state OCC may close.
 export const OWNER_RELEASABLE_SQL = `(
   EXISTS (
     SELECT 1 FROM worker_dispatches w

@@ -32,7 +32,7 @@ import {
 } from './mobile-new-tab-agent-options'
 
 const WORKSPACE_ON_OTHER_RUNTIME_MESSAGE =
-  'This workspace runs on another Orca server. Pair that server directly to see its agents.'
+  'This workspace runs on another OCC server. Pair that server directly to see its agents.'
 
 export class MobileWorkspaceOnOtherRuntimeError extends Error {
   constructor() {

@@ -28,9 +28,9 @@ export type PluginListEntry = {
   categories: readonly string[]
   /** What the catalog says this release contributes; empty when unknown. */
   types: readonly PluginCatalogType[]
-  /** Oldest Orca the catalog release supports, e.g. "1.6.0". */
+  /** Oldest OCC the catalog release supports, e.g. "1.6.0". */
   minimumOrca: string | null
-  /** A newer catalog version than the installed one that this Orca can run, if any. */
+  /** A newer catalog version than the installed one that this OCC can run, if any. */
   updateVersion: string | null
   /** Catalog release to reinstall over an installed copy that can't load: same version, other bytes. */
   reinstallVersion?: string | null
@@ -101,7 +101,7 @@ function catalogVersion(listing: PluginMarketplaceHostListing): string | null {
   return listing.version ?? listing.release?.version ?? null
 }
 
-/** The minimum Orca a release needs when this Orca is older; null when it runs or either is unknown. */
+/** The minimum OCC a release needs when this OCC is older; null when it runs or either is unknown. */
 export function needsNewerOrca(
   minimumOrca: string | null | undefined,
   orcaVersion: string | null
@@ -120,7 +120,7 @@ function newerCatalogVersion(
   if (!version || plugin.source?.kind !== 'marketplace') {
     return null
   }
-  // Why: an update this Orca can't run isn't one to offer; Orca itself needs updating first.
+  // Why: an update this OCC can't run isn't one to offer; OCC itself needs updating first.
   if (needsNewerOrca(listing?.release?.minimumOrca, orcaVersion)) {
     return null
   }

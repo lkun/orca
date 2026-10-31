@@ -198,7 +198,7 @@ describe('registerPtyHandlers', () => {
       expect(env.ORCA_OMP_STATUS_EXTENSION).toBeUndefined()
     })
 
-    it('routes headless browser launches through the owning Orca workspace', () => {
+    it('routes headless browser launches through the owning OCC workspace', () => {
       const inheritedBrowser = process.env.BROWSER
       delete process.env.BROWSER
       try {
@@ -257,7 +257,7 @@ describe('registerPtyHandlers', () => {
           }
         )
 
-        expect(env.BROWSER).toBe('orca-ide open-url --url %s')
+        expect(env.BROWSER).toBe('occ-ide open-url --url %s')
       } finally {
         if (inheritedBrowser === undefined) {
           delete process.env.BROWSER
@@ -395,7 +395,7 @@ describe('registerPtyHandlers', () => {
           shellOverride: 'wsl.exe',
           terminalWindowsWslDistro: 'Ubuntu',
           env: {
-            PATH: 'C:\\Orca\\bin;C:\\Users\\me\\AppData\\Local\\Microsoft\\WindowsApps',
+            PATH: 'C:\\OCC\\bin;C:\\Users\\me\\AppData\\Local\\Microsoft\\WindowsApps',
             WSLENV: 'ORCA_TERMINAL_HANDLE/u'
           }
         })
@@ -403,7 +403,7 @@ describe('registerPtyHandlers', () => {
 
         expect(file).toBe('wsl.exe')
         expect(options.env.PATH).toBe(
-          'C:\\Orca\\bin;C:\\Windows\\System32;C:\\Python314;C:\\Users\\me\\AppData\\Local\\Microsoft\\WindowsApps'
+          'C:\\OCC\\bin;C:\\Windows\\System32;C:\\Python314;C:\\Users\\me\\AppData\\Local\\Microsoft\\WindowsApps'
         )
         const forwardedKeys = options.env.WSLENV.split(':').map((entry) =>
           entry.split('/')[0]!.toLowerCase()
@@ -542,7 +542,7 @@ describe('registerPtyHandlers', () => {
       const env = await spawnAndGetEnv()
       expect(env.TERM).toBe('xterm-256color')
       expect(env.COLORTERM).toBe('truecolor')
-      expect(env.TERM_PROGRAM).toBe('Orca')
+      expect(env.TERM_PROGRAM).toBe('OCC')
     })
     it('hints inline-image support to agents via ORCA_IMAGE_PROTOCOL', async () => {
       const env = await spawnAndGetEnv()
@@ -568,7 +568,7 @@ describe('registerPtyHandlers', () => {
       expect(env.GCM_INTERACTIVE).toBe('never')
     })
     it('advertises OSC 8 hyperlink support via FORCE_HYPERLINK', async () => {
-      // Force OSC 8 support because supports-hyperlinks does not recognize Orca's TERM_PROGRAM.
+      // Force OSC 8 support because supports-hyperlinks does not recognize OCC's TERM_PROGRAM.
       const env = await spawnAndGetEnv()
       expect(env.FORCE_HYPERLINK).toBe('1')
     })
@@ -580,7 +580,7 @@ describe('registerPtyHandlers', () => {
       const env = await spawnAndGetEnv(undefined, { ORCA_APP_VERSION: undefined })
       expect(env.TERM_PROGRAM_VERSION).toBe('0.0.0-dev')
     })
-    it('injects the selected Codex home into Orca terminal PTYs', async () => {
+    it('injects the selected Codex home into OCC terminal PTYs', async () => {
       const env = await withBundledCli(() =>
         spawnAndGetEnv(undefined, undefined, () => TEST_CODEX_HOME)
       )

@@ -2,7 +2,7 @@ import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { normalizeRuntimePathForComparison } from '../../shared/cross-platform-path'
 
-// Serialize Orca-owned spawns per home to prevent refresh-token rotation races; terminals are exempt.
+// Serialize OCC-owned spawns per home to prevent refresh-token rotation races; terminals are exempt.
 const lockTails = new Map<string, Promise<unknown>>()
 
 export function resolveCodexHomeProcessLockKey(codexHomePath?: string | null): string {

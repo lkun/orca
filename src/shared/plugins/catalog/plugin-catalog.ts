@@ -53,7 +53,7 @@ export const pluginCatalogEntrySchema = z
       .catch(undefined)
       .meta(
         pluginFieldDoc(
-          "GitHub's numeric id of the repository owner, recorded the first time the plugin was listed. Names can be renamed or re-registered; this id cannot. Informational: Orca does not read it yet, and older Orca ignores it.",
+          "GitHub's numeric id of the repository owner, recorded the first time the plugin was listed. Names can be renamed or re-registered; this id cannot. Informational: OCC does not read it yet, and older OCC ignores it.",
           PLUGIN_DERIVED_PUBLISHER_SINCE,
           [1_234_567]
         )
@@ -78,10 +78,10 @@ export const pluginCatalogEntrySchema = z
       .transform((releases) =>
         releases.filter((release) => release !== undefined).slice(0, PLUGIN_CATALOG_RELEASE_LIMIT)
       )
-      .refine((releases) => releases.length > 0, 'needs at least one release this Orca can read')
+      .refine((releases) => releases.length > 0, 'needs at least one release this OCC can read')
       .meta({
         ...pluginFieldDoc(
-          `Installable releases, newest first. Orca installs the first one whose \`minimumOrca\` it meets, so keep older releases listed when you raise \`engines.orca\`. At most ${PLUGIN_CATALOG_RELEASE_LIMIT}.`,
+          `Installable releases, newest first. OCC installs the first one whose \`minimumOrca\` it meets, so keep older releases listed when you raise \`engines.orca\`. At most ${PLUGIN_CATALOG_RELEASE_LIMIT}.`,
           NEXT
         ),
         minItems: 1,
@@ -94,7 +94,7 @@ const catalogVersionSchema = z
   .literal(PLUGIN_CATALOG_VERSION)
   .meta(
     pluginFieldDoc(
-      'Catalog format. Raised only for a change older Orca cannot ignore; a newer Orca reads this one.',
+      'Catalog format. Raised only for a change older OCC cannot ignore; a newer OCC reads this one.',
       NEXT
     )
   )
@@ -105,7 +105,7 @@ export const pluginCatalogDocumentSchema = z.object({
     .string()
     .max(2048)
     .optional()
-    .meta(pluginFieldDoc('JSON Schema URL for editor completion. Ignored by Orca.', NEXT)),
+    .meta(pluginFieldDoc('JSON Schema URL for editor completion. Ignored by OCC.', NEXT)),
   catalogVersion: catalogVersionSchema,
   ...marketplaceHeaderFields,
   plugins: z
@@ -113,7 +113,7 @@ export const pluginCatalogDocumentSchema = z.object({
     .max(PLUGIN_MARKETPLACE_ENTRY_LIMIT)
     .meta(
       pluginFieldDoc(
-        `Listed plugins, at most ${PLUGIN_MARKETPLACE_ENTRY_LIMIT}. Each \`id\` should appear once; Orca keeps the first. An entry this Orca cannot read is skipped, never fatal.`,
+        `Listed plugins, at most ${PLUGIN_MARKETPLACE_ENTRY_LIMIT}. Each \`id\` should appear once; OCC keeps the first. An entry this OCC cannot read is skipped, never fatal.`,
         NEXT
       )
     )
@@ -141,7 +141,7 @@ export const pluginCatalogSchema = pluginCatalogDocumentSchema
         return []
       }
       seen.add(id)
-      // Why dropped: listings are cached in a strict shape that older Orca reads back after a downgrade.
+      // Why dropped: listings are cached in a strict shape that older OCC reads back after a downgrade.
       const { ownerId: _ownerId, ...entry } = parsed.data
       return [entry]
     })
@@ -156,12 +156,12 @@ export function pluginCatalogVersionError(raw: unknown): string | null {
   return typeof version === 'number' &&
     Number.isInteger(version) &&
     version > PLUGIN_CATALOG_VERSION
-    ? `uses catalog format ${version}; update Orca to browse this catalog`
+    ? `uses catalog format ${version}; update OCC to browse this catalog`
     : null
 }
 
 /** The release this host should offer: the first (newest) it can install, else the one needing
- *  the least newer Orca, so the listing can say "Needs Orca X" with the smallest X. */
+ *  the least newer OCC, so the listing can say "Needs OCC X" with the smallest X. */
 export function selectPluginCatalogRelease(
   releases: readonly PluginCatalogRelease[],
   hostVersion: string

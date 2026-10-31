@@ -179,8 +179,8 @@ describe('orca skills install/update', () => {
     await writeCopy(paths.shared, EDITED_TEXT)
 
     const left = await run(['update', '--skill', NAME, '--agent', 'universal'])
-    expect(left).toContain('Update skipped: Skill edited outside Orca')
-    expect(left).toContain('1 skipped: Skill edited outside Orca')
+    expect(left).toContain('Update skipped: Skill edited outside OCC')
+    expect(left).toContain('1 skipped: Skill edited outside OCC')
     expect(left).toContain('Rerun with --force to replace a copy that was skipped')
     expect(left).not.toContain('left alone')
     expect(process.exitCode).toBe(0)
@@ -223,9 +223,9 @@ describe('orca skills install/update', () => {
 
     const args = ['update', '--skill', NAME, '--agent', 'claude']
     const text = await run(args)
-    expect(text).toContain(`${NAME}: No change · 1 skipped: Skill edited outside Orca\n`)
-    expect(text).toContain(`  ${paths.shared}: Update skipped: Skill edited outside Orca`)
-    expect(text).toContain(`  ${paths.claude}: Update skipped: Skill edited outside Orca`)
+    expect(text).toContain(`${NAME}: No change · 1 skipped: Skill edited outside OCC\n`)
+    expect(text).toContain(`  ${paths.shared}: Update skipped: Skill edited outside OCC`)
+    expect(text).toContain(`  ${paths.claude}: Update skipped: Skill edited outside OCC`)
     const result = await runJson<RunJson>(args)
     expect(result.summary).toMatchObject({ ok: true, changedCount: 0, leftAloneCount: 1 })
   })
@@ -257,7 +257,7 @@ describe('orca skills install/update', () => {
     expect(detectAgentsMock).not.toHaveBeenCalled()
   })
 
-  it('installs for OpenClaude when its Orca agent id is requested directly', async () => {
+  it('installs for OpenClaude when its OCC agent id is requested directly', async () => {
     await run(['install', '--skill', NAME, '--agent', 'openclaude'])
 
     expect(await realpath(join(paths.home, '.openclaude', 'skills', NAME))).toBe(paths.shared)

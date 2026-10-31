@@ -72,7 +72,7 @@ beforeEach(async () => {
   root = await mkdtemp(join(tmpdir(), 'orca-opencode-probe-'))
   shellBin = await fakeOpencode(join(root, 'homebrew'), '1.18.30')
   privateBin = await fakeOpencode(join(root, 'oc-prefix', 'bin'), '1.18.31')
-  // Orca's resolved login-shell PATH, with an `opencode` older than the structured chat's first.
+  // OCC's resolved login-shell PATH, with an `opencode` older than the structured chat's first.
   loginShell.env = { PATH: `${shellBin}:/usr/bin:/bin`, HOME: root }
 })
 afterEach(async () => {

@@ -129,7 +129,7 @@ export async function describeAccountHosts(
     : rows
         .map(
           (row) =>
-            `${String(row.host_id)}  ${String(row.host_name)}  Orca ${String(row.orca_version)}  last seen ${new Date(Number(row.last_seen_at)).toISOString()}`
+            `${String(row.host_id)}  ${String(row.host_name)}  OCC ${String(row.orca_version)}  last seen ${new Date(Number(row.last_seen_at)).toISOString()}`
         )
         .join('\n')
 }

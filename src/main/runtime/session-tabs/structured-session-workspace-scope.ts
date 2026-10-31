@@ -55,7 +55,7 @@ export abstract class StructuredSessionWorkspaceScope extends OrcaRuntimeWithStr
     const repo = routing.kind === 'resolved' ? routing.repo : null
     const folderScope = parseWorkspaceKey(target.worktree.id)
     // The floating workspace is a plain directory with no repo git options, which is exactly what
-    // `folder` denotes here — it describes how Orca manages the place, not whether git is in it.
+    // `folder` denotes here — it describes how OCC manages the place, not whether git is in it.
     const folderWorkspace =
       folderScope?.type === 'folder' || isFloatingWorkspaceId(target.worktree.id)
     // WSL routing describes *this* machine; no remote or runtime host may inherit

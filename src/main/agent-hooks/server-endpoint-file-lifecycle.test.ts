@@ -112,7 +112,7 @@ describe('Endpoint file lifecycle', () => {
   })
 
   it('leaves the endpoint file in place on stop()', async () => {
-    // Unlinking could race another Orca instance replacing the endpoint; stale files fail open.
+    // Unlinking could race another OCC instance replacing the endpoint; stale files fail open.
     const server = new AgentHookServer()
     await server.start({ env: 'production', userDataPath })
     const filePath = server.endpointFilePath!

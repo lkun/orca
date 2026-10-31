@@ -29,6 +29,6 @@ export function canonicalOrcaSessionId(
     root = prior
     prior = clearedFrom.get(root)
   }
-  // Record ids are minted as Orca session ids; one that is not cannot name the conversation.
+  // Record ids are minted as OCC session ids; one that is not cannot name the conversation.
   return isOrcaSessionId(root) ? root : orcaSessionId
 }

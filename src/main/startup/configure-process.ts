@@ -206,12 +206,12 @@ export function configureDevUserDataPath(isDev: boolean): void {
   }
   const overrideUserDataPath = process.env.ORCA_DEV_USER_DATA_PATH
   if (overrideUserDataPath) {
-    // Why: run-electron-vite-dev.mjs resolves a per-worktree (or shared orca-dev) profile here; repros also pass isolated ones.
+    // Why: run-electron-vite-dev.mjs resolves a per-worktree (or shared occ-dev) profile here; repros also pass isolated ones.
     app.setPath('userData', overrideUserDataPath)
     return
   }
   // Why: launches that bypass the dev runner still need a dev-only path, or they overwrite the packaged app's runtime pointer under userData and break the orca CLI.
-  app.setPath('userData', join(app.getPath('appData'), 'orca-dev'))
+  app.setPath('userData', join(app.getPath('appData'), 'occ-dev'))
 }
 
 function areSameE2EHomePath(left: string, right: string): boolean {
@@ -234,13 +234,13 @@ export function configureOrcaUserDataPathEnv(): void {
   }
   // Canonicalize stale inherited profile overrides before CLI modules derive runtime-home paths.
   process.env.ORCA_USER_DATA_PATH = userDataPath
-  // An Orca launched from another Orca terminal must own its CLI children.
+  // An OCC launched from another OCC terminal must own its CLI children.
   stampRuntimeSourceEnv(process.env, null)
 }
 
 export function shouldInstallManagedHooks(isDev: boolean): boolean {
   void isDev
-  // Codex hooks now target Orca-owned homes; retain installation until every agent has its own seam.
+  // Codex hooks now target OCC-owned homes; retain installation until every agent has its own seam.
   return true
 }
 

@@ -1,6 +1,6 @@
 import type { TuiAgent } from './tui-agent'
 
-/** Null segments use canonical .agents/skills without a separate placement; IDs match detected Orca agents. */
+/** Null segments use canonical .agents/skills without a separate placement; IDs match detected OCC agents. */
 type SkillInstallProviderEntry = {
   id: TuiAgent
   displayName: string

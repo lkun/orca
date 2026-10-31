@@ -46,8 +46,8 @@ describe('external Chromium startup cancellation', () => {
       return 'tab-live'
     })
     const browser = new ExternalChromiumBrowserProcess(
-      '/opt/orca/agent-browser',
-      { executablePath: '/opt/orca/chromium', provider: 'chromium' },
+      '/opt/occ/agent-browser',
+      { executablePath: '/opt/occ/chromium', provider: 'chromium' },
       '/state'
     )
     await expect(browser.start(controller.signal)).rejects.toMatchObject({ name: 'AbortError' })
@@ -62,8 +62,8 @@ describe('external Chromium startup cancellation', () => {
 
 it('forwards tab commands through startup to the Chromium provider', async () => {
   const browser = new ExternalChromiumBrowserProcess(
-    '/opt/orca/agent-browser',
-    { executablePath: '/opt/orca/chromium', provider: 'chromium' },
+    '/opt/occ/agent-browser',
+    { executablePath: '/opt/occ/chromium', provider: 'chromium' },
     '/state'
   )
   await browser.start()

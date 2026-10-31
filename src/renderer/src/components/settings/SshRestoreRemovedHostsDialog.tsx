@@ -76,7 +76,7 @@ export function SshRestoreRemovedHostsDialog({
           <DialogDescription>
             {translate(
               'auto.components.settings.SshRestoreRemovedHosts.description',
-              'Hosts from ~/.ssh/config that you removed in Orca come back in Settings and in every host picker.'
+              'Hosts from ~/.ssh/config that you removed in OCC come back in Settings and in every host picker.'
             )}
           </DialogDescription>
         </DialogHeader>

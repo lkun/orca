@@ -2,7 +2,7 @@
 title: Usage & rate-limit tracking
 ---
 
-Orca fetches usage for Claude Code, Codex, Gemini, OpenCode Go, Kimi Code, MiniMax, Grok, Antigravity, Cursor, and GLM Coding Plan and surfaces it in the status bar, so you know how close you are to a rate limit before an agent stalls.
+OCC fetches usage for Claude Code, Codex, Gemini, OpenCode Go, Kimi Code, MiniMax, Grok, Antigravity, Cursor, and GLM Coding Plan and surfaces it in the status bar, so you know how close you are to a rate limit before an agent stalls.
 
 ## What's shown
 
@@ -12,16 +12,16 @@ Orca fetches usage for Claude Code, Codex, Gemini, OpenCode Go, Kimi Code, MiniM
 
 ## How it works
 
-Orca asks each provider for your usage over the network, using the login that agent already has or a key or session cookie you add in Orca Settings.
+OCC asks each provider for your usage over the network, using the login that agent already has or a key or session cookie you add in OCC Settings.
 
-For Claude, Orca requests `https://api.anthropic.com/api/oauth/usage` with the token from your existing Claude Code login; it does not ask for extra credentials. Triggers include:
+For Claude, OCC requests `https://api.anthropic.com/api/oauth/usage` with the token from your existing Claude Code login; it does not ask for extra credentials. Triggers include:
 
-- Once the Orca window is active after startup, then about every 15 minutes while it stays visible and focused.
+- Once the OCC window is active after startup, then about every 15 minutes while it stays visible and focused.
 - Bringing the window back to the front when the last check is more than 5 minutes old (sooner after a failed check).
 - Switching the active Claude account or the runtime it runs in.
 - Refreshing usage from the **Usage** popover or a Settings control that refreshes all usage, or changing OpenCode Go, MiniMax, or GLM Coding Plan usage credentials or settings. These refresh every provider, Claude included.
 - Expanding the account list in the status bar's Claude account switcher, which fetches your other saved Claude accounts. The list opens expanded when an account needs sign-in.
-- Orca Mobile or the web client connecting to this host or refreshing usage, which also fetches your other saved Claude accounts.
+- OCC Mobile or the web client connecting to this host or refreshing usage, which also fetches your other saved Claude accounts.
 
 ## Multi-account accounting
 
@@ -44,4 +44,4 @@ On the companion app, open the host **Accounts** screen for the same switcher/us
 
 ## Estimated cost (Stats)
 
-The Stats breakdown may show **estimated cost** for known model families (including Claude 5-class and Codex GPT-5.6 rows). Rows marked **• inferred pricing** use Orca’s local price table, not a live bill from the provider. Prefer the provider console for authoritative spend.
+The Stats breakdown may show **estimated cost** for known model families (including Claude 5-class and Codex GPT-5.6 rows). Rows marked **• inferred pricing** use OCC’s local price table, not a live bill from the provider. Prefer the provider console for authoritative spend.

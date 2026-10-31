@@ -26,7 +26,7 @@ function turn(sessionId: string, at: string, role: 'user' | 'assistant', content
 
 // Claude saves naming runs beside the chat; listing them can resume the naming prompt instead (#29973).
 describe('scanAiVaultSessions chat-naming requests', () => {
-  it('lists the chat but not the request Orca ran to name it', async () => {
+  it('lists the chat but not the request OCC ran to name it', async () => {
     const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-name-request-'))
     tempRoots.push(root)
     const roots = isolatedScanRoots(root)

@@ -42,7 +42,7 @@ describe('push gateway config', () => {
       ORCA_PUSH_APNS_KEY: keyPem,
       ORCA_PUSH_APNS_KEY_ID: 'ABCDE12345',
       ORCA_PUSH_APPLE_TEAM_ID: 'TEAM123456',
-      ORCA_PUSH_APNS_TOPIC: 'com.stably.orca.mobile.dev',
+      ORCA_PUSH_APNS_TOPIC: 'com.lkun.occ.mobile.dev',
       ORCA_PUSH_FCM_PROJECT_ID: 'onorca-staging',
       ORCA_PUSH_TRUSTED_PROXY_HOPS: '1'
     })
@@ -51,7 +51,7 @@ describe('push gateway config', () => {
       databaseUrl: 'postgres://localhost/orca_push',
       dataDir: '/var/lib/push',
       apns: { keyPem, keyId: 'ABCDE12345', teamId: 'TEAM123456' },
-      apnsTopic: 'com.stably.orca.mobile.dev',
+      apnsTopic: 'com.lkun.occ.mobile.dev',
       trustedProxyHops: 1,
       fcmProjectId: 'onorca-staging'
     })

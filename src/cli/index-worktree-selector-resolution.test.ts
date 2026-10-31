@@ -136,7 +136,7 @@ describe('orca cli worktree awareness', () => {
   })
 
   it.skipIf(process.platform === 'win32')(
-    'prepares and starts Claude Agent Teams in the current Orca terminal',
+    'prepares and starts Claude Agent Teams in the current OCC terminal',
     async () => {
       process.env.ORCA_PANE_KEY = 'tab-1:11111111-1111-4111-8111-111111111111'
       vi.stubEnv('ELECTRON_RUN_AS_NODE', '1')

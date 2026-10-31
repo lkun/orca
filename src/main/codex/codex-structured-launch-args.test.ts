@@ -27,7 +27,7 @@ describe('codexStructuredLaunchArgs', () => {
     ])
   })
 
-  it('drops permission options and config overrides owned by Orca', () => {
+  it('drops permission options and config overrides owned by OCC', () => {
     expect(
       codexStructuredLaunchArgs([
         '--dangerously-bypass-approvals-and-sandbox',

@@ -39,7 +39,7 @@ export class ClaudeWslProfileRouter {
   constructor(
     private readonly args: {
       getSettings: () => ClaudeProfileRouterSettings
-      /** The host's data folder; it names the guest pointer per Orca build. */
+      /** The host's data folder; it names the guest pointer per OCC build. */
       dataRoot: string
       runSetup?: WslSetup
     }
@@ -281,7 +281,7 @@ const runWslSetup: WslSetup = async (distro, home, accountId) => {
     .map((dir) => join(dir, WSL_CLAUDE_PROFILE_HELPER_FILENAME))
     .find(existsSync)
   if (!helper) {
-    throw new Error('The bundled WSL Claude account helper is missing. Reinstall Orca.')
+    throw new Error('The bundled WSL Claude account helper is missing. Reinstall OCC.')
   }
   const run = (spec: WslSpec, timeoutMs?: number) => runGuest(distro, spec, timeoutMs)
   const node = await ensureWslPinnedRuntime(

@@ -50,7 +50,7 @@ describe('Claude statusLine by resolved version', () => {
     expect(readSettings().hooks.SessionStart).toBeDefined()
   })
 
-  it('removes Orca statusLine on a downgrade and re-adds it after the upgrade', () => {
+  it('removes OCC statusLine on a downgrade and re-adds it after the upgrade', () => {
     const service = new ClaudeHookService()
     service.install({ claudeVersion: '2.1.261' })
     expect(readSettings().statusLine?.command).toContain('claude-statusline')
@@ -128,7 +128,7 @@ describe('Claude statusLine on Windows', () => {
   it.each([
     ['the runtime-home form', () => getManagedCommand(scriptPath)],
     ['a stale bare path', () => 'C:/Users/someone-else/.orca/agent-hooks/claude-statusline.cmd']
-  ])('replaces %s as Orca-owned', (_name, command) => {
+  ])('replaces %s as OCC-owned', (_name, command) => {
     seedStatusLine(command())
     mkdirSync(join(tmpHome, '.orca', 'agent-hooks'), { recursive: true })
     writeFileSync(join(tmpHome, '.orca', 'agent-hooks', 'claude-statusline.installed'), '')

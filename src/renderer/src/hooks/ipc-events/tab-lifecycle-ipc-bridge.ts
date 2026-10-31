@@ -11,7 +11,7 @@ import { useAppStore } from '../../store'
 export function registerTabLifecycleIpcBridge(unsubs: (() => void)[]): void {
   unsubs.push(
     // Why: a focused page is its own process, so main hands its tab chords back to run through
-    // the same app shortcut owners a key pressed in Orca's own UI reaches.
+    // the same app shortcut owners a key pressed in OCC's own UI reaches.
     window.api.ui.onBrowserPageTabShortcut((input) =>
       replayAppKeyDown(
         Object.assign(

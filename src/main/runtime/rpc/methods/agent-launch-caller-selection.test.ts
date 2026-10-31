@@ -44,7 +44,7 @@ const FOLDER_LAUNCH = {
 }
 const CALLER = 'device-1'
 const REVEAL_WARNING =
-  'Terminal term_1 is running, but Orca could not make it discoverable. Run `orca terminal focus --terminal term_1` to reveal and focus it.'
+  'Terminal term_1 is running, but OCC could not make it discoverable. Run `orca terminal focus --terminal term_1` to reveal and focus it.'
 
 function selectionRuntime(options: Parameters<typeof runtimeStub>[0]) {
   return Object.assign(runtimeStub(options), {

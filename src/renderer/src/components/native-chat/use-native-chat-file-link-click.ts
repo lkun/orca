@@ -13,7 +13,7 @@ import {
   nativeChatFileOpenDeps
 } from './native-chat-link-target-actions'
 
-/** Honor terminal link-click settings: plain-click popover, modifier opens in Orca, Shift uses the default app. */
+/** Honor terminal link-click settings: plain-click popover, modifier opens in OCC, Shift uses the default app. */
 export function useNativeChatFileLinkClick(
   context: NativeChatFileLinkContext | null,
   request?: (request: LinkActionRequest) => void,

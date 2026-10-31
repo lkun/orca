@@ -9,6 +9,6 @@ export type GetStatusOptions = GitRuntimeOptions & {
   /** Stop after this many entries and mark didHitLimit; defaults to DEFAULT_GIT_STATUS_LIMIT, 0 disables. */
   limit?: number
   bypassEffectiveUpstreamNegativeCache?: boolean
-  /** Hide real symlinks at Orca-shared paths; directory-only ignore rules cannot hide those links. */
+  /** Hide real symlinks at OCC-shared paths; directory-only ignore rules cannot hide those links. */
   sharedLinkPaths?: readonly string[]
 }

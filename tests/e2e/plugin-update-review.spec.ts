@@ -113,7 +113,7 @@ async function publishCatalog(
   )
   await writeFile(
     join(repositories, 'orca-plugins.git', 'orca-catalog.json'),
-    JSON.stringify({ catalogVersion: 2, name: 'Orca Plugins', owner: 'stablyai', plugins })
+    JSON.stringify({ catalogVersion: 2, name: 'OCC Plugins', owner: 'stablyai', plugins })
   )
 }
 
@@ -229,7 +229,7 @@ test('confirms card removal, reviews a lone access-growing update directly, and 
         repository,
         [
           '-c',
-          'user.name=Orca Test',
+          'user.name=OCC Test',
           '-c',
           'user.email=orca-test@example.invalid',
           'commit',
@@ -246,7 +246,7 @@ test('confirms card removal, reviews a lone access-growing update directly, and 
       marketplace,
       [
         '-c',
-        'user.name=Orca Test',
+        'user.name=OCC Test',
         '-c',
         'user.email=orca-test@example.invalid',
         'commit',

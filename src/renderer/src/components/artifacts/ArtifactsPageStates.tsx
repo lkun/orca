@@ -39,7 +39,7 @@ export function ArtifactsPageAuthState({
           {needsReconnect
             ? translate(
                 'auto.components.artifacts.ArtifactsPage.reconnectHeading',
-                'Sign in to Orca again'
+                'Sign in to OCC again'
               )
             : translate(
                 'auto.components.artifacts.ArtifactsPage.shareSignInHeading',
@@ -54,7 +54,7 @@ export function ArtifactsPageAuthState({
               )
             : translate(
                 'auto.components.artifacts.ArtifactsPage.shareSignInCopy',
-                'Use your Orca account to upload artifacts and manage their public links.'
+                'Use your OCC account to upload artifacts and manage their public links.'
               )}
         </p>
       </div>
@@ -66,7 +66,7 @@ export function ArtifactsPageAuthState({
                   'auto.components.artifacts.ArtifactsPage.signInAgainAction',
                   'Sign in again'
                 )
-              : translate('auto.components.artifacts.ArtifactsPage.signIn', 'Sign in to Orca')}
+              : translate('auto.components.artifacts.ArtifactsPage.signIn', 'Sign in to OCC')}
           </OrcaSignInButton>
           <OrcaSignInWaitNotice className="justify-center" />
         </>
@@ -75,7 +75,7 @@ export function ArtifactsPageAuthState({
           <p className="max-w-sm text-xs leading-5 text-muted-foreground">
             {translate(
               'auto.components.artifacts.ArtifactsPage.unconfiguredCopy',
-              'Orca account sign-in is not configured on this machine yet.'
+              'OCC account sign-in is not configured on this machine yet.'
             )}
           </p>
           <Button variant="outline" size="sm" onClick={onOpenAccountSettings}>

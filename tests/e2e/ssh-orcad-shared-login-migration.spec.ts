@@ -29,7 +29,7 @@ const ServerRepoListSchema = z.object({
 // A common template file whose bytes nothing reads at runtime; its digest names the version.
 const VERSION_SEED_FILE = 'ripgrep/licenses/LICENSE-MIT'
 
-/** The same build under another content version, as a desktop on another Orca release ships it. */
+/** The same build under another content version, as a desktop on another OCC release ships it. */
 function otherVersionTemplate(source: string, destination: string): string {
   cpSync(source, destination, { recursive: true })
   const seed = join(destination, ...VERSION_SEED_FILE.split('/'))

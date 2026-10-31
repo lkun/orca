@@ -247,8 +247,8 @@ describe('probe scope retention', () => {
   })
 })
 
-describe('Orca automation traffic priority', () => {
-  it('parks queued probes while Orca automation work holds the installed lease', async () => {
+describe('OCC automation traffic priority', () => {
+  it('parks queued probes while OCC automation work holds the installed lease', async () => {
     // Runtime CRUD/dispatch takes the lease installed on the service by registration.
     const lease = state.service.externalProbePriority
     expect(lease).not.toBeNull()

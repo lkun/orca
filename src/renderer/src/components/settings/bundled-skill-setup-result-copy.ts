@@ -34,7 +34,7 @@ export function bundledSkillSetupAttentionMessage(plan: BundledSkillPlan): strin
     case 'unwritable':
       return translate(
         'auto.components.settings.bundledSkillSetupCopy.attentionUnwritable',
-        "Needs attention · Orca can't write to {{folder}}",
+        "Needs attention · OCC can't write to {{folder}}",
         { folder: collapseHomePath(dirname(blocked.path), plan.homeDirectory) }
       )
     case 'busy':
@@ -45,7 +45,7 @@ export function bundledSkillSetupAttentionMessage(plan: BundledSkillPlan): strin
     case 'unreadable':
       return translate(
         'auto.components.settings.bundledSkillSetupCopy.attentionUnreadable',
-        "Needs attention · Orca can't read every file in this copy"
+        "Needs attention · OCC can't read every file in this copy"
       )
     case 'edited':
       return translate(
@@ -60,7 +60,7 @@ export function bundledSkillSetupAttentionMessage(plan: BundledSkillPlan): strin
     case 'shared-not-current':
       return translate(
         'auto.components.settings.bundledSkillSetupCopy.attentionSharedNotCurrent',
-        'Needs attention · The shared copy this folder uses is not Orca’s'
+        'Needs attention · The shared copy this folder uses is not OCC’s'
       )
     case undefined:
       return translate('auto.components.skills.skillPlanOpCopy.needsAttention', 'Needs attention')

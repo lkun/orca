@@ -1,4 +1,4 @@
-; Another Orca install for this Windows user still runs the shared ~/.orca/agent-hooks scripts, so
+; Another OCC install for this Windows user still runs the shared ~/.orca/agent-hooks scripts, so
 ; its agents' hook entries must stay. Every channel shares one app GUID, so the other install can
 ; only be the other registration: per-user (HKCU) beside per-machine (HKLM), or the reverse.
 

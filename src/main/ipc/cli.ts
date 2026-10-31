@@ -199,7 +199,7 @@ export function registerCliHandlers(): void {
           if (!distro || !isWslDistroNotFoundFailure(error)) {
             throw error
           }
-          // Nothing is left inside a deleted distro; only Orca's bookkeeping still names it.
+          // Nothing is left inside a deleted distro; only OCC's bookkeeping still names it.
           await persistWslCliRegistration(
             () => forgetWslCliRegistration(getCanonicalUserDataPath(), distro),
             'remove'

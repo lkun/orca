@@ -217,7 +217,7 @@ async function scanRepoWorkspaces(
     WORKTREE_SCAN_CONCURRENCY,
     async (worktree) => {
       throwIfWorkspaceCleanupScanAborted(signal)
-      // Filesystem activity protects external worktrees missing Orca stamps from deletion suggestions.
+      // Filesystem activity protects external worktrees missing OCC stamps from deletion suggestions.
       const persistedActivityWorktree = resolvePersistedWorkspaceCleanupActivityWorktree(worktree)
       const persistedActivityIsRecent = !isWorkspaceInactiveForCleanup(
         persistedActivityWorktree,

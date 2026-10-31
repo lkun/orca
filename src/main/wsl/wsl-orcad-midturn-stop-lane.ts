@@ -262,7 +262,7 @@ async function stopMidTurnThenContinue(
     .object({ capabilities: z.array(z.string()).optional() })
     .parse(await lane.rpc('status.get'))
   expect(status.capabilities).toContain(AGENT_SESSION_CONTINUE_INTERRUPTED_RUNTIME_CAPABILITY)
-  // What NativeChatInterruptedContinue offers: the latest turn, cut by Orca's stop.
+  // What NativeChatInterruptedContinue offers: the latest turn, cut by OCC's stop.
   const cut = await vi.waitFor(
     async () => {
       const rows = await items()

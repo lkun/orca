@@ -10,7 +10,7 @@ const TOKEN_RENEWAL_MARGIN_MS = 60_000
 
 export type ConnectorToken = { connectorToken: string; expiresAt: number }
 
-/** Asks Orca's auth service for a short-lived connector token as this machine's signed-in account. */
+/** Asks OCC's auth service for a short-lived connector token as this machine's signed-in account. */
 export type ConnectorTokenMint = () => Promise<ConnectorResult<ConnectorToken>>
 
 export type ConnectorCallOptions = Pick<ConnectorRequest, 'method' | 'timeoutMs' | 'signal'>

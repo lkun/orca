@@ -105,7 +105,7 @@ describe('SshConnectionStore import route de-duplication', () => {
     loadUserSshConfigMock.mockReturnValue([])
   })
 
-  it('skips another name for a machine already in Orca, and the picker sees the same decision', async () => {
+  it('skips another name for a machine already in OCC, and the picker sees the same decision', async () => {
     sshConfigHostsToTargetsMock.mockReturnValue([configCandidate('aimp')])
 
     expect((await sshStore.refreshSshRouteSnapshot()).duplicateOf.get('aimp')).toBe('AI Box')

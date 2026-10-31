@@ -503,7 +503,7 @@ test.describe('Browser Tab', () => {
       // Context-menu links keep the source visible until the new tab is selected.
       await clickBrowserLink(orcaPage, sourceTab!.id, '#external-link', { button: 'right' })
       await orcaPage
-        .getByRole('menuitem', { name: 'Open Link In Orca Browser', exact: true })
+        .getByRole('menuitem', { name: 'Open Link In OCC Browser', exact: true })
         .click()
       await expectBrowserTabOpenedInBackground(orcaPage, sourceTab!.id, 'Linked destination')
       await clickBrowserLink(orcaPage, sourceTab!.id, '#frame-link', {

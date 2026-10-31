@@ -38,7 +38,7 @@ function humanizePermission(permission: string): string {
     case 'keyboardLock':
       return 'permission to capture keyboard input'
     case 'openExternal':
-      return 'permission to open a link outside Orca'
+      return 'permission to open a link outside OCC'
     case 'fileSystem':
       return 'access to your files or folders'
     case 'hid':
@@ -62,7 +62,7 @@ function humanizePermission(permission: string): string {
 
 export function formatPermissionNotice(event: BrowserPermissionDeniedEvent): string {
   const target = event.origin === 'unknown' ? 'this page' : event.origin
-  return `${target} asked for ${humanizePermission(event.permission)}, and Orca denied it.`
+  return `${target} asked for ${humanizePermission(event.permission)}, and OCC denied it.`
 }
 
 export function formatPopupNotice(event: BrowserPopupEvent): string | null {
@@ -73,7 +73,7 @@ export function formatPopupNotice(event: BrowserPopupEvent): string | null {
   if (event.action === 'opened-external') {
     return `${target} opened a new window in your default browser.`
   }
-  return `${target} tried to open a popup Orca does not support here.`
+  return `${target} tried to open a popup OCC does not support here.`
 }
 
 export function formatDownloadFinishedNotice(event: BrowserDownloadFinishedEvent): string {
@@ -143,13 +143,13 @@ export function formatLoadFailureDescription(
     if (loadError.code === -202) {
       return translate(
         'browser.loadFailure.certificateAuthorityInvalid',
-        "Orca doesn't trust the authority that issued the certificate for {{value0}}.",
+        "OCC doesn't trust the authority that issued the certificate for {{value0}}.",
         { value0: host }
       )
     }
     return translate(
       'browser.loadFailure.certificateVerificationFailed',
-      "Orca couldn't verify the certificate for {{value0}}.",
+      "OCC couldn't verify the certificate for {{value0}}.",
       { value0: host }
     )
   }

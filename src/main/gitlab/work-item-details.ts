@@ -96,7 +96,7 @@ async function fetchIssueDetails(
   const issueRaw = JSON.parse(issueRes.stdout) as GitLabRawIssue
   const item: Omit<GitLabWorkItem, 'repoId'> = (() => {
     const full = mapIssueToWorkItem(issueRaw, projectRef.path, projectRef)
-    // The renderer supplies Orca repoId; main knows only the repository path.
+    // The renderer supplies OCC repoId; main knows only the repository path.
     const { repoId: _repoId, ...rest } = full
     return rest
   })()

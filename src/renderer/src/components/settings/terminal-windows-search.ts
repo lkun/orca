@@ -7,7 +7,7 @@ export const getTerminalWindowsAdministratorSearchEntry = createLocalizedCatalog
     title: translate('settings.terminal.windows.administratorLabel', 'Administrator mode'),
     description: translate(
       'settings.terminal.windows.administratorSearchDescription',
-      'See Orca’s Windows permissions or restart with administrator approval.'
+      'See OCC’s Windows permissions or restart with administrator approval.'
     ),
     keywords: [
       ...getTerminalWindowsShellSearchEntry()[0].keywords,

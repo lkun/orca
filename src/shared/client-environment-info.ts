@@ -9,7 +9,7 @@ export type ClientEnvironmentInfo = {
 }
 
 const FOOTER_MARKER = '---'
-const ORCA_LINE_PREFIX = 'Orca:'
+const ORCA_LINE_PREFIX = 'OCC:'
 
 // Strip the whole prefilled footer including optional Shell while retaining user-authored text above and below it.
 const CLIENT_ENVIRONMENT_FOOTER_BLOCK =

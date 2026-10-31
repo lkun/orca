@@ -30,7 +30,7 @@ afterEach(() => {
 })
 
 function fixture(arch = 'x64') {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-windows-prebuild-cache-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-windows-prebuild-cache-'))
   temporary.push(dir)
   const sourceDir = join(dir, 'source')
   const prebuildsDir = join(dir, 'prebuilds')

@@ -69,7 +69,7 @@ export function installedPluginControls(
     tone = 'destructive'
     description = translate(
       'auto.components.settings.PluginSettingsRow.killListMessage',
-      "Orca's safety list disabled this plugin: {{value0}}",
+      "OCC's safety list disabled this plugin: {{value0}}",
       { value0: plugin.blockedByKillList.reason }
     )
   } else if (kind === 'invalid' && plugin.error) {
@@ -254,7 +254,7 @@ export function installedPluginControls(
             <Trash2 />
             {translate(
               'auto.components.settings.PluginManagerRows.bundledWithOrca',
-              'Bundled with Orca'
+              'Bundled with OCC'
             )}
           </DropdownMenuItem>
         ) : null}

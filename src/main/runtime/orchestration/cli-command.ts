@@ -3,11 +3,11 @@ import { isWslUncPath } from '../../../shared/wsl-paths'
 import { splitWorktreeIdForFilesystem } from '../../../shared/worktree/id'
 import { getAppEnvironment, hasAppEnvironment } from '../../../shared/app-environment'
 
-export type OrchestrationCliCommand = 'orca' | 'orca-dev' | 'orca-ide'
+export type OrchestrationCliCommand = 'orca' | 'occ-dev' | 'occ-ide'
 
-/** Dev builds run the CLI as `orca-dev`; a packaged app, or a process with no app, must not advertise it. */
+/** Dev builds run the CLI as `occ-dev`; a packaged app, or a process with no app, must not advertise it. */
 export function runtimeOrchestrationCliCommand(): OrchestrationCliCommand | undefined {
-  return hasAppEnvironment() && !getAppEnvironment().isPackaged() ? 'orca-dev' : undefined
+  return hasAppEnvironment() && !getAppEnvironment().isPackaged() ? 'occ-dev' : undefined
 }
 
 /** What a local, non-WSL terminal is told to run; a structured session is always one. */
@@ -29,12 +29,12 @@ export function resolveTerminalOrchestrationCliCommand(args: {
     return args.runtimeCliCommand
   }
   if (args.isWsl !== null && args.isWsl !== undefined) {
-    return args.isWsl ? 'orca-ide' : 'orca'
+    return args.isWsl ? 'occ-ide' : 'orca'
   }
   if (args.projectRuntime?.status === 'resolved' && args.projectRuntime.runtime.kind === 'wsl') {
-    return 'orca-ide'
+    return 'occ-ide'
   }
 
   const worktreePath = splitWorktreeIdForFilesystem(args.worktreeId)?.worktreePath
-  return worktreePath && isWslUncPath(worktreePath) ? 'orca-ide' : 'orca'
+  return worktreePath && isWslUncPath(worktreePath) ? 'occ-ide' : 'orca'
 }

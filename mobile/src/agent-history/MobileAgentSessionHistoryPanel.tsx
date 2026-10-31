@@ -327,7 +327,7 @@ function MobileAgentSessionHistoryPanelContent({
           <Text style={styles.stateText}>
             {t(
               'agentHistory.panel.updateHost',
-              'Update Orca on this host to browse agent session history.'
+              'Update OCC on this host to browse agent session history.'
             )}
           </Text>
         </View>

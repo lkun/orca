@@ -104,7 +104,7 @@ export async function saveNewSshHostFromForm<T extends SavedSshHost>({
       toast.error(
         translate(
           'auto.components.sidebar.AddRemoteHostDialog.sshAlreadyExists',
-          'That SSH host is already in Orca.'
+          'That SSH host is already in OCC.'
         )
       )
       return 'validation-failed'
@@ -142,7 +142,7 @@ export async function prefillFormFromSshConfigHost(
     throw new Error(
       translate(
         'auto.components.sidebar.AddRemoteHostDialog.sshConfigPickerRestartRequired',
-        'Restart Orca to finish applying the SSH config picker update.'
+        'Restart OCC to finish applying the SSH config picker update.'
       )
     )
   }
@@ -186,8 +186,8 @@ export async function addAllSshConfigHostsToOrca({
     toast.success(
       translate(
         'auto.components.sidebar.AddRemoteHostDialog.sshImportSynced',
-        'Added {{count}} hosts to Orca.',
-        { count: result.targets.length, defaultValue_one: 'Added {{count}} host to Orca.' }
+        'Added {{count}} hosts to OCC.',
+        { count: result.targets.length, defaultValue_one: 'Added {{count}} host to OCC.' }
       )
     )
     return { kind: 'added', count: result.targets.length }

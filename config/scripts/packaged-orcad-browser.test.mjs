@@ -55,7 +55,7 @@ describe("packaged orcad uses the app's agent-browser driver (#33846)", () => {
     const app = await packagedApp()
     await writeFile(app.driver, 'authenticode-signed driver')
     const list = join(app.appDir, 'inner-signing-list.txt')
-    await writeFile(list, 'Orca.exe\r\nresources\\agent-browser-win32-x64.exe\r\n')
+    await writeFile(list, 'OCC.exe\r\nresources\\agent-browser-win32-x64.exe\r\n')
     resealSignedWindowsApp(app.appDir, list)
     const slot = await assembleOrcadArtifact({
       templateDir: app.templateDir,

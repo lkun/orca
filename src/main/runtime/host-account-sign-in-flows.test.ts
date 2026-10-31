@@ -131,7 +131,7 @@ describe('HostAccountSignInFlows', () => {
     const { flowId } = flows.start('device-a', 'codex')
     const status = await flows.wait('device-a', flowId, 1)
     expect(status).toMatchObject({ phase: 'failed', error: 'Codex login failed: boom' })
-    // The login's own text has no Orca code, so clients show it verbatim.
+    // The login's own text has no OCC code, so clients show it verbatim.
     expect(status.errorCode).toBeUndefined()
   })
 

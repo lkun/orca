@@ -37,7 +37,7 @@ describe.runIf(RUN_REAL_WINDOWS)('real Windows skill workspace installation', ()
   }
 
   beforeAll(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-windows-skill-integration-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-windows-skill-integration-'))
     homeDirectory = join(root, 'host home-é')
     const repository = join(root, 'repository')
     gitWorktree = join(root, 'Git worktree-é')
@@ -53,7 +53,7 @@ describe.runIf(RUN_REAL_WINDOWS)('real Windows skill workspace installation', ()
       writeFile(join(root, 'system.gitconfig'), '')
     ])
     await git(['init', '--quiet'], repository)
-    await git(['config', 'user.name', 'Orca Test'], repository)
+    await git(['config', 'user.name', 'OCC Test'], repository)
     await git(['config', 'user.email', 'orca@example.invalid'], repository)
     await writeFile(join(repository, 'README.md'), 'fixture\n')
     await git(['add', 'README.md'], repository)

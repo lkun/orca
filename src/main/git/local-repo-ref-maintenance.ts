@@ -127,7 +127,7 @@ function refsDirectoryForMainProcess(commonDir: string, wslDistro: string | unde
   return (isWindowsAbsolutePathLike(commonDir) ? win32 : posix).join(commonDir, 'refs')
 }
 
-/** Read user opt-outs; Orca's per-command maintenance suppression never appears in persisted config. */
+/** Read user opt-outs; OCC's per-command maintenance suppression never appears in persisted config. */
 export function isGitAutoMaintenanceDisabled(configOutput: string): boolean {
   return configOutput
     .split('\n')

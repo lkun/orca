@@ -85,7 +85,7 @@ describe('getMobilePrCreateBlockMessage', () => {
         reviewLookupOutcome: 'unavailable'
       })
     ).toBe(
-      'Orca could not confirm whether this branch already has a pull request. Try again in a moment.'
+      'OCC could not confirm whether this branch already has a pull request. Try again in a moment.'
     )
   })
 
@@ -100,7 +100,7 @@ describe('getMobilePrCreateBlockMessage', () => {
         blockedReason: null
       })
     ).toBe(
-      'Orca could not confirm whether this branch already has a pull request. Try again in a moment.'
+      'OCC could not confirm whether this branch already has a pull request. Try again in a moment.'
     )
   })
 
@@ -222,7 +222,7 @@ describe('resolveMobilePrPrefill', () => {
 
   // Use unavailable copy when eligibility cannot resolve; blocked copy requires an explicit canCreate: false.
   const UNCONFIRMED =
-    'Orca could not confirm whether this branch already has a pull request. Try again in a moment.'
+    'OCC could not confirm whether this branch already has a pull request. Try again in a moment.'
 
   it.each([
     { name: 'a malformed reply', responses: [ok({ provider: 7 })] },

@@ -1,5 +1,5 @@
 /**
- * R39: a Remove that kept a WSL host's server for another Orca leaves that server, and anything a
+ * R39: a Remove that kept a WSL host's server for another OCC leaves that server, and anything a
  * move put on it, running. Undo of such a move must not read the removed host as stopped.
  */
 import { join } from 'node:path'

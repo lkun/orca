@@ -15,7 +15,7 @@ export type BrowserNetworkTunnelProxy =
   | { kind: 'socks5'; url: URL }
   | { kind: 'unsupported'; protocol: string }
 
-// Match browser sessions: prefer Orca settings over environment proxies, using their respective bypass lists.
+// Match browser sessions: prefer OCC settings over environment proxies, using their respective bypass lists.
 export function selectBrowserNetworkTunnelProxy(
   target: BrowserNetworkTunnelOpen,
   settings: NetworkProxySettings | null,

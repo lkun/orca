@@ -171,7 +171,7 @@ describe('orca file CLI handlers', () => {
     })
     expect(console.log).not.toHaveBeenCalled()
     expect(vi.mocked(console.error).mock.calls[0][0]).toContain(
-      'Did not open diff for assets/logo.png: the Orca app declined this binary file.'
+      'Did not open diff for assets/logo.png: the OCC app declined this binary file.'
     )
     expect(process.exitCode).toBe(1)
     process.exitCode = undefined

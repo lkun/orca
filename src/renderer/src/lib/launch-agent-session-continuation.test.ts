@@ -163,7 +163,7 @@ describe('launchAgentSessionContinuation', () => {
 
     expect(toast.success).not.toHaveBeenCalled()
     expect(toast.warning).toHaveBeenCalledWith(
-      'Orca could not confirm Codex received the session context. Check the new session, and paste it yourself if its input is empty.',
+      'OCC could not confirm Codex received the session context. Check the new session, and paste it yourself if its input is empty.',
       expect.objectContaining({ action: expect.objectContaining({ label: 'Copy prompt' }) })
     )
     toast.warning.mock.calls[0][1].action.onClick()

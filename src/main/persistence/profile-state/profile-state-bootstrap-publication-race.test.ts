@@ -63,7 +63,7 @@ describe('first database publication with competing startup', () => {
       const message = formatProfileStateStartupFailure(failure)
       expect(message).toContain('hard links')
       expect(message).toContain(root)
-      expect(message).toContain('complete Orca data directory')
+      expect(message).toContain('complete OCC data directory')
       expect(message).not.toContain('rollback')
       expect(fs.existsSync(options.databaseFile)).toBe(false)
       expect(fs.readdirSync(root)).toEqual(kind === 'legacy' ? ['orca-data.json'] : [])

@@ -128,7 +128,7 @@ export async function dispatchPageKeyEvents(
     const keyUp = events.findIndex((params, index) => index >= start && params.type === 'keyUp')
     const end = keyUp === -1 ? events.length : keyUp + 1
     const key = events.slice(start, end)
-    // Tab from the last frame field can escape into Orca's window.
+    // Tab from the last frame field can escape into OCC's window.
     const release = key.some(isTabDown) ? await guardFocus() : () => {}
     try {
       for (const params of key) {
@@ -152,7 +152,7 @@ export async function dispatchPageKeyEvents(
   const remaining = events.slice(start)
   const plans = remaining.map((params) => planCdpKeyEvent(params))
   if (route.kind === 'widget' && plans.every((plan) => plan !== null)) {
-    // Tab from the last page field can escape into Orca's window.
+    // Tab from the last page field can escape into OCC's window.
     const release = remaining.some(isTabDown) ? await guardFocus() : () => {}
     try {
       await withAgentInputInjection(webContents, async () => {

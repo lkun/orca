@@ -11,7 +11,7 @@ test.describe('Workspace Space git status checks', () => {
     orcaPage,
     testRepoPath
   }) => {
-    // Canonicalize parent before git worktree add so macOS/CI tmp symlinks match Orca’s realpath-registered rows.
+    // Canonicalize parent before git worktree add so macOS/CI tmp symlinks match OCC’s realpath-registered rows.
     const worktreeParent = realpathSync(
       mkdtempSync(path.join(os.tmpdir(), 'orca-space-git-status-'))
     )

@@ -19,7 +19,7 @@ import { OrchestrationError } from './orchestration-error'
 /** A party as Run binding and mail routing match it; `address` is its one mailbox address. */
 export type OrchestrationParty = OrchestrationCallerIdentity
 
-/** A party named by an Orca session id: a structured worker, or a chat. */
+/** A party named by an OCC session id: a structured worker, or a chat. */
 export type OrchestrationSessionParty = OrchestrationParty &
   Readonly<{ orcaSessionId: OrcaSessionId }>
 
@@ -38,7 +38,7 @@ export const ORCHESTRATION_TARGET_PARAM: Readonly<
   'orchestration.workerStart': 'terminal'
 }
 
-/** The party an Orca session id names. Throws when it is a worker this host lost the identity of. */
+/** The party an OCC session id names. Throws when it is a worker this host lost the identity of. */
 export function resolveOrcaSessionParty(
   orcaSessionId: OrcaSessionId,
   db: OrchestrationDb | null | undefined,
@@ -81,7 +81,7 @@ export function resolveOrchestrationParty(
   }
 }
 
-/** How a preamble names a party: a session by its Orca session ID (its `/clear` root), else its handle. */
+/** How a preamble names a party: a session by its OCC session ID (its `/clear` root), else its handle. */
 export function orcaSessionIdOrHandle(
   address: string,
   db: OrchestrationDb | null | undefined
@@ -99,7 +99,7 @@ export function resolveDeclaredCallerParty(
   if (party.terminalHandle === null) {
     throw new OrchestrationError(
       CODES.chatNotDeclarable,
-      `Agent session ${party.orcaSessionId} is a chat, and a chat is identified only by the Orca session ID its own environment sends, never by naming it. No effects were applied.`,
+      `Agent session ${party.orcaSessionId} is a chat, and a chat is identified only by the OCC session ID its own environment sends, never by naming it. No effects were applied.`,
       NO_EFFECTS
     )
   }

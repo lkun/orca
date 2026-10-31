@@ -7,15 +7,15 @@ export const STACKED_REVIEW_FAILURE_COPY = {
   stack_same_parent: 'Choose a different parent branch before creating a stacked pull request.',
   stack_parent_without_review:
     'The parent branch {{base}} does not have an open pull request. Create that pull request first.',
-  stack_parent_ambiguous: 'Orca found multiple open pull requests for the parent branch {{base}}.',
-  stack_head_ambiguous: 'Orca found multiple open pull requests for the current branch {{head}}.',
+  stack_parent_ambiguous: 'OCC found multiple open pull requests for the parent branch {{base}}.',
+  stack_head_ambiguous: 'OCC found multiple open pull requests for the current branch {{head}}.',
   stack_parent_multiple_stacks: 'The selected parent pull request belongs to multiple stacks.',
   stack_parent_closed: 'The selected parent belongs to a closed stack.',
   stack_parent_not_top:
     'Choose the top pull request in the stack as the base branch before adding another layer.',
   stack_conflict: 'The pull request already belongs to a different GitHub stack.',
   stacks_unavailable: 'GitHub stacked pull requests are not available for this repository.',
-  stack_parent_unverified: 'Orca could not verify the parent pull request. Retry in a moment.',
+  stack_parent_unverified: 'OCC could not verify the parent pull request. Retry in a moment.',
   stack_existing_review_other_base:
     'An open pull request already exists for this branch but does not target the selected parent branch.',
   stack_creation_unconfirmed:

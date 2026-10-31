@@ -1,7 +1,7 @@
 Gleam TextMate grammar
 
 Source: https://github.com/gleam-lang/vscode-gleam/blob/d6ce8c4358c278245e913b99a281d118637c9399/syntaxes/gleam.tmLanguage.json
-Modifications by Orca: JSON formatting; the $schema key is removed.
+Modifications by OCC: JSON formatting; the $schema key is removed.
 
                                  Apache License
                            Version 2.0, January 2004

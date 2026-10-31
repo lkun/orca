@@ -7,7 +7,7 @@ export function prepareStartingWorkerAuthority(
   params: {
     dispatchId: string
     handle: string
-    /** Both null for a chat, which its Orca session ID identifies instead. */
+    /** Both null for a chat, which its OCC session ID identifies instead. */
     paneKey: string | null
     processIncarnation: string | null
     launchTokenHash?: string

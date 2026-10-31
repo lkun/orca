@@ -14,7 +14,7 @@ const NIXOS_STUB_OUTPUT =
   'NixOS cannot run dynamically linked executables intended for generic\n' +
   'linux environments out of the box.'
 
-describe('distros that cannot host Orca', () => {
+describe('distros that cannot host OCC', () => {
   it('says how to convert a WSL 1 distro', () => {
     expect(new WslDistroVersion1Error('Legacy').message).toContain('wsl --set-version Legacy 2')
   })
@@ -43,9 +43,9 @@ describe('distros that cannot host Orca', () => {
   it('adds the glibc fix for a distro, leaving the shared refusal SSH shows as it was', () => {
     const error = new OrcadHostGlibcUnsupportedError('linux-arm64-glibc', '2.27')
     expect(error.name).toBe('OrcadHostUnsupportedError')
-    expect(error.message).toBe('No Orca runtime supports linux-arm64-glibc with glibc 2.27.')
+    expect(error.message).toBe('No OCC runtime supports linux-arm64-glibc with glibc 2.27.')
     expect(wslUnsupportedDistroFixMessage(error)).toBe(
-      'No Orca runtime supports linux-arm64-glibc with glibc 2.27. Use a Linux release with ' +
+      'No OCC runtime supports linux-arm64-glibc with glibc 2.27. Use a Linux release with ' +
         'glibc 2.28 or newer (for example Ubuntu 20.04 or Debian 10 and later).'
     )
   })
@@ -54,7 +54,7 @@ describe('distros that cannot host Orca', () => {
     const error = new RemoteNodeRuntimeSelfTestError(127, NIXOS_STUB_OUTPUT)
     expect(error.message).toMatch(/^The pinned Node runtime did not run on the host \(exit 127\)/)
     const fix = wslUnsupportedDistroFixMessage(error)
-    expect(fix).toMatch(/^NixOS can’t run Orca’s Node runtime/)
+    expect(fix).toMatch(/^NixOS can’t run OCC’s Node runtime/)
     expect(fix).toContain('programs.nix-ld.enable = true;')
     expect(fix).toContain(`(exit 127: ${NIXOS_STUB_OUTPUT})`)
   })

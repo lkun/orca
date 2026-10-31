@@ -141,7 +141,7 @@ describe('a damaged chat', () => {
     })
   })
 
-  it("reads past damage to a newer build's row, which fails the load as a newer Orca's instead", async () => {
+  it("reads past damage to a newer build's row, which fails the load as a newer OCC's instead", async () => {
     await writeChat()
     await withJournalDatabase((db) => {
       updateTestJournalRowJson(db, IDENTITY.sessionId, 3, '}{')

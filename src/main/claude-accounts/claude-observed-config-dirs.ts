@@ -7,7 +7,7 @@ import { isDirectory } from './claude-profile-homes'
 
 const MAX_OBSERVED_CONFIG_DIRS = 32
 
-/** Claude config folders Orca saw in use but the login shell does not name, e.g. a wrapper's CLAUDE_CONFIG_DIR. */
+/** Claude config folders OCC saw in use but the login shell does not name, e.g. a wrapper's CLAUDE_CONFIG_DIR. */
 export class ClaudeObservedConfigDirs {
   private observed: string[] | undefined
   // WSL/remote paths name no folder here; skip re-statting them on every hook.
@@ -18,7 +18,7 @@ export class ClaudeObservedConfigDirs {
     private readonly getSettings: () => Pick<GlobalSettings, 'agentDefaultEnv'>
   ) {}
 
-  /** Orca's Claude launch-environment setting first, then folders seen in hook transcript paths. */
+  /** OCC's Claude launch-environment setting first, then folders seen in hook transcript paths. */
   list(): string[] {
     this.observed ??= this.load()
     const fromSettings = resolveAbsoluteDirOverride(

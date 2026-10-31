@@ -9,7 +9,7 @@ import {
 } from './browser-extension-storage-sync'
 
 /**
- * Orca's content script, bundled into one standalone file that Orca's manifest rewrite puts first
+ * OCC's content script, bundled into one standalone file that OCC's manifest rewrite puts first
  * in each of the extension's isolated-world content scripts. It adds the content-script APIs
  * Chrome has and Electron lacks, and, when the extension has a worker, chrome.storage.sync through
  * that worker (see browser-extension-content-script-relay.ts).

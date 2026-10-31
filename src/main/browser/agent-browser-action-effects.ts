@@ -18,7 +18,7 @@ const TEXT_CHARS = 300
 // Long enough that a goto's own url and its settled one compare equal.
 const URL_CHARS = 2_000
 const LIST_ITEMS = 5
-// Clear of Electron's 999, extension worlds and the 1207/1998/1999 Orca already uses.
+// Clear of Electron's 999, extension worlds and the 1207/1998/1999 OCC already uses.
 const DOM_QUIET_WORLD_ID = 1_208
 
 export type ActionEffectsHost = {

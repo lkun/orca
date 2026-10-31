@@ -11,7 +11,7 @@ vi.mock('./web-runtime-calls', () => ({ callEnvironmentEnvelope: mocks.callEnvir
 vi.mock('./web-runtime-session', () => ({
   resolveEnvironment: (selector: string) => {
     if (selector !== mocks.activeEnvironment.id) {
-      throw new Error(`Unknown Orca runtime environment: ${selector}`)
+      throw new Error(`Unknown OCC runtime environment: ${selector}`)
     }
     return mocks.activeEnvironment
   }
@@ -62,7 +62,7 @@ describe('saveClipboardImageAsWebAgentSessionAttachment', () => {
     mocks.callEnvironmentEnvelope.mockResolvedValue(reply({ uploadId: 'u1' }, 'runtime-b'))
     await expect(
       saveClipboardImageAsWebAgentSessionAttachment(Buffer.from('png').toString('base64'), target)
-    ).rejects.toThrow('paired Orca server changed')
+    ).rejects.toThrow('paired OCC server changed')
     expect(mocks.callEnvironmentEnvelope).toHaveBeenCalledTimes(1)
   })
 
@@ -70,7 +70,7 @@ describe('saveClipboardImageAsWebAgentSessionAttachment', () => {
     mocks.activeEnvironment = { id: 'env-1', createdAt: 1, pairingRevision: 8 }
     await expect(
       saveClipboardImageAsWebAgentSessionAttachment(Buffer.from('png').toString('base64'), target)
-    ).rejects.toThrow('paired Orca server changed')
+    ).rejects.toThrow('paired OCC server changed')
     expect(mocks.callEnvironmentEnvelope).not.toHaveBeenCalled()
   })
 
@@ -80,7 +80,7 @@ describe('saveClipboardImageAsWebAgentSessionAttachment', () => {
         ...target,
         environmentId: 'env-other'
       })
-    ).rejects.toThrow('Unknown Orca runtime environment')
+    ).rejects.toThrow('Unknown OCC runtime environment')
     expect(mocks.callEnvironmentEnvelope).not.toHaveBeenCalled()
   })
 })

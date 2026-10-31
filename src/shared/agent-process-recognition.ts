@@ -222,7 +222,7 @@ export function recognizeAgentProcessFromCommandLine(
   if (firstNormalized === 'qoder' && tokens[1] && !tokens[1].startsWith('-')) {
     return null
   }
-  // Why: the generic Orca CLI is not an agent; only this subcommand launches its TUI mode.
+  // Why: the generic OCC CLI is not an agent; only this subcommand launches its TUI mode.
   if (direct?.agent === 'claude-agent-teams' && tokens[1]?.toLowerCase() !== 'claude-teams') {
     direct = null
   }

@@ -148,7 +148,7 @@ describe('ConnectorCloud', () => {
     expect(fake.events).toEqual([{ kind: 'snapshot', conversations: [] }])
   })
 
-  it('stops when Orca quits or relaunches into another profile, keeping pending turn ends', async () => {
+  it('stops when OCC quits or relaunches into another profile, keeping pending turn ends', async () => {
     writeFileSync(outbox, JSON.stringify({ account: 'ada', turnEnds: [turnEnd] }))
     fake.forced.set(CONNECTOR_PATHS.events, { status: 503 })
     const cloud = connectorCloud()

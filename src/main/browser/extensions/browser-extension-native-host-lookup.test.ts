@@ -132,7 +132,7 @@ describe('native messaging host manifests', () => {
     }
   })
 
-  it('reads Orca, then Chrome and Chromium user and system folders, then other browsers on macOS', async () => {
+  it('reads OCC, then Chrome and Chromium user and system folders, then other browsers on macOS', async () => {
     const mac = lookup(MAC, {})
     await mac.resolve()
     expect(mac.reads).toEqual([
@@ -225,7 +225,7 @@ describe('native messaging host manifests', () => {
     ])
   })
 
-  it('looks in Orca’s own folder first on Windows and ignores a relative registry value', async () => {
+  it('looks in OCC’s own folder first on Windows and ignores a relative registry value', async () => {
     const own = `${WINDOWS.userDataDir}\\NativeMessagingHosts\\${NAME}.json`
     const reads: string[] = []
     const deps: NativeHostLookupDeps = {

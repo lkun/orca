@@ -2,7 +2,7 @@
 title: Scheduled automations
 ---
 
-Orca automations run a prompt on a schedule from the CLI, so recurring triage, review, and maintenance tasks can start without you opening a worktree by hand. By the end of this page, you'll create a disabled automation, inspect it, and run it when you're ready.
+OCC automations run a prompt on a schedule from the CLI, so recurring triage, review, and maintenance tasks can start without you opening a worktree by hand. By the end of this page, you'll create a disabled automation, inspect it, and run it when you're ready.
 
 ## Create a safe first automation
 
@@ -24,7 +24,7 @@ orca automations create \
 
 ## Choose where runs happen
 
-Use `--repo <selector>` when each run should create or select work in a repository. Use `--workspace <selector>` when the automation should run inside an existing Orca worktree instead:
+Use `--repo <selector>` when each run should create or select work in a repository. Use `--workspace <selector>` when the automation should run inside an existing OCC worktree instead:
 
 ```bash
 orca automations create \
@@ -36,11 +36,11 @@ orca automations create \
   --disabled
 ```
 
-When you omit both target flags, Orca resolves the enclosing worktree from the current shell directory when it can.
+When you omit both target flags, OCC resolves the enclosing worktree from the current shell directory when it can.
 
 ## Precheck before a scheduled run
 
-Use `--precheck <command>` to run a shell command only before scheduled runs. Exit code `0` continues; any other exit, error, or timeout skips the run. Set the time limit with `--precheck-timeout <seconds>` (default `60`). Skips appear in Orca run history and `orca automations runs --id <automationId> --json` with status `skipped_precheck`.
+Use `--precheck <command>` to run a shell command only before scheduled runs. Exit code `0` continues; any other exit, error, or timeout skips the run. Set the time limit with `--precheck-timeout <seconds>` (default `60`). Skips appear in OCC run history and `orca automations runs --id <automationId> --json` with status `skipped_precheck`.
 
 ```bash
 orca automations create \
@@ -71,15 +71,15 @@ orca automations create \
   --json
 ```
 
-`--project` takes the project id or the display name from `orca project list`. `--host` takes `local`, `ssh:<target-id>`, `runtime:<environment-id>`, or the bare name from `orca host list`, and it can be omitted entirely when the project is set up on only one host — Orca uses that one. When the project is set up on several, the error names each host and the flag to select it.
+`--project` takes the project id or the display name from `orca project list`. `--host` takes `local`, `ssh:<target-id>`, `runtime:<environment-id>`, or the bare name from `orca host list`, and it can be omitted entirely when the project is set up on only one host — OCC uses that one. When the project is set up on several, the error names each host and the flag to select it.
 
 Use `--project-host-setup <id>` when you already have a setup id. Optional `--source-context '<json>'` pins task/provider data to a host/account (pass `null` on edit to clear).
 
 ## Manage automations across hosts
 
-The desktop **Automations** page loads schedules from this computer and supported connected Orca hosts into one table. The **Host** column shows where each automation is stored and scheduled; use **Filters → Host** to show one or more hosts, or return to **All hosts**.
+The desktop **Automations** page loads schedules from this computer and supported connected OCC hosts into one table. The **Host** column shows where each automation is stored and scheduled; use **Filters → Host** to show one or more hosts, or return to **All hosts**.
 
-When you create an automation in the desktop UI, **Create on** chooses its host before you choose a project. The project picker then shows projects available on that destination. Connected hosts that need a newer Orca server stay visible but disabled, with an **Update server** message, instead of disappearing from the picker.
+When you create an automation in the desktop UI, **Create on** chooses its host before you choose a project. The project picker then shows projects available on that destination. Connected hosts that need a newer OCC server stay visible but disabled, with an **Update server** message, instead of disappearing from the picker.
 
 ## Missed-run grace
 
@@ -117,9 +117,9 @@ orca automations create \
   --extra-agent-args="--model opus --add-dir docs"
 ```
 
-On each fresh run, Orca starts from the host's default Arguments for that agent and appends the extras. A model or effort option in the extras replaces the one in the defaults. Pass the value with `=` because it starts with `--`.
+On each fresh run, OCC starts from the host's default Arguments for that agent and appends the extras. A model or effort option in the extras replaces the one in the defaults. Pass the value with `=` because it starts with `--`.
 
-Saved extras use the same quoting on every host, including Windows: wrap values containing spaces in single or double quotes, and use single quotes to preserve backslashes in paths, such as `--add-dir 'C:\work\my docs'`. Orca passes these as literal arguments; shell commands and expansions are not supported.
+Saved extras use the same quoting on every host, including Windows: wrap values containing spaces in single or double quotes, and use single quotes to preserve backslashes in paths, such as `--add-dir 'C:\work\my docs'`. OCC passes these as literal arguments; shell commands and expansions are not supported.
 
 Extras accept only model and effort options, plus Claude's `--add-dir`, for Claude, Codex, CodeBuddy, Cursor, Grok, and OMP. Permission, config, prompt, and session options are rejected. Extras require a fresh session for every run, so they can't be combined with `--reuse-session`. Use `orca automations edit <automationId> --extra-agent-args=` to clear them.
 
@@ -145,16 +145,16 @@ Use `edit` to change the name, prompt, provider, target, schedule, or enabled st
 
 After creating an automation, trigger it manually to check the prompt and target before waiting for the next scheduled time:
 
-**Run now** in Orca and `orca automations run` intentionally bypass the precheck, so you can test the automation or override its scheduled condition.
+**Run now** in OCC and `orca automations run` intentionally bypass the precheck, so you can test the automation or override its scheduled condition.
 
 ```bash
 orca automations run <automationId> --json
 orca automations runs --id <automationId> --json
 ```
 
-If a run fails before it opens a workspace or reconnects to its target, open that run in Orca and click **Rerun** to queue a fresh manual run for the same automation.
+If a run fails before it opens a workspace or reconnects to its target, open that run in OCC and click **Rerun** to queue a fresh manual run for the same automation.
 
 ## Next steps
 
-- [Orca CLI overview](/docs/cli/overview) — see the rest of the CLI surface for worktrees, terminals, and browser control.
-- [Skills registry & MCP](/docs/cli/skills) — install the Orca CLI skill so agents can call the same commands.
+- [OCC CLI overview](/docs/cli/overview) — see the rest of the CLI surface for worktrees, terminals, and browser control.
+- [Skills registry & MCP](/docs/cli/skills) — install the OCC CLI skill so agents can call the same commands.

@@ -15,7 +15,7 @@ import { resolveEnvironment } from './web-runtime-session'
 import { createBrowserUuid } from '@/lib/browser-uuid'
 
 const ATTACHMENT_CALL_TIMEOUT_MS = 30_000
-const SERVER_CHANGED = 'The paired Orca server changed while the request was in progress.'
+const SERVER_CHANGED = 'The paired OCC server changed while the request was in progress.'
 
 /** Pin every chunk to the paste’s server/process; re-pair or process replacement ends the upload, matching desktop. */
 async function callPinned<TResult>(

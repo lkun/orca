@@ -1,22 +1,22 @@
 ---
-title: Orca CLI overview
-description: Use the Orca CLI to script Orca from a terminal, manage worktrees, control agent terminals, automate the built-in browser, and install agent skills.
+title: OCC CLI overview
+description: Use the OCC CLI to script OCC from a terminal, manage worktrees, control agent terminals, automate the built-in browser, and install agent skills.
 keywords:
   - orca cli
-  - Orca CLI
+  - OCC CLI
   - orca command line
-  - Orca skills
+  - OCC skills
   - npx skills add
   - agent CLI
 ---
 
 import { Callout } from '@/components/docs/prose'
 
-The Orca CLI is the `orca` command-line interface for scripting a running Orca editor from any shell. Use it to create and inspect worktrees, drive agent terminals, open files and diffs, automate the built-in browser, run scheduled automations, share HTML/Markdown artifacts, and control Orca-native tools from scripts or AI agents.
+The OCC CLI is the `orca` command-line interface for scripting a running OCC editor from any shell. Use it to create and inspect worktrees, drive agent terminals, open files and diffs, automate the built-in browser, run scheduled automations, share HTML/Markdown artifacts, and control OCC-native tools from scripts or AI agents.
 
-It ships with the desktop app; register it under [Settings → General → Orca CLI](/docs/settings). On Linux the command is `orca-ide`, because GNOME Orca's screen reader already owns `/usr/bin/orca` — see [Install → Linux](/docs/install#linux).
+It ships with the desktop app; register it under [Settings → General → OCC CLI](/docs/settings). On Linux the command is `occ-ide`, because GNOME OCC's screen reader already owns `/usr/bin/occ` — see [Install → Linux](/docs/install#linux).
 
-Agents can install the matching Orca CLI skill with:
+Agents can install the matching OCC CLI skill with:
 
 ```bash
 npx skills add https://github.com/stablyai/orca --skill orca-cli
@@ -24,7 +24,7 @@ npx skills add https://github.com/stablyai/orca --skill orca-cli
 orca skills install --skill orca-cli
 ```
 
-See [Skills registry & MCP](/docs/cli/skills) for every installable Orca skill, including `orca skills install` / `orca skills update`.
+See [Skills registry & MCP](/docs/cli/skills) for every installable OCC skill, including `orca skills install` / `orca skills update`.
 
 ## Install & verify
 
@@ -46,7 +46,7 @@ orca worktree set --worktree active --pr null --json
 orca worktree rm --worktree id:<id> --force --json
 ```
 
-For selectors, setup flags, parent/child worktrees, and the broader command map, see [Orca CLI reference](/docs/cli/reference).
+For selectors, setup flags, parent/child worktrees, and the broader command map, see [OCC CLI reference](/docs/cli/reference).
 
 ## Terminal commands
 
@@ -63,7 +63,7 @@ For tracked multi-agent work, use [Orchestration](/docs/cli/orchestration) inste
 
 ## File commands
 
-Open files and diffs as tabs in their Orca worktree from a shell. They open without changing what you are looking at; add `--focus` to be brought to the file:
+Open files and diffs as tabs in their OCC worktree from a shell. They open without changing what you are looking at; add `--focus` to be brought to the file:
 
 ```
 orca file open src/App.tsx
@@ -79,11 +79,11 @@ Browser profiles isolate tab session state, so a script or agent can test with d
 
 ## Scheduled automations
 
-Use `orca automations` to create, inspect, run, and remove scheduled Orca tasks from a shell. Start with [Scheduled automations](/docs/cli/automations) when you want a recurring prompt to run against a repo or an existing worktree.
+Use `orca automations` to create, inspect, run, and remove scheduled OCC tasks from a shell. Start with [Scheduled automations](/docs/cli/automations) when you want a recurring prompt to run against a repo or an existing worktree.
 
 ## Artifacts
 
-Share HTML or Markdown as public view links through the signed-in Orca account (`orca artifacts share|update|list|delete`). Publishing is **opt-in** under Settings → Artifacts. Command details: [CLI reference → Artifacts](/docs/cli/reference#artifacts).
+Share HTML or Markdown as public view links through the signed-in OCC account (`orca artifacts share|update|list|delete`). Publishing is **opt-in** under Settings → Artifacts. Command details: [CLI reference → Artifacts](/docs/cli/reference#artifacts).
 
 ## Browser automation
 
@@ -106,7 +106,7 @@ orca screenshot --json
 
 ## Mobile emulator
 
-The CLI can also drive an iOS Simulator through Orca's mobile emulator bridge. It is scoped to the active worktree, so agents and scripts can attach a simulator from `orca emulator list`, tap normalized coordinates, type text, send gestures, rotate the device, and shut it down without leaving Orca.
+The CLI can also drive an iOS Simulator through OCC's mobile emulator bridge. It is scoped to the active worktree, so agents and scripts can attach a simulator from `orca emulator list`, tap normalized coordinates, type text, send gestures, rotate the device, and shut it down without leaving OCC.
 
 ```
 orca emulator list --json
@@ -121,7 +121,7 @@ orca emulator kill --json
 Use `--worktree <selector>`, `--device <udid-or-name>`, or `--emulator <id>` when a script needs an explicit target.
 
 <Callout>
-  For the full command surface including tabs, waits, cookies, and frames, see [Orca CLI
-  reference](/docs/cli/reference), then install the Orca CLI skill (see [Skills
+  For the full command surface including tabs, waits, cookies, and frames, see [OCC CLI
+  reference](/docs/cli/reference), then install the OCC CLI skill (see [Skills
   registry](/docs/cli/skills)) and point your agent at it.
 </Callout>

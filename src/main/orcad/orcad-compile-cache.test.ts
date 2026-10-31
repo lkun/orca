@@ -14,7 +14,7 @@ const managed = {
 describe('managed orcad compile cache', () => {
   it('never writes into a slot no client manages, such as a packaged app', () => {
     const enableCompileCache = vi.fn()
-    enableManagedOrcadCompileCache('/Applications/Orca.app/orcad', {}, { enableCompileCache })
+    enableManagedOrcadCompileCache('/Applications/OCC.app/orcad', {}, { enableCompileCache })
     expect(enableCompileCache).not.toHaveBeenCalled()
   })
 

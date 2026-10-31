@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import { createSequencedSetupAgentCommands } from './setup-agent-sequencing'
 
-// Fresh bash -lc does not read Orca’s wrapper; the gate must enforce codex --no-daemon itself.
+// Fresh bash -lc does not read OCC’s wrapper; the gate must enforce codex --no-daemon itself.
 const roots: string[] = []
 const gates: ChildProcess[] = []
 

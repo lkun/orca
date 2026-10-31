@@ -41,7 +41,7 @@ export const BROWSER_UNAVAILABLE_ERROR_CODE = 'browser_unavailable' as const
 // Render actionable per-cause messages host-side so older clients can display reasons they cannot decode.
 const BROWSER_UNAVAILABLE_MESSAGES: Record<RuntimeBrowserUnavailableReason, string> = {
   unconfigured:
-    'Browser automation has no backend on this host. Install the Orca desktop app, or set ORCA_BROWSER_EXECUTABLE to a Chromium executable.',
+    'Browser automation has no backend on this host. Install the OCC desktop app, or set ORCA_BROWSER_EXECUTABLE to a Chromium executable.',
   driver_missing:
     'ORCA_BROWSER_EXECUTABLE is set, but the bundled agent-browser driver is missing or not executable on this host, so Chromium cannot be driven.',
   executable_not_found: 'ORCA_BROWSER_EXECUTABLE points at a path that does not exist.',
@@ -129,7 +129,7 @@ export type CliStatusResult = {
   graph: {
     state: RuntimeGraphStatus | 'not_running' | 'starting'
   }
-  /** This process's Orca session ID when it runs as an Orca session; see `CliStatusCaller`. */
+  /** This process's OCC session ID when it runs as an OCC session; see `CliStatusCaller`. */
   caller?: CliStatusCaller
 }
 

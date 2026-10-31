@@ -101,7 +101,7 @@ describe('clearBrowserExtensionSessionData', () => {
     await clearBrowserExtensionSessionData(opened, ID)
     // Chromium still holds the open database, so the launch sweep deletes it instead.
     expect(existsSync(folder)).toBe(true)
-    expect(() => throwIfBrowserExtensionStorageAwaitingRestart(opened, ID)).toThrow('Restart Orca')
+    expect(() => throwIfBrowserExtensionStorageAwaitingRestart(opened, ID)).toThrow('Restart OCC')
 
     const sess = fakeSession(false, partition)
     await clearBrowserExtensionSessionData(sess, ID)
@@ -125,7 +125,7 @@ describe('clearBrowserExtensionSessionData', () => {
     loaded = false
     await removeUninstalledBrowserExtensionData(sess, 'rewritten', new Set())
     expect(existsSync(join(folder, 'orca-uninstalled'))).toBe(true)
-    expect(() => throwIfBrowserExtensionStorageAwaitingRestart(sess, ID)).toThrow('Restart Orca')
+    expect(() => throwIfBrowserExtensionStorageAwaitingRestart(sess, ID)).toThrow('Restart OCC')
     const nextLaunch = fakeSession(false, partition)
     await removeUninstalledBrowserExtensionData(nextLaunch, 'rewritten', new Set([ID]))
     expect(existsSync(folder)).toBe(false)
@@ -187,7 +187,7 @@ describe('removeUninstalledBrowserExtensionData', () => {
     expect(existsSync(folder)).toBe(false)
   })
 
-  // Uninstall reaches only the Orca profile open at the time; others are swept when they attach.
+  // Uninstall reaches only the OCC profile open at the time; others are swept when they attach.
   it("forgets this profile's saved grants and sync items of uninstalled extensions", async () => {
     const states = getBrowserExtensionProfileStateStore()
     const sync = getBrowserExtensionSyncStorageStore()
@@ -211,8 +211,8 @@ describe('removeUninstalledBrowserExtensionData', () => {
   })
 })
 
-describe('uninstall while another Orca profile is inactive', () => {
-  it('clears native and origin data and grants after uninstall and reinstall in another Orca profile', async () => {
+describe('uninstall while another OCC profile is inactive', () => {
+  it('clears native and origin data and grants after uninstall and reinstall in another OCC profile', async () => {
     const personalDirectory = mkdtempSync(join(tmpdir(), 'orca-extension-personal-'))
     const workDirectory = mkdtempSync(join(tmpdir(), 'orca-extension-work-'))
     async function openOrcaProfile(directory: string) {

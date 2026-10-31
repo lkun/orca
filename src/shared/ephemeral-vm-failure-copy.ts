@@ -12,7 +12,7 @@ export const EPHEMERAL_VM_FAILURE_COPY = {
   recipeExitedWithoutCode: 'Recipe exited with code unknown.',
   recipeResultMissing: 'Recipe produced no JSON result.',
   recipeResultNotJsonObject: 'Recipe stdout must be one JSON object.',
-  recipeResultPairingCodeInvalid: 'Recipe result pairingCode is not a valid Orca pairing code.',
+  recipeResultPairingCodeInvalid: 'Recipe result pairingCode is not a valid OCC pairing code.',
   recipeResultProjectRootNotAbsolute: 'Recipe result projectRoot must be an absolute runtime path.',
   provisionedRootResultRequired:
     'Provisioned-root recipes must return schemaVersion 2 with checkoutMode "provisioned-root".',

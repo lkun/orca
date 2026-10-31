@@ -12,9 +12,9 @@ const {
   refreshProbeMock
 } = vi.hoisted(() => ({
   trackMock: vi.fn(),
-  getPathMock: vi.fn(() => '/Applications/Orca.app/Contents/MacOS/Orca'),
+  getPathMock: vi.fn(() => '/Applications/OCC.app/Contents/MacOS/OCC'),
   opendirMock: vi.fn(),
-  readMacosBundleIdMock: vi.fn<() => Promise<string | null>>(async () => 'com.stablyai.orca'),
+  readMacosBundleIdMock: vi.fn<() => Promise<string | null>>(async () => 'com.lkun.occ'),
   resetMacosTccPermissionMock: vi.fn<() => Promise<{ ok: boolean; detail?: string }>>(async () => ({
     ok: true
   })),
@@ -55,9 +55,9 @@ function fakeDir(): { read: ReturnType<typeof vi.fn>; close: ReturnType<typeof v
 beforeEach(() => {
   setPlatform('darwin')
   trackMock.mockReset()
-  getPathMock.mockReset().mockReturnValue('/Applications/Orca.app/Contents/MacOS/Orca')
+  getPathMock.mockReset().mockReturnValue('/Applications/OCC.app/Contents/MacOS/OCC')
   opendirMock.mockReset().mockResolvedValue(fakeDir())
-  readMacosBundleIdMock.mockReset().mockResolvedValue('com.stablyai.orca')
+  readMacosBundleIdMock.mockReset().mockResolvedValue('com.lkun.occ')
   resetMacosTccPermissionMock.mockReset().mockResolvedValue({ ok: true })
   getTargetMock
     .mockReset()
@@ -121,8 +121,8 @@ describe('resetFolderAccessForDaemon runs the remedy', () => {
 
     await resetFolderAccessForDaemon(DAEMON)
 
-    expect(readMacosBundleIdMock).toHaveBeenCalledWith('/Applications/Orca.app')
-    expect(resetMacosTccPermissionMock).toHaveBeenCalledWith(service, 'com.stablyai.orca')
+    expect(readMacosBundleIdMock).toHaveBeenCalledWith('/Applications/OCC.app')
+    expect(resetMacosTccPermissionMock).toHaveBeenCalledWith(service, 'com.lkun.occ')
   })
 
   it('reads the folder from the app, then forces a fresh-daemon re-probe', async () => {

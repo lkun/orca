@@ -95,7 +95,7 @@ export async function copyFileToOsClipboard(
   }
   const stagingFailureMessage = translate(
     'auto.components.right.sidebar.FileExplorerRow.clipboardStagingUnavailable',
-    "Could not copy the file because Orca's temporary storage is unavailable"
+    "Could not copy the file because OCC's temporary storage is unavailable"
   )
   try {
     const result = await window.api.ui.writeClipboardFile(

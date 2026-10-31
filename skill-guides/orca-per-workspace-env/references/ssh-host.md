@@ -3,14 +3,14 @@
 Load this when the recipe connects over SSH instead of starting `orca serve`, and when the user has
 explicitly asked for `checkoutMode: provisioned-root`.
 
-SSH mode is a different shape, not the Orca-server templates relabeled. `create` runs no
-`orca serve` and emits no `pairingCode`. Orca connects over its SSH relay, brings up the git and
+SSH mode is a different shape, not the OCC-server templates relabeled. `create` runs no
+`orca serve` and emits no `pairingCode`. OCC connects over its SSH relay, brings up the git and
 filesystem providers, and imports the repo. The script only readies the host and prints the SSH
-details Orca dials.
+details OCC dials.
 
 ## The result shape
 
-Orca rejects anything else. Required fields only; add optionals from the next section as the
+OCC rejects anything else. Required fields only; add optionals from the next section as the
 network needs them.
 
 ```json
@@ -45,7 +45,7 @@ These describe how the user's desktop reaches the box; there is no `orca serve` 
 - A service port the workspace needs is an entry in `portForwards`. Each entry requires
   `localPort`, `remoteHost`, and `remotePort`, and takes an optional `label`. The entry schema is
   strict, so an invented key such as `local` or `remote` fails validation.
-- `relayGracePeriodSeconds` bounds how long Orca keeps the SSH relay alive after the workspace
+- `relayGracePeriodSeconds` bounds how long OCC keeps the SSH relay alive after the workspace
   detaches. **`0` means unbounded**: the relay stays up until something explicitly terminates it, so
   it is the wrong value for a disposable runtime. Any other value must be between 60 and 604800
   seconds. A value between 1 and 59, such as `30`, is rejected and takes the whole recipe result
@@ -97,7 +97,7 @@ ssh "${ssh_opts[@]}" "$ssh_target" "$(printf \
   'project_root=%q repo_url=%q repo_ref=%q bash -lc %q' \
   "$project_root" "$repo_url" "$repo_ref" "$remote_sync")" >&2
 
-# 2. print the SSH connection block (NO pairingCode, NO orca serve). host/port/username tell Orca's
+# 2. print the SSH connection block (NO pairingCode, NO orca serve). host/port/username tell OCC's
 #    relay how to dial in; identityFile/jumpHost/proxyCommand/portForwards are emitted when set.
 node -e 'const [host,port,user,idf,jh,pc,root]=process.argv.slice(1);
   const target={ label:"per-workspace-host", host, port:Number(port), username:user };
@@ -108,7 +108,7 @@ node -e 'const [host,port,user,idf,jh,pc,root]=process.argv.slice(1);
 ```
 
 On a persistent host there is usually nothing to tear down, so set `destroy: none` and omit suspend
-and resume. Orca still disconnects and reconnects its own SSH relay on sleep, wake, and delete, which
+and resume. OCC still disconnects and reconnects its own SSH relay on sleep, wake, and delete, which
 is separate from these scripts.
 
 If the SSH host is instead an ephemeral, snapshot-capable VM — the user's hypervisor, or a cloud VM
@@ -123,7 +123,7 @@ For an explicitly requested one-VM-per-workspace checkout, the create script rea
 `ORCA_REPO_BRANCH`. Use `ORCA_REPO_REF` to fetch the selected source, but create `ORCA_REPO_BRANCH`
 at the exact `ORCA_REPO_REF_HEAD` commit, because resolving the symbolic ref again can race with an
 upstream update. `ORCA_REPO_URL` and `ORCA_REPO_REF` are a matched fetch pair, and the URL is the
-remote Orca resolved the base ref against, which is not necessarily named `origin` on the desktop.
+remote OCC resolved the base ref against, which is not necessarily named `origin` on the desktop.
 Fetch from the URL the pair supplies:
 
 ```bash

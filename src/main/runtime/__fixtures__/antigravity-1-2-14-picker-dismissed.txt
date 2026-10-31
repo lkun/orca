@@ -28,10 +28,10 @@
 [28C[2mGemini 3.8 Flash · high[m[2A[2C[?25h[?25l/mo
 
 [94m> /model[26X[26C[m  [2mSet a model, or run a single prompt on another model[m[K
-  /mobile-app-store-release         [2mCut an Orca Mobile release: Use for "release Orca Mobile", "submit the iOS app f...[m[K
-  /mobile-backcompat-review         [2mReview Orca Mobile AND mobile-facing desktop changes for backwards compatibility...[m[K
+  /mobile-app-store-release         [2mCut an OCC Mobile release: Use for "release OCC Mobile", "submit the iOS app f...[m[K
+  /mobile-backcompat-review         [2mReview OCC Mobile AND mobile-facing desktop changes for backwards compatibility...[m[K
   /ui-html-mock[21X[21C[2mCreate disposable HTML mocks for non-trivial UI planning before implementation. ...[m[K
-  /orca-mobile-emulator-qa          [2mLaunch and validate Orca Mobile in an Android emulator or Orca-managed iOS Simul...[m[K
+  /orca-mobile-emulator-qa          [2mLaunch and validate OCC Mobile in an Android emulator or OCC-managed iOS Simul...[m[K
 [2m   ↓ 12 more[m[K
 [K
   [94;1m↑/↓[90;22m Navigate · [94;1menter[90;22m Select · [94;1mtab[90;22m Complete[m[K

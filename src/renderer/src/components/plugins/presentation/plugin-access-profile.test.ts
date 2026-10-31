@@ -92,7 +92,7 @@ describe('pluginTrust', () => {
     expect(trust).toMatchObject({ worker: false, declarative: true, panel: true })
     expect(pluginTrustWarnings(trust)).toEqual([
       'Its commands can act for you or your agents',
-      "Runs the publisher's code inside Orca to draw its view. Orca shows what it can access and asks before enabling it."
+      "Runs the publisher's code inside OCC to draw its view. OCC shows what it can access and asks before enabling it."
     ])
   })
 
@@ -100,7 +100,7 @@ describe('pluginTrust', () => {
     const trust = pluginTrust({ execution: 'sandboxed-ui', points: new Set(['panels']) })
     expect(pluginTrustLabel(trust)).toBe('Adds a panel')
     expect(pluginTrustWarnings(trust)).toEqual([
-      "Runs the publisher's code inside Orca to draw its view. Orca shows what it can access and asks before enabling it."
+      "Runs the publisher's code inside OCC to draw its view. OCC shows what it can access and asks before enabling it."
     ])
     expect(
       pluginTrustLabel(

@@ -1,6 +1,6 @@
 import { CapabilityProbeCache } from '../../../shared/capability-probe-cache'
 
-// Retry missing RPCs periodically so in-place Codex upgrades recover without restarting Orca.
+// Retry missing RPCs periodically so in-place Codex upgrades recover without restarting OCC.
 export const CODEX_APP_SERVER_CAPABILITY_RETRY_INTERVAL_MS = 30 * 60_000
 export const CODEX_APP_SERVER_CAPABILITY_MAX_ENTRIES = 256
 

@@ -14,7 +14,7 @@ const ROLLOUT_RELATIVE_PATH = join(
   'rollout-2026-08-17T10-00-00-session.jsonl'
 )
 
-// Why: session backfill resolves Orca's managed Codex home from userData, which otherwise resolves to the live one.
+// Why: session backfill resolves OCC's managed Codex home from userData, which otherwise resolves to the live one.
 let userDataRoot: string
 beforeEach(() => {
   userDataRoot = mkdtempSync(join(tmpdir(), 'orca-codex-resume-user-data-'))

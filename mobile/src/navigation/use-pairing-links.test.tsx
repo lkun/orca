@@ -40,7 +40,7 @@ async function mountPairingRoot(): Promise<ReactTestRenderer> {
 }
 
 it('handles a cold link once and keeps warm links working after recovery remount', async () => {
-  links.initial.mockResolvedValue('orca://pair?code=cold-code')
+  links.initial.mockResolvedValue('occ://pair?code=cold-code')
   const first = await mountPairingRoot()
   expect(links.replace).toHaveBeenCalledExactlyOnceWith({
     pathname: '/pair-confirm',
@@ -54,7 +54,7 @@ it('handles a cold link once and keeps warm links working after recovery remount
   expect(links.initial).toHaveBeenCalledTimes(1)
   await act(async () => {
     for (const listener of links.listeners) {
-      listener({ url: 'orca://pair?code=warm-code' })
+      listener({ url: 'occ://pair?code=warm-code' })
     }
   })
   expect(links.replace).toHaveBeenLastCalledWith({
@@ -75,7 +75,7 @@ it('does not redirect Home when a pending launch-link read completes after recov
   const first = await mountPairingRoot()
   await act(async () => first.unmount())
   const recovered = await mountPairingRoot()
-  await act(async () => resolveUrl('orca://pair?code=stale-code'))
+  await act(async () => resolveUrl('occ://pair?code=stale-code'))
   expect(links.replace).not.toHaveBeenCalled()
   await act(async () => recovered.unmount())
 })

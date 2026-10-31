@@ -84,7 +84,7 @@ describe('createWorkspaceFromComposerSource', () => {
       }
     })
     expect(result).toEqual({
-      error: expect.stringContaining('Update Orca on the workspace host')
+      error: expect.stringContaining('Update OCC on the workspace host')
     })
     expect(methods).toEqual(['status.get'])
   })

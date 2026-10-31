@@ -12,7 +12,7 @@ import {
   type WorktreePushTargetStore
 } from './worktree-push-target-cleanup'
 
-// Orca-shaped names only narrow candidates; provenance must independently prove ownership.
+// OCC-shaped names only narrow candidates; provenance must independently prove ownership.
 const ORCA_PR_REMOTE_NAME_PATTERN =
   /^pr-(?:head|[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)(?:-[0-9]{1,2})?$/
 

@@ -36,7 +36,7 @@ async function finalScreen(name: string): Promise<string> {
 }
 
 describe('OpenCode 2 submits an Enter sent after the agent row and drops one sent before it', () => {
-  it('submits the brief when Orca pastes on the agent row', async () => {
+  it('submits the brief when OCC pastes on the agent row', async () => {
     const name = 'opencode-2-0-21-timed-enter-after-agent-row'
     const { promptSentAtMs } = readTimedRuntimeFixture(name)
     expect(readyAtMs(name, AGENT_ROW_SIGNAL)).toBeLessThan(promptSentAtMs!)
@@ -57,7 +57,7 @@ describe('OpenCode 2 submits an Enter sent after the agent row and drops one sen
     expect(await finalScreen(name)).toContain(HELD_PASTE)
   })
 
-  it('submits the brief Orca pastes at the grace in a pane too narrow for the agent row', async () => {
+  it('submits the brief OCC pastes at the grace in a pane too narrow for the agent row', async () => {
     const name = 'opencode-2-0-21-timed-narrow-pane'
     const { promptSentAtMs } = readTimedRuntimeFixture(name)
     expect(readyAtMs(name, BOX_CURSOR_SIGNAL)).toBeLessThan(promptSentAtMs!)

@@ -82,7 +82,7 @@ export function serveWithOrcad(
       // The desktop's profile: its instance lock makes the two refuse each other.
       ORCA_USER_DATA: userDataPath,
       ORCA_VERSION: selection.version,
-      // Always set: a value inherited from an Orca terminal would name another install's copy.
+      // Always set: a value inherited from an OCC terminal would name another install's copy.
       [SPEECH_RECOGNIZER_DIR_ENV]: speechRecognizerDir ?? ''
     }
   }

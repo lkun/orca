@@ -143,7 +143,7 @@ describe('a refused tree-kill still terminates the root it owns', () => {
     expect(windowsChild.kill).toHaveBeenCalledWith('SIGKILL')
   })
 
-  it('still signals the POSIX process group: a group only holds what Orca put in it', async () => {
+  it('still signals the POSIX process group: a group only holds what OCC put in it', async () => {
     // Stale Electron metrics must not orphan an owned POSIX process group.
     setPlatform('linux')
     const posixChild = { pid: RENDERER_PID, kill: vi.fn(), exitCode: null, signalCode: null }

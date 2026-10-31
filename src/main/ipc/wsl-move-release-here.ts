@@ -178,7 +178,7 @@ async function releaseWslMovesHereNow(
   }
 }
 
-/** R39: removed here but kept running for another Orca; only re-adding the host reaches it again. */
+/** R39: removed here but kept running for another OCC; only re-adding the host reaches it again. */
 function wslMoveHostKeptForPeers(userDataPath: string, move: WslMoveCutover): boolean {
   return (
     wasWslHostKeptForPeers(userDataPath, move.destinationEnvironmentId) &&

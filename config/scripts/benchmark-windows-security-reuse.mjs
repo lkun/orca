@@ -30,7 +30,7 @@ import { hash } from './windows-native-benchmark-observer.mjs'
 
 const ROOT = resolve(import.meta.dirname, '../..')
 const { PE_MACHINE, readPeMachine } = createRequire(import.meta.url)('./windows-pe-machine.cjs')
-const invalidCandidate = Buffer.from('orca-windows-security-qualification-invalid')
+const invalidCandidate = Buffer.from('occ-windows-security-qualification-invalid')
 const preparedPath = (root) =>
   join(root, 'native/windows-security/build/Release/orca_windows_security.node')
 

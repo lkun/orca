@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Seeds an empty dev profile with a slim copy of another Orca profile's durable configuration.
+// Seeds an empty dev profile with a slim copy of another OCC profile's durable configuration.
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import {
@@ -35,7 +35,7 @@ export const SEEDED_PROFILE_STATE_DOMAINS = [
   'deletedSshConfigAliases',
   'removedSshTargetTombstones'
 ]
-// Orca account session (encrypted with the app's safeStorage key).
+// OCC account session (encrypted with the app's safeStorage key).
 const SEEDED_PROFILE_FILES = ['account-session.json.enc']
 // Why Local State: on Windows it holds the DPAPI-wrapped key that decrypts safeStorage secrets.
 const SEEDED_ROOT_FILES = ['Local State']
@@ -43,7 +43,7 @@ const PROFILE_INDEX_FILE = 'orca-profile-index.json'
 const LEGACY_DATA_FILE = 'orca-data.json'
 const PROFILE_STATE_DATABASE_FILE = 'profile-state.db'
 const PROFILE_ID_PATTERN = /^[A-Za-z0-9._-]+$/
-export const SEED_RECEIPT_FILE = 'orca-dev-seed.json'
+export const SEED_RECEIPT_FILE = 'occ-dev-seed.json'
 
 export function profileHasState(userDataPath) {
   return (
@@ -53,7 +53,7 @@ export function profileHasState(userDataPath) {
   )
 }
 
-/** Prefer orca-dev: dev builds share its safeStorage key, so its account session stays decryptable. */
+/** Prefer occ-dev: dev builds share its safeStorage key, so its account session stays decryptable. */
 export function getDefaultSeedSource(env = process.env, platform = process.platform) {
   const devProfile = getSharedDevUserDataPath(env, platform)
   if (profileHasState(devProfile)) {
@@ -64,7 +64,7 @@ export function getDefaultSeedSource(env = process.env, platform = process.platf
 
 async function readProfileStateDatabaseDomains(databasePath) {
   const { DatabaseSync } = await import('node:sqlite')
-  // Why readOnly: the source may belong to a running Orca; a reader never writes its pages.
+  // Why readOnly: the source may belong to a running OCC; a reader never writes its pages.
   const db = new DatabaseSync(databasePath, { readOnly: true })
   try {
     const domains = {}
@@ -118,7 +118,7 @@ function isInside(parent, child) {
 // Seed legacy JSON for first-launch SQLite migration; never copy live databases or write to sourceDir.
 export async function seedDevProfile({ sourceDir, targetDir, report = console.error }) {
   if (!profileHasState(sourceDir)) {
-    throw new Error(`Seed source has no Orca profile state: ${sourceDir}`)
+    throw new Error(`Seed source has no OCC profile state: ${sourceDir}`)
   }
   if (isInside(sourceDir, targetDir) || isInside(targetDir, sourceDir)) {
     throw new Error('Seed source and target must be separate directories')
@@ -149,7 +149,7 @@ export async function seedDevProfile({ sourceDir, targetDir, report = console.er
     }
     writePrivateJson(path.join(targetDir, PROFILE_INDEX_FILE), index)
   } else {
-    // Pre-profile layout: Orca migrates a root orca-data.json itself.
+    // Pre-profile layout: OCC migrates a root orca-data.json itself.
     const domains = JSON.parse(readFileSync(path.join(sourceDir, LEGACY_DATA_FILE), 'utf8'))
     writePrivateJson(path.join(targetDir, LEGACY_DATA_FILE), pickSeededDomains(domains))
   }
@@ -163,7 +163,7 @@ export async function seedDevProfile({ sourceDir, targetDir, report = console.er
     profiles: seededProfiles
   })
   report(
-    `[orca-dev] Seeded ${targetDir} from ${sourceDir} (${seededProfiles.length || 'legacy'} profile(s))`
+    `[occ-dev] Seeded ${targetDir} from ${sourceDir} (${seededProfiles.length || 'legacy'} profile(s))`
   )
 }
 
@@ -208,8 +208,8 @@ async function main() {
       [
         'Usage: pnpm dev:seed-profile [--from=<profile dir>] [--to=<profile dir>] [--reset]',
         '',
-        'Copies projects, workspaces, settings, SSH targets, and the Orca account session into an empty',
-        "dev profile. Default --from: orca-dev, else the installed app's profile. Default --to: this",
+        'Copies projects, workspaces, settings, SSH targets, and the OCC account session into an empty',
+        "dev profile. Default --from: occ-dev, else the installed app's profile. Default --to: this",
         "worktree's `pnpm dev` profile. --reset first deletes an existing per-worktree profile."
       ].join('\n')
     )
@@ -230,7 +230,7 @@ async function main() {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(import.meta.filename)) {
   main().catch((error) => {
-    console.error(`[orca-dev] ${error.message}`)
+    console.error(`[occ-dev] ${error.message}`)
     process.exitCode = 1
   })
 }

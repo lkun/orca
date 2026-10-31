@@ -82,7 +82,7 @@ const { setServers, mirroredStore, install, uninstallAll } = createServerHarness
 const TAB_1 = toWebTerminalSurfaceTabId('host-tab-1')
 const PANE_KEY = makePaneKey(TAB_1, LEAF_ID)
 const REOPENS: Server = { ...CAPABLE, reopensHeldPanes: true }
-const TITLE = 'This terminal was opened in a newer version of Orca'
+const TITLE = 'This terminal was opened in a newer version of OCC'
 const FAILED_TITLE = "Couldn't reopen this terminal"
 
 /** ENV's workspace with its one pane carrying `status`, as the server publishes it. */

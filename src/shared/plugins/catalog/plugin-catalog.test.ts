@@ -87,7 +87,7 @@ describe('plugin catalog', () => {
     )
     expect(parsed.plugins.map((plugin) => plugin.id)).toEqual(['acme.one', 'acme.two'])
     expect(parsed.plugins[0]).not.toHaveProperty('ownerId')
-    // Why strict: older Orca reads the cached listing back with this shape after a downgrade.
+    // Why strict: older OCC reads the cached listing back with this shape after a downgrade.
     const { name, owner, plugins } = parsed
     expect(pluginMarketplaceListingSchema.safeParse({ name, owner, plugins }).success).toBe(true)
   })
@@ -107,7 +107,7 @@ describe('plugin catalog', () => {
 
   it('refuses a newer catalog format with the fix, and requires the version', () => {
     expect(pluginCatalogVersionError(catalog([], { catalogVersion: 3 }))).toBe(
-      'uses catalog format 3; update Orca to browse this catalog'
+      'uses catalog format 3; update OCC to browse this catalog'
     )
     expect(pluginCatalogVersionError(catalog([]))).toBeNull()
     expect(
@@ -115,7 +115,7 @@ describe('plugin catalog', () => {
     ).toBe(false)
   })
 
-  it('offers the newest release this Orca can install', () => {
+  it('offers the newest release this OCC can install', () => {
     const releases = [
       release('3.0.0', '2.0.0'),
       release('2.0.0', '1.5.0'),
@@ -123,7 +123,7 @@ describe('plugin catalog', () => {
     ]
     expect(selectPluginCatalogRelease(releases, '1.6.0')?.version).toBe('2.0.0')
     expect(selectPluginCatalogRelease(releases, '2.1.0')?.version).toBe('3.0.0')
-    // Why the smallest: "Needs Orca X" should name the first Orca that unlocks anything.
+    // Why the smallest: "Needs OCC X" should name the first OCC that unlocks anything.
     expect(selectPluginCatalogRelease(releases, '1.0.0')?.version).toBe('1.0.0')
     expect(
       selectPluginCatalogRelease([release('2.0.0', '9.0.0'), release('1.0.0', '8.0.0')], '1.0.0')

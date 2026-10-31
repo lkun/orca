@@ -21,7 +21,7 @@ export function resolveSplitTarget(
       direction: 'horizontal'
     }
   }
-  // tmux -h means left/right; Orca names the vertical divider.
+  // tmux -h means left/right; OCC names the vertical divider.
   return { pane: targetPane, direction: horizontal ? 'vertical' : 'horizontal' }
 }
 

@@ -150,7 +150,7 @@ describe('quitAndStopAllSessionsFromUserCommand', () => {
     expect(consumeQuitAndStopAllSessionsRequest(MAIN_WEB_CONTENTS_ID)).toBe(false)
   })
 
-  it('leaves Orca and its sessions alone when the user cancels', async () => {
+  it('leaves OCC and its sessions alone when the user cancels', async () => {
     prompt.confirm.mockResolvedValue(false)
 
     quitAndStopAllSessionsFromUserCommand()

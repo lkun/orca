@@ -142,7 +142,7 @@ describe('Pi model catalog', () => {
           cwd: '/home/user',
           args: [...(command ? ['run', '--', 'pi'] : []), '--mode', 'rpc', '--no-session'],
           env: expect.objectContaining({ PI_CODING_AGENT_DIR: '/homes/pi-a' }),
-          // Orca's status extension stays silent in a probe that belongs to no pane.
+          // OCC's status extension stays silent in a probe that belongs to no pane.
           envToDelete: expect.arrayContaining(['ORCA_PANE_KEY'])
         })
       ])

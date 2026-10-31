@@ -116,7 +116,7 @@ test('a move a saved automation refuses offers Move anyway on the host card', as
     await card.hover()
     await card.getByRole('button', { name: 'Connect', exact: true }).click()
     await expect(card).toContainText(
-      'Some saved items for this host can’t move to its Orca server: automations (1), automation runs (2). Move anyway connects the host and keeps them on this computer.',
+      'Some saved items for this host can’t move to its OCC server: automations (1), automation runs (2). Move anyway connects the host and keeps them on this computer.',
       { timeout: 4 * 60_000 }
     )
     const toast = page.locator('[data-sonner-toast]').filter({ hasText: 'automations (1)' })

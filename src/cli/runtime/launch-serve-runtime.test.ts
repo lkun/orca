@@ -51,7 +51,7 @@ describe('orca serve host selection', () => {
     spawnMock.mockReset()
     resolveLocalServeRuntimeMock.mockReset()
     serveWithOrcadMock.mockReset()
-    process.env.ORCA_APP_EXECUTABLE = '/opt/orca/orca-ide'
+    process.env.ORCA_APP_EXECUTABLE = '/opt/occ/occ-ide'
     stderr = []
     vi.spyOn(process.stderr, 'write').mockImplementation((chunk) => {
       stderr.push(String(chunk))
@@ -89,7 +89,7 @@ describe('orca serve host selection', () => {
       serveWithOrcadMock.mockClear()
       await expect(serveOrcaApp({ supervise: true })).resolves.toBe(0)
       expect(serveWithOrcadMock).not.toHaveBeenCalled()
-      expect(stderr.join('')).toContain('Another Orca serves this profile')
+      expect(stderr.join('')).toContain('Another OCC serves this profile')
     } finally {
       await rm(root, { recursive: true, force: true })
     }
@@ -131,7 +131,7 @@ describe('orca serve host selection', () => {
 
     await expect(serveOrcaApp({ json: true })).resolves.toBe(0)
     expect(spawnMock).toHaveBeenCalledWith(
-      '/opt/orca/orca-ide',
+      '/opt/occ/occ-ide',
       expect.arrayContaining(['--serve', '--serve-json']),
       expect.any(Object)
     )

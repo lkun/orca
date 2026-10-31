@@ -156,7 +156,7 @@ describe('MCP ownership migration', () => {
     )
   })
 
-  it('keeps Orca-only servers in the retained shared home and drops ones removed from ~/.codex', () => {
+  it('keeps OCC-only servers in the retained shared home and drops ones removed from ~/.codex', () => {
     writeFileSync(
       join(runtimeHomePath, 'config.toml'),
       [

@@ -104,7 +104,7 @@ export async function sendRemoteRuntimeRequestOnSocket<TResult>(
       finishError(
         new RemoteRuntimeClientError(
           'runtime_timeout',
-          'Timed out waiting for the remote Orca runtime to respond.',
+          'Timed out waiting for the remote OCC runtime to respond.',
           { pairingStage: router.pairingStage }
         )
       )
@@ -160,7 +160,7 @@ export async function sendRemoteRuntimeRequestOnSocket<TResult>(
         if (request === null) {
           throw new RemoteRuntimeClientError(
             'remote_runtime_unavailable',
-            'Remote Orca runtime request was released before it could be sent.'
+            'Remote OCC runtime request was released before it could be sent.'
           )
         }
         const frame = handshake.channel.sealText(request)
@@ -243,7 +243,7 @@ export async function sendRemoteRuntimeRequestOnSocket<TResult>(
         finishError(
           new RemoteRuntimeClientError(
             'invalid_runtime_response',
-            'Remote Orca runtime returned an unexpected binary frame.',
+            'Remote OCC runtime returned an unexpected binary frame.',
             {
               pairingStage:
                 router.state === 'awaiting_ready' ? 'host-identity' : router.pairingStage

@@ -2,10 +2,10 @@ import type { z } from 'zod'
 import { stripUnsafeDisplayCharacters } from '../../display-text-safety'
 
 const LINE_BREAKS = /[\t\n\v\f\r\u0085\u2028\u2029]+/g
-/** Manifest and catalog keys whose strings Orca shows as plugin names, titles and listing text. */
+/** Manifest and catalog keys whose strings OCC shows as plugin names, titles and listing text. */
 const DISPLAY_TEXT_KEYS = new Set(['name', 'title', 'displayName', 'description', 'label'])
 
-/** Plugin text as Orca may show it: one line, with nothing that reorders or hides characters. */
+/** Plugin text as OCC may show it: one line, with nothing that reorders or hides characters. */
 export function sanitizePluginDisplayText(value: string): string {
   return stripUnsafeDisplayCharacters(value.replace(LINE_BREAKS, ' '))
 }
@@ -19,7 +19,7 @@ export function safePluginDisplayText(schema: z.ZodString): z.ZodString {
   return schema.minLength ? safe.min(schema.minLength, 'must contain visible characters') : safe
 }
 
-/** Dotted paths of display strings in a raw manifest or catalog that Orca would have to change. */
+/** Dotted paths of display strings in a raw manifest or catalog that OCC would have to change. */
 export function unsafePluginDisplayTextPaths(raw: unknown, path = ''): string[] {
   if (Array.isArray(raw)) {
     return raw.flatMap((item, index) => unsafePluginDisplayTextPaths(item, `${path}[${index}]`))

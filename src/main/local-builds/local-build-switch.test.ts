@@ -85,7 +85,7 @@ it('re-resolves dialog parents and preserves failure, cancellation and candidate
     if (mode === 'live') {
       openOptions = showOpenDialog.mock.calls[0]?.at(-1)
       confirmationOptions = showMessageBox.mock.calls[0]?.at(-1)
-      expect(openOptions).toMatchObject({ title: 'Choose a Local Orca Build' })
+      expect(openOptions).toMatchObject({ title: 'Choose a Local OCC Build' })
       expect(confirmationOptions).toMatchObject({ buttons: ['Use Local Build', 'Cancel'] })
     }
     expect(showOpenDialog).toHaveBeenCalledExactlyOnceWith(

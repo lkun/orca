@@ -173,7 +173,7 @@ describe('workspace linked references in hover details', () => {
     expect(screen.queryByText('Used for checks')).toBeNull()
     expect(screen.getAllByLabelText('Checks: Passing')).toHaveLength(1)
   })
-  it('offers Orca link destinations without activating the parent or dismissing hover', () => {
+  it('offers OCC link destinations without activating the parent or dismissing hover', () => {
     const openUrl = vi.fn()
     Object.defineProperty(window, 'api', { configurable: true, value: { shell: { openUrl } } })
     const parentClick = vi.fn()

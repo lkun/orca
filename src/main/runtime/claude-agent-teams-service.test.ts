@@ -15,7 +15,7 @@ function createServiceWithLeader(): {
     leaderHandle: 'leader-handle',
     baseEnv: { PATH: '/usr/bin' },
     shimDir: '/tmp/orca-shim',
-    shimBin: '/usr/bin/orca'
+    shimBin: '/usr/bin/occ'
   })
   expect(launch.env.ORCA_AGENT_TEAMS_SHIM_DIR).toBe('/tmp/orca-shim')
   const splitCalls: { handle: string; direction?: string; command?: string; envPane?: string }[] =

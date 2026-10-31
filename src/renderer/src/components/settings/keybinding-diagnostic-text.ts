@@ -33,7 +33,7 @@ function isReasonCode(code: unknown): code is KeybindingReasonCode {
   return typeof code === 'string' && Object.hasOwn(REASON_COPY, code)
 }
 
-/** Translates a coded Orca sentence; anything else (verbatim or unknown) stays as given. */
+/** Translates a coded OCC sentence; anything else (verbatim or unknown) stays as given. */
 function keybindingReasonText(code: unknown, english: string): string {
   return isReasonCode(code) ? REASON_COPY[code]() : english
 }

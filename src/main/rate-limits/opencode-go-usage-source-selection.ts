@@ -13,7 +13,7 @@ import {
 import { fetchOpenCodeGoRateLimits, normalizeCookieInput } from './opencode-go-usage-fetcher'
 
 export type OpenCodeGoUsageSourceInput = {
-  /** Explicit Orca override; the highest-precedence key tier. */
+  /** Explicit OCC override; the highest-precedence key tier. */
   settingsApiKey?: string
   environment?: NodeJS.ProcessEnv
   backend?: OpenCodeCredentialBackend

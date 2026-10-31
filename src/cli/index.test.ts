@@ -450,7 +450,7 @@ describe('unknown command surfaces a suggestion', () => {
       'orchestration.workerStart',
       expect.objectContaining({ worktree: 'repo-1', from: 'term-caller' })
     )
-    expect(stderr).toContain('No Orca workspace matched the worktree selector "repo-1"')
+    expect(stderr).toContain('No OCC workspace matched the worktree selector "repo-1"')
     expect(stderr).toContain('id:repo-1::<absolute-path>')
     expect(stderr).toContain('Valid selector forms:')
   })

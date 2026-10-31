@@ -132,7 +132,7 @@ export const SEND_FAILURE_COPY = {
   writeFailed: (values) =>
     translate(
       'session.failure.writeFailed',
-      "Orca couldn't hand this message to the agent, so it was not sent.",
+      "OCC couldn't hand this message to the agent, so it was not sent.",
       values
     ),
   cancelled: (values) =>
@@ -150,7 +150,7 @@ export const SEND_FAILURE_COPY = {
   hostRestarted: (values) =>
     translate(
       'session.failure.hostRestarted',
-      'Orca restarted before this message was sent.',
+      'OCC restarted before this message was sent.',
       values
     ),
   notDelivered: (values) =>

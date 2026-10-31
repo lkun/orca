@@ -248,7 +248,7 @@ describe('RuntimeFileCommands', () => {
         expect(() => child.emit('error', error)).not.toThrow()
       }
 
-      await expect(resultPromise).rejects.toThrow("Orca's bundled search tool (ripgrep)")
+      await expect(resultPromise).rejects.toThrow("OCC's bundled search tool (ripgrep)")
       expect(wslAwareSpawnMock).toHaveBeenCalledTimes(1)
       expect(child.listenerCount('error')).toBe(0)
       expect(child.listenerCount('close')).toBe(0)
@@ -295,7 +295,7 @@ describe('RuntimeFileCommands', () => {
     await flushRuntimeSearchMicrotasks()
     child.emit('close', 127, null)
 
-    await expect(resultPromise).rejects.toThrow("Orca's bundled search tool (ripgrep)")
+    await expect(resultPromise).rejects.toThrow("OCC's bundled search tool (ripgrep)")
   })
 
   it('runs host rg for a Windows drive root even under a WSL project runtime', async () => {

@@ -13,7 +13,7 @@ const SESSION_C = '2f4b6d8c-0e3a-4c5d-9f7b-1a2c4e6d8fa3'
 const UNCAPPED = Number.MAX_SAFE_INTEGER
 const SYSTEM = { kind: 'system' } as const
 
-describe('structured worker Orca session id backfill', () => {
+describe('structured worker OCC session id backfill', () => {
   let db: OrchestrationDb
 
   afterEach(() => db?.close())
@@ -108,7 +108,7 @@ describe('structured worker Orca session id backfill', () => {
     }
   })
 
-  it('fills only NULLs and never rewrites an Orca session id a writer recorded', () => {
+  it('fills only NULLs and never rewrites an OCC session id a writer recorded', () => {
     db = new OrchestrationDb(':memory:')
     const handle = mintStructuredWorkerHandle()
     const id = dispatch({
@@ -125,7 +125,7 @@ describe('structured worker Orca session id backfill', () => {
     expect(orcaSessionIds(id).assignee).toBe(SESSION_C)
   })
 
-  it("fills a worker-coordinated Run over an Orca session id an older binding's generation left behind", () => {
+  it("fills a worker-coordinated Run over an OCC session id an older binding's generation left behind", () => {
     db = new OrchestrationDb(':memory:')
     const runFor = (sessionId: string): string => {
       const handle = mintStructuredWorkerHandle()

@@ -1,6 +1,6 @@
 import type { PackIndexMaintenanceOutcome } from './repo-pack-index-maintenance-policy'
 
-/** Compensate for Orca fetches disabling Git auto-maintenance: pack loose refs after a quiet period.
+/** Compensate for OCC fetches disabling Git auto-maintenance: pack loose refs after a quiet period.
  * Execution hosts own Git/filesystem access and supply host-scoped target identities. */
 
 /** Conservative threshold for unsolicited maintenance; well above Git 2.47’s files-backend heuristic
@@ -61,7 +61,7 @@ export type RepoRefMaintenanceTarget = {
   readonly key: string
   /** Absolute `refs/` path *on the host that runs the walk*, or undefined if unresolvable. */
   resolveRefsDirectory(signal: AbortSignal): Promise<string | undefined>
-  /** A user who told Git not to auto-maintain this repo has told Orca too. */
+  /** A user who told Git not to auto-maintain this repo has told OCC too. */
   isOptedOut?(signal: AbortSignal): Promise<boolean>
   /** True while work on *this repo* is in flight -- a fetch, a create, a removal. */
   isBusy?(): boolean
@@ -95,7 +95,7 @@ export type RepoRefMaintenanceOptions = {
   onError?: (error: unknown) => void
 }
 
-/** Marks an abort Orca asked for, so the attempt is retried rather than blamed on the repo. */
+/** Marks an abort OCC asked for, so the attempt is retried rather than blamed on the repo. */
 export class RefMaintenanceInterrupted extends Error {
   constructor(
     reason: string,

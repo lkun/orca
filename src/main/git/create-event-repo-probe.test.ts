@@ -68,7 +68,7 @@ describe('probeCreateEventRepoFacts', () => {
     }
   }
 
-  it('counts the main checkout plus the linked worktrees, leaving out Orca prepared checkouts', async () => {
+  it('counts the main checkout plus the linked worktrees, leaving out OCC prepared checkouts', async () => {
     await registerWorktree('feature-a')
     await registerWorktree('feature-b', 'on a USB drive')
     // This process's spare, another process's spare, and a crash leftover all carry the marker.

@@ -1,21 +1,21 @@
 ---
 title: Mobile companion
-description: Pair the Orca mobile app to your desktop to monitor agents and unstick worktrees from your phone.
+description: Pair the OCC mobile app to your desktop to monitor agents and unstick worktrees from your phone.
 ---
 
 import { Callout } from '@/components/docs/prose'
 
-The Orca mobile companion is an iOS/Android app that pairs with your desktop Orca and gives you a read-mostly view of running agents — agent status, recent terminal scrollback, and the controls you actually want from a phone (replying to a prompt, sleeping a worktree, reviewing source control, switching agent accounts). Pairing is one-time and the desktop is always the source of truth.
+The OCC mobile companion is an iOS/Android app that pairs with your desktop OCC and gives you a read-mostly view of running agents — agent status, recent terminal scrollback, and the controls you actually want from a phone (replying to a prompt, sleeping a worktree, reviewing source control, switching agent accounts). Pairing is one-time and the desktop is always the source of truth.
 
 <Callout title="Beta">
   The mobile companion is in beta. Install iOS from the [App
-  Store](https://apps.apple.com/us/app/orca-ide/id6766130217), or install Android from the [current
+  Store](https://apps.apple.com/us/app/occ-ide/id6766130217), or install Android from the [current
   APK](https://www.onorca.dev/download/android).
 </Callout>
 
 ## What you can do from mobile
 
-- See every worktree, its agent, and its current status (working / done / waiting on input). Mobile lists worktrees from every host you're connected to (local desktops and remote Orca servers) in a single view, so switching between them doesn't need a device change.
+- See every worktree, its agent, and its current status (working / done / waiting on input). Mobile lists worktrees from every host you're connected to (local desktops and remote OCC servers) in a single view, so switching between them doesn't need a device change.
 - Browse the workspace's full file tree from mobile — including deeply nested paths — so you can jump into any file without waiting for the desktop.
 - Open supported agent sessions in **Chat UI** (a chat-style transcript) or the raw terminal. Set the device default under Settings → Chat UI, or long-press a session tab to switch that tab only.
 - Hydrate recent terminal scrollback so you can read what an agent did or asked. Markdown in chat-style views can render **Mermaid** diagrams when the message includes them.
@@ -36,16 +36,16 @@ The mobile app is intentionally not a full editor — it's a remote control for 
 
 ## Pairing
 
-1. On desktop, open Orca's pairing flow from the account / status menu. Orca shows a one-time pairing code.
-1. On mobile, open the Orca companion app and choose **Pair**, then paste the code. (You can also follow a deep link from the desktop directly into the mobile pairing screen.)
-1. Prefer **Orca Relay** for pairing when it is available — sign-in is required for Relay only. The local network address picker is optional on Relay (expand it when you want a LAN fast path); LAN pairing still needs an address.
+1. On desktop, open OCC's pairing flow from the account / status menu. OCC shows a one-time pairing code.
+1. On mobile, open the OCC companion app and choose **Pair**, then paste the code. (You can also follow a deep link from the desktop directly into the mobile pairing screen.)
+1. Prefer **OCC Relay** for pairing when it is available — sign-in is required for Relay only. The local network address picker is optional on Relay (expand it when you want a LAN fast path); LAN pairing still needs an address.
 1. The pairing exchange establishes a device token for that phone; keep desktop reachable on the path you chose.
 
 Closing the desktop app drops a direct/LAN session until you reopen it. Relay-backed pairing follows the desktop Relay connection — reopen desktop if the host goes offline.
 
 ## Chat UI
 
-For chat-capable agents (Claude, Codex, and others Orca recognizes), mobile can open the session in **Chat UI** instead of the raw terminal — the same idea as desktop's [Chat UI](/docs/agents/native-chat): a readable transcript, composer, permissions/questions, and image attachments.
+For chat-capable agents (Claude, Codex, and others OCC recognizes), mobile can open the session in **Chat UI** instead of the raw terminal — the same idea as desktop's [Chat UI](/docs/agents/native-chat): a readable transcript, composer, permissions/questions, and image attachments.
 
 - **Device default** — on first launch, mobile asks how sessions should open on this phone. Change it later under **Settings → Chat UI → Open sessions in Chat UI**. The default is terminal until you choose Chat UI.
 - **Per-session** — long-press a session tab and choose **Switch to chat view** or **Switch to terminal view**. That override sticks for that tab without changing the device default.
@@ -104,13 +104,13 @@ The mobile terminal has a dedicated **Terminal settings** screen (Settings → T
 
 ## Troubleshooting
 
-### Firewalls and Orca Relay
+### Firewalls and OCC Relay
 
-For Orca Relay and sign-in, allow outbound TCP port `443` from the desktop and phone to these hosts:
+For OCC Relay and sign-in, allow outbound TCP port `443` from the desktop and phone to these hosts:
 
 | Host                                                                             | Purpose                                       | Protocol                          |
 | -------------------------------------------------------------------------------- | --------------------------------------------- | --------------------------------- |
-| `login.onorca.dev`                                                               | Orca sign-in and Relay credentials            | HTTPS                             |
+| `login.onorca.dev`                                                               | OCC sign-in and Relay credentials            | HTTPS                             |
 | `auth.onorca.dev`                                                                | Hosted sign-in pages                          | HTTPS                             |
 | `relay.onorca.dev`                                                               | Relay director, which assigns a regional cell | HTTPS and secure WebSockets (WSS) |
 | `*.relay.onorca.dev`, including `c1.relay.onorca.dev` and `c27.relay.onorca.dev` | Regional Relay cells                          | HTTPS and secure WebSockets (WSS) |
@@ -122,15 +122,15 @@ For a direct LAN or Tailscale connection, allow the paired desktop's listening p
 ### Common issues
 
 - **Stuck spinner on a worktree** — the phone tracks a heartbeat from the desktop agent process. If the desktop says idle but the phone shows working, force-refresh the worktree row to sync state.
-- **Pairing fails** — make sure your desktop and phone are signed into the same Orca account. Pairing codes expire after a few minutes; generate a fresh one if it's been sitting on the screen.
+- **Pairing fails** — make sure your desktop and phone are signed into the same OCC account. Pairing codes expire after a few minutes; generate a fresh one if it's been sitting on the screen.
 - **Authentication failed / pairing invalid** — the desktop no longer accepts this device token (for example after desktop cleared paired devices). Try **Retry** on the banner first (transient rejections can recover without re-pairing). If it keeps failing, use **Re-pair** from desktop, or **Remove** the host and pair again.
-- **Update Orca Mobile / Update Orca on your computer** — the phone and desktop speak a versioned mobile protocol. If either side is too old, mobile blocks that host and points you at the App Store (iOS), [GitHub Releases](https://github.com/stablyai/orca/releases) (Android APK or desktop), then back to hosts. After updating, refresh the connection; if the message stays, remove the host and pair again.
+- **Update OCC Mobile / Update OCC on your computer** — the phone and desktop speak a versioned mobile protocol. If either side is too old, mobile blocks that host and points you at the App Store (iOS), [GitHub Releases](https://github.com/stablyai/orca/releases) (Android APK or desktop), then back to hosts. After updating, refresh the connection; if the message stays, remove the host and pair again.
 - **Quick Commands unavailable** — update the paired desktop so it advertises the quick-commands capability.
 - **Can't reach desktop** — phone and desktop must share a network path (LAN, Tailscale, or the pairing path you used). Closing the desktop app drops the connection; reopen desktop and the phone reconnects automatically.
 
 <Callout title="Next steps">
   Pair mobile notifications with [desktop notifications](/docs/notifications) so agent-finished
-  alerts reach the right device. For headless machines, use [Remote Orca
+  alerts reach the right device. For headless machines, use [Remote OCC
   Server](/docs/remote-servers) mobile pairing. Track provider usage on desktop and mobile under
   [Usage & rate-limit tracking](/docs/agents/usage-tracking).
 </Callout>

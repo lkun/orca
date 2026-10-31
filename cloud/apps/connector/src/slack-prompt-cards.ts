@@ -11,7 +11,7 @@ const CardBodySchema = z.object({
   blocks: z.array(z.looseObject({ type: z.string() })).optional()
 })
 
-// A prompt card as Block Kit, when all its options fit on buttons; null leaves it to Orca.
+// A prompt card as Block Kit, when all its options fit on buttons; null leaves it to OCC.
 export function slackCard(prompt: AnswerablePrompt): PostBody | null {
   const text = slackText.promptCard(prompt)
   const fits =

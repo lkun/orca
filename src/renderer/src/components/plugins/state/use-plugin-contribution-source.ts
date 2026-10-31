@@ -18,7 +18,7 @@ import {
   type PluginContributionSource
 } from '../presentation/plugin-contributions'
 
-/** What an installed plugin adds right now, from Orca's live registrations; empty for others. */
+/** What an installed plugin adds right now, from OCC's live registrations; empty for others. */
 function useInstalledPluginContributionSource(
   plugin: PluginHostListEntry | null
 ): PluginContributionSource {

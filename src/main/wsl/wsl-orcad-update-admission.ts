@@ -169,7 +169,7 @@ export function wslOrcadDeferralFailure(deployed: {
     : { code: deployed.code, reason: deployed.reason }
 }
 
-/** A policy refusal over a host a newer Orca runs gets its own code: an Update cannot pass it. */
+/** A policy refusal over a host a newer OCC runs gets its own code: an Update cannot pass it. */
 export async function wslOrcadDeferralCode(
   slot: OrcadSlotOptions,
   deployed: { code: string; fullVersion: string },

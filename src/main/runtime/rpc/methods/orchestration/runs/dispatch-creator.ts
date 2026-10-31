@@ -19,7 +19,7 @@ export function resolveDispatchCreator(
     paneKey: null
   })
   if (caller.terminalHandle === null) {
-    // A handle-less session: its Orca session id is its whole identity.
+    // A handle-less session: its OCC session id is its whole identity.
     return caller.orcaSessionId
       ? { kind: 'session', orcaSessionId: caller.orcaSessionId }
       : { kind: 'system' }

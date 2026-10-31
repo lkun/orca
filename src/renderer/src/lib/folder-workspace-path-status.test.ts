@@ -47,7 +47,7 @@ describe('getFolderWorkspacePathStatusDescription', () => {
     expect(typeof description).toBe('string')
     expect(description).not.toBe('')
     expect(description).not.toBe(
-      'Orca cannot find /srv/scans. Remove and re-import this folder workspace.'
+      'OCC cannot find /srv/scans. Remove and re-import this folder workspace.'
     )
   })
 })
@@ -67,7 +67,7 @@ it.each(['/srv/project: folder', 'C:\\work\\My Project:backup', '/tmp/$& folder'
   (path) => {
     const prefix = "Error invoking remote method 'pty:spawn': Error: "
     expect(humanizeFolderWorkspacePathError(`${prefix}folder_workspace_path_missing:${path}`)).toBe(
-      `${prefix}Orca cannot find ${path}. Remove and re-import the folder.`
+      `${prefix}OCC cannot find ${path}. Remove and re-import the folder.`
     )
   }
 )
@@ -87,14 +87,14 @@ it('preserves multiline paths in the existing create-folder formatter', () => {
   const path = '/tmp/folder\nwith\rline breaks'
   expect(
     formatFolderWorkspaceCreateError(`folder_workspace_path_missing:${path}`).description
-  ).toBe(`Orca cannot find ${path}. Remove and re-import the folder.`)
+  ).toBe(`OCC cannot find ${path}. Remove and re-import the folder.`)
 })
 
 it('uses the existing English fallback when a language pack has no folder-path translation', async () => {
   await i18n.changeLanguage('test-missing-folder-copy')
   try {
     expect(humanizeFolderWorkspacePathError('folder_workspace_path_missing:/tmp/project')).toBe(
-      'Orca cannot find /tmp/project. Remove and re-import the folder.'
+      'OCC cannot find /tmp/project. Remove and re-import the folder.'
     )
   } finally {
     await i18n.changeLanguage('en')

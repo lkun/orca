@@ -140,7 +140,7 @@ if (!ignoreModules.includes('cpu-features')) {
 }
 
 try {
-  // Keep stale-addon deletion inside lock-classifying try: running Orca can hold it and cause EPERM.
+  // Keep stale-addon deletion inside lock-classifying try: running OCC can hold it and cause EPERM.
   assertNodePtyConptySourceDeniesMsysBreakaway()
   for (const moduleName of modulesToRebuild.filter((m) => sharedModules.has(m))) {
     buildSharedElectronModule(moduleName)
@@ -177,7 +177,7 @@ try {
   if (isWindowsNativeLockError(err)) {
     console.error(
       '[rebuild] A Windows process appears to be using a native .node file. ' +
-        'Close running Orca/Electron/dev processes for this worktree, then rerun `pnpm install` ' +
+        'Close running OCC/Electron/dev processes for this worktree, then rerun `pnpm install` ' +
         'or `pnpm run rebuild:electron`.'
     )
     if (isPostinstall() && process.env.ORCA_STRICT_NATIVE_REBUILD !== '1') {
@@ -508,7 +508,7 @@ function getPatchedNodePtyRebuildReason() {
     return null
   }
 
-  // Require patched native spawn/job ownership: loadable upstream prebuilds may lack Orca’s changes.
+  // Require patched native spawn/job ownership: loadable upstream prebuilds may lack OCC’s changes.
   const artifactPaths = nodePtyBuildArtifactPaths(
     resolve(projectDir, 'node_modules', 'node-pty'),
     rebuildPlatform
@@ -600,7 +600,7 @@ function loadNativeModule(moduleName) {
       throw new Error(
         'node-pty resolved to ' +
           native.dir +
-          '; expected build/Release so Orca\\'s node-pty patch is active'
+          '; expected build/Release so OCC\\'s node-pty patch is active'
       )
     }
     return

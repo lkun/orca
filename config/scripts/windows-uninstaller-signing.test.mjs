@@ -18,24 +18,24 @@ const makeDir = () => mkdtempSync(join(tmpdir(), 'orca-uninstaller-signing-'))
 describe('isNsisUninstallerArtifact', () => {
   // Match app-builder-lib’s exact intermediate uninstaller naming; hook ignores other executables.
   it('matches only electron-builder intermediate uninstallers', () => {
-    expect(isNsisUninstallerArtifact('C:\\dist\\orca-windows-setup.__uninstaller.exe')).toBe(true)
-    expect(isNsisUninstallerArtifact('/dist/orca-windows-setup.__uninstaller.exe')).toBe(true)
-    expect(isNsisUninstallerArtifact('C:\\dist\\win-unpacked\\Orca.exe')).toBe(false)
-    expect(isNsisUninstallerArtifact('C:\\dist\\orca-windows-setup.exe')).toBe(false)
+    expect(isNsisUninstallerArtifact('C:\\dist\\occ-windows-setup.__uninstaller.exe')).toBe(true)
+    expect(isNsisUninstallerArtifact('/dist/occ-windows-setup.__uninstaller.exe')).toBe(true)
+    expect(isNsisUninstallerArtifact('C:\\dist\\win-unpacked\\OCC.exe')).toBe(false)
+    expect(isNsisUninstallerArtifact('C:\\dist\\occ-windows-setup.exe')).toBe(false)
     expect(isNsisUninstallerArtifact(undefined)).toBe(false)
   })
 })
 
 describe('relayNsisUninstaller', () => {
   const writeUninstaller = (dir, contents) => {
-    const filePath = join(dir, 'orca-windows-setup.__uninstaller.exe')
+    const filePath = join(dir, 'occ-windows-setup.__uninstaller.exe')
     writeFileSync(filePath, contents)
     return filePath
   }
 
   it('ignores every file that is not the uninstaller', () => {
     const dir = makeDir()
-    const filePath = join(dir, 'Orca.exe')
+    const filePath = join(dir, 'OCC.exe')
     writeFileSync(filePath, 'app')
     expect(relayNsisUninstaller({ filePath, exportPath: join(dir, 'out', 'x.exe') })).toBe(
       'not-uninstaller'
@@ -160,7 +160,7 @@ describe('signWindowsUninstallerViaSignPath', () => {
   }
 
   const writeBuiltUninstaller = (dir) => {
-    const filePath = join(dir, 'orca-windows-setup.__uninstaller.exe')
+    const filePath = join(dir, 'occ-windows-setup.__uninstaller.exe')
     writeFileSync(filePath, 'built-by-makensis')
     return filePath
   }
@@ -168,7 +168,7 @@ describe('signWindowsUninstallerViaSignPath', () => {
   it.each([
     ['a missing configuration', undefined],
     ['a configuration with no path', {}],
-    ['a non-uninstaller path', { path: 'C:\\dist\\win-unpacked\\Orca.exe' }]
+    ['a non-uninstaller path', { path: 'C:\\dist\\win-unpacked\\OCC.exe' }]
   ])('never throws on %s', (_label, configuration) => {
     withEnv({ ORCA_WIN_UNINSTALLER_EXPORT_PATH: join(makeDir(), 'out', 'x.exe') }, () => {
       expect(() => signWindowsUninstallerViaSignPath(configuration)).not.toThrow()

@@ -1,6 +1,6 @@
 /**
  * Runs serialized in the page's main world. Electron replaces `window.prompt` with one that throws;
- * an about:blank child frame keeps Chromium's, so the prompt reaches Orca like alert and confirm do.
+ * an about:blank child frame keeps Chromium's, so the prompt reaches OCC like alert and confirm do.
  */
 export function installBrowserWindowPrompt(): void {
   const prompt = (message?: string, defaultValue?: string): string | null => {

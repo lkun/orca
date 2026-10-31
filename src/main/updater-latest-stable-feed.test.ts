@@ -19,7 +19,7 @@ function serveLatestRelease(location = '/stablyai/orca/releases/tag/v1.4.241'): 
     }
     if (url.endsWith('.yml')) {
       return new Response(
-        'version: 1.4.241\nfiles:\n  - url: Orca-1.4.241-arm64-mac.zip\n    sha512: test\n'
+        'version: 1.4.241\nfiles:\n  - url: OCC-1.4.241-arm64-mac.zip\n    sha512: test\n'
       )
     }
     return new Response(null, { status: 200 })
@@ -58,7 +58,7 @@ describe('latest stable release fallback', () => {
       )
       expect(netFetchMock).toHaveBeenCalledWith(`${releaseUrl}/${manifest}`, expect.anything())
       expect(netFetchMock).toHaveBeenCalledWith(
-        `${releaseUrl}/Orca-1.4.241-arm64-mac.zip`,
+        `${releaseUrl}/OCC-1.4.241-arm64-mac.zip`,
         expect.objectContaining({ method: 'HEAD' })
       )
     }

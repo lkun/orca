@@ -541,7 +541,7 @@ describe('headless serve update install handoff', () => {
       expect(requestServeUpdateHandoffMock).toHaveBeenCalledTimes(2)
       expect(armUpdateInstallExitWatchdogMock).toHaveBeenCalledOnce()
       expect(killAllPtyMock).toHaveBeenCalledOnce()
-      // MacUpdater retains both listeners after failure; Orca must commit only once.
+      // MacUpdater retains both listeners after failure; OCC must commit only once.
       expect(lifecycle).toEqual([
         'native-quit-and-install',
         'native-quit-and-install',

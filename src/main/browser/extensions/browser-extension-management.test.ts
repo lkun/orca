@@ -89,7 +89,7 @@ beforeEach(() => {
 })
 
 describe('removeBrowserExtension', () => {
-  it("clears its data in every profile session before unloading it, then forgets Orca's record", async () => {
+  it("clears its data in every profile session before unloading it, then forgets OCC's record", async () => {
     mocks.records.set(ID, { id: ID, name: 'Vault', source: 'webstore' })
     expect(await removeBrowserExtension(ID)).toEqual({ ok: true })
     expect(loader.unloadBrowserExtensionEverywhere).toHaveBeenCalledWith(ID)

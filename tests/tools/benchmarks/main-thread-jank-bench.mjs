@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Orca main-thread jank / subprocess-churn benchmark (issue #7576).
+ * OCC main-thread jank / subprocess-churn benchmark (issue #7576).
  *
  * Reproduces the reporter's setup: a running app with an active git worktree
  * and the Source Control sidebar open, measured at steady state. The app is
@@ -18,7 +18,7 @@
  * Usage:
  *   node tests/tools/benchmarks/main-thread-jank-bench.mjs --label baseline
  *     [--duration-s 120] [--warmup-s 20] [--fixture-dir <path>]
- *     [--exe <path-to-packaged-Orca>] [--headless] [--no-log-stream]
+ *     [--exe <path-to-packaged-OCC>] [--headless] [--no-log-stream]
  *
  * The window must stay VISIBLE during the run: git-status polling is gated on
  * document visibility, so a hidden/minimized window measures nothing.
@@ -82,7 +82,7 @@ function parseArgs(argv) {
  * churn-producing configuration: one git repo as the active worktree with the
  * Source Control sidebar open (engages the 3s interactive git-status poll).
  * The branch is pushed to a local `origin` but has NO configured upstream —
- * the shape Orca worktrees commonly have, which forces the effective-upstream
+ * the shape OCC worktrees commonly have, which forces the effective-upstream
  * probe (the most spawn-heavy status path) on every poll tick.
  */
 function ensureFixture(fixtureDir) {

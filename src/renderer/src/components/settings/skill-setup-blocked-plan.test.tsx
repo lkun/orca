@@ -148,13 +148,13 @@ for (const surface of ['panel', 'linear', 'browser', 'capabilities'] as const) {
         mocks.execute.mockResolvedValue(doneResult(blocked))
         renderSurface(surface)
 
-        fireEvent.click(await screen.findByRole('button', { name: "Replace with Orca's copy" }))
+        fireEvent.click(await screen.findByRole('button', { name: "Replace with OCC's copy" }))
 
         expect(await screen.findByRole('button', { name: 'Retry' })).toBeDefined()
         expect(
-          screen.getByText("Needs attention · Orca can't read every file in this copy")
+          screen.getByText("Needs attention · OCC can't read every file in this copy")
         ).toBeDefined()
-        expect(screen.queryByRole('button', { name: "Replace with Orca's copy" })).toBeNull()
+        expect(screen.queryByRole('button', { name: "Replace with OCC's copy" })).toBeNull()
         expect(mocks.plan).toHaveBeenCalledWith(TARGET, {
           names: [name],
           force: otherWork ? [path, agentPath] : [path]
@@ -187,7 +187,7 @@ for (const surface of ['panel', 'linear', 'browser', 'capabilities'] as const) {
       mocks.execute.mockResolvedValue(doneResult(replacement))
       renderSurface(surface)
 
-      fireEvent.click(await screen.findByRole('button', { name: "Replace with Orca's copy" }))
+      fireEvent.click(await screen.findByRole('button', { name: "Replace with OCC's copy" }))
 
       expect(
         await screen.findByText('Replaced · Your copy was saved as a backup', { exact: true })
@@ -211,7 +211,7 @@ for (const surface of ['panel', 'linear', 'browser', 'capabilities'] as const) {
         renderSurface(surface)
 
         expect(
-          await screen.findByRole('button', { name: "Replace with Orca's copy" })
+          await screen.findByRole('button', { name: "Replace with OCC's copy" })
         ).toBeDefined()
         expect(mocks.plan.mock.calls.length).toBeGreaterThan(0)
         for (const [, request] of mocks.plan.mock.calls) {
@@ -235,7 +235,7 @@ for (const surface of ['panel', 'linear', 'browser', 'capabilities'] as const) {
         expect(
           screen.getByText(
             reason === 'unwritable'
-              ? "Needs attention · Orca can't write to ~/.agents/skills"
+              ? "Needs attention · OCC can't write to ~/.agents/skills"
               : 'Needs attention · Another skill install is still finishing here'
           )
         ).toBeDefined()

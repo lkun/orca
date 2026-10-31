@@ -522,7 +522,7 @@ it.each([
   }
 )
 
-it('opens a link from Orca UI as a browser tab in the active workspace', async () => {
+it('opens a link from OCC UI as a browser tab in the active workspace', async () => {
   const openUrl = vi.fn()
   vi.stubGlobal('window', { ...window, api: { ...window.api, shell: { openUrl } } })
   const completed = observeBrowserLinkOpen()
@@ -534,7 +534,7 @@ it('opens a link from Orca UI as a browser tab in the active workspace', async (
   expect(openUrl).not.toHaveBeenCalled()
 })
 
-it('opens a link from Orca UI in the system browser when the workspace browser cannot open pages', () => {
+it('opens a link from OCC UI in the system browser when the workspace browser cannot open pages', () => {
   const openUrl = vi.fn(() => Promise.resolve())
   vi.stubGlobal('window', { ...window, api: { ...window.api, shell: { openUrl } } })
   // A paired web client without browser streaming has no in-app browser.
@@ -546,7 +546,7 @@ it('opens a link from Orca UI in the system browser when the workspace browser c
   expect(useAppStore.getState().browserTabsByWorktree[WORKSPACE] ?? []).toHaveLength(0)
 })
 
-it('opens a link from Orca UI in the system browser on the escape modifier click', () => {
+it('opens a link from OCC UI in the system browser on the escape modifier click', () => {
   const openUrl = vi.fn(() => Promise.resolve())
   vi.stubGlobal('window', { ...window, api: { ...window.api, shell: { openUrl } } })
 

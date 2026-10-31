@@ -205,7 +205,7 @@ async function validateAuthenticatedPairing() {
   )
   assert(
     typeof statusResult?.runtime?.appVersion === 'string',
-    'paired server did not report its Orca app version'
+    'paired server did not report its OCC app version'
   )
   assert(
     statusResult?.runtime?.capabilities?.includes('updater.remote-control.v1'),
@@ -310,7 +310,7 @@ async function waitForReady(name, startupTimeoutMs) {
 
 function hasCompleteReadyContract(stdout) {
   if (
-    stdout.includes('Orca server ready\n') &&
+    stdout.includes('OCC server ready\n') &&
     (stdout.includes('\nPairing URL: ') || stdout.includes('\nPairing guidance: '))
   ) {
     return true
@@ -321,7 +321,7 @@ function hasCompleteReadyContract(stdout) {
 function validateReady(logs, mode, expectedHost, options = {}) {
   if (mode === 'human') {
     assert(
-      (logs.match(/^Orca server ready$/gm) ?? []).length === 1,
+      (logs.match(/^OCC server ready$/gm) ?? []).length === 1,
       'human ready marker is not exact-once'
     )
     assert(logs.includes('Bound endpoint: ws://0.0.0.0:'), 'human bound endpoint is missing')
@@ -329,7 +329,7 @@ function validateReady(logs, mode, expectedHost, options = {}) {
       logs.includes(`Advertised endpoint: ws://${expectedHost}:`),
       'human advertised endpoint is missing'
     )
-    assert(logs.includes('Pairing URL: orca://pair?code='), 'human pairing URL is missing')
+    assert(logs.includes('Pairing URL: occ://pair?code='), 'human pairing URL is missing')
     return
   }
   if (!options.allowStdoutNoise) {

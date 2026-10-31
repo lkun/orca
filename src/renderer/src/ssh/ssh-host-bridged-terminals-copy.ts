@@ -11,7 +11,7 @@ export function bridgedTerminalsLine(detail: string | undefined): SshHostServerS
     tone: 'warning',
     text: translate(
       'auto.components.settings.sshHostServer.olderTerminalsBridged',
-      'Orca isn’t set up on this host yet: terminals started by an older version of Orca are still running in this host’s projects. They keep working here. Close them or end them on the host, then reconnect.'
+      'OCC isn’t set up on this host yet: terminals started by an older version of OCC are still running in this host’s projects. They keep working here. Close them or end them on the host, then reconnect.'
     ),
     ...(detail ? { detail } : {})
   }

@@ -141,7 +141,7 @@ describe('issue 21762: middle-click native-paste suppression in mouse-tracking T
 
   // Shift forces xterm selection and withholds mouse reports; suppression plus early return would paste nothing.
   describe('Shift+middle-click in a mouse-tracking pane', () => {
-    it("takes Orca's own paste path: stops propagation and focuses the pane", () => {
+    it("takes OCC's own paste path: stops propagation and focuses the pane", () => {
       const pane = buildTrackedPane('sgr')
       const { result } = renderHook(() => useTerminalPaneMobileActions(buildController(pane)))
 

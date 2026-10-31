@@ -159,7 +159,7 @@ describe('the notice for every failure and write', () => {
   })
 
   // The control that sent the write is how to try again; only the phone's composer has none.
-  it('says how to try again only to update Orca, or on the phone where a resend can work', () => {
+  it('says how to try again only to update OCC, or on the phone where a resend can work', () => {
     for (const { failure, write, parts, english, cell } of cells) {
       const phoneResend = write === 'composer-send' && RESEND_CAN_WORK.has(codeOf(failure))
       expect(parts.includes('tryAgainComposerSend'), cell).toBe(phoneResend)
@@ -259,7 +259,7 @@ describe('agentSessionRefusalNotice', () => {
           agentSessionWriteNoticeEnglish(
             agentSessionWriteNoticeParts(agentSessionRpcErrorFailure(code), write)
           )
-        ).toBe("Orca couldn't confirm what happened. Check the chat.")
+        ).toBe("OCC couldn't confirm what happened. Check the chat.")
       }
     }
   )
@@ -606,33 +606,33 @@ describe('a chat whose history the host could not open', () => {
     [
       'journalUnavailable',
       'read-history',
-      "Orca couldn't open this chat's history right now. Try again."
+      "OCC couldn't open this chat's history right now. Try again."
     ],
     [
       'journalUnavailable',
       'send',
-      "Orca couldn't open this chat's history right now. Your message was not sent. Try again."
+      "OCC couldn't open this chat's history right now. Your message was not sent. Try again."
     ],
     // Only an update gets past it, so it never says to try again. A read meets it on one chat.
     [
       'journalWrittenByNewerOrca',
       'read-history',
-      'This chat was saved by a newer Orca. Update Orca to open it.'
+      'This chat was saved by a newer OCC. Update OCC to open it.'
     ],
     [
       'journalWrittenByNewerOrca',
       'send',
-      'Chats were saved by a newer Orca. Your message was not sent. Update Orca to keep using them.'
+      'Chats were saved by a newer OCC. Your message was not sent. Update OCC to keep using them.'
     ],
     [
       'journalWrittenByNewerOrca',
       'stop',
-      "Chats were saved by a newer Orca. The agent wasn't stopped. Update Orca to keep using them."
+      "Chats were saved by a newer OCC. The agent wasn't stopped. Update OCC to keep using them."
     ],
     [
       'journalWrittenByNewerOrca',
       'answer',
-      'Chats were saved by a newer Orca. Your answer was not sent. Update Orca to keep using them.'
+      'Chats were saved by a newer OCC. Your answer was not sent. Update OCC to keep using them.'
     ]
   ] as const)('%s on %s', (reason, write, expected) => {
     expect(notice({ reason }, write)).toBe(expected)
@@ -643,9 +643,9 @@ describe('a chat whose history the host could not open', () => {
     ['an older host', undefined],
     ['a reason an unreleased build wrote', { reason: 'journalUnreadable' }]
   ])('promises nothing for a refusal that names no reason: %s', (_label, details) => {
-    expect(notice(details, 'read-history')).toBe("Orca couldn't read this chat's saved history.")
+    expect(notice(details, 'read-history')).toBe("OCC couldn't read this chat's saved history.")
     expect(notice(details, 'send')).toBe(
-      "Orca couldn't read this chat's saved history. Your message was not sent."
+      "OCC couldn't read this chat's saved history. Your message was not sent."
     )
     expect(
       agentSessionReadHistoryRefusalParts('agent_session_journal_unreadable', details)

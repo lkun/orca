@@ -50,7 +50,7 @@ describe('applyManagedDshPatch', () => {
   it('rewrites its own block in place rather than stacking copies', () => {
     const once = applyOrFail(USER_ROWS, '/old/path.json')
     const twice = applyOrFail(once)
-    expect(twice.match(/orca-managed-dsh-hooks \(managed by Orca/g)).toHaveLength(1)
+    expect(twice.match(/orca-managed-dsh-hooks \(managed by OCC/g)).toHaveLength(1)
     expect(readManagedDshHooksConfigPath(twice)).toBe(HOOKS_PATH)
     expect(twice).not.toContain('/old/path.json')
   })
@@ -110,7 +110,7 @@ describe('removeManagedDshPatch', () => {
 })
 
 describe('findManagedDshPatchRegion', () => {
-  const ORPHAN_START = '# >>> orca-managed-dsh-hooks (managed by Orca; do not edit) >>>'
+  const ORPHAN_START = '# >>> orca-managed-dsh-hooks (managed by OCC; do not edit) >>>'
 
   it('fails closed on a truncated region rather than guessing its extent', () => {
     // Guessing a missing end marker could delete subsequent user rows.

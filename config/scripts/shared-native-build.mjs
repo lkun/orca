@@ -26,7 +26,7 @@ const PROBE_SCRIPT = join(import.meta.dirname, 'native-build-entry-probe.cjs')
 const SCRATCH_SKIPPED_TOP_LEVEL = new Set(['build', 'bin', 'node_modules'])
 const NODE_PTY_CONPTY_RUNTIME_FILES = ['conpty.dll', 'OpenConsole.exe']
 
-/** The compiler environment every Orca node-gyp build of these addons uses. */
+/** The compiler environment every OCC node-gyp build of these addons uses. */
 export function nativeBuildEnvironment(env = process.env, platform = process.platform) {
   return platform === 'linux'
     ? { ...env, CXXFLAGS: `${env.CXXFLAGS ?? ''} -std=gnu++2a`.trim() }

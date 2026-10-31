@@ -25,7 +25,7 @@ describe('deciding what to do with a presented host key', () => {
     expect(decideHostKey(input({ storeOutcome: 'match' })).action).toBe('accept')
   })
 
-  // Pin known_hosts precedence in both directions so legitimate rotation can recover from stale Orca trust.
+  // Pin known_hosts precedence in both directions so legitimate rotation can recover from stale OCC trust.
   it('accepts a rotated key once known_hosts holds it, even though our record is stale', () => {
     expect(
       decideHostKey(input({ knownHostsOutcome: 'match', storeOutcome: 'mismatch' })).action
@@ -33,7 +33,7 @@ describe('deciding what to do with a presented host key', () => {
   })
 
   it('still refuses a key known_hosts disagrees with, whatever our record says', () => {
-    // A stale Orca accept cannot override known_hosts refusal.
+    // A stale OCC accept cannot override known_hosts refusal.
     const decision = decideHostKey(input({ knownHostsOutcome: 'mismatch', storeOutcome: 'match' }))
 
     expect(decision.action).toBe('reject')

@@ -355,7 +355,7 @@ describe('WorktreeOpenInMenu', () => {
       disabled: true,
       metadata: 'Local only',
       disabledReason:
-        'Apps on this computer can open this server’s files only when Orca reaches it over SSH.'
+        'Apps on this computer can open this server’s files only when OCC reaches it over SSH.'
     })
   })
 
@@ -366,7 +366,7 @@ describe('WorktreeOpenInMenu', () => {
       disabled: true,
       metadata: 'Local only',
       disabledReason:
-        'Apps on this computer can open this server’s files only when Orca reaches it over SSH.'
+        'Apps on this computer can open this server’s files only when OCC reaches it over SSH.'
     })
     expect(getOpenInEntryAvailability(fileManager, null, null, true)).toEqual({
       disabled: true,
@@ -386,7 +386,7 @@ describe('WorktreeOpenInMenu', () => {
     expect(openInFileManagerMock).not.toHaveBeenCalled()
   })
 
-  describe('a workspace on a server Orca reaches through an SSH host', () => {
+  describe('a workspace on a server OCC reaches through an SSH host', () => {
     const runtimeSshHost = { environmentId: 'managed-owner', sshTargetId: 'ssh-1' }
     const code = {
       id: 'code',
@@ -462,7 +462,7 @@ describe('WorktreeOpenInMenu', () => {
         disabled: true,
         metadata: 'Local only',
         disabledReason:
-          'Apps on this computer can open this server’s files only when Orca reaches it over SSH.'
+          'Apps on this computer can open this server’s files only when OCC reaches it over SSH.'
       })
     })
   })

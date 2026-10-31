@@ -61,7 +61,7 @@ export function TerminalRemoteRuntimeReconnectBanner({
         )}
         body={translate(
           'auto.components.terminal.pane.TerminalRemoteRuntimeReconnectBanner.pairingRefusedBody',
-          "Orca couldn't pair with it again over SSH. Nothing on the host was stopped. Reconnect to try again."
+          "OCC couldn't pair with it again over SSH. Nothing on the host was stopped. Reconnect to try again."
         )}
         action={reconnectAction(onReconnect)}
       />

@@ -49,7 +49,7 @@ export type WorkspaceCleanupActivityFilter = {
   idleSignal: WorkspaceCleanupIdleSignal
   /** "no signal in the last N days"; null disables the threshold. User-chosen, not a fixed enum. */
   idleMinDays: number | null
-  /** Rows Orca never recorded a user-initiated visit for. */
+  /** Rows OCC never recorded a user-initiated visit for. */
   neverVisited: boolean
 }
 

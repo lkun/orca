@@ -200,7 +200,7 @@ export async function spawnAndPublishSession(
         // Diagnostics must never turn a live PTY into a failed create.
       }
     }
-    // Why: only Orca-wrapped shells advertise the paste-safe startup barrier.
+    // Why: only OCC-wrapped shells advertise the paste-safe startup barrier.
     session.writeStartupCommand(
       buildStartupCommandSubmission(staging.current.command, {
         bracketedPasteSafe: shellReadySupported

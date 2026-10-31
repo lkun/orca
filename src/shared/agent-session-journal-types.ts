@@ -82,7 +82,7 @@ export type AgentJournalMessageItem = {
   /** The skills the user picked from the menu for this message, by the file the agent selects
    *  each by. The text still carries each `$name`; agents that select by name ignore this. */
   skills?: AgentJournalSkillRef[]
-  /** Present on a message another agent sent through Orca; absent, the person's. Host-written,
+  /** Present on a message another agent sent through OCC; absent, the person's. Host-written,
    *  outside every fingerprint, never sent to the provider. */
   from?: AgentMessageSource
   /** Reasoning rows only: absence means unknown, never live. observedAt marks the start. */
@@ -175,7 +175,7 @@ declare const agentJournalUnknownKind: unique symbol
 /** A kind tag this build does not know. Branded, so it never stands in for a known tag. */
 export type AgentJournalUnknownKind = string & { readonly [agentJournalUnknownKind]: true }
 
-/** A subject of a kind a newer Orca wrote: carried as it was, with whatever fields it holds, and
+/** A subject of a kind a newer OCC wrote: carried as it was, with whatever fields it holds, and
  *  never drawn or approved here. */
 export type AgentJournalUnknownApprovalSubject = { readonly kind: AgentJournalUnknownKind }
 
@@ -293,7 +293,7 @@ type AgentJournalStatusItemFields = {
   }
   /** Present on thread-goal transitions; absent on rows from older hosts. */
   threadGoal?: AgentJournalThreadGoalState
-  /** On the row about a reply Orca's own stop cut off: why Orca stopped. Its cause is open (a newer
+  /** On the row about a reply OCC's own stop cut off: why OCC stopped. Its cause is open (a newer
    *  host may name one this build does not know), so read it with `readAgentSessionOrcaStop`. */
   orcaStop?: { cause: string }
 }
@@ -392,7 +392,7 @@ export type AgentJournalRenderItem = AgentJournalProducerLinkage & {
 // ─── Submissions ────────────────────────────────────────────────────────────
 
 /** The turn a send was answered into: its record's item id, and how the send joined it. `start`:
- *  the provider answered the send's start request with that turn; `steer`: Orca steered it into
+ *  the provider answered the send's start request with that turn; `steer`: OCC steered it into
  *  that running turn. Known limit: a start the provider silently folds into a running turn reads
  *  as `start`, including into a turn no user entry opened. A newer host may name another way,
  *  which a reader leaves unclaimed. */
@@ -448,7 +448,7 @@ export type AgentJournalSubmission = {
   /** The queued draft this submission hands off; absent for a direct send. Read this, never
    *  a draft id compared with `clientMessageId`. */
   queuedMessageId?: string
-  /** Host-only: who asked for this turn — a person over the client send RPC, or Orca itself.
+  /** Host-only: who asked for this turn — a person over the client send RPC, or OCC itself.
    *  A restart or a close keeps only a person's Send cut short as a card. The snapshot still
    *  carries it; no released client reads it. */
   origin?: 'client' | 'host'

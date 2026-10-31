@@ -38,7 +38,7 @@ export function renderMobileTasksListSurface(
     tasksUnsupported ? (
       <View style={styles.centered}>
         <Text style={styles.emptyText}>
-          {translate('tasks.listSurface.updateDesktopTitle', 'Update Orca desktop')}
+          {translate('tasks.listSurface.updateDesktopTitle', 'Update OCC desktop')}
         </Text>
         <Text style={styles.centeredHint}>
           {translate(

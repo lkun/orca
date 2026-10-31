@@ -35,7 +35,7 @@ async function publishRecovery() {
   for (const hook_event_name of ['UserPromptSubmit', 'Stop']) {
     const response = await fetch('http://127.0.0.1:' + process.env.ORCA_AGENT_HOOK_PORT + '/hook/codex', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': process.env.ORCA_AGENT_HOOK_TOKEN },
+      headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': process.env.ORCA_AGENT_HOOK_TOKEN },
       body: JSON.stringify({
         paneKey: process.env.ORCA_PANE_KEY,
         tabId: process.env.ORCA_TAB_ID,

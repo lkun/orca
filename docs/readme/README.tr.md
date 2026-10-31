@@ -1,13 +1,13 @@
 <h1 align="center">
-  <a href="https://onOrca.dev"><img src="../../resources/build/icon.png" alt="Orca" width="64" valign="middle" /></a> Orca
+  <a href="https://onOrca.dev"><img src="../../resources/build/icon.png" alt="OCC" width="64" valign="middle" /></a> OCC
 </h1>
 
 <p align="center">
   <a href="https://github.com/stablyai/orca"><img src="https://img.shields.io/github/stars/stablyai/orca?style=flat&amp;label=%E2%98%85&amp;color=08C" alt="GitHub yıldızları" /></a>
   <a href="https://github.com/stablyai/orca/releases"><img src="../assets/readme-downloads.svg" alt="Tüm sürümlerdeki toplam indirme sayısı" /></a>
   <img src="https://img.shields.io/badge/license-MIT-08C?style=flat" alt="Lisans: MIT" />
-  <a href="https://discord.gg/fzjDKHxv8Q"><img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="Orca Discord'una katılın" /></a>
-  <a href="https://x.com/orca_build"><img src="https://img.shields.io/badge/X-000000?logo=x&logoColor=white" alt="Orca'yı X'te takip edin" /></a>
+  <a href="https://discord.gg/fzjDKHxv8Q"><img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="OCC Discord'una katılın" /></a>
+  <a href="https://x.com/orca_build"><img src="https://img.shields.io/badge/X-000000?logo=x&logoColor=white" alt="OCC'yı X'te takip edin" /></a>
   <img src="https://img.shields.io/badge/macOS%20%7C%20Windows%20%7C%20Linux-4493F8?style=flat-square" alt="Desteklenen platformlar: macOS, Windows ve Linux" />
 </p>
 
@@ -20,10 +20,10 @@
   Codex, Claude Code, OpenCode veya Pi'yi yan yana çalıştırın - her biri kendi worktree'sinde, hepsi tek yerden takip edilir.
 </p>
 
-<h3 align="center"><a href="https://onorca.dev/download"><ins>Orca'yı indirin</ins></a></h3>
+<h3 align="center"><a href="https://onorca.dev/download"><ins>OCC'yı indirin</ins></a></h3>
 
 <p align="center">
-  <img src="../assets/readme-hero.jpg" alt="Paralel worktree'lerde ajan çalıştıran Orca masaüstü uygulaması, köşede Orca mobil yardımcı uygulaması" width="960" />
+  <img src="../assets/readme-hero.jpg" alt="Paralel worktree'lerde ajan çalıştıran OCC masaüstü uygulaması, köşede OCC mobil yardımcı uygulaması" width="960" />
 </p>
 
 ## Özellikler
@@ -36,11 +36,11 @@
 
 Ajanlarınızı telefonunuzdan izleyin ve yönlendirin - bir ajan işini bitirdiğinde bildirim alın, nerede olursanız olun takip talimatı gönderin.
 
-[iOS App Store](https://apps.apple.com/us/app/orca-ide/id6766130217) · [Android APK](https://www.onorca.dev/download/android) · [Dokümanlar →](https://www.onorca.dev/docs/mobile)
+[iOS App Store](https://apps.apple.com/us/app/occ-ide/id6766130217) · [Android APK](https://www.onorca.dev/download/android) · [Dokümanlar →](https://www.onorca.dev/docs/mobile)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/mobile"><picture><source srcset="../assets/feature-wall/mobile-companion-app-showcase.gif" type="image/gif"><img src="../assets/feature-wall/mobile-companion-app-showcase.jpg" alt="Mobil yardımcı uygulamayla birlikte Orca masaüstü" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/mobile"><picture><source srcset="../assets/feature-wall/mobile-companion-app-showcase.gif" type="image/gif"><img src="../assets/feature-wall/mobile-companion-app-showcase.jpg" alt="Mobil yardımcı uygulamayla birlikte OCC masaüstü" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -96,7 +96,7 @@ PR'ları, issue'ları ve proje panolarını uygulamanın içinde gezin - herhang
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/review/linear"><picture><source srcset="../../resources/onboarding/feature-wall/tile-03.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-03.poster.jpg" alt="Orca'da GitHub ve Linear görev akışları" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/review/linear"><picture><source srcset="../../resources/onboarding/feature-wall/tile-03.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-03.poster.jpg" alt="OCC'da GitHub ve Linear görev akışları" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -118,7 +118,7 @@ Ajanları güçlü bir uzak makinede çalıştırın; dosya düzenleme, git ve t
 
 ### Yapay Zekâ Diff'lerine Not Düşün
 
-Herhangi bir diff satırına yorum bırakın ve ajana geri gönderin - Orca'dan çıkmadan inceleyin, düzenleyin ve commit edin.
+Herhangi bir diff satırına yorum bırakın ve ajana geri gönderin - OCC'dan çıkmadan inceleyin, düzenleyin ve commit edin.
 
 [Dokümanlar →](https://www.onorca.dev/docs/review/annotate-ai-diff)
 
@@ -144,15 +144,15 @@ Her yerde otomatik kaydeden VS Code editörü - dosyaları veya görselleri doğ
 <tr>
 <td width="50%" valign="middle">
 
-### Orca CLI
+### OCC CLI
 
-Orca'yı ajanlar da kullanır - her akışı `orca worktree create`, `snapshot`, `click` ve `fill` ile script'leyin.
+OCC'yı ajanlar da kullanır - her akışı `orca worktree create`, `snapshot`, `click` ve `fill` ile script'leyin.
 
 [Dokümanlar →](https://www.onorca.dev/docs/cli/overview)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/cli/overview"><picture><source srcset="../../resources/onboarding/feature-wall/tile-09.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-09.poster.jpg" alt="Orca'yı CLI'dan script'leme" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/cli/overview"><picture><source srcset="../../resources/onboarding/feature-wall/tile-09.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-09.poster.jpg" alt="OCC'yı CLI'dan script'leme" width="100%" /></picture></a>
 </td>
 </tr>
 </table>
@@ -170,7 +170,7 @@ Orca'yı ajanlar da kullanır - her akışı `orca worktree create`, `snapshot`,
 
 ## Desteklenen Ajanlar
 
-**Herhangi bir CLI ajanıyla** çalışır - terminalde çalışan her şey Orca'da da çalışır.
+**Herhangi bir CLI ajanıyla** çalışır - terminalde çalışan her şey OCC'da da çalışır.
 
 <p>
   <a href="https://docs.anthropic.com/claude/docs/claude-code"><kbd><img src="../assets/claude-logo.svg" alt="Claude Code logosu" width="16" valign="middle" /> Claude Code</kbd></a> &nbsp;
@@ -217,7 +217,7 @@ Orca'yı ajanlar da kullanır - her akışı `orca worktree create`, `snapshot`,
 ### Masaüstü - macOS, Windows, Linux
 
 - **[onOrca.dev üzerinden indirin](https://onorca.dev/download)**
-- Ya da derlemeyi doğrudan alın: [macOS Apple Silicon](https://github.com/stablyai/orca/releases/latest/download/orca-macos-arm64.dmg) · [macOS Intel](https://github.com/stablyai/orca/releases/latest/download/orca-macos-x64.dmg) · [Windows (.exe)](https://github.com/stablyai/orca/releases/latest/download/orca-windows-setup.exe) · [Linux AppImage](https://github.com/stablyai/orca/releases/latest/download/orca-linux.AppImage) · [Tüm derlemeler](https://github.com/stablyai/orca/releases/latest)
+- Ya da derlemeyi doğrudan alın: [macOS Apple Silicon](https://github.com/stablyai/orca/releases/latest/download/occ-macos-arm64.dmg) · [macOS Intel](https://github.com/stablyai/orca/releases/latest/download/occ-macos-x64.dmg) · [Windows (.exe)](https://github.com/stablyai/orca/releases/latest/download/occ-windows-setup.exe) · [Linux AppImage](https://github.com/stablyai/orca/releases/latest/download/occ-linux.AppImage) · [Tüm derlemeler](https://github.com/stablyai/orca/releases/latest)
 
 _Ya da bir paket yöneticisiyle:_
 
@@ -233,7 +233,7 @@ yay -S stably-orca-bin
 
 Ajanlarınızı telefonunuzdan izlemek ve yönlendirmek için masaüstü uygulamanızla eşleştirin.
 
-- **iOS:** [App Store'dan indirin](https://apps.apple.com/us/app/orca-ide/id6766130217)
+- **iOS:** [App Store'dan indirin](https://apps.apple.com/us/app/occ-ide/id6766130217)
 - **Android:** [APK'yı indirin](https://www.onorca.dev/download/android) · [Kurulum rehberi](https://www.onorca.dev/docs/android-apk)
 
 ---
@@ -242,12 +242,12 @@ Ajanlarınızı telefonunuzdan izlemek ve yönlendirmek için masaüstü uygulam
 
 - **Discord:** Topluluğa **[Discord](https://discord.gg/fzjDKHxv8Q)** üzerinden katılın.
 - **Twitter / X:** Güncellemeler ve duyurular için **[@orca_build](https://x.com/orca_build)** hesabını takip edin.
-- **WeChat:** Orca topluluğunun WeChat grubuna katılmak için karekodu okutun.
+- **WeChat:** OCC topluluğunun WeChat grubuna katılmak için karekodu okutun.
 
-  <img src="../assets/wechat-qr.jpg" alt="Orca topluluğunun WeChat grubu karekodu" width="160" />
+  <img src="../assets/wechat-qr.jpg" alt="OCC topluluğunun WeChat grubu karekodu" width="160" />
 
 - **Geri bildirim ve fikirler:** Hızlı sürüm çıkarıyoruz. Eksik bulduğunuz bir şey mi var? [Yeni bir özellik isteyin](https://github.com/stablyai/orca/issues).
-- **Gizlilik:** Orca'nın hangi anonim kullanım verisini topladığını ve bunu nasıl kapatacağınızı [gizlilik ve telemetri dokümanlarında](https://www.onorca.dev/docs/telemetry) bulabilirsiniz.
+- **Gizlilik:** OCC'nın hangi anonim kullanım verisini topladığını ve bunu nasıl kapatacağınızı [gizlilik ve telemetri dokümanlarında](https://www.onorca.dev/docs/telemetry) bulabilirsiniz.
 - **Destek olun:** Günlük sürümleri takip etmek için bu repoyu [yıldızlayın](https://github.com/stablyai/orca).
 
 ---
@@ -260,7 +260,7 @@ Mobil uygulamayı bir masaüstü sunucusuyla eşleştiren relay de bu repoda,
 [`cloud/`](../../cloud/README.md) altında yer alıyor; ayrı bir pnpm workspace'i ve kurulum rehberi var.
 
 <a href="https://github.com/stablyai/orca/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=stablyai/orca" alt="Orca katkıda bulunanlar" />
+  <img src="https://contrib.rocks/image?repo=stablyai/orca" alt="OCC katkıda bulunanlar" />
 </a>
 
 <p align="center">
@@ -273,4 +273,4 @@ Windows kod imzalama [SignPath.io](https://signpath.io) tarafından sağlanmakta
 
 ## Lisans
 
-Orca, [MIT Lisansı](../../LICENSE) altında ücretsiz ve açık kaynaktır.
+OCC, [MIT Lisansı](../../LICENSE) altında ücretsiz ve açık kaynaktır.

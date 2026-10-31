@@ -22,7 +22,7 @@ export type CliErrorContext = {
 type ContextRecovery = { nextSteps: readonly string[] } & Record<string, unknown>
 
 const STALE_HANDLE_SERVER_HINT =
-  'Terminal handles belong to the Orca server that issued them. If this handle came from a paired server (for example `orca terminal list --environment <server>`), pass the same --environment <server> to this command.'
+  'Terminal handles belong to the OCC server that issued them. If this handle came from a paired server (for example `occ terminal list --environment <server>`), pass the same --environment <server> to this command.'
 
 function contextRecovery(
   code: string | undefined,
@@ -124,7 +124,7 @@ function formatRuntimeUnavailableError(message: string, data: unknown): string {
   if (nextSteps.length > 0) {
     return formatMessageWithNextSteps(message, nextSteps)
   }
-  return `${message}\nOrca is not running. Run 'orca open' first.`
+  return `${message}\nOrca is not running. Run 'occ open' first.`
 }
 
 export function reportCliError(error: unknown, json: boolean, context: CliErrorContext = {}): void {

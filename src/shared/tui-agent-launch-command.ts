@@ -42,7 +42,7 @@ const STARTUP_UPDATE_PROMPT_SUPPRESSION_ENV: Partial<
 }
 
 // Why not win32: Codex there reads console input records and needs its burst for pastes (windowsInputRecordPasteNewline).
-// Elsewhere Orca's terminals bracket every paste, so the burst can only misread relayed typing (#34496).
+// Elsewhere OCC's terminals bracket every paste, so the burst can only misread relayed typing (#34496).
 function agentTerminalInputArgs(
   agent: TuiAgent,
   platform: NodeJS.Platform | null

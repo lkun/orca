@@ -19,7 +19,7 @@ const COMPACT_PROMPT_ID = '33333333-3333-4333-8333-333333333333'
 
 const REGISTERED_EVENT_NAMES = new Set<string>(CLAUDE_EVENTS.map((event) => event.eventName))
 
-/** Gate delivery on registration so tests cannot exercise hooks Claude never emits to Orca. */
+/** Gate delivery on registration so tests cannot exercise hooks Claude never emits to OCC. */
 function deliverIfRegistered(
   state: HookListenerState,
   payload: Record<string, unknown>

@@ -179,7 +179,7 @@ describe.skipIf(process.platform === 'win32')('the host-side pinned Node downloa
     expect(read(bin, 'urls')).toEqual([mirrored('https://desk.example/dist')])
   })
 
-  it("ignores the host's own mirror variables, so only URLs Orca validated are fetched", () => {
+  it("ignores the host's own mirror variables, so only URLs OCC validated are fetched", () => {
     const { bin, stage } = fakeHost({ curl: curlServing('https://nodejs.org/') })
     const output = runOnHost(bin, stage, {
       mirror: 'https://desk.example/dist',

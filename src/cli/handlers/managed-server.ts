@@ -18,7 +18,7 @@ import { formatManagedServerStatus } from './managed-server-format'
 import { reportAfterClosedConnection } from './managed-server-reconnect'
 
 const UNSUPPORTED_MESSAGE =
-  'This Orca runtime cannot manage servers over SSH. Run this on the computer whose Orca desktop app deployed the server, after updating Orca there.'
+  'This OCC runtime cannot manage servers over SSH. Run this on the computer whose OCC desktop app deployed the server, after updating OCC there.'
 
 // Windows promotion and readiness waits can take ten minutes; allow headroom on slow hosts.
 export const MANAGED_SERVER_ACTION_TIMEOUT_MS = 20 * 60_000
@@ -52,7 +52,7 @@ async function callManagedServer<TResult>(
     if (!readOnly && error instanceof RuntimeClientError && error.code === 'runtime_timeout') {
       throw new RuntimeClientError(
         'managed_server_in_progress',
-        'Stopped waiting, but the desktop may still be running this action. Check `orca environment status` before retrying.'
+        'Stopped waiting, but the desktop may still be running this action. Check `occ environment status` before retrying.'
       )
     }
     throw error
@@ -92,7 +92,7 @@ function report<TResult extends Outcome, TSettled extends TResult['outcome']>(
 ): void {
   const result = response.result
   if (!isSettled(result, settled)) {
-    const reason = result.reason ?? `The managed Orca server action was ${result.outcome}.`
+    const reason = result.reason ?? `The managed OCC server action was ${result.outcome}.`
     const step = nextStep?.(result)
     throw new RuntimeClientError(
       `managed_server_${result.outcome}`,
@@ -231,7 +231,7 @@ export const MANAGED_SERVER_HANDLERS: Record<string, CommandHandler> = {
         case 'canceled':
           return `Stop withdrawn; the server keeps serving ${result.activeVersion}.`
         case 'already-stopped':
-          return 'orcad had already exited. Run `orca environment stop --yes` to unlink it.'
+          return 'orcad had already exited. Run `occ environment stop --yes` to unlink it.'
         case 'none':
           return 'No stop is pending.'
       }

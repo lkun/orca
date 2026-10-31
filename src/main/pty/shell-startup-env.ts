@@ -4,7 +4,7 @@ import { posix } from 'node:path'
 // Scan only the active shell family; mixing files lets unused config override the real startup value.
 const ZSH_ENV_FILE = '.zshenv'
 const ZSH_AFTER_ENV_FILES = ['.zprofile', '.zshrc', '.zlogin']
-// Orca login Bash sources the first available login file and does not force .bashrc.
+// OCC login Bash sources the first available login file and does not force .bashrc.
 const BASH_LOGIN_FILES = ['.bash_profile', '.bash_login', '.profile']
 // fish reads sorted conf.d snippets before config.fish for login and non-login shells.
 const FISH_SNIPPET_DIR = 'conf.d'
@@ -80,7 +80,7 @@ function shellStartupFiles(
   configHome: string | undefined
 ): ShellStartupFiles {
   if (!shell) {
-    // Match Orca's /bin/zsh fallback when SHELL is unset.
+    // Match OCC's /bin/zsh fallback when SHELL is unset.
     return { paths: zshStartupFilePaths(home), syntax: 'export' }
   }
 
@@ -100,7 +100,7 @@ function shellStartupFiles(
       syntax: 'fish-set'
     }
   }
-  // Unsupported explicit shells do not read Orca's Bash/zsh/fish startup files.
+  // Unsupported explicit shells do not read OCC's Bash/zsh/fish startup files.
   return { paths: [], syntax: 'export' }
 }
 
@@ -175,7 +175,7 @@ function expandHome(value: string, home: string): string {
 export const SHELL_STARTUP_ENV_CACHE_MAX_ENTRIES = 256
 const cache = new Map<string, string | undefined>()
 
-/** Discover exported overlay sources before GUI-launched Orca's PTY rc files overwrite the overlay.
+/** Discover exported overlay sources before GUI-launched OCC's PTY rc files overwrite the overlay.
  * Static hint only: active-shell startup order, last assignment wins; no conditionals, sourcing or expansion beyond HOME/tilde.
  * fish universal values require a config assignment; Windows defaults read nothing (Git Bash/PowerShell use separate probes).
  * Bounded memoization keys by name, home, shell and configHome. */

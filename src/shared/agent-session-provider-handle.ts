@@ -44,7 +44,7 @@ export type AgentSessionProviderTransport = 'claude-sdk' | 'codex-app-server' | 
 export type AgentSessionProviderHandle = {
   /** nativeId namespace may differ from the current transport; a mismatch prevents resume, never record loading. */
   transport: AgentSessionProviderTransport
-  /** Orca agent whose binary resumes the conversation; one transport serves many agents. */
+  /** OCC agent whose binary resumes the conversation; one transport serves many agents. */
   agent: AgentType
   /** The provider's own conversation id: Claude's session id, Codex's thread id. */
   nativeId: string

@@ -15,7 +15,7 @@ export function resolveSshWorkspaceForget(args: {
   sshTargetLabels: ReadonlyMap<string, string>
 }): SshWorkspaceForgetResolution {
   const host = parseExecutionHostId(args.route?.executionHostId)
-  // An Orca server deletes the SSH workspaces it serves; this app's main serves no ssh: host, connected or not.
+  // An OCC server deletes the SSH workspaces it serves; this app's main serves no ssh: host, connected or not.
   if (
     host?.kind !== 'ssh' ||
     args.route?.runtimeEnvironmentId ||

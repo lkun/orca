@@ -143,7 +143,7 @@ describe('both spellings of a symlinked ~/.codex', () => {
     expect(after.get(computeTrustKey(resolved))).toBeUndefined()
   })
 
-  it("moves user approvals under both keys when Orca's copy leaves a user group", async () => {
+  it("moves user approvals under both keys when OCC's copy leaves a user group", async () => {
     const resolvedHooks = linkCodexHomeToDotfiles()
     const orca = { type: 'command', command: getCodexManagedHookInstallMaterial().command }
     const userGroup = { hooks: [orca, { type: 'command', command: 'after.sh' }] }

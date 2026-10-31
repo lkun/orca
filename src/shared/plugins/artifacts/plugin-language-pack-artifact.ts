@@ -127,7 +127,7 @@ function hasUnsafeCatalogKeyCharacter(key: string): boolean {
   return false
 }
 
-// Why tolerant at load: Orca protects more copy and tightens string rules over time, so a pack
+// Why tolerant at load: OCC protects more copy and tightens string rules over time, so a pack
 // published earlier must still load, with offending entries left in English; validate:plugin is strict.
 export function parsePluginLanguagePackArtifact(
   raw: string,

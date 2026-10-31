@@ -556,11 +556,11 @@ describe('hydrateLocalPtyRegistryAtBoot', () => {
 
   it('matches Windows worktree path spelling while preserving the daemon worktree id', async () => {
     const { hydrate, listRegisteredPtys } = await loadFresh()
-    const worktreeId = 'repo-a::C:/Users/Neil/Orca'
+    const worktreeId = 'repo-a::C:/Users/Neil/OCC'
     const ptyId = `${worktreeId}@@cafebabe`
     getDaemonProviderMock.mockReturnValue(
       makeProvider([
-        { sessionId: ptyId, pid: 4242, cwd: 'C:/Users/Neil/Orca' } as unknown as SessionInfo
+        { sessionId: ptyId, pid: 4242, cwd: 'C:/Users/Neil/OCC' } as unknown as SessionInfo
       ])
     )
     listLocalRepoWorktreesStrictMock.mockResolvedValue([
@@ -573,22 +573,22 @@ describe('hydrateLocalPtyRegistryAtBoot', () => {
       }
     ])
 
-    await hydrate(makeStore([{ id: 'repo-a', path: 'C:\\Users\\Neil\\Orca' }]))
+    await hydrate(makeStore([{ id: 'repo-a', path: 'C:\\Users\\Neil\\OCC' }]))
 
     expect(listRegisteredPtys()).toEqual([expect.objectContaining({ ptyId, worktreeId })])
   })
 
   it('fails closed when live worktrees collide on one normalized key', async () => {
     const { hydrate, listRegisteredPtys } = await loadFresh()
-    const ptyId = 'repo-a::C:/Users/Neil/Orca@@cafebabe'
+    const ptyId = 'repo-a::C:/Users/Neil/OCC@@cafebabe'
     getDaemonProviderMock.mockReturnValue(
       makeProvider([
-        { sessionId: ptyId, pid: 4242, cwd: 'C:/Users/Neil/Orca' } as unknown as SessionInfo
+        { sessionId: ptyId, pid: 4242, cwd: 'C:/Users/Neil/OCC' } as unknown as SessionInfo
       ])
     )
     listLocalRepoWorktreesStrictMock.mockResolvedValue([
       {
-        path: 'C:/Users/Neil/Orca',
+        path: 'C:/Users/Neil/OCC',
         head: '',
         branch: '',
         isBare: false,
@@ -603,7 +603,7 @@ describe('hydrateLocalPtyRegistryAtBoot', () => {
       }
     ])
 
-    await hydrate(makeStore([{ id: 'repo-a', path: 'C:/Users/Neil/Orca' }]))
+    await hydrate(makeStore([{ id: 'repo-a', path: 'C:/Users/Neil/OCC' }]))
 
     expect(listRegisteredPtys()).toHaveLength(0)
   })

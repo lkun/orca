@@ -9,7 +9,7 @@ import { openEnum, salvagedField, salvagedOptional, salvagingArray } from '../zo
 /** Resolve senders through the storing host's orchestration mailbox address (dispatch:<id> for federation), never a pane key. */
 export type AgentMessageSender = Readonly<{
   party: Omit<OrchestrationPartyIdentity, 'paneKey'>
-  /** What Orca called the sender when it wrote, kept for when it is gone; null when it had none. */
+  /** What OCC called the sender when it wrote, kept for when it is gone; null when it had none. */
   name: string | null
   relation?: 'worker' | 'coordinator' | 'none'
 }>
@@ -34,7 +34,7 @@ export type OrchestrationTaskMessage = Readonly<{
   dispatchId: string
 }>
 
-/** What Orca delivers for other agents, one shape per message kind. */
+/** What OCC delivers for other agents, one shape per message kind. */
 export type OrchestrationAgentMessage = OrchestrationMailNotice | OrchestrationTaskMessage
 
 export type AgentMessageSource = Readonly<{

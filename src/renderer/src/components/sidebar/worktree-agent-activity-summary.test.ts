@@ -608,7 +608,7 @@ describe('selectWorktreeAgentActivitySummary', () => {
     expect(summary.agentStatusPaneIdsByTabId['tab-parent']).toEqual(new Set([LEAF_ID]))
   })
 
-  // Retain stale pane identity so Orca’s generated permission title cannot outlive its authoritative row.
+  // Retain stale pane identity so OCC’s generated permission title cannot outlive its authoritative row.
   it('records a stale entry pane id separately so permission titles stay suppressed', () => {
     const paneKey = makePaneKey('tab-1', LEAF_ID)
     const entry = makeAgentStatusEntry({ paneKey, state: 'done', worktreeId: 'repo::/wt-1' })

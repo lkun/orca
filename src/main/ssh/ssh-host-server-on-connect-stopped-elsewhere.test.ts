@@ -100,7 +100,7 @@ describe('a linked server another desktop stopped (P1-D)', () => {
   })
 })
 
-describe('redeploying a host another desktop stopped, across Orca versions', () => {
+describe('redeploying a host another desktop stopped, across OCC versions', () => {
   const servedBy = (appVersion: string, active: string): OrcadActivationRecord => ({
     schemaVersion: 1,
     active,

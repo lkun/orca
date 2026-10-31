@@ -2,7 +2,7 @@ import type { InputEvent, KeyboardInputEvent } from 'electron'
 
 type ElectronModifier = NonNullable<InputEvent['modifiers']>[number]
 
-// Electron supports this untyped flag to keep unhandled keys out of Orca shortcuts and menus.
+// Electron supports this untyped flag to keep unhandled keys out of OCC shortcuts and menus.
 export type GuestKeyboardEvent = KeyboardInputEvent & { skipIfUnhandled: true }
 
 export type GuestEditCommand = 'selectAll' | 'copy' | 'cut' | 'paste' | 'undo' | 'redo' | 'delete'

@@ -21,14 +21,14 @@ describe('NativeChatComposerNotices', () => {
         notices={[
           { key: 'composer', kind: 'attachment', text: 'Worktree not ready.' },
           { key: 'host', kind: 'host', tone: 'warning', text: 'Build box is offline' },
-          { key: 'session', kind: 'error', text: 'Orca couldn’t save your message.' },
+          { key: 'session', kind: 'error', text: 'OCC couldn’t save your message.' },
           { key: 'slash', kind: 'error', text: 'sonnet-9 is not an available model.' }
         ]}
       />
     )
     const texts = screen.getAllByText(/./, { selector: 'p' }).map((node) => node.textContent)
     expect(texts).toEqual([
-      'Orca couldn’t save your message.',
+      'OCC couldn’t save your message.',
       'sonnet-9 is not an available model.',
       'Worktree not ready.',
       'Build box is offline'
@@ -36,7 +36,7 @@ describe('NativeChatComposerNotices', () => {
     expect(container.querySelectorAll('[data-notice-kind="error"]')).toHaveLength(2)
   })
 
-  it('shows error text Orca did not write in its own block, with a copy button', () => {
+  it('shows error text OCC did not write in its own block, with a copy button', () => {
     const write = vi.fn().mockResolvedValue(undefined)
     Object.assign(window, { api: { ui: { writeClipboardText: write } } })
     render(
@@ -94,7 +94,7 @@ describe('nativeChatNoticeFromError', () => {
     ).toEqual({ text: 'Your message was not sent.', errorText: 'connect ECONNREFUSED /tmp/a.sock' })
   })
 
-  it('keeps a local error apart unless the caller says it is already Orca’s words', () => {
+  it('keeps a local error apart unless the caller says it is already OCC’s words', () => {
     const error = new Error('Pasted text is too large for this message.')
     expect(nativeChatNoticeFromError(error, 'Paste failed.')).toEqual({
       text: 'Paste failed.',
@@ -105,7 +105,7 @@ describe('nativeChatNoticeFromError', () => {
     ).toEqual({ text: 'Pasted text is too large for this message.' })
   })
 
-  it("says a paste over the size limit in Orca's words, even when it comes back from the main process", () => {
+  it("says a paste over the size limit in OCC's words, even when it comes back from the main process", () => {
     const setNotice = vi.fn()
     setNativeChatPasteFailure(
       setNotice,

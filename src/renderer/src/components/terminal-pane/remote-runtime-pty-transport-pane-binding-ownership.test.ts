@@ -51,7 +51,7 @@ const {
 })
 
 function unreachable(): Error {
-  return Object.assign(new Error('Remote Orca runtime closed the connection.'), {
+  return Object.assign(new Error('Remote OCC runtime closed the connection.'), {
     code: 'remote_runtime_unavailable'
   })
 }

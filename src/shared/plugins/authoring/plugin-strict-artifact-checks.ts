@@ -24,7 +24,7 @@ const THEME_PARSERS: Record<(typeof THEME_POINTS)[number], (raw: string) => unkn
   iconThemes: (raw) => parsePluginIconThemeArtifact(raw, 'strict')
 }
 
-// Why: Orca drops an icon theme whose SVG is missing or not an SVG only once a user picks it.
+// Why: OCC drops an icon theme whose SVG is missing or not an SVG only once a user picks it.
 function iconSvgErrors(read: PluginArtifactTextReader, themeText: string | null): string[] {
   if (themeText === null) {
     return []
@@ -76,7 +76,7 @@ function check(read: PluginArtifactTextReader, path: string, parse: (text: strin
 }
 
 /**
- * Author-time checks of every content artifact, strictly. Why: Orca skips unknown theme tokens,
+ * Author-time checks of every content artifact, strictly. Why: OCC skips unknown theme tokens,
  * icon slots, protected language-pack copy and unsafe syntax settings at load, so authors would
  * only learn about a typo here.
  */

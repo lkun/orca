@@ -52,7 +52,7 @@ export function findPaneCodex(
   }
   const parent = index.byPid.get(outermost.ppid)
   const shell = parent ? executableName(parent) : null
-  // Fish without config never loads Orca's Codex wrapper.
+  // Fish without config never loads OCC's Codex wrapper.
   const unwrappedFish =
     shell === 'fish' && fishArgsSkipConfig(parent?.command.trim().split(/\s+/).slice(1) ?? [])
   return { command: outermost.command, shell: unwrappedFish ? null : shell }

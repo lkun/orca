@@ -175,7 +175,7 @@ export type PluginsApi = {
   refreshMarketplaces: (args?: { sourceId?: string }) => Promise<PluginMarketplaceHostSourceState[]>
   listMarketplacePlugins: () => Promise<PluginMarketplaceHostListing[]>
   /** A catalog plugin that opens this file type, from cached catalogs only; never installs. */
-  /** `editor` for a file Orca already opens as text: only custom editors are suggested. */
+  /** `editor` for a file OCC already opens as text: only custom editors are suggested. */
   suggestForFileType: (
     fileType: string,
     purpose?: 'open' | 'editor'

@@ -20,14 +20,14 @@ export function describeAiVaultResumeFailure(error: unknown, agent: AiVaultAgent
   if (code === 'agent_session_ownership_unknown') {
     return translate(
       'auto.lib.aiVaultResumeRefusal.ownershipUnknown',
-      'Orca could not confirm who owns this {{value0}} conversation. Refresh Session History and try again.',
+      'OCC could not confirm who owns this {{value0}} conversation. Refresh Session History and try again.',
       { value0: aiVaultAgentLabel(agent) }
     )
   }
   if (code === 'execution_owner_reconciling') {
     return translate(
       'auto.lib.aiVaultResumeRefusal.preparationRefused',
-      'Orca could not prepare this {{value0}} conversation. Start a new chat to continue.',
+      'OCC could not prepare this {{value0}} conversation. Start a new chat to continue.',
       { value0: aiVaultAgentLabel(agent) }
     )
   }

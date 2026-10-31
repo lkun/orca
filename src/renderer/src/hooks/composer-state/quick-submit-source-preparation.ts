@@ -99,7 +99,7 @@ export function useQuickSubmitSourcePreparation(input: QuickSubmitSourcePreparat
         return null
       }
 
-      // Retire only Orca-generated names, not user-entered creature words; linked-item seeds require identity checks absent from mobile’s blank-name path. Keep both submit policies aligned.
+      // Retire only OCC-generated names, not user-entered creature words; linked-item seeds require identity checks absent from mobile’s blank-name path. Keep both submit policies aligned.
       const nameWasGenerated = !name.trim() && workspaceName === fallbackCreatureName
 
       const smartSubmitBaseBranch =

@@ -1,5 +1,5 @@
 /**
- * Every process in a distro, with the pane key and folder of Orca's pane processes, read with
+ * Every process in a distro, with the pane key and folder of OCC's pane processes, read with
  * one `wsl.exe` launch for a WSL move's busy check. Callers asking at once share that launch.
  */
 import {

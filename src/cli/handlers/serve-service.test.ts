@@ -24,8 +24,8 @@ describe('orca serve service', () => {
     await mkdir(bin)
     await writeFile(join(bin, 'orca'), '#!/bin/sh\n')
     await chmod(join(bin, 'orca'), 0o755)
-    await writeFile(join(bin, 'orca-ide'), '#!/bin/sh\n')
-    await chmod(join(bin, 'orca-ide'), 0o755)
+    await writeFile(join(bin, 'occ-ide'), '#!/bin/sh\n')
+    await chmod(join(bin, 'occ-ide'), 0o755)
     calls = []
     answers = new Map()
   })
@@ -132,7 +132,7 @@ describe('orca serve service', () => {
         env: { PATH: `${scoped}:${bin}`, ORCA_USER_DATA_PATH: join(home, 'profile') }
       })
     ).toBe(join(bin, 'orca'))
-    // Linux takes only orca-ide, never a bare `orca` (often the screen reader).
+    // Linux takes only occ-ide, never a bare `orca` (often the screen reader).
     const onlyOrca = join(home, 'only-orca')
     await mkdir(onlyOrca)
     await writeFile(join(onlyOrca, 'orca'), '#!/bin/sh\n')
@@ -167,7 +167,7 @@ describe('orca serve service', () => {
     await chmod(join(scoped, 'orca'), 0o755)
     await expect(
       installServeService({ command: null, dryRun: false }, serverCli('linux', scoped))
-    ).rejects.toThrow(/install the Orca app.*`orca-ide serve service install`/i)
+    ).rejects.toThrow(/install the OCC app.*`occ-ide serve service install`/i)
     await expect(
       installServeService({ command: null, dryRun: true }, serverCli('darwin', scoped))
     ).rejects.toThrow(/`orca serve service install`/)
@@ -177,13 +177,13 @@ describe('orca serve service', () => {
     ).resolves.toMatchObject({ dryRun: true })
     await expect(
       installServeService(
-        { command: join(bin, 'orca-ide'), dryRun: true },
+        { command: join(bin, 'occ-ide'), dryRun: true },
         serverCli('linux', scoped)
       )
     ).resolves.toMatchObject({ dryRun: true })
   })
 
-  it('refuses a --command tied to one Orca version', async () => {
+  it('refuses a --command tied to one OCC version', async () => {
     const scoped = join(home, 'profile', 'cli', 'bin')
     await mkdir(scoped, { recursive: true })
     await writeFile(join(scoped, 'orca'), '#!/bin/sh\n')
@@ -193,6 +193,6 @@ describe('orca serve service', () => {
         platform: 'darwin',
         env: { ORCA_USER_DATA_PATH: join(home, 'profile') }
       })
-    ).toThrow(/one Orca version/)
+    ).toThrow(/one OCC version/)
   })
 })

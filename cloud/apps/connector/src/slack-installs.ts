@@ -10,8 +10,8 @@ export type SlackInstall = {
   paused: boolean
 }
 
-// One row per Slack workspace: its bot, and which Orca app it is installed through. A workspace has
-// at most one Orca app. Bot tokens are sealed under the team id.
+// One row per Slack workspace: its bot, and which OCC app it is installed through. A workspace has
+// at most one OCC app. Bot tokens are sealed under the team id.
 export class SlackInstalls {
   constructor(private readonly tokenKey: Buffer) {}
 
@@ -46,7 +46,7 @@ export class SlackInstalls {
     }
   }
 
-  // False when the workspace already belongs to a different Orca app. The same app reinstalling, or
+  // False when the workspace already belongs to a different OCC app. The same app reinstalling, or
   // a pre-apps install being bound to its app, updates the row in place.
   async save(
     database: CloudDatabase,

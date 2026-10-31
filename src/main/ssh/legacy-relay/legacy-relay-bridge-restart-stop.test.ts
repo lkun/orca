@@ -96,7 +96,7 @@ afterEach(() => {
 })
 
 describe('a bridged tab closed while disconnected', () => {
-  it('still stops its shell when Orca restarts before reconnecting', async () => {
+  it('still stops its shell when OCC restarts before reconnecting', async () => {
     relay.ptys = new Set([RELAY_PTY])
     relay.shutdowns = []
     leases = [

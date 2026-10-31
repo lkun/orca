@@ -58,9 +58,9 @@ describe('the pinned Node in Linux packages', () => {
       expect(config.appImage.fpm).toBeUndefined()
     }
     const [, pattern] = appImageNodeRuntimeFpmArgs
-    expect(fpmExcludes(pattern, 'opt/Orca/resources/node-runtime')).toBe(true)
-    expect(fpmExcludes(pattern, 'opt/Orca/resources/node_modules')).toBe(false)
-    expect(fpmExcludes(pattern, 'opt/Orca/resources/app.asar.unpacked/out/node-runtime')).toBe(
+    expect(fpmExcludes(pattern, 'opt/OCC/resources/node-runtime')).toBe(true)
+    expect(fpmExcludes(pattern, 'opt/OCC/resources/node_modules')).toBe(false)
+    expect(fpmExcludes(pattern, 'opt/OCC/resources/app.asar.unpacked/out/node-runtime')).toBe(
       false
     )
   })

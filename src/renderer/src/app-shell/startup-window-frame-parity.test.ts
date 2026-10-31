@@ -126,7 +126,7 @@ function groupsWithoutSelection(): WorkspaceSessionState {
   return session
 }
 
-/** An editor tab Orca moved to the workspace owning its file: saved under the file's owned id. */
+/** An editor tab OCC moved to the workspace owning its file: saved under the file's owned id. */
 function movedEditorTab(): WorkspaceSessionState {
   const filePath = '/Users/dev/orca/docs/readme.md'
   const session = addWorkspace(emptySession(), GIT_KEY, [

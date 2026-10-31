@@ -138,7 +138,7 @@ function applyManagedKiroListHooks(
     if (event === null) {
       return [entry]
     }
-    // Refresh the first Orca entry per event where it sits; drop duplicates.
+    // Refresh the first OCC entry per event where it sits; drop duplicates.
     return missing.delete(event) ? [buildKiroListHook(event, command)] : []
   })
   return [...kept, ...[...missing].map((event) => buildKiroListHook(event, command))]
@@ -172,7 +172,7 @@ function hasManagedDefinition(
   )
 }
 
-/** Preserve user hooks while converging to one Orca hook per event. */
+/** Preserve user hooks while converging to one OCC hook per event. */
 export function applyManagedKiroHooks(
   config: Record<string, unknown>,
   command: string,

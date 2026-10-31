@@ -23,7 +23,7 @@ vi.mock('../dialogs/PluginMarketplaceSourceDialog', () => ({
 const installedPlugin: PluginHostListEntry = {
   pluginKey: 'stablyai.orca-nord-theme',
   consentFingerprint: 'sha256-nord',
-  name: 'Orca Nord',
+  name: 'OCC Nord',
   version: '1.0.0',
   publisher: 'stablyai',
   status: 'idle',
@@ -49,7 +49,7 @@ const source: PluginMarketplaceHostSourceState = {
   source: { kind: 'git', url: 'https://example.invalid/catalog.git', ref: 'main' },
   addedAt: 0,
   marketplace: {
-    name: 'Orca Official Plugins',
+    name: 'OCC Official Plugins',
     owner: 'stablyai',
     resolvedCommit: 'c',
     fetchedAt: 0
@@ -61,7 +61,7 @@ const source: PluginMarketplaceHostSourceState = {
 function listing(pluginKey: string, extra: Partial<PluginMarketplaceHostListing> = {}) {
   const value: PluginMarketplaceHostListing = {
     marketplaceSourceId: 'official',
-    marketplaceName: 'Orca Official Plugins',
+    marketplaceName: 'OCC Official Plugins',
     marketplaceOwner: 'stablyai',
     marketplaceCommit: 'c',
     pluginKey,
@@ -84,7 +84,7 @@ const catalogListings = [
       execution: 'data',
       minimumOrca: '1.4.0',
       types: ['app-theme'],
-      name: 'Orca Nord'
+      name: 'OCC Nord'
     },
     license: 'MIT',
     changelog: 'Warmer comments.\n<b>not markup</b>'
@@ -210,7 +210,7 @@ describe('PluginManager', () => {
     }
     const nord = container.querySelector('[data-plugin-key="stablyai.orca-nord-theme"]')
     expect(nord?.querySelector('[data-plugin-installed-badge]')).not.toBeNull()
-    expect(buttonNamed(container, 'Disable Orca Nord')?.getAttribute('role')).toBe('switch')
+    expect(buttonNamed(container, 'Disable OCC Nord')?.getAttribute('role')).toBe('switch')
     expect(keys()).toContain('local.dev-theme')
     expect(container.textContent).toContain('not from a catalog')
 

@@ -139,7 +139,7 @@ export class AcpAgentConnection extends AcpSessionRuntime {
     }
     // A malformed protocol-stream link closes the connection without reporting signed-out status.
     unreadable = () =>
-      super.close(new AcpConnectionClosedError('The agent printed a sign-in link Orca cannot read'))
+      super.close(new AcpConnectionClosedError('The agent printed a sign-in link OCC cannot read'))
     child.stderr.on('error', (error) => super.close(error))
     managed.onExit((exit) => {
       const error = withProviderSpawnAbsence(

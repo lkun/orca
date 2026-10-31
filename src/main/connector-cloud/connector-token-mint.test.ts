@@ -41,7 +41,7 @@ beforeEach(() => {
 })
 
 describe('desktopConnectorTokenMint', () => {
-  it('asks the auth service with the Orca access token and this install id', async () => {
+  it('asks the auth service with the OCC access token and this install id', async () => {
     const minted = await desktopConnectorTokenMint(authConfig, '/data', 'ada', fetchImpl)()
     expect(minted).toEqual({
       ok: true,

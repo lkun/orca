@@ -15,7 +15,7 @@ export function pluginGitInputErrorMessage(reason: PluginGitInstallInputError): 
     case 'git-url-credentials':
       return translate(
         'auto.components.settings.PluginInstallDialog.gitUrlCredentials',
-        'Remove the username or token from the URL. Orca uses your Git sign-in.'
+        'Remove the username or token from the URL. OCC uses your Git sign-in.'
       )
     case 'invalid-git-ref':
       return translate(

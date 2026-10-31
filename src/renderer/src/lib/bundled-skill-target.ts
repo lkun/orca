@@ -10,12 +10,12 @@ import {
 import type { ProjectExecutionRuntimeResolution } from '../../../shared/project-execution-runtime'
 import type { RuntimeClientTarget } from '../../../shared/runtime-client-target'
 
-/** The host whose Orca skills the Update dialog, badge and nudge plan and update. */
+/** The host whose OCC skills the Update dialog, badge and nudge plan and update. */
 export type BundledSkillTarget =
   | { kind: 'local' }
   /** A paired server or the managed server on an SSH host; it plans its own disk. */
   | { kind: 'environment'; environmentId: string }
-  /** An SSH host no Orca server serves yet: nothing can plan it until it connects. */
+  /** An SSH host no OCC server serves yet: nothing can plan it until it connects. */
   | { kind: 'ssh'; targetId: string }
 
 /** Keys runs and nudge dismissals, so one host's result never reads as another's. */

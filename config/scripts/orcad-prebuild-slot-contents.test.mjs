@@ -155,7 +155,7 @@ describe('slotSourceFiles', () => {
       'winpty.dll',
       'winpty-agent.exe'
     ])
-    // Upstream's winpty prebuilds: Orca's patch removes winpty from the source build.
+    // Upstream's winpty prebuilds: OCC's patch removes winpty from the source build.
     const sources = Object.fromEntries(files)
     for (const file of ['pty.node', 'winpty.dll', 'winpty-agent.exe']) {
       expect(sources[file]).toBe(join(nodePtyDir, 'prebuilds', 'win32-arm64', file))

@@ -127,7 +127,7 @@ it.skipIf(skip)(
         timeoutMs: 15_000
       })
       expect(skill.code, skill.stderr).toBe(0)
-      expect(skill.stdout).toContain('## When Orca wakes you')
+      expect(skill.stdout).toContain('## When OCC wakes you')
       const version = await runProcess({
         program: childEnv.ORCA_CLI_COMMAND!,
         args: ['--version'],

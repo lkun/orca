@@ -3,8 +3,8 @@ import { POSIX_SHELL_STARTUP_COMMAND_ENV } from './pty/posix-shell-startup-comma
 
 export const ZSH_WRAPPER_DIR_MARKER_FILE = '.orca-shell-wrapper'
 
-export const ZSH_WRAPPER_DIR_MARKER_CONTENT = `# Orca-generated zsh startup wrapper directory.
-# Its presence is how Orca recognises its own wrapper dir instead of treating it
+export const ZSH_WRAPPER_DIR_MARKER_CONTENT = `# OCC-generated zsh startup wrapper directory.
+# Its presence is how OCC recognises its own wrapper dir instead of treating it
 # as the user's ZDOTDIR. Do not edit; the whole directory is regenerated.
 `
 
@@ -23,7 +23,7 @@ __orca_has_feature() { [[ "$_orca_shell_features" == *",$1,"* ]]; }`
 
 export const SHELL_STARTUP_IDENTITY_MARKER_BLOCK = `__orca_has_feature identity && printf "\\033]777;orca-shell-start:%s\\007" "$$"`
 
-// Restore and consume ZDOTDIR before user startup files; reject stale Orca wrapper paths.
+// Restore and consume ZDOTDIR before user startup files; reject stale OCC wrapper paths.
 export const ZSH_ZDOTDIR_HANDBACK_BLOCK = `__orca_usable_zdotdir() {
   [[ -n "\${1:-}" ]] || return 1
   [[ "$1" != */shell-ready/zsh ]] || return 1

@@ -1,15 +1,15 @@
-# Orca could not resolve OpenCode 2 session lineage (#22371 follow-up)
+# OCC could not resolve OpenCode 2 session lineage (#22371 follow-up)
 
-Orca's OpenCode plugin resolves a session's ancestry so a subagent's work rolls up to the pane
+OCC's OpenCode plugin resolves a session's ancestry so a subagent's work rolls up to the pane
 without taking it over. Against OpenCode 2 that resolution returned `null` for every session, so
 every child session was published as if it were a root — and a subagent's question minted an
 un-evictable "needs input" blocker the lead agent had never asked for.
 
-Captured against the shipped `opencode v2.0.12` binary on macOS: Orca's real generated plugin in
+Captured against the shipped `opencode v2.0.12` binary on macOS: OCC's real generated plugin in
 `~/.config/opencode/plugins/orca-opencode2-status.js`, real `ORCA_PANE_KEY` / hook-token env, a
 logging hook server on a loopback port, and `opencode2 --standalone` driven in a real PTY.
 
-## The SDK shape Orca was given
+## The SDK shape OCC was given
 
 `src/main/opencode2/status-plugin-setup-source.ts` handed the shared lineage walk a client built
 from the plugin `setup()` context. Probing that context live inside the running plugin:
@@ -64,7 +64,7 @@ ORCA_AGENT_HOOK_PORT=<port> ORCA_AGENT_HOOK_TOKEN=<token> \
 ```
 
 Unset `ORCA_AGENT_HOOK_ENDPOINT` so the plugin reads the port/token from env instead of a live
-Orca's endpoint file.
+OCC's endpoint file.
 
 One trap: OpenCode 2 loads both `orca-opencode-status.js` and `orca-opencode2-status.js` from
 `~/.config/opencode/plugins/`, and both declare the same plugin `id` (`orca-opencode-status`).

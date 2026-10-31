@@ -402,7 +402,7 @@ describe('findQueuedClaudeRestartsOnAccount', () => {
   })
 })
 
-/** System default signed in to acct-a's login, as an older Orca's copy left it. */
+/** System default signed in to acct-a's login, as an older OCC's copy left it. */
 function hostFolders(overrides: Partial<ClaudeHostFolders> = {}): ClaudeHostFolders {
   const summary = (id: string, organizationUuid: string | null) => ({
     ...account(id, ''),

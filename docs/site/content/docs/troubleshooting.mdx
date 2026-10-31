@@ -4,13 +4,13 @@ title: Troubleshooting & FAQ
 
 ## Agent won't start
 
-- Open the terminal and run the agent's CLI manually. If it fails there, it's an auth or install problem in the CLI itself — not Orca.
-- Make sure the CLI is on the `PATH` Orca sees (check [Settings → Agents](/docs/settings)).
+- Open the terminal and run the agent's CLI manually. If it fails there, it's an auth or install problem in the CLI itself — not OCC.
+- Make sure the CLI is on the `PATH` OCC sees (check [Settings → Agents](/docs/settings)).
 - Try the **Restart** chip on the tab.
 
 ## Diff view looks wrong / stuck
 
-- Click the refresh icon on the diff toolbar — Orca re-reads the worktree.
+- Click the refresh icon on the diff toolbar — OCC re-reads the worktree.
 - External `git` operations (rebase, reset) can land between refreshes.
 
 ## Worktree creation fails
@@ -18,15 +18,15 @@ title: Troubleshooting & FAQ
 - The start-from ref may not be fetched. Open a terminal in the repo and run `git fetch origin`.
 - The target directory may already have a worktree for that branch — delete it or pick a new branch name.
 
-## Orca CLI says "command not found"
+## OCC CLI says "command not found"
 
-Register the CLI under [Settings → General → Orca CLI](/docs/settings). On macOS it installs a shim into `~/.local/bin`; make sure that's on your shell's `PATH`.
+Register the CLI under [Settings → General → OCC CLI](/docs/settings). On macOS it installs a shim into `~/.local/bin`; make sure that's on your shell's `PATH`.
 
 ## SSH connects but remote terminals fail
 
-- On first connect to an SSH host or a WSL distro, Orca installs the Node.js version its server needs there. It downloads it on this computer, or on the host if that fails. If your network blocks nodejs.org, set **Settings → Advanced → Network → Node.js Download Mirror** to a copy of `nodejs.org/dist`, or download the file named in the error on another machine and copy it to the path the error gives on this computer. Then connect again.
+- On first connect to an SSH host or a WSL distro, OCC installs the Node.js version its server needs there. It downloads it on this computer, or on the host if that fails. If your network blocks nodejs.org, set **Settings → Advanced → Network → Node.js Download Mirror** to a copy of `nodejs.org/dist`, or download the file named in the error on another machine and copy it to the path the error gives on this computer. Then connect again.
 - On Linux, install a C/C++ toolchain if terminals never spawn: make, g++/clang++, python3 (see [SSH worktrees](/docs/ssh)).
-- Reconnect after installing tools so Orca can reinstall native modules.
+- Reconnect after installing tools so OCC can reinstall native modules.
 
 ## SSH works for files but not “Download Folder”
 
@@ -34,7 +34,7 @@ Folder download needs recursive SFTP transfer. File download may still work on s
 
 ## “Open in VS Code, Cursor, or Zed” is disabled or Local only
 
-- Use an SSH worktree (not a Remote Orca Server active runtime).
+- Use an SSH worktree (not a Remote OCC Server active runtime).
 - Set the Open-in command to VS Code / Insiders, Cursor, or Zed, not a multi-arg shell command.
 - Refresh SSH targets if the host was removed.
 
@@ -54,7 +54,7 @@ No tab is open in the current worktree. Open one with `orca tab create --url ...
 
 ## Windows: RAM disappears but no app is using it
 
-Orca workloads start many short-lived processes (hooks, `git status` polling, agent CLIs). If a buggy kernel driver keeps a reference to every process that exits, exited processes are never freed: RAM drains into kernel memory that Task Manager can't attribute to any app, and starting new processes gets slower, so Orca often gets blamed.
+OCC workloads start many short-lived processes (hooks, `git status` polling, agent CLIs). If a buggy kernel driver keeps a reference to every process that exits, exited processes are never freed: RAM drains into kernel memory that Task Manager can't attribute to any app, and starting new processes gets slower, so OCC often gets blamed.
 
 - **Quick check:** Task Manager → Details → **PID** column. Windows reuses the PIDs of freed processes, so they normally stay in the tens of thousands; PIDs in the hundreds of thousands or more while the process count is normal can indicate exited processes are piling up. A huge **Page Table** in [RAMMap](https://learn.microsoft.com/en-us/sysinternals/downloads/rammap) (normally a few hundred MB) is another sign.
 - **One known cause:** the AMD integrated-GPU driver `amdkmdag.sys` (leaked in `31.0.24002.92`, Adrenalin 24.1.1). Check your actual `amdkmdag.sys` version, since OEM packages can be newer by date and still leak. See [#28293](https://github.com/stablyai/orca/issues/28293) for tested versions, check scripts, and workarounds.
@@ -75,7 +75,7 @@ gh api rate_limit --jq '.resources.core'
 
 ## Logs
 
-**Help → Open Logs** opens the directory with Orca's logs. Attach these when filing a bug.
+**Help → Open Logs** opens the directory with OCC's logs. Attach these when filing a bug.
 
 ## Reporting issues
 

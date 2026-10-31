@@ -77,7 +77,7 @@ function holdFile(path: string) {
 }
 
 async function fixture(label: string) {
-  const root = await mkdtemp(join(tmpdir(), `orca-windows-rename-${label}-`))
+  const root = await mkdtemp(join(tmpdir(), `occ-windows-rename-${label}-`))
   roots.push(root)
   const source = join(root, 'source')
   const target = join(root, 'target')

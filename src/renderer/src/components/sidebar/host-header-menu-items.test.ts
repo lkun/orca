@@ -42,7 +42,7 @@ describe('buildHostHeaderMenuModel', () => {
     ).not.toContain('runtime-repair')
   })
 
-  it('offers Check connection, not an access link, for a server Orca pairs over SSH', () => {
+  it('offers Check connection, not an access link, for a server OCC pairs over SSH', () => {
     const actions = buildHostHeaderMenuModel({
       kind: 'runtime',
       health: 'blocked',

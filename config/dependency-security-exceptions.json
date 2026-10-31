@@ -4,7 +4,7 @@
     "package": "braces",
     "version": "3.0.3",
     "advisory": "GHSA-vfj7-8cjw-p6xm",
-    "owner": "Orca maintainers",
+    "owner": "OCC maintainers",
     "reason": "Parser and AST walkers reject excessive nesting via the patch merged in #31681, covered by dependency-security-patches.test.mjs. Remove when a fixed upstream release is available.",
     "expires": "2026-11-20",
     "patch": {
@@ -17,7 +17,7 @@
     "package": "braces",
     "version": "3.0.3",
     "advisory": "GHSA-vfj7-8cjw-p6xm",
-    "owner": "Orca maintainers",
+    "owner": "OCC maintainers",
     "reason": "Parser and AST walkers reject excessive nesting via the patch merged in #31681, covered by dependency-security-patches.test.mjs. Remove when a fixed upstream release is available.",
     "expires": "2026-11-20",
     "patch": {
@@ -30,7 +30,7 @@
     "package": "braces",
     "version": "3.0.3",
     "advisory": "GHSA-vfj7-8cjw-p6xm",
-    "owner": "Orca maintainers",
+    "owner": "OCC maintainers",
     "reason": "Parser and AST walkers reject excessive nesting via the patch merged in #31681, covered by dependency-security-patches.test.mjs. Remove when a fixed upstream release is available.",
     "expires": "2026-11-20",
     "patch": {
@@ -43,7 +43,7 @@
     "package": "node-forge",
     "version": "1.4.0",
     "advisory": "GHSA-86w9-cpqp-85rv",
-    "owner": "Orca maintainers",
+    "owner": "OCC maintainers",
     "reason": "RSA DigestAlgorithm rejects extra nested elements via the patch merged in #31681, covered by mobile/scripts/dependency-security-patches.test.ts. Remove when a fixed upstream release is available.",
     "expires": "2026-11-20",
     "patch": {
@@ -56,7 +56,7 @@
     "package": "zod",
     "version": "3.25.76",
     "advisory": "GHSA-mrhx-c7xc-m3w5",
-    "owner": "Orca maintainers",
+    "owner": "OCC maintainers",
     "reason": "Expo and Vercel require Zod 3, which has no fixed upstream release. Backport the upper collection-size gate from colinhacks/zod#6652 for the v3 and bundled v4 entrypoints; installed-dependency regression tests cover sync and async parsing. Remove when a fixed Zod 3 release or compatible consumer upgrade is available.",
     "expires": "2026-11-20",
     "patch": {
@@ -69,7 +69,7 @@
     "package": "zod",
     "version": "3.25.76",
     "advisory": "GHSA-mrhx-c7xc-m3w5",
-    "owner": "Orca maintainers",
+    "owner": "OCC maintainers",
     "reason": "Expo and Vercel require Zod 3, which has no fixed upstream release. Backport the upper collection-size gate from colinhacks/zod#6652 for the v3 and bundled v4 entrypoints; installed-dependency regression tests cover sync and async parsing. Remove when a fixed Zod 3 release or compatible consumer upgrade is available.",
     "expires": "2026-11-20",
     "patch": {

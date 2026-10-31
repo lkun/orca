@@ -74,7 +74,7 @@ describe('createDiscordRestApi', () => {
     const discord = fakeDiscord([])
     await createDiscordRestApi(discord.request)(
       'bot',
-      discordRoutes.createMessage('C1', { content: 'Orca is paused.', replyTo: 'M1' })
+      discordRoutes.createMessage('C1', { content: 'OCC is paused.', replyTo: 'M1' })
     )
     expect(discord.sentBody(0)).toMatchObject({
       message_reference: { message_id: 'M1', fail_if_not_exists: false },

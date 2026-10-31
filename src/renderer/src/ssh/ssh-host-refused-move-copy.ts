@@ -20,12 +20,12 @@ export function leaveBehindLine(
     text: inline
       ? translate(
           'auto.components.settings.sshHostServer.refusedLeaveBehind',
-          'Some saved items for this host can’t move to its Orca server: {{items}}. Move anyway connects the host and keeps them on this computer.',
+          'Some saved items for this host can’t move to its OCC server: {{items}}. Move anyway connects the host and keeps them on this computer.',
           { items: inline }
         )
       : translate(
           'auto.components.settings.sshHostServer.refusedLeaveBehindUnnamed',
-          'Some saved items for this host can’t move to its Orca server. Move anyway connects the host and keeps them on this computer.'
+          'Some saved items for this host can’t move to its OCC server. Move anyway connects the host and keeps them on this computer.'
         ),
     ...(reason ? { detail: reason } : {})
   }
@@ -42,7 +42,7 @@ export function refusedLine(
       tone: 'destructive',
       text: translate(
         'auto.components.settings.sshHostServer.refusedBlocked',
-        'Orca isn’t set up on this host yet: something on the host stops the move.'
+        'OCC isn’t set up on this host yet: something on the host stops the move.'
       )
     }
   }
@@ -51,7 +51,7 @@ export function refusedLine(
     tone: 'destructive',
     text: translate(
       'auto.components.settings.sshHostServer.refusedBlockedReason',
-      'Orca isn’t set up on this host yet. {{reason}}',
+      'OCC isn’t set up on this host yet. {{reason}}',
       { reason: inline }
     ),
     detail: reason

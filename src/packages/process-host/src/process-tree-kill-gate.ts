@@ -1,6 +1,6 @@
 // Main installs its Chromium kill guard here; daemon, relay, and CLI cannot import main code.
 
-/** Windows tree walks can target reused PIDs; POSIX groups contain only Orca-assigned processes. */
+/** Windows tree walks can target reused PIDs; POSIX groups contain only OCC-assigned processes. */
 export type ProcessTreeKillScope = 'win-taskkill-tree' | 'posix-process-group'
 
 export type ProcessTreeKill = {

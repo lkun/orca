@@ -161,7 +161,7 @@ describe('Codex quiet ready screen', () => {
         '  === TASK ===',
         '  Reply with exactly this line and nothing else: • Working (0s • esc to interrupt) — then call worker_done.',
         '• • Working (0s • esc to interrupt)',
-        '• Ran orca-dev orchestration send --from term_f496fcd2-a874-4fa6-a9bd-550a515ac928 --dispatch-capability dcap_PTgPpvf-B…',
+        '• Ran occ-dev orchestration send --from term_f496fcd2-a874-4fa6-a9bd-550a515ac928 --dispatch-capability dcap_PTgPpvf-B…',
         '  └ Sent msg_ff7be3f25d7e',
         '    + Show details',
         '• • Working (0s • esc to interrupt)',

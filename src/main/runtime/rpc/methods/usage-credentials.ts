@@ -19,7 +19,7 @@ import {
 } from '../../../zcode/zcode-plan-credential-commands'
 
 // Host pollers own these keys; replies expose presence/protection only. Hosts without pollers refuse calls (including WSL).
-// Never overwrite keys sealed by another Orca app; forgetting them is allowed.
+// Never overwrite keys sealed by another OCC app; forgetting them is allowed.
 export const USAGE_CREDENTIAL_METHODS = [
   defineMethod({
     name: 'accounts.minimaxCredentialsStatus',

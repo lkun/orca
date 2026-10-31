@@ -15,7 +15,7 @@ const bash = (pid: number, ppid: number, creationTimeMs?: number): WindowsProces
   ...(creationTimeMs === undefined ? {} : { creationTimeMs })
 })
 
-// Measured in a real Orca Git Bash pane: launcher -> `-c "chcp.com ...; exec $BASH ..."` stub -> interactive bash.
+// Measured in a real OCC Git Bash pane: launcher -> `-c "chcp.com ...; exec $BASH ..."` stub -> interactive bash.
 const IDLE_ROWS: WindowsProcessIdentityRow[] = [
   bash(LAUNCHER_PID, 50),
   bash(EXEC_STUB_PID, LAUNCHER_PID),

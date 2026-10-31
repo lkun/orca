@@ -14,7 +14,7 @@ export default function NativeNotificationsRoute() {
       onBack={() => router.back()}
       description={t(
         'app.notifications.description',
-        'Get agent alerts even when the app is closed. Delivered through Orca’s push service and Apple or Google.'
+        'Get agent alerts even when the app is closed. Delivered through OCC’s push service and Apple or Google.'
       )}
     >
       {(enabled) => (

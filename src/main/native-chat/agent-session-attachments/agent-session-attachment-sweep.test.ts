@@ -226,14 +226,14 @@ describe('sweepAgentSessionAttachments', () => {
     expect(await remaining()).toEqual([SENT])
   })
 
-  it('drops a claim whose upload was removed outside Orca', async () => {
+  it('drops a claim whose upload was removed outside OCC', async () => {
     claim('session-1', await seedUpload(SENT, OLD))
     await rm(join(store.rootDir, SENT), { recursive: true })
     await sweepAgentSessionAttachments(store, facts(), NOW)
     expect(claimedSessions()).toEqual([])
   })
 
-  it('removes only part files when it cannot write claims (a newer Orca wrote the journal)', async () => {
+  it('removes only part files when it cannot write claims (a newer OCC wrote the journal)', async () => {
     await seedUpload(UNSENT, OLD)
     await seedUpload(SENT, HOUR + 1, AGENT_SESSION_ATTACHMENT_PART_FILE)
     await sweepAgentSessionAttachments(store, facts({ database: () => null }), NOW)

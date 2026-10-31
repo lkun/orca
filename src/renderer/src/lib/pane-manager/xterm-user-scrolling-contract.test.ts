@@ -1,4 +1,4 @@
-/** Pin native follow/pin ownership through shared headless/core BufferService. Live writes rely on xterm; app enforcement handles structural replay/remount/reflow only. Upgrades must preserve this contract. Since beta.302 (#6081), CSI 3 J releases native pins; Orca observes before erase to capture and restore the live reading offset. */
+/** Pin native follow/pin ownership through shared headless/core BufferService. Live writes rely on xterm; app enforcement handles structural replay/remount/reflow only. Upgrades must preserve this contract. Since beta.302 (#6081), CSI 3 J releases native pins; OCC observes before erase to capture and restore the live reading offset. */
 import { describe, expect, it, vi } from 'vitest'
 import { Terminal } from '@xterm/headless'
 import headlessPackageJson from '@xterm/headless/package.json'
@@ -269,7 +269,7 @@ describe('live scrollback-erase pin (CSI 3 J)', () => {
     const { term, settle, bottomOffset } = await pinnedTerminalWithRestore()
 
     await write(term, `\x1b[?2026h\x1b[2J\x1b[H\x1b[3J${'after\r\n'.repeat(50)}\x1b[?2026l`)
-    // CSI 3 J releases native isUserScrolling; Orca must restore the previous reading offset after redraw.
+    // CSI 3 J releases native isUserScrolling; OCC must restore the previous reading offset after redraw.
     expect(term.buffer.active.viewportY).toBe(term.buffer.active.baseY)
     settle()
 
@@ -618,7 +618,7 @@ describe('live scrollback-erase pin (CSI 3 J)', () => {
 
     await write(term, `\x1b[2J\x1b[H\x1b[3J${'after\r\n'.repeat(50)}`)
     settle()
-    // Without Orca’s pin, xterm’s erase releases reading position and follows the redraw.
+    // Without OCC’s pin, xterm’s erase releases reading position and follows the redraw.
     expect(term.buffer.active.viewportY).toBe(term.buffer.active.baseY)
   })
 

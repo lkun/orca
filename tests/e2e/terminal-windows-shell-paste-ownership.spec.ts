@@ -219,7 +219,7 @@ test.describe('Windows terminal shell paste ownership', () => {
     const payload = [
       `ORCA_E2E_POWERSHELL_PASTE_${runId}`,
       `PowerShell metacharacters: ${powershellEscape} $ " ' ; | & < > @ { } ( )`,
-      'quoted Windows path: C:\\Program Files\\Orca Test\\file name.txt',
+      'quoted Windows path: C:\\Program Files\\OCC Test\\file name.txt',
       'cmd metacharacters preserved as text: %PATH% !PROMPT! ^ & | < >',
       'Unicode: café 你好 مرحبا 😀',
       `mixed-newline-before\r\nlf-line\ncrlf-line\r\n${sentinel}`
@@ -269,7 +269,7 @@ test.describe('Windows terminal shell paste ownership', () => {
     const payload = [
       `ORCA_E2E_CMD_PASTE_${runId}`,
       'cmd metacharacters: %PATH% !PROMPT! ^ & | < >',
-      'quoted Windows path: C:\\Program Files\\Orca Test\\file name.txt',
+      'quoted Windows path: C:\\Program Files\\OCC Test\\file name.txt',
       'PowerShell metacharacters: ` $ " \' ; @ { } ( )',
       `mixed-newline-before\r\nlf-line\ncrlf-line\r\n${sentinel}`
     ].join('\n')

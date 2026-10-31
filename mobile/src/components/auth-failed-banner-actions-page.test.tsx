@@ -59,6 +59,6 @@ describe('the auth-failed banner on the page', () => {
   })
 
   it('names the app for reconnect and removal, not for re-pair', () => {
-    expect(labels(render().root)).toContain('Reconnect or remove this host from the Orca app.')
+    expect(labels(render().root)).toContain('Reconnect or remove this host from the OCC app.')
   })
 })

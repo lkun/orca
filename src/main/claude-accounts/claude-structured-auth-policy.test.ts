@@ -88,7 +88,7 @@ describe('claudeStructuredAuthPolicyForSettings', () => {
   })
 })
 
-describe('the Anthropic auth variables Orca keeps out of its own processes', () => {
+describe('the Anthropic auth variables OCC keeps out of its own processes', () => {
   it('covers every Anthropic auth variable the terminal path knows about', () => {
     expect([...CLAUDE_AUTH_ENV_VARS]).toEqual([
       'ANTHROPIC_API_KEY',

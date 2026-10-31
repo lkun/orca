@@ -15,7 +15,7 @@ import { resolveBrowserExtensionTab } from '../browser-extension-tab-model'
 import { testDnrMatchOutcome, testMatchRequestSchema } from './declarative-net-request-test-match'
 
 /**
- * chrome.declarativeNetRequest. Electron 43 accepts every call and enforces nothing, so Orca
+ * chrome.declarativeNetRequest. Electron 43 accepts every call and enforces nothing, so OCC
  * replaces the namespace in workers and extension pages and owns the rules
  * (browser-extension-dnr-session.ts). onRuleMatchedDebug stays native: Chrome offers it only to
  * unpacked extensions, for debugging.

@@ -18,7 +18,7 @@ export function getCodexHistorySharingDescription(): string {
 export function getCodexHistorySharingUnsupported(host: string): string {
   return translate(
     'settings.agents.codexHistorySharing.unsupported',
-    'Update Orca on {{host}} to change this setting there.',
+    'Update OCC on {{host}} to change this setting there.',
     { host }
   )
 }

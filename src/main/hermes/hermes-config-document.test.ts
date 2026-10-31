@@ -74,7 +74,7 @@ describe('Hermes YAML document edits', () => {
     (input) => expect(updateConfigContent(input, disablePlugin)).toEqual({ content: input })
   )
 
-  it('retains comments attached to removed Orca entries', () => {
+  it('retains comments attached to removed OCC entries', () => {
     const input =
       'plugins:\n  enabled:\n    # keep this note\n    - orca-status # managed entry\n    - other\n'
     const output = updateConfigContent(input, disablePlugin).content ?? ''

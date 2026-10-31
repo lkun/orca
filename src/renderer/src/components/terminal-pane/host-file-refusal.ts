@@ -24,7 +24,7 @@ export async function hostAbsentRefusal(
   return new HostFileRefusal(
     translate(
       'components.terminalPane.hostFile.updateHostForOutsideFiles',
-      'Update Orca on {{value0}} to open files outside its workspaces',
+      'Update OCC on {{value0}} to open files outside its workspaces',
       { value0: getRuntimeEnvironmentDisplayName(useAppStore.getState(), environmentId) }
     )
   )

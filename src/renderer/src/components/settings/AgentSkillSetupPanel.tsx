@@ -129,7 +129,7 @@ function BundledAgentSkillSetupPanel({
             : installedButton === 'replace'
               ? translate(
                   'auto.components.settings.AgentSkillSetupPanel.replaceWithOrcaCopy',
-                  "Replace with Orca's copy"
+                  "Replace with OCC's copy"
                 )
               : action.kind === 'run' && action.changes
                 ? bundledSkillSetupActionLabel(action.changes)
@@ -159,7 +159,7 @@ function BundledAgentSkillSetupPanel({
         <p className="basis-full text-[12px] leading-snug text-muted-foreground">
           {translate(
             'auto.components.settings.AgentSkillSetupPanel.hostUnavailable',
-            "Orca can't install skills on this workspace's machine yet."
+            "OCC can't install skills on this workspace's machine yet."
           )}
         </p>
       )}

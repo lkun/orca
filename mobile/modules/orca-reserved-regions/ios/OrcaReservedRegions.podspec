@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary = 'Reports the window regions a fold or camera reserves on iPhone Duo'
   s.description = s.summary
   s.license = { :type => 'MIT' }
-  s.author = 'Orca'
+  s.author = 'OCC'
   s.homepage = 'https://onorca.dev'
   s.source = { :git => 'https://github.com/stablyai/orca.git' }
   s.platforms = { :ios => '15.1' }

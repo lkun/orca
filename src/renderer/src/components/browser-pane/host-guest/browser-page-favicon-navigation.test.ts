@@ -29,7 +29,7 @@ function createHarness(startUrl: string) {
     invalidateBrowserAnnotationDocumentRef: ref(vi.fn()),
     recoveryNavigationValidationRef: ref(null),
     activeLoadFailureRef: ref(null),
-    // Point the ref at the destination as Orca navigation does; it must not be mistaken for the departing origin.
+    // Point the ref at the destination as OCC navigation does; it must not be mistaken for the departing origin.
     lastKnownWebviewUrlRef: ref<string | null>(startUrl),
     addressBarInputRef: ref(null),
     onSetUrlRef: ref(vi.fn()),

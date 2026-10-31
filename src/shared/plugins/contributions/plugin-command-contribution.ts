@@ -50,7 +50,7 @@ export const pluginCommandContributionSchema = z
     }),
     action: pluginCommandIdSchema.optional().meta({
       ...pluginFieldDoc(
-        'Built-in Orca action this command runs. A command with an action is declarative and never starts the plugin worker; one without needs `main`.',
+        'Built-in OCC action this command runs. A command with an action is declarative and never starts the plugin worker; one without needs `main`.',
         PLUGIN_SCHEMA_SINCE_V1,
         ['view.tasks']
       ),

@@ -129,7 +129,7 @@ describe('a process whose journal will not open', () => {
     expect(await digest(path)).toBe(before)
   })
 
-  it('installs over a database a newer Orca wrote, and leaves it byte-identical', async () => {
+  it('installs over a database a newer OCC wrote, and leaves it byte-identical', async () => {
     const path = journalDatabasePath(root)
     const seeded = new Database(path)
     seeded.pragma(`user_version = ${JOURNAL_DB_SCHEMA_VERSION + 1}`)

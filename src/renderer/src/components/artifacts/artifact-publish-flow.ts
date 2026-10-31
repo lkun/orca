@@ -80,7 +80,7 @@ export async function publishArtifactFromSurface(
       toast.error(
         translate(
           'auto.components.artifacts.artifact-publish-flow.bba20daa6d',
-          'Sign in to Orca and try again.'
+          'Sign in to OCC and try again.'
         )
       )
       return null
@@ -135,7 +135,7 @@ function artifactPreparationErrorDescription(code: ArtifactPublishPreparationErr
     case 'unreadable':
       return translate(
         'auto.components.artifacts.artifact-publish-flow.e2ed5acd8c',
-        "Orca couldn't read this file. Open it from a workspace and try again."
+        "OCC couldn't read this file. Open it from a workspace and try again."
       )
     case 'visual-unreadable':
       return translate(

@@ -14,7 +14,7 @@ import type { NativeChatStructuredComposerTransport } from './native-chat-compos
 
 const RESUME = 'resume'
 
-/** Replace the agent’s /resume catalog entry with Orca’s Session History command. */
+/** Replace the agent’s /resume catalog entry with OCC’s Session History command. */
 export function withNativeChatResumeCommand(
   commands: readonly SlashCommandSuggestion[]
 ): SlashCommandSuggestion[] {
@@ -43,9 +43,9 @@ export function parseNativeChatResumeDraft(draft: string): string | null {
 }
 
 export type NativeChatResumeCommand = {
-  /** Opens Session History for a `/resume` draft; false means the draft is not Orca's. */
+  /** Opens Session History for a `/resume` draft; false means the draft is not OCC's. */
   consume: (draft: string) => boolean
-  /** Choosing the draft-leading Orca row runs it; mid-prompt it stays an ordinary completion. */
+  /** Choosing the draft-leading OCC row runs it; mid-prompt it stays an ordinary completion. */
   interceptPick: <TItem extends NativeChatPickerItem>(
     pick: (item: TItem) => void
   ) => (item: TItem) => void
@@ -137,7 +137,7 @@ export function useNativeChatResumeCommand(args: {
     <TItem extends NativeChatPickerItem>(pick: (item: TItem) => void) =>
       (item: TItem) => {
         const leading = autocomplete.mode === 'slash' && autocomplete.dispatchable
-        // An explicit Orca command pick overrides an earlier same-named skill pick.
+        // An explicit OCC command pick overrides an earlier same-named skill pick.
         if (leading && item.kind === 'command' && item.orcaOwned) {
           clearSkillOrigin()
           // The caret can sit right after `/resume` with a search already typed past it.

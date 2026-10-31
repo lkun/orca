@@ -430,7 +430,7 @@ describe('structured agent-session create intent', () => {
   })
 })
 
-describe('adopting a conversation recorded outside Orca', () => {
+describe('adopting a conversation recorded outside OCC', () => {
   it('resolves OMP history with the configured launch environment', async () => {
     const root = await mkdtemp(join(await realpath(tmpdir()), 'orca-omp-create-intent-'))
     try {

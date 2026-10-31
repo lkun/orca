@@ -113,7 +113,7 @@ export function decideHostKey(input: HostKeyDecisionInput): HostKeyDecision {
       )
     }
   }
-  // Accept known_hosts after legitimate rotation even if Orca trust is stale; it is the authority OpenSSH obeys.
+  // Accept known_hosts after legitimate rotation even if OCC trust is stale; it is the authority OpenSSH obeys.
   if (knownHostsOutcome === 'match') {
     return { action: 'accept', outcome: 'match' }
   }

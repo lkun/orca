@@ -30,14 +30,14 @@ async function backdate(path: string): Promise<void> {
 async function makeRunningGeneration() {
   const root = await mkdtemp(join(tmpdir(), 'orca-serve-appimage-update-'))
   created.push(root)
-  const appImagePath = join(root, 'Orca.AppImage')
+  const appImagePath = join(root, 'OCC.AppImage')
   await writeFile(appImagePath, 'build B', { mode: 0o755 })
   await backdate(appImagePath)
   const namespacePath = join(root, 'cache', appImageNamespaceKey(appImagePath))
   const generationPath = join(namespacePath, resolveAppImageCacheKey(appImagePath)!)
   await mkdir(generationPath, { recursive: true })
   await writeFile(join(namespacePath, APPIMAGE_SOURCE_RECORD_NAME), appImagePath)
-  return { root, appImagePath, executable: join(generationPath, 'orca-ide') }
+  return { root, appImagePath, executable: join(generationPath, 'occ-ide') }
 }
 
 /** Replace the inode at the same path, as an AppImage update does. */
@@ -51,13 +51,13 @@ async function swapIn(appImagePath: string, content: string): Promise<void> {
 function restartDeps(overrides: Partial<AppImageRestartDeps> = {}): AppImageRestartDeps {
   return {
     isStopped: () => false,
-    argv: ['/c/orca-ide', '/u/serve-supervisor/id/out/cli/index.js', 'serve', '--supervise'],
+    argv: ['/c/occ-ide', '/u/serve-supervisor/id/out/cli/index.js', 'serve', '--supervise'],
     env: {
       ELECTRON_RUN_AS_NODE: '1',
       ORCA_SERVE_SUPERVISOR_APP_ROOT: '/old/app.asar.unpacked',
       ORCA_NODE_OPTIONS: '--max-old-space-size=4096',
       ORCA_USER_DATA_PATH: '/profiles/b1',
-      APPIMAGE: '/old/Orca.AppImage',
+      APPIMAGE: '/old/OCC.AppImage',
       APPDIR: '/tmp/.mount_old'
     },
     execve: vi.fn(),
@@ -87,14 +87,14 @@ describe('supervised serve and a replaced AppImage', () => {
     const { appImagePath, root } = await makeRunningGeneration()
     const mount = join(root, '.mount_Orca')
     const watch = resolveAppImageBuildWatch(
-      join(mount, 'orca-ide'),
+      join(mount, 'occ-ide'),
       { APPIMAGE: appImagePath, APPDIR: mount },
       'linux'
     )
     expect(watch).toEqual({ appImagePath, runningKey: resolveAppImageCacheKey(appImagePath) })
     expect(
       resolveAppImageBuildWatch(
-        '/opt/Orca/orca-ide',
+        '/opt/OCC/occ-ide',
         { APPIMAGE: appImagePath, APPDIR: mount },
         'linux'
       )

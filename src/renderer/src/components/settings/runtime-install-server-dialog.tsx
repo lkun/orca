@@ -68,7 +68,7 @@ export function RuntimeInstallServerDialog({
         toast.success(
           translate(
             'auto.components.settings.serverList.setUpDone',
-            'Orca is set up on {{name}}.',
+            'OCC is set up on {{name}}.',
             {
               name: result.environment.name
             }
@@ -98,7 +98,7 @@ export function RuntimeInstallServerDialog({
       toast.message(
         translate(
           'auto.components.settings.serverList.settingUpInBackground',
-          'Setting up Orca on {{name}} in the background. It appears in the list when it’s ready.',
+          'Setting up OCC on {{name}} in the background. It appears in the list when it’s ready.',
           { name: serverName }
         )
       )
@@ -123,7 +123,7 @@ export function RuntimeInstallServerDialog({
             <DialogTitle>
               {translate(
                 'auto.components.settings.serverList.setUpOnSshHost',
-                'Set up Orca on an SSH host'
+                'Set up OCC on an SSH host'
               )}
             </DialogTitle>
             <DialogDescription asChild>
@@ -131,14 +131,14 @@ export function RuntimeInstallServerDialog({
                 <p>
                   {translate(
                     'auto.components.settings.managedServers.description',
-                    'Orca installs itself on an empty SSH host and keeps itself up to date.'
+                    'OCC installs itself on an empty SSH host and keeps itself up to date.'
                   )}
                 </p>
                 {}
                 <p>
                   {translate(
                     'auto.components.settings.managedServers.reassurance',
-                    'Runs on each host, reached over your own SSH connection. Your code and files stay where they are. Only Orca’s list of projects, tabs and terminals moves to the host.'
+                    'Runs on each host, reached over your own SSH connection. Your code and files stay where they are. Only OCC’s list of projects, tabs and terminals moves to the host.'
                   )}
                 </p>
               </div>
@@ -155,18 +155,18 @@ export function RuntimeInstallServerDialog({
               onChange={setTargetId}
               placeholder={translate(
                 'auto.components.settings.serverList.installHostPlaceholder',
-                'Choose an SSH host without Orca'
+                'Choose an SSH host without OCC'
               )}
             />
             <p className="text-xs text-muted-foreground">
               {emptyTargets.length === 0
                 ? translate(
                     'auto.components.settings.serverList.installNoHosts',
-                    'No SSH hosts without an Orca server.'
+                    'No SSH hosts without an OCC server.'
                   )
                 : translate(
                     'auto.components.settings.serverList.installHostHelp',
-                    'Only hosts without an Orca server.'
+                    'Only hosts without an OCC server.'
                   )}{' '}
               <button
                 type="button"
@@ -183,7 +183,7 @@ export function RuntimeInstallServerDialog({
               <p className="text-xs text-destructive">
                 {translate(
                   'auto.components.settings.managedServers.loadFailed',
-                  'Orca couldn’t load SSH hosts and unfinished moves. Reopen Settings to try again.'
+                  'OCC couldn’t load SSH hosts and unfinished moves. Reopen Settings to try again.'
                 )}
               </p>
             ) : null}
@@ -219,7 +219,7 @@ export function RuntimeInstallServerDialog({
               {deploying
                 ? translate(
                     'auto.components.settings.sshHostServer.deploying',
-                    'Setting up Orca on {{host}}…',
+                    'Setting up OCC on {{host}}…',
                     {
                       host: targetLabel
                     }

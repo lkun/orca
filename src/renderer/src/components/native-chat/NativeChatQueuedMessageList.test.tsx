@@ -387,7 +387,7 @@ describe('NativeChatQueuedMessageList', () => {
       ])
     )
     const row = screen.getByRole('listitem')
-    expect(row.textContent).toContain('Orca restarted before this message was sent.')
+    expect(row.textContent).toContain('OCC restarted before this message was sent.')
     expect(row.textContent).not.toContain('Your message was not sent.')
   })
 

@@ -2,7 +2,7 @@ import { expect, test } from './helpers/orca-app'
 import { waitForSessionReady } from './helpers/store'
 
 const diagnostic =
-  'Close the other Orca instances (process IDs: 74451, 80932) before installing this update. Background orca serve instances also need to stop. Orca remains open; retry the update after closing them.'
+  'Close the other OCC instances (process IDs: 74451, 80932) before installing this update. Background orca serve instances also need to stop. OCC remains open; retry the update after closing them.'
 
 test.use({ seedTestRepo: false })
 
@@ -86,7 +86,7 @@ for (const theme of ['dark', 'light'] as const) {
     })
     await orcaPage
       .getByRole('button', {
-        name: 'Update waiting for other Orca instances. Click to expand.',
+        name: 'Update waiting for other OCC instances. Click to expand.',
         exact: true
       })
       .click()
@@ -139,7 +139,7 @@ for (const theme of ['dark', 'light'] as const) {
         })
       }, reason)
       await orcaPage
-        .getByRole('button', { name: 'Update waiting for other Orca instances. Click to expand.' })
+        .getByRole('button', { name: 'Update waiting for other OCC instances. Click to expand.' })
         .hover()
       const tooltip = orcaPage.getByRole('tooltip', { name: guidance, exact: true })
       await expect(tooltip).toHaveText(guidance)

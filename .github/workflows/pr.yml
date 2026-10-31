@@ -626,7 +626,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     env:
       CODEX_CLI_VERSION: '0.150.1'
-      # Why a second pin: --no-daemon only exists from 0.156, and Orca's codex wrapper relies on it.
+      # Why a second pin: --no-daemon only exists from 0.156, and OCC's codex wrapper relies on it.
       CODEX_NO_DAEMON_CLI_VERSION: '0.158.0'
 
     steps:
@@ -1199,12 +1199,12 @@ jobs:
         run: |
           set -euo pipefail
           version="$(node -p "require('./package.json').version")"
-          deb="dist/orca-ide_${version}_amd64.deb"
-          rpm="dist/orca-ide-${version}.x86_64.rpm"
+          deb="dist/occ-ide_${version}_amd64.deb"
+          rpm="dist/occ-ide-${version}.x86_64.rpm"
           test -s "$deb"
           test -s "$rpm"
-          deb_marker="$(dpkg-deb --fsys-tarfile "$deb" | tar -xOf - ./opt/Orca/resources/package-type)"
-          rpm_marker="$(rpm2cpio "$rpm" | cpio --quiet --extract --to-stdout ./opt/Orca/resources/package-type)"
+          deb_marker="$(dpkg-deb --fsys-tarfile "$deb" | tar -xOf - ./opt/OCC/resources/package-type)"
+          rpm_marker="$(rpm2cpio "$rpm" | cpio --quiet --extract --to-stdout ./opt/OCC/resources/package-type)"
           [[ "$deb_marker" == deb ]] || { echo "Expected deb marker, got: $deb_marker"; exit 1; }
           [[ "$rpm_marker" == rpm ]] || { echo "Expected rpm marker, got: $rpm_marker"; exit 1; }
           # Only the AppImage carries the pinned Node (config/scripts/appimage-node-runtime.cjs).
@@ -1215,17 +1215,17 @@ jobs:
             echo "The rpm must not carry the AppImage's Node"; exit 1
           fi
           appimage_root="$(mktemp -d)"
-          (cd "$appimage_root" && "$GITHUB_WORKSPACE/dist/orca-linux.AppImage" --appimage-extract 'resources/node-runtime/bin/node' >/dev/null)
+          (cd "$appimage_root" && "$GITHUB_WORKSPACE/dist/occ-linux.AppImage" --appimage-extract 'resources/node-runtime/bin/node' >/dev/null)
           test -x "$appimage_root/squashfs-root/resources/node-runtime/bin/node"
           "$appimage_root/squashfs-root/resources/node-runtime/bin/node" --version
           rm -rf "$appimage_root"
-          ls -l dist/orca-linux.AppImage "$deb" "$rpm"
+          ls -l dist/occ-linux.AppImage "$deb" "$rpm"
 
       # Kept briefly so a reviewer can run this exact AppImage on a real Linux desktop.
       - uses: actions/upload-artifact@v7
         with:
-          name: orca-linux-appimage-${{ github.event.pull_request.head.sha }}
-          path: dist/orca-linux.AppImage
+          name: occ-linux-appimage-${{ github.event.pull_request.head.sha }}
+          path: dist/occ-linux.AppImage
           retention-days: 3
           compression-level: 0
 
@@ -1236,7 +1236,7 @@ jobs:
           ORCA_SHUTDOWN_FIXTURE_CACHE_IMAGE: ${{ steps.shutdown-fixture-cache.outputs.image }}
         run: >-
           node config/scripts/run-headless-serve-shutdown-docker.mjs
-          --appimage dist/orca-linux.AppImage --all-entrypoints
+          --appimage dist/occ-linux.AppImage --all-entrypoints
 
       # A default container reproduces the hostile AppImage launch environment.
       - wait: cli-fixture-cache
@@ -1244,7 +1244,7 @@ jobs:
       - name: Verify Linux CLI launch contract
         env:
           ORCA_CLI_FIXTURE_CACHE_IMAGE: ${{ steps.cli-fixture-cache.outputs.image }}
-        run: node config/scripts/run-linux-cli-launch-contract-docker.mjs --appimage dist/orca-linux.AppImage
+        run: node config/scripts/run-linux-cli-launch-contract-docker.mjs --appimage dist/occ-linux.AppImage
 
       - name: Smoke packaged CLI
         run: node config/scripts/smoke-packaged-cli.mjs --app-dir=dist/linux-unpacked
@@ -1386,7 +1386,7 @@ jobs:
         run: pnpm exec electron-builder --config config/electron-builder.config.cjs --dir
 
       - name: Smoke packaged Windows PTY native capability
-        run: pnpm run smoke:windows-pty-native-capability -- --exe=dist/win-unpacked/Orca.exe
+        run: pnpm run smoke:windows-pty-native-capability -- --exe=dist/win-unpacked/OCC.exe
 
       - name: Smoke packaged CLI
         run: node config/scripts/smoke-packaged-cli.mjs --app-dir=dist/win-unpacked

@@ -64,7 +64,7 @@ jobs:
         id: cache-installer
         uses: actions/cache@v4
         with:
-          path: dist/orca-windows-setup.exe
+          path: dist/occ-windows-setup.exe
           # The mobile page trees are in the key because beforePack builds the mobile web bundle
           # into the installer; config/** already covers the builder, the verifier and the manifest
           # writer. A mobile-only change must miss this cache, not reuse a stale exe.
@@ -124,19 +124,19 @@ jobs:
           pnpm exec electron-builder --config config/electron-builder.config.cjs --win --publish never
 
       # Why: silent-install the branch build so the crash harness has a packaged
-      # Orca.exe to drive. A clean CI runner installs to the default per-user
-      # location (%LOCALAPPDATA%\Programs\Orca), which the harness auto-locates.
+      # OCC.exe to drive. A clean CI runner installs to the default per-user
+      # location (%LOCALAPPDATA%\Programs\OCC), which the harness auto-locates.
       - name: Silent-install branch build
         shell: pwsh
         run: |
-          $exe = "dist/orca-windows-setup.exe"
+          $exe = "dist/occ-windows-setup.exe"
           if (-not (Test-Path $exe)) { throw "Installer not found at $exe" }
           Start-Process -FilePath $exe -ArgumentList '/S' -Wait
-          $installed = Join-Path $env:LOCALAPPDATA 'Programs/Orca/Orca.exe'
+          $installed = Join-Path $env:LOCALAPPDATA 'Programs/OCC/OCC.exe'
           if (-not (Test-Path $installed)) {
-            $installed = Join-Path $env:LOCALAPPDATA 'Programs/orca/Orca.exe'
+            $installed = Join-Path $env:LOCALAPPDATA 'Programs/orca/OCC.exe'
           }
-          if (-not (Test-Path $installed)) { throw "Installed Orca.exe not found after silent install" }
+          if (-not (Test-Path $installed)) { throw "Installed OCC.exe not found after silent install" }
           "ORCA_EXE=$installed" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       # Why: crash ONLY the app main and assert the relocated daemon + its shell

@@ -91,7 +91,7 @@ describe('quick-command client compatibility', () => {
       ok: false,
       error: {
         code: 'invalid_argument',
-        message: expect.stringContaining('Update this Orca client')
+        message: expect.stringContaining('Update this OCC client')
       }
     })
     expect(state.settings.terminalQuickCommands).toEqual(commands)
@@ -223,7 +223,7 @@ describe('quick-command client compatibility', () => {
       ok: false,
       error: {
         code: 'invalid_argument',
-        message: expect.stringContaining('Update this Orca client')
+        message: expect.stringContaining('Update this OCC client')
       }
     })
     expect(state.settings.terminalQuickCommands).toEqual([shortCommand])
@@ -249,7 +249,7 @@ describe('quick-command client compatibility', () => {
         ok: false,
         error: {
           code: 'invalid_argument',
-          message: expect.stringContaining('Update this Orca client')
+          message: expect.stringContaining('Update this OCC client')
         }
       })
       expect(state.settings.terminalQuickCommands).toEqual([shortCommand, longCommand])

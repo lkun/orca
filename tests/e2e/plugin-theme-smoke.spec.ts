@@ -1,6 +1,6 @@
 /**
  * Invariant: a plugin app theme fills the Dark theme slot and an icon theme applies live from
- * Settings, and disabling the plugin restores Orca's colors and the built-in icons.
+ * Settings, and disabling the plugin restores OCC's colors and the built-in icons.
  */
 
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'

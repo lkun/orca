@@ -48,7 +48,7 @@ export function compilePluginGrammar(
 /**
  * Tokenizes a whole document under core's per-line limits, yielding between slices so the worker
  * can report progress and see a cancellation. A line that is too long or keeps timing out ends the
- * pass; from there the file stays plain, as with Orca's own grammars. Null when cancelled or too big.
+ * pass; from there the file stays plain, as with OCC's own grammars. Null when cancelled or too big.
  */
 export async function tokenizePluginGrammarDocument(
   grammar: IGrammar,

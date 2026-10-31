@@ -169,7 +169,7 @@ export function buildPtyHostEnv(
     }
   }
 
-  // Preserve the user's Pi config/session root; install only Orca-owned extension files.
+  // Preserve the user's Pi config/session root; install only OCC-owned extension files.
   if (opts.agentStatusHooksEnabled) {
     clearPiAgentShadowEnv(baseEnv, 'pi')
     clearPiAgentShadowEnv(baseEnv, 'omp')

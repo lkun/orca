@@ -21,7 +21,7 @@ export async function readOpenAiKeyFromStdin(
   if (stdin.isTTY) {
     throw new RuntimeClientError(
       'invalid_argument',
-      'Pipe the key on stdin, e.g. printf %s "$OPENAI_API_KEY" | orca speech openai-key set'
+      'Pipe the key on stdin, e.g. printf %s "$OPENAI_API_KEY" | occ speech openai-key set'
     )
   }
   const chunks: Buffer[] = []
@@ -57,7 +57,7 @@ export async function callOpenAiKeyMethod(
     if (error instanceof RuntimeClientError && error.code === 'method_not_found') {
       throw new RuntimeClientError(
         'incompatible_runtime',
-        'This Orca server cannot store a voice dictation key yet. Update Orca on the server and try again.'
+        'This OCC server cannot store a voice dictation key yet. Update OCC on the server and try again.'
       )
     }
     throw error

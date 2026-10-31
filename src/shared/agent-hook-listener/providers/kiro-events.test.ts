@@ -75,7 +75,7 @@ describe('normalizeKiroEvent', () => {
   })
 })
 
-// Shapes captured from kiro-cli 2.27.0 (`chat --tui --v3`) running Orca's standalone
+// Shapes captured from kiro-cli 2.27.0 (`chat --tui --v3`) running OCC's standalone
 // `~/.kiro/hooks/*.json` file: Claude's PascalCase names, a `sess_` id, and no final reply.
 const V3_SESSION_ID = 'sess_966a9c85-10a0-4a38-8fd0-91dbeffb032b'
 

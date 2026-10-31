@@ -174,7 +174,7 @@ describe('hovered workspace delete', () => {
     })
   })
 
-  it('removes a hovered folder workspace from Orca without deleting its directory', async () => {
+  it('removes a hovered folder workspace from OCC without deleting its directory', async () => {
     const current = state()
     current.activeWorktreeId = 'folder:folder-1'
     current.activeWorkspaceExecutionHostId = 'runtime:remote-1'

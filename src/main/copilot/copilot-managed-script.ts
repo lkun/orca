@@ -26,7 +26,7 @@ export function getManagedScript(target: 'local' | 'posix' = 'local'): string {
       'echo {}',
       // Why: the direct registration passes the event as %1; the encoded fallback sets the env var.
       'if not "%~1"=="" set "ORCA_COPILOT_HOOK_EVENT=%~1"',
-      // Why: refresh endpoint coordinates for PTYs surviving an Orca restart.
+      // Why: refresh endpoint coordinates for PTYs surviving an OCC restart.
       'if defined ORCA_AGENT_HOOK_ENDPOINT if exist "%ORCA_AGENT_HOOK_ENDPOINT%" call "%ORCA_AGENT_HOOK_ENDPOINT%" 2>nul',
       ...buildWindowsHookEnvironmentGuardLines(),
       buildWindowsAgentHookPostCommand('copilot', [
@@ -54,7 +54,7 @@ export function getManagedScript(target: 'local' | 'posix' = 'local'): string {
     `printf '%s' "$payload" | ${posixCurlCommand()} -sS -X POST "http://127.0.0.1:\${ORCA_AGENT_HOOK_PORT}/hook/copilot" \\`,
     '  --connect-timeout 0.5 --max-time 1.5 \\',
     '  -H "Content-Type: application/x-www-form-urlencoded" \\',
-    '  -H "X-Orca-Agent-Hook-Token: ${ORCA_AGENT_HOOK_TOKEN}" \\',
+    '  -H "X-OCC-Agent-Hook-Token: ${ORCA_AGENT_HOOK_TOKEN}" \\',
     '  --data-urlencode "paneKey=${ORCA_PANE_KEY}" \\',
     '  --data-urlencode "tabId=${ORCA_TAB_ID}" \\',
     '  --data-urlencode "launchToken=${ORCA_AGENT_LAUNCH_TOKEN}" \\',

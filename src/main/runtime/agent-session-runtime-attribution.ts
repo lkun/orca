@@ -34,7 +34,7 @@ function attributed(
     deathEvidence.runtimeEnd !== undefined ||
     !heldBy ||
     heldBy === incarnation ||
-    // Terminal-owned agents never depended on Orca's pipes.
+    // Terminal-owned agents never depended on OCC's pipes.
     before?.lease.claimStatus === 'conflicted' ||
     !runtimeEnds
   ) {

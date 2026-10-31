@@ -39,14 +39,14 @@ export function buildConnectionDiagnosticsReport(args: {
     entries
   })
   const lines: string[] = []
-  lines.push('Orca Mobile connection diagnostics')
+  lines.push('OCC Mobile connection diagnostics')
   lines.push(`Generated: ${new Date(now).toISOString()}`)
-  lines.push(`App: Orca Mobile ${args.appVersion} · ${args.platform}`)
+  lines.push(`App: OCC Mobile ${args.appVersion} · ${args.platform}`)
   lines.push(`Bridge protocol: ${args.bridgeProtocolVersion}`)
   const desktopAppVersion =
     args.state === 'connected' ? normalizeHostAppVersion(args.desktopAppVersion) : null
   lines.push(
-    `Host Orca version: ${desktopAppVersion ?? (args.state === 'connected' ? 'unknown' : 'unknown (not currently connected)')}`
+    `Host OCC version: ${desktopAppVersion ?? (args.state === 'connected' ? 'unknown' : 'unknown (not currently connected)')}`
   )
   lines.push(`Host: ${redactConnectionLogText(args.hostName)}`)
   lines.push(

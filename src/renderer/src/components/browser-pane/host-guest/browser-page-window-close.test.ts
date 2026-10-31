@@ -64,7 +64,7 @@ describe('window.close() from a browser page', () => {
     expect(dispatchMock).not.toHaveBeenCalled()
   })
 
-  it('closes only the calling page when its Orca tab holds other pages', () => {
+  it('closes only the calling page when its OCC tab holds other pages', () => {
     seedTab('page-e', false, ['page-sibling'])
     closeFrom('page-e', { back: false, forward: false })
     expect(closeBrowserPageMock).toHaveBeenCalledWith('page-e')

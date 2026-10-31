@@ -56,7 +56,7 @@ describe('readAgentPromptAnswers', () => {
     }
   })
 
-  it('leaves to Orca what one keystroke cannot answer', () => {
+  it('leaves to OCC what one keystroke cannot answer', () => {
     const unsupported = {
       prompt: { kind: 'unsupported', promptId: 'p' },
       keysByOption: new Map()
@@ -81,7 +81,7 @@ describe('readAgentPromptAnswers', () => {
     ).toEqual(unsupported)
   })
 
-  it('leaves every prompt to Orca for an agent without hooks or known keys', () => {
+  it('leaves every prompt to OCC for an agent without hooks or known keys', () => {
     const unsupported = {
       prompt: { kind: 'unsupported', promptId: 'p' },
       keysByOption: new Map()

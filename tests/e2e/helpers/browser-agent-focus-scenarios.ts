@@ -264,7 +264,7 @@ export async function runAgentClicksScenario(
       .toBe('a\nb')
     expect((await readHost(page)).terminalFocused).toBe(true)
 
-    // Why: Tab from the page's last field moves focus out of the page into Orca's window.
+    // Why: Tab from the page's last field moves focus out of the page into OCC's window.
     await evalInPage(page, pageId, `document.getElementById('notes').focus()`)
     await rpc(page, 'browser.keypress', { page: pageId, key: 'Tab' })
     await expect.poll(async () => (await readHost(page)).terminalFocused).toBe(true)
@@ -294,7 +294,7 @@ export async function runAgentShortcutsScenario(
     const activeTabBefore = await getActiveTabId(page)
     const mod = process.platform === 'darwin' ? 'Meta' : 'Control'
 
-    // Why: new tab, close tab and next tab are Orca shortcuts; an agent's copies must not run them.
+    // Why: new tab, close tab and next tab are OCC shortcuts; an agent's copies must not run them.
     for (const key of [`${mod}+t`, `${mod}+w`, 'Control+Tab']) {
       await rpc(page, 'browser.keypress', { page: pageId, key })
     }

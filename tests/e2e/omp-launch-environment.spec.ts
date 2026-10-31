@@ -61,7 +61,7 @@ test.skip(
   'Opt-in macOS OMP runtime proof'
 )
 
-test('OMP launched by Orca uses login-profile data and config roots', async ({
+test('OMP launched by OCC uses login-profile data and config roots', async ({
   orcaPage,
   electronApp
 }, testInfo) => {

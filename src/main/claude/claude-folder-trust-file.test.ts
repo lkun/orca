@@ -172,7 +172,7 @@ describe('grantClaudeFolderTrust', () => {
     const lockDir = `${file}.lock`
     mkdirSync(lockDir)
     const oldTime = new Date(Date.now() - 60_000)
-    // Exceed Claude's 10-second stale window to verify Orca leaves its lock intact.
+    // Exceed Claude's 10-second stale window to verify OCC leaves its lock intact.
     utimesSync(lockDir, oldTime, oldTime)
     await expect(grantClaudeFolderTrust({ configFile: file, folderKeys: ['/wt'] })).resolves.toBe(
       'locked'

@@ -252,7 +252,7 @@ describe('removed work CLI text', () => {
 
   it('lists removed entries with a next page, and says when the host keeps no record', () => {
     expect(formatRemovedWorkListing('run_1', undefined)).toBe(
-      'No record of removed work is available from this Orca host.'
+      'No record of removed work is available from this OCC host.'
     )
     expect(formatRemovedWorkListing('run_1', { ...summary, entries: [] }, '99')).toBe(
       'No more removed work in this Run after cursor 99.'

@@ -22,7 +22,7 @@ if (!statusPath || !extensionDirectory || process.env.ORCA_BACKGROUND_LAUNCH !==
 const fixtureStatusPath = statusPath
 const fixtureExtensionDirectory = extensionDirectory
 
-// Orca's preflight registers this before ready; the worker shim calls main through it.
+// OCC's preflight registers this before ready; the worker shim calls main through it.
 protocol.registerSchemesAsPrivileged([BROWSER_EXTENSION_API_CUSTOM_SCHEME])
 
 const presentationCalls: string[] = []
@@ -101,7 +101,7 @@ async function run(): Promise<void> {
     contents.on('console-message', (details) => captureResult(details.message))
   })
 
-  // Orca's main window with one registered browser tab, made active the way the renderer does.
+  // OCC's main window with one registered browser tab, made active the way the renderer does.
   const host = new BrowserWindow({
     show: false,
     webPreferences: { contextIsolation: true, sandbox: true, webviewTag: true }
@@ -156,7 +156,7 @@ async function run(): Promise<void> {
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
   const address = server.address()
   const port = typeof address === 'object' && address ? address.port : 0
-  // Subframe preloads as Orca's browser guests get them in a profile that runs extensions.
+  // Subframe preloads as OCC's browser guests get them in a profile that runs extensions.
   const webPage = new BrowserWindow({
     show: false,
     webPreferences: {

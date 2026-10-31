@@ -10,7 +10,7 @@ export function isNativeChatImageAttachmentPath(path: string): boolean {
   return isImageDropPath(path)
 }
 
-/** True for a long text paste Orca saved as a file (`orca-paste-<ts>-<uuid>.txt`). */
+/** True for a long text paste OCC saved as a file (`orca-paste-<ts>-<uuid>.txt`). */
 export function isNativeChatPastedTextPath(path: string): boolean {
   const base = path.split(/[\\/]/).findLast(Boolean) ?? path
   return /^orca-paste-.+\.txt$/i.test(base)

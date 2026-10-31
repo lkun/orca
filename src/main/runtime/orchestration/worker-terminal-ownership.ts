@@ -21,7 +21,7 @@ export type WorkerTerminalRetainedReason =
   | 'ownership_transferred'
   | 'user_takeover'
   | 'user_requested'
-  // The user chose Keep open: neither Orca nor the coordinator closes or reuses it until they allow auto-close.
+  // The user chose Keep open: neither OCC nor the coordinator closes or reuses it until they allow auto-close.
   | 'user_kept'
   | 'no_owned_resource'
   | 'identity_unproven'

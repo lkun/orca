@@ -19,7 +19,7 @@ export const PUSH_LIMITS = {
 } as const
 
 export const PUSH_DEFAULTS = {
-  apnsTopic: 'com.stably.orca.mobile',
+  apnsTopic: 'com.lkun.occ.mobile',
   androidChannelId: 'orca-desktop'
 } as const
 

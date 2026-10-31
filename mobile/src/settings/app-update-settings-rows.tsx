@@ -84,7 +84,7 @@ export function AppUpdateSettingsRows(props: {
       accessibilityRole="button"
       accessibilityLabel={t(
         'settings.appUpdateSettingsRows.updateToVersion',
-        'Update to Orca {{version}}',
+        'Update to OCC {{version}}',
         {
           version: available.version
         }
@@ -93,7 +93,7 @@ export function AppUpdateSettingsRows(props: {
       onPress={() => onUpdate(available.url)}
     >
       <Text style={styles.rowLabel}>
-        {t('settings.appUpdateSettingsRows.updateToVersion', 'Update to Orca {{version}}', {
+        {t('settings.appUpdateSettingsRows.updateToVersion', 'Update to OCC {{version}}', {
           version: available.version
         })}
       </Text>

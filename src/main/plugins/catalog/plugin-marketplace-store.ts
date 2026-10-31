@@ -126,7 +126,7 @@ export class PluginMarketplaceStore {
     return removed
   }
 
-  /** Whether Orca already added this default source once; a user's later removal must stick. */
+  /** Whether OCC already added this default source once; a user's later removal must stick. */
   async hasSeededDefault(name: PluginMarketplaceDefaultSource): Promise<boolean> {
     return (await this.readSeededDefaults()).includes(name)
   }

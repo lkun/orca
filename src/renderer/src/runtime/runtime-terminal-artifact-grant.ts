@@ -96,7 +96,7 @@ export async function acquireTerminalArtifactGrant(
         15_000
       ))
     ) {
-      throw new Error('Update Orca on this host to keep editing files outside its workspaces.')
+      throw new Error('Update OCC on this host to keep editing files outside its workspaces.')
     }
     return null
   }

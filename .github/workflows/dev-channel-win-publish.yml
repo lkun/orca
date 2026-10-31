@@ -58,7 +58,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for required in orca-windows-setup.exe orca-windows-setup.exe.blockmap latest.yml; do
+          for required in occ-windows-setup.exe occ-windows-setup.exe.blockmap latest.yml; do
             if [[ ! -s "staged-windows/$required" ]]; then
               echo "::error::Missing or empty staged Windows artifact: $required"
               exit 1
@@ -113,7 +113,7 @@ jobs:
           timeout_minutes: 5
           max_attempts: 2
           retry_wait_seconds: 10
-          command: gh release upload "$TAG" staged-windows/orca-windows-setup.exe staged-windows/orca-windows-setup.exe.blockmap staged-windows/latest.yml --clobber --repo "stablyai/orca-$CHANNEL"
+          command: gh release upload "$TAG" staged-windows/occ-windows-setup.exe staged-windows/occ-windows-setup.exe.blockmap staged-windows/latest.yml --clobber --repo "stablyai/orca-$CHANNEL"
         env:
           GH_TOKEN: ${{ steps.app_token.outputs.token }}
 
@@ -124,7 +124,7 @@ jobs:
         run: |
           set -euo pipefail
           assets="$(gh release view "$TAG" --repo "stablyai/orca-$CHANNEL" --json assets --jq '.assets[].name')"
-          for required in latest.yml orca-windows-setup.exe orca-windows-setup.exe.blockmap; do
+          for required in latest.yml occ-windows-setup.exe occ-windows-setup.exe.blockmap; do
             if ! grep -qx "$required" <<<"$assets"; then
               echo "::error::$TAG is missing $required; Windows could not install this build."
               exit 1

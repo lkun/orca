@@ -102,6 +102,6 @@ it('changes no closed set of a journal row without the row version', () => {
   expect(
     journalClosedSets(),
     'A new closed-set value without a row-version bump makes older builds call the chat ' +
-      'damaged, where with the bump they say to update Orca. Bump v, then update this snapshot.'
+      'damaged, where with the bump they say to update OCC. Bump v, then update this snapshot.'
   ).toEqual(SNAPSHOT)
 })

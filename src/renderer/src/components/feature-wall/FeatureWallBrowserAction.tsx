@@ -247,7 +247,7 @@ function BrowserSkillInstallButton(): React.JSX.Element {
           : installAction.kind === 'replace'
             ? translate(
                 'auto.components.settings.AgentSkillSetupPanel.replaceWithOrcaCopy',
-                "Replace with Orca's copy"
+                "Replace with OCC's copy"
               )
             : installAction.kind === 'run' && installAction.changes
               ? bundledSkillSetupActionLabel(installAction.changes)

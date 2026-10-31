@@ -20,7 +20,7 @@ export async function bringWslMovedProjectBack(
     }),
     description: translate(
       'sidebar.wslMoved.useHereDescription',
-      'Orca will open this project here as it was before the move. Your code is not affected: it never moved. Changes made on the {{distro}} host since the move, such as new tabs and chats, stay on the host and do not come back. Projects moved with it come back too. The project also stays on the {{distro}} host until you remove it there. This window reloads.',
+      'OCC will open this project here as it was before the move. Your code is not affected: it never moved. Changes made on the {{distro}} host since the move, such as new tabs and chats, stay on the host and do not come back. Projects moved with it come back too. The project also stays on the {{distro}} host until you remove it there. This window reloads.',
       { distro: project.distro }
     ),
     confirmLabel: translate('sidebar.wslMoved.useHereConfirm', 'Use on this computer')
@@ -133,28 +133,28 @@ function wslMoveUseHereRefusalMessage(
   if (result.detail === 'host-kept-for-peers') {
     return translate(
       'sidebar.wslMoved.useHereHostKeptForPeers',
-      '{{project}} moved to the {{distro}} host, which is still running for another Orca. Re-add the host to use it here again.',
+      '{{project}} moved to the {{distro}} host, which is still running for another OCC. Re-add the host to use it here again.',
       { project: projectName, distro }
     )
   }
   if (result.detail === 'host-removal-pending') {
     return translate(
       'sidebar.wslMoved.useHereHostRemovalPending',
-      'The {{distro}} host is still being removed, so Orca leaves it alone. Finish removing it in Settings, then try again.',
+      'The {{distro}} host is still being removed, so OCC leaves it alone. Finish removing it in Settings, then try again.',
       { distro }
     )
   }
   if (result.detail === 'host-automations') {
     return translate(
       'sidebar.wslMoved.useHereHostAutomations',
-      "Orca couldn't turn off this project's automations on the {{distro}} host, so they could run twice. Connect the host in Settings, then try again.",
+      "OCC couldn't turn off this project's automations on the {{distro}} host, so they could run twice. Connect the host in Settings, then try again.",
       { distro }
     )
   }
   if (reason === 'host-unreachable') {
     return translate(
       'sidebar.wslMoved.useHereHostUnreachable',
-      "The {{distro}} host isn't answering, so Orca can't stop its copy of this project, and its agents may still be running there. Connect the host in Settings, or remove it, then try again.",
+      "The {{distro}} host isn't answering, so OCC can't stop its copy of this project, and its agents may still be running there. Connect the host in Settings, or remove it, then try again.",
       { distro }
     )
   }

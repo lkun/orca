@@ -11,7 +11,7 @@ ORCA orchestration worker-start --task <task_id> --worktree new-child --agent co
 ORCA orchestration worker-start --task <task_id> --on <environment> --worktree new-top-level --repo <exact_remote_repo_selector> --name <name> --agent codex --setup run --json
 ```
 
-`--name` is optional: without it Orca picks a name as it does for an unnamed
+`--name` is optional: without it OCC picks a name as it does for an unnamed
 workspace, and the start output names the workspace it created.
 
 After start, address a remote worker only by Dispatch ID, never by a terminal

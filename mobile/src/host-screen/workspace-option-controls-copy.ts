@@ -108,7 +108,7 @@ export function cardDisplayChoices(
       'jira-issue': t('hostScreen.workspaceOptionControls.jiraIssues', 'Jira issues'),
       comment: t('hostScreen.workspaceOptionControls.notes', 'Notes'),
       automation: t('hostScreen.workspaceOptionControls.automation', 'Automation'),
-      cli: 'Orca CLI',
+      cli: 'OCC CLI',
       ports: t('hostScreen.workspaceOptionControls.ports', 'Ports'),
       'inline-agents': t('hostScreen.workspaceOptionControls.agentStatuses', 'Agent statuses'),
       host: t('hostScreen.workspaceOptionControls.host', 'Host'),

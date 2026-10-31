@@ -26,7 +26,7 @@ else
   # --add-readme supplies the commit required to create a release tag in a new repo.
   gh repo create "$DAILY_REPO" \
     --public \
-    --description "Daily macOS dev builds of Orca, cut from main each morning. Not a source repo." \
+    --description "Daily macOS dev builds of OCC, cut from main each morning. Not a source repo." \
     --add-readme \
     --disable-issues \
     --disable-wiki ||

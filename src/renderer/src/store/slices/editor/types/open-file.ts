@@ -74,7 +74,7 @@ export type OpenFile = {
   lastKnownDiskSignature?: string
   /** Blocks saves while a restored tab's filesystem authority is being replaced. */
   pendingOwnerMigration?: boolean
-  // Transient Orca move echo proof; survives atomic rekey, operationId supersedes prior verifications after re-move.
+  // Transient OCC move echo proof; survives atomic rekey, operationId supersedes prior verifications after re-move.
   pendingSelfMoveEcho?: { operationId: string; targetPath: string }
   /** Why: diff bodies are cached in EditorPanel; bump this on re-select so the panel refetches instead of reusing a stale snapshot. */
   diffContentReloadNonce?: number

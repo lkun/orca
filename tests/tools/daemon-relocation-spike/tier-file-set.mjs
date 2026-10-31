@@ -61,7 +61,7 @@ export function resolveTierFileSet(inv, tier) {
     })
   }
 
-  addFile(inv.hostExe, 'Orca.exe')
+  addFile(inv.hostExe, 'OCC.exe')
   for (const entry of inv.runtimeData) {
     addFile(entry, entry.name)
   }

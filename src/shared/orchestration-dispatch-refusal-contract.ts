@@ -81,7 +81,7 @@ const RECOGNIZED_AGENT_PROCESS_NAMES = [
 export function buildInjectRejectionMessage(terminal: string): string {
   return (
     `Cannot dispatch --inject to terminal ${terminal}: no recognized agent detected. ` +
-    `Orca detects these agent CLIs (${RECOGNIZED_AGENT_PROCESS_NAMES.join(', ')}). ` +
+    `OCC detects these agent CLIs (${RECOGNIZED_AGENT_PROCESS_NAMES.join(', ')}). ` +
     'Start one in the terminal and let it finish launching, ' +
     'or dispatch without --inject and send the prompt manually.'
   )

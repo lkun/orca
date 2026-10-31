@@ -343,7 +343,7 @@ describe('a Stop that withdraws the follow-up one at a time (no cancel_queued)',
   )
 })
 
-describe('a queued send the CLI withdraws without Orca hearing why', () => {
+describe('a queued send the CLI withdraws without OCC hearing why', () => {
   it('settles the withdrawn send from its own cancelled frame', async () => {
     const replay = await replayCapture('cancel-async')
 

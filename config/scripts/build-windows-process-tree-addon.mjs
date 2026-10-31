@@ -38,7 +38,7 @@ const SUPPORTED_ARCHES = ['x64', 'arm64']
 // Shared pnpm store belongs to every worktree; repair/build a private source copy.
 const SCRATCH_DIR =
   existsSync(INSTALLED_PACKAGE_DIR) && isSharedPackageDir(INSTALLED_PACKAGE_DIR, ROOT)
-    ? mkdtempSync(join(tmpdir(), 'orca-windows-process-tree-'))
+    ? mkdtempSync(join(tmpdir(), 'occ-windows-process-tree-'))
     : null
 const PACKAGE_DIR = SCRATCH_DIR === null ? INSTALLED_PACKAGE_DIR : join(SCRATCH_DIR, 'package')
 if (SCRATCH_DIR !== null) {

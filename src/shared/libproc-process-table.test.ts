@@ -117,7 +117,7 @@ function installAddon(overrides: Partial<LibprocAddon> = {}): LibprocAddon {
   return addon
 }
 
-// Orca's euid is pinned, so neither a root runner nor Windows (no geteuid) changes whose argv is "own".
+// OCC's euid is pinned, so neither a root runner nor Windows (no geteuid) changes whose argv is "own".
 const OWN_UID = 501
 const OTHER_UID = 502
 const realGeteuid = process.geteuid
@@ -372,8 +372,8 @@ describe('runPsInProcess', () => {
       row({
         pid: 700,
         ppid: 1,
-        comm: 'Orca',
-        command: '/Applications/Orca',
+        comm: 'OCC',
+        command: '/Applications/OCC',
         commandIncomplete: false
       }),
       row({ pid: 701, ppid: 700, comm: 'helper', command: '/usr/libexec/helper' })

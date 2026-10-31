@@ -1,7 +1,7 @@
 // Shipped phones strictly parse relay-hello/director-resolve JSON; new fields break them. WebSocket close reasons
 // provide an additive slot older peers ignore.
 export const RELAY_HOST_CLOSE_REASON = {
-  // The desktop lost its Orca Cloud session (cleared, or refused with 401).
+  // The desktop lost its OCC Cloud session (cleared, or refused with 401).
   SIGNED_OUT: 'signed-out'
 } as const
 

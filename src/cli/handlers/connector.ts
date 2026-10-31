@@ -42,7 +42,7 @@ export async function callConnector<TResult>(
     if (error instanceof RuntimeClientError && error.code === 'method_not_found') {
       throw new RuntimeClientError(
         'incompatible_runtime',
-        'This Orca host has no connectors. Update Orca on the host and try again.'
+        'This OCC host has no connectors. Update OCC on the host and try again.'
       )
     }
     throw error
@@ -58,7 +58,7 @@ type ConnectorPrompt = {
   options?: { id: string; label: string }[]
 }
 
-/** A kind this CLI does not know reads as one only Orca can answer, as the contract asks. */
+/** A kind this CLI does not know reads as one only OCC can answer, as the contract asks. */
 export function formatPendingPrompt(prompt: ConnectorPrompt | null): string {
   if (!prompt) {
     return 'no pending prompt'
@@ -69,7 +69,7 @@ export function formatPendingPrompt(prompt: ConnectorPrompt | null): string {
       ? `approval ${prompt.tool}${prompt.summary ? `: ${prompt.summary}` : ''}`
       : prompt.kind === 'question'
         ? `question: ${prompt.question}`
-        : 'unsupported (answer in Orca)'
+        : 'unsupported (answer in OCC)'
   const options = known ? (prompt.options ?? []) : []
   return [
     head,
@@ -104,7 +104,7 @@ const REPLY_UNAVAILABLE_CODES = new Set([
 export function formatReply(reply: ConnectorReply): string {
   return reply.status === 'posted'
     ? 'Posted to the thread.'
-    : 'Sent; Orca Cloud will post it to the thread.'
+    : 'Sent; OCC Cloud will post it to the thread.'
 }
 
 export const CONNECTOR_HANDLERS: Record<string, CommandHandler> = {
@@ -184,13 +184,13 @@ export const CONNECTOR_HANDLERS: Record<string, CommandHandler> = {
     if (!paneKey) {
       throw new RuntimeClientError(
         'invalid_argument',
-        'Run this from an agent a connector message started; this terminal is not an Orca agent pane.'
+        'Run this from an agent a connector message started; this terminal is not an OCC agent pane.'
       )
     }
     const reply = await callConnector<ConnectorReply>(
       client,
       'connector.reply',
-      // Minted once here, so Orca Cloud posts it once however often the host retries.
+      // Minted once here, so OCC Cloud posts it once however often the host retries.
       { paneKey, replyId: randomUUID(), text: getRequiredStringFlag(flags, 'text') },
       { timeoutMs: REPLY_TIMEOUT_MS }
     ).catch((error: unknown) => {

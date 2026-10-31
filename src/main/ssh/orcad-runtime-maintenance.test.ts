@@ -176,7 +176,7 @@ describe('updateManagedOrcadEnvironment', () => {
     expect(orcadUpdateFailedThisLaunch(host)).toBe(true)
   })
 
-  it('refuses Update over a host a newer Orca runs, and lets Force take it', async () => {
+  it('refuses Update over a host a newer OCC runs, and lets Force take it', async () => {
     const newer = {
       ...harness.context().activationRecord,
       active: '9.0.0+newer',

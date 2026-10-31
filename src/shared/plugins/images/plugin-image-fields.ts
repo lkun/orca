@@ -115,7 +115,7 @@ export const pluginManifestImageFields = {
             .enum(['light', 'dark'])
             .optional()
             .meta(
-              pluginFieldDoc('Show this screenshot only with a light or dark Orca theme.', NEXT)
+              pluginFieldDoc('Show this screenshot only with a light or dark OCC theme.', NEXT)
             )
         })
         .meta({ id: 'Screenshot', description: 'One screenshot of the plugin in use.' })
@@ -145,7 +145,7 @@ const catalogImageSchema = z
     sha256: z
       .string()
       .regex(/^[0-9a-f]{64}$/, 'must be a lowercase SHA-256 hex digest')
-      .meta(pluginFieldDoc("SHA-256 of the file's bytes; Orca refuses bytes that differ.", NEXT)),
+      .meta(pluginFieldDoc("SHA-256 of the file's bytes; OCC refuses bytes that differ.", NEXT)),
     width: z
       .number()
       .int()
@@ -173,7 +173,7 @@ export const pluginCatalogImagesSchema = z
   })
   .meta({
     id: 'CatalogImages',
-    description: `Images extracted from the release by catalog CI, which re-encodes them and strips metadata. Same rules as the manifest: icon ${imageRuleText('icon')} Cover ${imageRuleText('cover')} Screenshots ${imageRuleText('screenshot')} Images must not imitate Orca's trust badges.`
+    description: `Images extracted from the release by catalog CI, which re-encodes them and strips metadata. Same rules as the manifest: icon ${imageRuleText('icon')} Cover ${imageRuleText('cover')} Screenshots ${imageRuleText('screenshot')} Images must not imitate OCC's trust badges.`
   })
 
 export type PluginCatalogImages = z.infer<typeof pluginCatalogImagesSchema>

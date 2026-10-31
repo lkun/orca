@@ -18,7 +18,7 @@ import {
 import { agentBrowserCommandOf } from '../browser/agent-browser-bridge-test-harness'
 
 const BASE = {
-  executablePath: '/opt/orca/chromium',
+  executablePath: '/opt/occ/chromium',
   profilePath: '/state/browser-chromium',
   sessionName: 'orca-orcad-0123456789abcdef'
 }
@@ -48,7 +48,7 @@ describe('orcad external-chromium agent-browser environment', () => {
     const controller = new AbortController()
     controller.abort()
     const session = new ExternalChromiumBrowserSession(
-      '/opt/orca/agent-browser',
+      '/opt/occ/agent-browser',
       { executablePath: BASE.executablePath, provider: 'chromium' },
       '/state'
     )
@@ -74,7 +74,7 @@ describe('orcad external-chromium agent-browser environment', () => {
         }
       })
       const session = new ExternalChromiumBrowserSession(
-        '/opt/orca/agent-browser',
+        '/opt/occ/agent-browser',
         { executablePath: BASE.executablePath, provider: 'chromium' },
         '/state'
       )
@@ -106,7 +106,7 @@ describe('orcad external-chromium agent-browser environment', () => {
       timedOut: false
     })
     const session = new ExternalChromiumBrowserSession(
-      '/opt/orca/agent-browser',
+      '/opt/occ/agent-browser',
       { executablePath: BASE.executablePath, provider: 'chromium' },
       '/state'
     )
@@ -156,7 +156,7 @@ describe('orcad external-chromium agent-browser environment', () => {
     })
 
     const session = new ExternalChromiumBrowserSession(
-      '/opt/orca/agent-browser',
+      '/opt/occ/agent-browser',
       { executablePath: BASE.executablePath, provider: 'chromium' },
       '/state'
     )
@@ -182,7 +182,7 @@ describe('orcad external-chromium agent-browser environment', () => {
       })
     })
     const session = new ExternalChromiumBrowserSession(
-      '/opt/orca/agent-browser',
+      '/opt/occ/agent-browser',
       { executablePath: BASE.executablePath, provider: 'chromium' },
       '/state'
     )
@@ -218,7 +218,7 @@ describe('orcad external-chromium agent-browser environment', () => {
     })
 
     const session = new ExternalChromiumBrowserSession(
-      '/opt/orca/agent-browser',
+      '/opt/occ/agent-browser',
       { executablePath: BASE.executablePath, provider: 'chromium' },
       '/state'
     )

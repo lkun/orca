@@ -49,7 +49,7 @@ vi.mock('@/runtime/runtime-rpc-result', () => ({ RuntimeRpcCallError: Error }))
 
 const CODEX_BYPASS = '--dangerously-bypass-approvals-and-sandbox'
 
-/** One agent per prompt-injection mode, with the bypass flag Orca ships as that agent's default. */
+/** One agent per prompt-injection mode, with the bypass flag OCC ships as that agent's default. */
 const BYPASS_BY_AGENT: readonly [TuiAgent, string, string][] = [
   ['codex', 'argv', CODEX_BYPASS],
   ['claude', 'argv', '--dangerously-skip-permissions'],

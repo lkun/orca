@@ -35,7 +35,7 @@
       "title": "Ajan Oturum Geçmişi",
       "unavailable": "Ajan Oturum Geçmişi Kullanılamıyor",
       "unknownHostPlatform": "Sunucunun platformu belirlenemedi.",
-      "updateHost": "Ajan oturum geçmişine göz atmak için bu sunucudaki Orca'yı güncelleyin.",
+      "updateHost": "Ajan oturum geçmişine göz atmak için bu sunucudaki OCC'yı güncelleyin.",
       "waitingForHost": "Sunucu bekleniyor…",
       "workspace": "Çalışma Alanı"
     },
@@ -73,7 +73,7 @@
       "stepProgress": "{{total}} adımın {{step}}. adımı"
     },
     "notifications": {
-      "description": "Uygulama kapalıyken bile ajan uyarıları alın. Uyarılar Orca'nın anlık bildirim hizmeti ve Apple veya Google üzerinden iletilir."
+      "description": "Uygulama kapalıyken bile ajan uyarıları alın. Uyarılar OCC'nın anlık bildirim hizmeti ve Apple veya Google üzerinden iletilir."
     },
     "pair": {
       "backToHome": "Ana ekrana dön",
@@ -92,19 +92,19 @@
     "pairScan": {
       "cameraDisabledDescription": "Ayarlar bölümünde kamera erişimini etkinleştirin veya eşleştirme kodunu yapıştırın.",
       "cameraDisabledTitle": "Kamera Erişimi Devre Dışı",
-      "cameraPermissionDescription": "Masaüstünüzdeki Orca'da gösterilen QR kodunu tarayın veya eşleştirme kodunu yapıştırın.",
+      "cameraPermissionDescription": "Masaüstünüzdeki OCC'da gösterilen QR kodunu tarayın veya eşleştirme kodunu yapıştırın.",
       "connectTimedOut": "{{seconds}} saniye içinde bağlantı kurulamadı — işlemin nerede takıldığını görmek için aşağıdaki günlüğe bakın",
       "connecting": "Bağlanılıyor…",
       "invalidPairingCode": "Geçerli bir eşleştirme kodu değil — bilgisayarınızdan kopyalayıp yeniden yapıştırın",
-      "invalidQrCode": "Geçerli bir Orca QR kodu değil",
+      "invalidQrCode": "Geçerli bir OCC QR kodu değil",
       "downloadQrCode": "Bu indirme kodu. Bilgisayarınızdaki 2. adımda bulunan eşleştirme kodunu tarayın.",
-      "openDesktopStep": "Bilgisayarınızda Orca'yı açın",
+      "openDesktopStep": "Bilgisayarınızda OCC'yı açın",
       "openMobileSettingsStep": "Ayarlar → Mobil bölümüne gidin",
       "openSettings": "Ayarları Aç",
       "pairingFailed": "Eşleştirme yapılamadı: {{error}}",
       "pairingLog": "Eşleştirme günlüğü",
       "pasteCodeMessage": "Bilgisayarınızda QR kodunun altında gösterilen kodu kopyalayın.",
-      "pasteCodePlaceholder": "orca://pair?code=... veya kodu yapıştırın",
+      "pasteCodePlaceholder": "occ://pair?code=... veya kodu yapıştırın",
       "pasteCodeTitle": "Eşleştirme kodunu yapıştır",
       "pasteInstead": "Bunun yerine kod yapıştır",
       "pastePairingCode": "Veya eşleştirme kodunu yapıştır",
@@ -123,7 +123,7 @@
       "largeText": "Büyük (%125)",
       "largerText": "Daha büyük (%150)",
       "largestText": "En Büyük (%200)",
-      "leaveAppDescription": "Telefonunuzda terminal kullanırken Orca, terminali ekranınıza sığacak şekilde küçültür. Uygulamayı kapattığınızda veya başka bir uygulamaya geçtiğinizde bu ayar, terminalin telefon boyutunda kalmasını (etkileşimli CLI araçlarının düzeninin değişmemesi için) ya da masaüstü boyutuna geri dönmesini belirler. Boyutu elle değiştirmek için masaüstündeki bildirim çubuğunda Geri yükle seçeneğini her zaman kullanabilirsiniz.",
+      "leaveAppDescription": "Telefonunuzda terminal kullanırken OCC, terminali ekranınıza sığacak şekilde küçültür. Uygulamayı kapattığınızda veya başka bir uygulamaya geçtiğinizde bu ayar, terminalin telefon boyutunda kalmasını (etkileşimli CLI araçlarının düzeninin değişmemesi için) ya da masaüstü boyutuna geri dönmesini belirler. Boyutu elle değiştirmek için masaüstündeki bildirim çubuğunda Geri yükle seçeneğini her zaman kullanabilirsiniz.",
       "leaveAppHeading": "UYGULAMADAN AYRILDIĞINIZDA",
       "noPairedDesktops": "Henüz eşleştirilmiş masaüstü yok. Terminal davranışını ayarlamak için bir masaüstü eşleştirin.",
       "restoreAfterMinutes_one": "{{count}} dakika sonra",
@@ -283,15 +283,15 @@
     },
     "orcaStop": {
       "canContinue": "Bu konuşmada devam edebilirsiniz.",
-      "crash": "Bu yanıt hazırlanırken {{machine}} üzerindeki Orca beklenmedik biçimde durdu.",
-      "quit": "Bu yanıt hazırlanırken {{machine}} üzerindeki Orca kapatıldı.",
-      "remote": "Bu yanıt hazırlanırken {{machine}} üzerindeki Orca durdu.",
+      "crash": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC beklenmedik biçimde durdu.",
+      "quit": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC kapatıldı.",
+      "remote": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC durdu.",
       "unnamedServer": "uzak sunucu",
-      "update": "Bu yanıt hazırlanırken {{machine}} üzerindeki Orca bir güncelleme için yeniden başlatıldı."
+      "update": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC bir güncelleme için yeniden başlatıldı."
     },
     "permission": {
       "needsAccessTo": "Erişim gereken konum: ",
-      "newerVersionRequired": "Bu istek için Orca'nın daha yeni bir sürümü gerekiyor.",
+      "newerVersionRequired": "Bu istek için OCC'nın daha yeni bir sürümü gerekiyor.",
       "planFile": "Plan dosyası: {{filePath}}",
       "reason": "Neden: "
     },
@@ -552,7 +552,7 @@
       "copyFailed": "Kopyalanamadı",
       "copyPrompt": "İstemi kopyala",
       "statusUnreadable": "Bu sunucunun durumu okunamadı. Yeniden deneniyor…",
-      "updateRequired": "Telefonunuzdan ajan başlatmak için bilgisayarınızdaki Orca'yı güncelleyin."
+      "updateRequired": "Telefonunuzdan ajan başlatmak için bilgisayarınızdaki OCC'yı güncelleyin."
     },
     "agentSpinner": {
       "monitoring": "Arka plan görevleri izleniyor",
@@ -567,7 +567,7 @@
     },
     "authFailedBannerActions": {
       "repair": "Yeniden eşleştir",
-      "webNote": "Orca uygulamasından bu sunucuya yeniden bağlanın veya sunucuyu kaldırın."
+      "webNote": "OCC uygulamasından bu sunucuya yeniden bağlanın veya sunucuyu kaldırın."
     },
     "codexResetCredit": {
       "alreadyAppliedTitle": "Sıfırlama zaten uygulandı",
@@ -697,7 +697,7 @@
       "terminalLabel": "{{title}} ({{id}})",
       "unsentNotes_one": "{{count}} gönderilmemiş not",
       "unsentNotes_other": "{{count}} gönderilmemiş not",
-      "updateRequired": "Bilgisayarınızdaki Orca'yı güncelleyin"
+      "updateRequired": "Bilgisayarınızdaki OCC'yı güncelleyin"
     },
     "diffReviewFileSummary": {
       "branch": "Branch",
@@ -780,7 +780,7 @@
       "pairingTemporarilyUnavailable": "Eşleştirme geçici olarak kullanılamıyor",
       "repairHint": "Masaüstünüzle yeniden eşleştirmek için dokunun",
       "unlockHint": "Telefonunuzun kilidini açın, ardından yeniden denemek için dokunun",
-      "updateDesktopHint": "Her yerden bağlanmak için masaüstündeki Orca'yı güncelleyin ve oturum açın",
+      "updateDesktopHint": "Her yerden bağlanmak için masaüstündeki OCC'yı güncelleyin ve oturum açın",
       "worktreeAccessibilitySummary": "{{summary}}, {{activeCount}} etkin"
     },
     "hostDiagnosticsLink": {
@@ -801,10 +801,10 @@
     },
     "jiraConnectPrompt": {
       "checkAgain": "Yeniden kontrol et",
-      "connectHint": "Orca masaüstü uygulamasında Ayarlar → Entegrasyonlar bölümüne Jira sitenizi ekleyin, ardından yeniden kontrol edin.",
+      "connectHint": "OCC masaüstü uygulamasında Ayarlar → Entegrasyonlar bölümüne Jira sitenizi ekleyin, ardından yeniden kontrol edin.",
       "connectOnDesktop": "Bilgisayarınızda Jira'yı bağlayın",
       "credentialUnreadable": "Jira bağlantısı kayıtlı ancak okunamıyor: {{credentialError}}",
-      "updateDesktop": "Bilgisayarınızdaki Orca'yı güncelleyin"
+      "updateDesktop": "Bilgisayarınızdaki OCC'yı güncelleyin"
     },
     "markdownBlocks": {
       "copyCode": "Kodu kopyala",
@@ -866,20 +866,20 @@
     },
     "protocolBlockScreen": {
       "backToHosts": "Sunucular bölümüne dön",
-      "desktopTooOldBody": "Eşleştirilmiş bu masaüstü uygulaması, mevcut Orca Mobile sürümünüz için çok eski. Bilgisayarınızdaki Orca'yı güncelleyin, ardından bu sunucuya bağlanmayı tekrar deneyin.",
-      "getVersion": "Orca {{version}} Sürümünü İndir",
-      "mobileTooOldAppStore": "Bu masaüstü uygulaması, Orca Mobile'ın daha yeni bir sürümünü gerektiriyor. Orca Mobile'ı App Store üzerinden güncelleyin, ardından bu sunucuya bağlanmayı tekrar deneyin.",
-      "mobileTooOldGitHubReleases": "Bu masaüstü uygulaması, Orca Mobile'ın daha yeni bir sürümünü gerektiriyor. Orca Mobile'ı GitHub Releases üzerinden güncelleyin, ardından bu sunucuya bağlanmayı tekrar deneyin.",
+      "desktopTooOldBody": "Eşleştirilmiş bu masaüstü uygulaması, mevcut OCC Mobile sürümünüz için çok eski. Bilgisayarınızdaki OCC'yı güncelleyin, ardından bu sunucuya bağlanmayı tekrar deneyin.",
+      "getVersion": "OCC {{version}} Sürümünü İndir",
+      "mobileTooOldAppStore": "Bu masaüstü uygulaması, OCC Mobile'ın daha yeni bir sürümünü gerektiriyor. OCC Mobile'ı App Store üzerinden güncelleyin, ardından bu sunucuya bağlanmayı tekrar deneyin.",
+      "mobileTooOldGitHubReleases": "Bu masaüstü uygulaması, OCC Mobile'ın daha yeni bir sürümünü gerektiriyor. OCC Mobile'ı GitHub Releases üzerinden güncelleyin, ardından bu sunucuya bağlanmayı tekrar deneyin.",
       "openAppStore": "App Store'u Aç",
       "openGitHubReleases": "GitHub Releases Sayfasını Aç",
       "refreshRecoveryNote": "Bu mesaj görünmeye devam ederse bu sunucuyu kaldırıp yeniden eşleştirin.",
       "refreshWorkspaceBody": "Bu sunucu için önbelleğe alınan çalışma alanı, masaüstü uygulamasının beklediğinden daha eski. Güncel sürümü indirmek için bu sunucuya yeniden bağlanın.",
       "refreshWorkspaceTitle": "Mobil çalışma alanını yenileyin",
-      "updateDesktopTitle": "Bilgisayarınızdaki Orca'yı güncelleyin",
-      "updateMobileTitle": "Orca Mobile'ı güncelleyin",
+      "updateDesktopTitle": "Bilgisayarınızdaki OCC'yı güncelleyin",
+      "updateMobileTitle": "OCC Mobile'ı güncelleyin",
       "updateRecoveryNote": "Zaten güncellediniz mi? Sunucular bölümüne dönüp bağlantıyı yenileyin. Bu mesaj görünmeye devam ederse bu sunucuyu kaldırıp yeniden eşleştirin.",
-      "workspaceNeedsUpdateAppStore": "Bu masaüstü uygulamasının mobil çalışma alanı, Orca Mobile'ın daha yeni bir sürümünü gerektiriyor. Orca Mobile'ı App Store üzerinden güncelleyin, ardından bu sunucuya bağlanmayı tekrar deneyin.",
-      "workspaceNeedsUpdateGitHubReleases": "Bu masaüstü uygulamasının mobil çalışma alanı, Orca Mobile'ın daha yeni bir sürümünü gerektiriyor. Orca Mobile'ı GitHub Releases üzerinden güncelleyin, ardından bu sunucuya bağlanmayı tekrar deneyin."
+      "workspaceNeedsUpdateAppStore": "Bu masaüstü uygulamasının mobil çalışma alanı, OCC Mobile'ın daha yeni bir sürümünü gerektiriyor. OCC Mobile'ı App Store üzerinden güncelleyin, ardından bu sunucuya bağlanmayı tekrar deneyin.",
+      "workspaceNeedsUpdateGitHubReleases": "Bu masaüstü uygulamasının mobil çalışma alanı, OCC Mobile'ın daha yeni bir sürümünü gerektiriyor. OCC Mobile'ı GitHub Releases üzerinden güncelleyin, ardından bu sunucuya bağlanmayı tekrar deneyin."
     },
     "richMarkdownEditor": {
       "imageUrl": "Görsel URL'si",
@@ -1026,7 +1026,7 @@
       "disconnected": "Bağlantı kesildi",
       "hostFallback": "Sunucu",
       "hostOffline": "{{host}} çevrimdışı",
-      "hostOfflineDetail": "Bilgisayarınızın uyanık, Orca'nın çalışır durumda ve oturumunuzun açık olduğunu kontrol edin",
+      "hostOfflineDetail": "Bilgisayarınızın uyanık, OCC'nın çalışır durumda ve oturumunuzun açık olduğunu kontrol edin",
       "labelWithHint": "{{label}} — {{hint}}",
       "pairingInvalid": "Eşleştirme geçersiz — bilgisayarınızla yeniden eşleştirin",
       "rePairDetail": "Bilgisayarınızla yeniden eşleştirin",
@@ -1034,7 +1034,7 @@
       "relayAccessExpired": "{{host}} için Relay erişiminin süresi doldu",
       "relayConnectFailed": "Relay üzerinden bağlanılamadı",
       "relayUnreachable": "Relay'e ulaşılamadı",
-      "signInDetail": "Yeniden bağlanmak için bilgisayarınızda Orca'da oturum açın",
+      "signInDetail": "Yeniden bağlanmak için bilgisayarınızda OCC'da oturum açın",
       "signInRequired": "{{host}} üzerinde oturum açılması gerekiyor",
       "tailscaleHint": "Tailscale'i kontrol edin"
     },
@@ -1079,7 +1079,7 @@
       "privacyHint": "Sunucu adını, uç noktayı, sürümleri, bağlantı durumunu ve olayları içeren, hassas bilgileri çıkarılmış ve boyutu sınırlı bir rapor gönderir. Terminal içeriklerini veya kimlik bilgilerini asla göndermez.",
       "reconnecting": "yeniden bağlanılıyor",
       "retrySending": "Göndermeyi yeniden dene",
-      "sendDiagnostics": "Tanılama bilgilerini Orca'ya gönder",
+      "sendDiagnostics": "Tanılama bilgilerini OCC'ya gönder",
       "sending": "Gönderiliyor…",
       "sent": "Tanılama bilgileri gönderildi",
       "stateWithAttempt": "{{state}} · {{attempts}}. deneme",
@@ -1102,21 +1102,21 @@
       "title": "Çalışma alanı güncellemeleri"
     },
     "troubleshootCommonIssues": {
-      "allowNotifications": "Sistem ayarlarında Orca bildirimlerine izin verildiğini ve Focus veya Do Not Disturb modunun kapalı olduğunu kontrol edin.",
+      "allowNotifications": "Sistem ayarlarında OCC bildirimlerine izin verildiğini ve Focus veya Do Not Disturb modunun kapalı olduğunu kontrol edin.",
       "checkTailnet": "Bilgisayarınızın uyku modunda olmadığını ve tailnet ağınızda bağlı göründüğünü kontrol edin.",
       "desktopTitle": "Masaüstü Uygulaması Çalışmıyor",
       "disableVpn": "Bu VPN'i devre dışı bırakın veya bölünmüş tünellemeyi / \"Allow LAN\" seçeneğini etkinleştirin.",
       "firewallTitle": "Güvenlik Duvarı {{port}} Portunu Engelliyor",
       "linuxFirewall": "Linux: sudo ufw allow {{port}}",
       "keepTailscaleOn": "100.x.x.x veya *.ts.net gibi sunucu adreslerine Tailscale üzerinden bağlanılır — Tailscale'i AÇIK tutun.",
-      "macosFirewall": "macOS: System Settings → Network → Firewall — Orca'ya izin verin.",
+      "macosFirewall": "macOS: System Settings → Network → Firewall — OCC'ya izin verin.",
       "notificationNetwork": "Hücresel bağlantıyı veya başka bir Wi-Fi ağını deneyin. Ağ değiştirdikten sonra bildirimler geliyorsa ağınız iletimi geciktiriyor olabilir.",
       "notificationsTitle": "Anlık Bildirimler",
-      "openDesktop": "Bağlantıları kabul edebilmesi için bilgisayarınızda Orca açık olmalıdır.",
+      "openDesktop": "Bağlantıları kabul edebilmesi için bilgisayarınızda OCC açık olmalıdır.",
       "pairAfterUpdate": "Güncellemeden sonra QR koduyla yeniden eşleştirme yapmanız gerekebilir.",
       "reconnectWifi": "Her iki cihazda da WiFi ağına yeniden bağlanmayı deneyin.",
       "restartBothApps": "Zaman aşımı devam ederse her iki uygulamayı da yeniden başlatın.",
-      "restartDesktop": "Orca'yı yeniden başlatmayı deneyin — mobil bağlantı sunucusu uygulama açıldığında başlar.",
+      "restartDesktop": "OCC'yı yeniden başlatmayı deneyin — mobil bağlantı sunucusu uygulama açıldığında başlar.",
       "restartTailscale": "iOS/Android'de tünel bağlantısı fark edilmeden takılabilir: Tailscale uygulamasında Tailscale'i kapatıp yeniden açın.",
       "restrictedNetwork": "Kurum/okul ağları P2P bağlantılarını engelleyebilir — kişisel erişim noktasını deneyin.",
       "retryHost": "Sunucu listesine dönün ve yeniden denemek için sunucunuza dokunun.",
@@ -1129,7 +1129,7 @@
       "vpnTitle": "Diğer VPN'lerden Kaynaklanan Sorunlar",
       "wifiSignal": "Telefonunuzdaki WiFi sinyal gücünü kontrol edin.",
       "wifiTitle": "Farklı WiFi Ağları",
-      "windowsFirewall": "Windows: Defender Firewall → Allow app — Orca'yı Private ağlarda etkinleştirin."
+      "windowsFirewall": "Windows: Defender Firewall → Allow app — OCC'yı Private ağlarda etkinleştirin."
     },
     "troubleshootView": {
       "commonIssues": "Yaygın sorunlar",
@@ -1206,11 +1206,11 @@
       "alreadyActive": "Dikte şu anda bilgisayarda veya başka bir telefonda kullanılıyor.",
       "cloudModelNeedsKey": "OpenAI anahtarı gerekli",
       "deleteFailed": "Model silinemedi",
-      "desktopUpdateRequired": "Mobil ses ayarlarını kullanmak için eşleştirilmiş bilgisayardaki Orca uygulamasını güncelleyin.",
+      "desktopUpdateRequired": "Mobil ses ayarlarını kullanmak için eşleştirilmiş bilgisayardaki OCC uygulamasını güncelleyin.",
       "downloadFailed": "İndirme başlatılamadı",
       "loadFailed": "Dikte modelleri yüklenemedi",
       "repairRequired": "Dikteyi kullanmak için bu telefonu bilgisayarla yeniden eşleştirin.",
-      "serverUpdateRequired": "Sesli dikteyi kullanmak için bu sunucudaki Orca'yı güncelleyin.",
+      "serverUpdateRequired": "Sesli dikteyi kullanmak için bu sunucudaki OCC'yı güncelleyin.",
       "sessionLost": "Diktenin bilgisayarla bağlantısı kesildi. Yeniden deneyin.",
       "updateFailed": "Dikte ayarları güncellenemedi"
     }
@@ -1302,7 +1302,7 @@
       "open": "PDF aç",
       "openFailed": "Bu PDF açılamadı",
       "opening": "PDF açılıyor…",
-      "updateRequired": "PDF'leri açmak için Orca Mobile'ı güncelleyin"
+      "updateRequired": "PDF'leri açmak için OCC Mobile'ı güncelleyin"
     }
   },
   "home": {
@@ -1313,17 +1313,17 @@
       "weeklyWindow": "7g"
     },
     "appUpdateCard": {
-      "dismissAccessibilityLabel": "Orca {{version}} güncellemesini gizle",
-      "title": "Orca {{version}} sürümü mevcut",
-      "updateAccessibilityLabel": "Orca {{version}} sürümü mevcut, güncellemek için dokunun",
+      "dismissAccessibilityLabel": "OCC {{version}} güncellemesini gizle",
+      "title": "OCC {{version}} sürümü mevcut",
+      "updateAccessibilityLabel": "OCC {{version}} sürümü mevcut, güncellemek için dokunun",
       "updateHint": "Güncellemek için dokunun"
     },
     "emptyState": {
       "connectedDescription": "Masaüstünüz burada görünecek. Her şey uçtan uca şifrelenir.",
       "connectedTitle": "Bağlandınız",
-      "description": "Ajanlarınızı takip etmek, istediğiniz terminale erişmek ve işlerinizi telefonunuzdan yönetmek için bilgisayarınızdaki Orca ile eşleştirin.",
+      "description": "Ajanlarınızı takip etmek, istediğiniz terminale erişmek ve işlerinizi telefonunuzdan yönetmek için bilgisayarınızdaki OCC ile eşleştirin.",
       "openDesktopDescription": "Ayarlar → Mobil bölümüne gidin ve eşleştirme için bir QR kodu oluşturun.",
-      "openDesktopTitle": "Orca masaüstü uygulamasını açın",
+      "openDesktopTitle": "OCC masaüstü uygulamasını açın",
       "pairDesktop": "Masaüstünü Eşleştir",
       "scanCodeDescription": "Tarayıcıyı açmak için yukarıdaki düğmeye dokunun. Kamerayı ekranınızdaki QR koduna doğrultun.",
       "scanCodeTitle": "Kodu tarayın",
@@ -1433,7 +1433,7 @@
       "closed": "Kapalı",
       "createdByAutomation": "Otomasyon tarafından oluşturuldu",
       "createdByNamedAutomation": "“{{name}}” otomasyonu tarafından oluşturuldu",
-      "createdFromCli": "Orca CLI ile oluşturuldu",
+      "createdFromCli": "OCC CLI ile oluşturuldu",
       "draft": "Taslak",
       "merged": "Merge edildi",
       "openLink": "{{label}} bağlantısını aç",
@@ -1536,7 +1536,7 @@
   "notifications": {
     "desktopChannel": {
       "name": "Masaüstü Bildirimleri",
-      "silentName": "Orca sessiz bildirimleri"
+      "silentName": "OCC sessiz bildirimleri"
     },
     "notificationDeliverySection": {
       "footer": "Uyarı türleri, eşleştirilen her bilgisayarın bildirim ayarlarına göre belirlenir. Bu uygulama 7 gün kullanılmazsa bildirimler duraklatılır; sürdürmek için uygulamayı açıp yeniden bağlanın.",
@@ -1561,7 +1561,7 @@
       "keepTerminal": "Terminalle devam et",
       "notNow": "Şimdi değil",
       "notificationsDescription": "Uygulamayı kullanmasanız bile bir ajan işini bitirdiğinde veya beklediğinde bu telefonda bildirim alın.",
-      "notificationsDisclosure": "Bilgisayarınız 3 dakika boşta kaldıktan sonra Orca'nın anlık bildirim hizmeti üzerinden iletilir. Bunu Ayarlar bölümünden istediğiniz zaman değiştirebilirsiniz.",
+      "notificationsDisclosure": "Bilgisayarınız 3 dakika boşta kaldıktan sonra OCC'nın anlık bildirim hizmeti üzerinden iletilir. Bunu Ayarlar bölümünden istediğiniz zaman değiştirebilirsiniz.",
       "notificationsTitle": "Bir ajanın size ihtiyacı olduğunda haberdar olun",
       "openInChatUi": "Oturumları Sohbet Arayüzü ile aç",
       "openInTerminal": "Oturumları terminalde aç",
@@ -1980,7 +1980,7 @@
       "committedChangesFailed": "Commit'lenmiş değişiklikler yüklenemedi",
       "committedChangesUnavailable": "Commit'lenmiş değişiklikler kullanılamıyor",
       "committedDiffUnavailable": "Commit'lenmiş diff kullanılamıyor",
-      "desktopUpdateRequired": "Değişiklikleri mobilde incelemek için Orca masaüstü uygulamasını güncelleyin.",
+      "desktopUpdateRequired": "Değişiklikleri mobilde incelemek için OCC masaüstü uygulamasını güncelleyin.",
       "diffLoadFailed": "Diff yüklenemedi",
       "invalidSourceControlResponse": "Kaynak kontrolü yanıtı geçersizdi",
       "reviewNotesLoadFailed": "İnceleme notları yüklenemedi"
@@ -1997,7 +1997,7 @@
     },
     "failure": {
       "accountSwitchInProgress": "Bu ana makinede {{agent}} yapılandırması değiştiriliyor. İşlem tamamlandıktan sonra yeniden deneyin.",
-      "agentCommandNotRunnable": "Ayarlar → Ajanlar bölümündeki {{agent}} Komut ayarı, Orca'nın bulabileceği bir program yolu veya adı olmalı; argüman ya da değişken içermemelidir. Değiştirin veya sıfırlayın.",
+      "agentCommandNotRunnable": "Ayarlar → Ajanlar bölümündeki {{agent}} Komut ayarı, OCC'nın bulabileceği bir program yolu veya adı olmalı; argüman ya da değişken içermemelidir. Değiştirin veya sıfırlayın.",
       "agentCommandNotSignedIn": "Bu sohbetin çalıştığı bilgisayarda `{{loginCommand}}` komutuyla {{agent}} oturumu açın.",
       "agentNotSignedIn": "{{agent}} oturumu açın.",
       "agentStarting": "Ajan hâlâ başlatılıyor.",
@@ -2057,13 +2057,13 @@
       "fullAccessAsRoot": "{{agent}}, root olarak çalışırken Tam erişim iznini kullanmaz. Bu sohbeti çalıştıran bilgisayarda Ayarlar → Ajanlar bölümünden {{agent}} için başka bir izin seçin, ardından yeni bir sohbet başlatın.",
       "historyInOtherAccount": "Bu sohbetin geçmişi başka bir Claude hesabında. Devam etmek için o hesaba geri dönün.",
       "historyTooLarge": "Bu konuşmanın geçmişi burada geri yüklenemeyecek kadar büyük.",
-      "hostFault": "Orca bir sorunla karşılaştığı için bu işlem gerçekleşmedi.",
-      "hostFaultTryAgain": "Orca bir sorunla karşılaştığı için bu işlem gerçekleşmedi. Tekrar deneyin.",
-      "hostRestarted": "Bu mesaj gönderilmeden önce Orca yeniden başlatıldı.",
-      "hostStopped": "{{agent}} başlatma aşamasında kaldığı için Orca onu durdurdu.",
+      "hostFault": "OCC bir sorunla karşılaştığı için bu işlem gerçekleşmedi.",
+      "hostFaultTryAgain": "OCC bir sorunla karşılaştığı için bu işlem gerçekleşmedi. Tekrar deneyin.",
+      "hostRestarted": "Bu mesaj gönderilmeden önce OCC yeniden başlatıldı.",
+      "hostStopped": "{{agent}} başlatma aşamasında kaldığı için OCC onu durdurdu.",
       "interactiveAgentNotSignedIn": "Bu sohbetin çalıştığı bilgisayarda `{{loginCommand}}` komutunu çalıştırıp `{{slashCommand}}` komutunu kullanarak {{agent}} oturumu açın.",
       "launchFolderMissing": "Bu sohbetin çalıştığı klasör artık yok. Sohbete devam etmek için klasörü geri yükleyin.",
-      "launchPreparationFailed": "Orca, bu sohbetin çalıştığı bilgisayarda {{agent}} için başlatma hazırlıklarını tamamlayamadı.",
+      "launchPreparationFailed": "OCC, bu sohbetin çalıştığı bilgisayarda {{agent}} için başlatma hazırlıklarını tamamlayamadı.",
       "managedAccountEnvOverride": "Bu Claude başlatma işlemi kendi Anthropic oturum değişkenlerini tanımlıyor. Yönetilen bir Claude hesabını kullanmak için bunları kaldırın.",
       "managedAccountUnsupported": "WSL'de bir Claude hesabı eklenmiş olsa da Claude sohbetleri Windows'ta bir Claude hesabı gerektirir.",
       "modelUnavailable": "{{agent}}, {{detail}} modelini kullanamadı. Başka bir model seçip yeniden gönderin.",
@@ -2088,7 +2088,7 @@
       "quitTerminalAgent": "Sohbete burada devam etmek için o ajandan çıkın.",
       "runCommandAgain": "/{{command}} komutunu yeniden çalıştırın.",
       "runCommandWhenDone": "Tamamlandığında /{{command}} komutunu çalıştırın.",
-      "runtimeNotInstalled": "Bu sohbetin çalıştığı bilgisayarda {{agent}} yüklü değil. Orca'nın güncel bir sürümünde sohbet içinden yükleyin.",
+      "runtimeNotInstalled": "Bu sohbetin çalıştığı bilgisayarda {{agent}} yüklü değil. OCC'nın güncel bir sürümünde sohbet içinden yükleyin.",
       "sendAgainToTryOnceMore": "Tekrar denemek için mesajınızı yeniden gönderin.",
       "sendToTryAgain": "Tekrar denemek için mesajınızı gönderin.",
       "sessionNotRestored": "{{agent}} önceki oturumunu yeniden açamadığı için bu sohbet yeni bir oturumda devam ediyor. {{agent}} önceki mesajları hatırlamıyor.",
@@ -2113,7 +2113,7 @@
       "usageLimitWindowWeeklyModel": "haftalık model",
       "waitForBackgroundTasks": "Arka plan görevlerinin tamamlanmasını bekleyin.",
       "waitForStart": "Ajanın başlatılmasının tamamlanmasını bekleyin.",
-      "writeFailed": "Orca bu mesajı ajana iletemediği için mesaj gönderilmedi."
+      "writeFailed": "OCC bu mesajı ajana iletemediği için mesaj gönderilmedi."
     },
     "fileReader": {
       "copyReviewNotes": "İnceleme notlarını kopyala",
@@ -2223,7 +2223,7 @@
       "emptyPrompt": "Bu işlem için kaydedilen istem boş. Bilgisayarınızda Kaynak Kontrolü AI ayarlarını güncelleyin.",
       "loadFailed": "Kullanılabilir ajanlar yüklenemedi.",
       "promptNotSent": "Ajan başlatıldı, ancak istem gönderilemedi.",
-      "updateRequired": "Telefonunuzdan ajan başlatmak için bilgisayarınızdaki Orca'yı güncelleyin."
+      "updateRequired": "Telefonunuzdan ajan başlatmak için bilgisayarınızdaki OCC'yı güncelleyin."
     },
     "prSidebarState": {
       "loadFailed": "Pull request yüklenemedi"
@@ -2264,7 +2264,7 @@
       "globalScope": "Genel",
       "label": "Etiket",
       "labelPlaceholder": "Geliştirme sunucusunu başlat",
-      "olderHostPromptTooLong": "Bu sunucu için çok uzun. Daha uzun istemleri kaydetmek için sunucudaki Orca'yı güncelleyin.",
+      "olderHostPromptTooLong": "Bu sunucu için çok uzun. Daha uzun istemleri kaydetmek için sunucudaki OCC'yı güncelleyin.",
       "projectScope": "Proje",
       "prompt": "İstem",
       "promptHint": "Becerileri, dosya yollarını ve yerleşik komutları destekler.",
@@ -2526,7 +2526,7 @@
       "liveInputInterrupted": "Canlı giriş kesildi. Alan temizlendi; devam etmeden önce terminali kontrol edin."
     },
     "useStartup": {
-      "wakeAgents": "Uykudaki ajanları uyandırmak için sunucuda Orca'yı açın."
+      "wakeAgents": "Uykudaki ajanları uyandırmak için sunucuda OCC'yı açın."
     },
     "useTerminalCreateActions": {
       "createFailed": "Terminal oluşturulamadı",
@@ -2561,10 +2561,10 @@
       "attachmentExpired": "Bu ekin süresi doldu.",
       "backgroundTasksRunning": "Arka plan görevleri hâlâ çalışıyor.",
       "cancelNotSaved": "Bu soru veya onay isteği iptal edilemedi.",
-      "cannotRunHere": "Orca bu ajanı burada bir sohbette çalıştıramıyor.",
-      "capacity": "Bu sohbeti çalıştıran bilgisayardaki Orca istek sınırına ulaştı. O bilgisayarda Orca'yı güncelleyip yeniden deneyin.",
-      "chatNotFound": "Orca'da bu sohbet bulunamadı.",
-      "chatSavedByNewerOrca": "Bu sohbet daha yeni bir Orca sürümüyle kaydedilmiş.",
+      "cannotRunHere": "OCC bu ajanı burada bir sohbette çalıştıramıyor.",
+      "capacity": "Bu sohbeti çalıştıran bilgisayardaki OCC istek sınırına ulaştı. O bilgisayarda OCC'yı güncelleyip yeniden deneyin.",
+      "chatNotFound": "OCC'da bu sohbet bulunamadı.",
+      "chatSavedByNewerOrca": "Bu sohbet daha yeni bir OCC sürümüyle kaydedilmiş.",
       "clearAfterAnswer": "Ajanın sorusuna veya onay isteğine yanıt verin, ardından /clear komutunu çalıştırın.",
       "clearAfterRetry": "Önceki mesajınızı yeniden göndermeyi deneyin, ardından /clear komutunu çalıştırın.",
       "clearAfterSending": "Önceki mesajınız hâlâ gönderiliyor. Gönderildikten sonra /clear komutunu çalıştırın.",
@@ -2576,10 +2576,10 @@
       "continuationSuperseded": "Bu sohbet ilerledi. Devam etmeden önce son mesajları kontrol edin.",
       "conversationCleared": "Bu konuşma temizlendi.",
       "goalsUnsupported": "Bu ajan hedefleri desteklemiyor.",
-      "historyUnavailable": "Orca şu anda bu sohbetin geçmişini açamadı.",
-      "historyUnreadable": "Orca bu sohbetin kayıtlı geçmişini okuyamadı.",
+      "historyUnavailable": "OCC şu anda bu sohbetin geçmişini açamadı.",
+      "historyUnreadable": "OCC bu sohbetin kayıtlı geçmişini okuyamadı.",
       "historyUnusable": "Bu sohbet yüklenemiyor.",
-      "hostReconciling": "Orca yeniden başlatma sonrasında bu sohbeti hâlâ kontrol ediyor.",
+      "hostReconciling": "OCC yeniden başlatma sonrasında bu sohbeti hâlâ kontrol ediyor.",
       "messageNotSaved": "Mesajınız kaydedilemedi.",
       "messageTooLarge": "Tek mesaj için 256 KB sınırını aşıyor.",
       "messagesUnsettled": "Daha önce gönderdiğiniz bir mesajın iletildiği henüz doğrulanmadı.",
@@ -2596,7 +2596,7 @@
       "notDoneStopTasks": "Arka plan görevleri durdurulamadı.",
       "openCurrentConversation": "Devam etmek için mevcut konuşmayı açın.",
       "optionRejected": "Ajan bu ayarı kabul etmedi.",
-      "outcomeUnknown": "Orca ne olduğunu doğrulayamadı. Sohbeti kontrol edin.",
+      "outcomeUnknown": "OCC ne olduğunu doğrulayamadı. Sohbeti kontrol edin.",
       "ownerUnproven": "Bu sohbetteki önceki ajan hâlâ çalışıyor olabilir.",
       "pendingWork": "Bu komutu kullanmadan önce bekleyen işlerin tamamlanmasını ve mesajların iletilmesini bekleyin.",
       "promptPending": "Ajan, bir soruya yanıt veya onay bekliyor.",
@@ -2604,14 +2604,14 @@
       "queueTooLarge": "Kuyrukta çok fazla metin bekliyor.",
       "quitTerminalAgent": "Sohbete burada devam etmek için o ajandan çıkın.",
       "reattachFile": "Kaldırıp yeniden ekleyin.",
-      "recordFailed": "Orca bunu sohbet geçmişine kaydedemedi.",
-      "recordUnreadable": "Orca'da bu sohbetin kayıtlı durumu okunamadı.",
+      "recordFailed": "OCC bunu sohbet geçmişine kaydedemedi.",
+      "recordUnreadable": "OCC'da bu sohbetin kayıtlı durumu okunamadı.",
       "reopenChat": "Yeniden kontrol etmek için sohbeti tekrar açın.",
       "restartFailed": "Ajan yeniden başlatılamadı.",
       "runClearWhenDone": "Tamamlandığında /clear komutunu çalıştırın.",
       "runCompactWhenDone": "Tamamlandığında /compact komutunu çalıştırın.",
-      "savedByNewerOrca": "Sohbetler daha yeni bir Orca sürümüyle kaydedildi.",
-      "sendOutcomeLost": "Orca mesajınızın ajana ulaştığını doğrulayamadı. Sohbeti kontrol edip gerekirse yeniden gönderin.",
+      "savedByNewerOrca": "Sohbetler daha yeni bir OCC sürümüyle kaydedildi.",
+      "sendOutcomeLost": "OCC mesajınızın ajana ulaştığını doğrulayamadı. Sohbeti kontrol edip gerekirse yeniden gönderin.",
       "settleEarlierMessage": "Önceki mesajınızın iletilmesini bekleyin veya yeniden deneyin.",
       "shortenMessage": "Kısaltın veya bölün, ardından yeniden gönderin.",
       "shrinkQueue": "Kuyruktaki bir mesajı silin veya birinin gönderilmesini bekleyin, ardından yeniden deneyin.",
@@ -2620,10 +2620,10 @@
       "tryAgain": "Tekrar deneyin.",
       "tryAgainComposerSend": "Yeniden gönderin.",
       "turnActive": "Ajan hâlâ yanıt veriyor.",
-      "unreachable": "Orca ajana ulaşamadı.",
-      "unsupported": "Bu işlem, sohbetin çalıştığı bilgisayarda daha yeni bir Orca sürümü gerektiriyor. Oradaki Orca'yı güncelleyip tekrar deneyin.",
-      "updateOrcaToKeepUsing": "Kullanmaya devam etmek için Orca'yı güncelleyin.",
-      "updateOrcaToOpenChat": "Açmak için Orca'yı güncelleyin.",
+      "unreachable": "OCC ajana ulaşamadı.",
+      "unsupported": "Bu işlem, sohbetin çalıştığı bilgisayarda daha yeni bir OCC sürümü gerektiriyor. Oradaki OCC'yı güncelleyip tekrar deneyin.",
+      "updateOrcaToKeepUsing": "Kullanmaya devam etmek için OCC'yı güncelleyin.",
+      "updateOrcaToOpenChat": "Açmak için OCC'yı güncelleyin.",
       "waitForBackgroundTasks": "Arka plan görevlerinin tamamlanmasını bekleyin.",
       "waitForCommand": "/compact veya /clear işleminin tamamlanmasını bekleyin.",
       "waitForStart": "Ajanın başlatılmasının tamamlanmasını bekleyin.",
@@ -2684,11 +2684,11 @@
   "settings": {
     "aboutScreen": {
       "openLinkFailed": "Bağlantı açılamadı. Yeniden deneyin.",
-      "socialProfile": "X'te Orca",
-      "sourceCode": "Orca kaynak kodu",
+      "socialProfile": "X'te OCC",
+      "sourceCode": "OCC kaynak kodu",
       "tagline": "100 kat daha üretken geliştiriciler için açık kaynaklı ajan IDE'si",
       "title": "Hakkında",
-      "website": "Orca web sitesi"
+      "website": "OCC web sitesi"
     },
     "appUpdateSettingsRows": {
       "checkFailed": "Kontrol edilemedi",
@@ -2706,7 +2706,7 @@
       "neverChecked": "Hiçbir zaman",
       "upToDate": "Güncel",
       "update": "Güncelle",
-      "updateToVersion": "Orca {{version}} sürümüne güncelle"
+      "updateToVersion": "OCC {{version}} sürümüne güncelle"
     },
     "appearance": {
       "language": {
@@ -2724,7 +2724,7 @@
       "title": "Görünüm"
     },
     "browserSettingsScreen": {
-      "desktopBrowser": "Masaüstündeki Orca tarayıcısı",
+      "desktopBrowser": "Masaüstündeki OCC tarayıcısı",
       "desktopBrowserDescription": "Eşleştirdiğiniz masaüstü bilgisayardan aktarılan tarayıcıda açın.",
       "linksDescription": "Terminal çıktısında dokunduğunuz HTTP(S) bağlantılarının nerede açılacağını seçin.",
       "linksHeading": "BAĞLANTILAR",
@@ -2763,13 +2763,13 @@
       "updateDesktopHint": "Bu telefonda bildirim almak için güncel bir masaüstü uygulamasıyla eşleştirin."
     },
     "notificationDisplayTest": {
-      "accepted": "Orca'nın anlık bildirim hizmeti tarafından kabul edildi. Bildirimin gelip gelmediğini kontrol edin.",
+      "accepted": "OCC'nın anlık bildirim hizmeti tarafından kabul edildi. Bildirimin gelip gelmediğini kontrol edin.",
       "connectDesktop": "Bir masaüstü bilgisayara bağlanın ve yeniden deneyin.",
       "description": "Anlık bildirim iletimini veya kullanılamıyorsa yerel bir bildirimi test edin.",
       "desktopUnreachable": "Masaüstü bilgisayara ulaşılamadı. Yeniden deneyin.",
       "loadFailed": "Eşleştirilmiş masaüstü bilgisayarlar yüklenemedi.",
       "pairDesktop": "Bir masaüstü bilgisayarla eşleştirin ve yeniden deneyin.",
-      "pushServiceFailed": "Orca'nın anlık bildirim hizmeti üzerinden gönderilemedi. Yeniden deneyin.",
+      "pushServiceFailed": "OCC'nın anlık bildirim hizmeti üzerinden gönderilemedi. Yeniden deneyin.",
       "rateLimited": "Çok fazla bildirim gönderildi. Daha sonra yeniden deneyin.",
       "sendButton": "Test bildirimi gönder",
       "sendFailed": "Anlık bildirim testi gönderilemedi.",
@@ -2779,12 +2779,12 @@
       "localTitle": "Test bildirimi",
       "localBody": "Bu telefondan yerel bildirim testi.",
       "localScheduled": "{{reason}} Yerel test planlandı. Bildirimi kontrol edin. Bu test yalnızca gösterimi denetler; ajan uyarılarının iletimini doğrulamaz.",
-      "disabled": "Orca bildirimleri kapalı. Bildirimleri açıp tekrar deneyin.",
+      "disabled": "OCC bildirimleri kapalı. Bildirimleri açıp tekrar deneyin.",
       "osDisabled": "Sistem ayarlarında bildirimler kapalı. Bildirimlere izin verip tekrar deneyin.",
       "noToken": "Bu telefonda kullanılabilir anlık bildirim belirteci yok.",
       "unsupportedHost": "Bu masaüstü anlık bildirimleri desteklemiyor. Almak için güncelleyin.",
       "registrationPending": "Bu masaüstünde anlık bildirim kaydı henüz hazır değil. Kısa süre sonra tekrar deneyin.",
-      "liveFallbackScheduled": "{{reason}} Yerel test planlandı. Bildirimi kontrol edin. Orca çalışır ve bağlı durumdayken canlı uyarılar alınabilir."
+      "liveFallbackScheduled": "{{reason}} Yerel test planlandı. Bildirimi kontrol edin. OCC çalışır ve bağlı durumdayken canlı uyarılar alınabilir."
     },
     "notificationSettingsScreen": {
       "description": "Bir ajan sizden yanıt beklediğinde veya bir görevi tamamladığında bu cihazda bildirim alın.",
@@ -3093,7 +3093,7 @@
     "loaders": {
       "connectingToDesktop": "Masaüstüne bağlanılıyor…",
       "loadFailed": "Kaynak kontrolü yüklenemedi",
-      "updateDesktop": "Mobilde Kaynak Kontrolü özelliğini kullanmak için Orca masaüstü uygulamasını güncelleyin.",
+      "updateDesktop": "Mobilde Kaynak Kontrolü özelliğini kullanmak için OCC masaüstü uygulamasını güncelleyin.",
       "waitingForDesktop": "Masaüstü bekleniyor…"
     },
     "modals": {
@@ -3128,7 +3128,7 @@
     "prCreate": {
       "authRequired": "Bir {{reviewLabel}} oluşturmadan önce kimliğinizi doğrulayın.",
       "baseNotOnRemote": "Bir {{reviewLabel}} oluşturmadan önce temel branch'i push edin.",
-      "createdNotRefreshed": "{{titleLabel}} oluşturuldu ancak Orca tarafından henüz yenilenemedi.",
+      "createdNotRefreshed": "{{titleLabel}} oluşturuldu ancak OCC tarafından henüz yenilenemedi.",
       "defaultBranch": "Bir {{reviewLabel}} oluşturmadan önce bir özellik branch'ine geçin.",
       "detachedHead": "Bir {{reviewLabel}} oluşturmadan önce bir branch'i checkout edin.",
       "dirty": "Bir {{reviewLabel}} oluşturmadan önce değişiklikleri commit'leyin.",
@@ -3136,7 +3136,7 @@
       "existingNumber": "{{titleLabel}} #{{number}} zaten açık.",
       "existingReview": "Bu branch için zaten bir {{reviewLabel}} var.",
       "forkHeadUnsupported": "Bu fork'tan {{reviewLabel}} oluşturulması desteklenmiyor.",
-      "lookupUnconfirmed": "Bu branch için zaten bir {{reviewLabel}} olup olmadığı Orca tarafından doğrulanamadı. Birazdan yeniden deneyin.",
+      "lookupUnconfirmed": "Bu branch için zaten bir {{reviewLabel}} olup olmadığı OCC tarafından doğrulanamadı. Birazdan yeniden deneyin.",
       "needsSync": "Bir {{reviewLabel}} oluşturmadan önce bu branch'i senkronize edin.",
       "noUpstream": "Bir {{reviewLabel}} oluşturmadan önce commit'leri yayımlayın.",
       "notReady": "Bu branch henüz bir {{reviewLabel}} için hazır değil.",
@@ -3276,7 +3276,7 @@
       "kimiSessionNotFound": "Kimi'de istenen oturum bulunamadı. Mevcut bir oturumu kullanın veya yeni bir oturum başlatın.",
       "kimiSessionOccupied": "Bu oturum başka bir istemcide etkin olduğundan Kimi'de kullanılamadı. Oturumu orada durdurun veya o istemciden çıkın, ardından yeniden deneyin.",
       "kimiSessionOtherDirectory": "Bu Kimi oturumu başka bir dizine ait. Orada devam ettirin veya bu çalışma alanı için oluşturulmuş bir oturum kullanın.",
-      "kimiUnreadableOutput": "Kimi, Orca'nın okuyamadığı bir çıktı döndürdü. Yeniden deneyin.",
+      "kimiUnreadableOutput": "Kimi, OCC'nın okuyamadığı bir çıktı döndürdü. Yeniden deneyin.",
       "noBranchChanges": "Özetlenecek branch değişikliği yok.",
       "noModelForAgent": "{{label}} için kullanılabilir model yok.",
       "noStagedChanges": "Özetlenecek stage'e eklenmiş değişiklik yok.",
@@ -3294,7 +3294,7 @@
       "sourceControlCustomCommandEmpty": "Özel komut boş. Ayarlar -> Git -> Kaynak Kontrolü AI bölümünde bir komut ekleyin.",
       "stagedChangesReadFailed": "Stage'e eklenen değişiklikler okunamadı.",
       "timedOut": "Oluşturma işlemi {{seconds}} saniye sonra zaman aşımına uğradı.",
-      "windowsBatchUnsafeArguments": "{{label}}, çok satırlı istemi argüman olarak alamayan bir Windows toplu iş betiği üzerinden çalışır. Ayarlar bölümünde ajanın yürütülebilir dosyasını belirtin veya Orca'nın istemi stdin üzerinden göndermesi için {prompt} içermeyen özel bir komut kullanın."
+      "windowsBatchUnsafeArguments": "{{label}}, çok satırlı istemi argüman olarak alamayan bir Windows toplu iş betiği üzerinden çalışır. Ayarlar bölümünde ajanın yürütülebilir dosyasını belirtin veya OCC'nın istemi stdin üzerinden göndermesi için {prompt} içermeyen özel bir komut kullanın."
     },
     "useMobileCommitFailureRecovery": {
       "launchFailed": "Ajan başlatılamadı",
@@ -3313,7 +3313,7 @@
       "waitingForDesktop": "Masaüstü bekleniyor…"
     },
     "conflictActions": {
-      "needsNewerHost": "Birleştirme çakışmalarını telefonunuzdan çözmek için bu çalışma alanının çalıştığı bilgisayarda Orca’yı güncelleyin.",
+      "needsNewerHost": "Birleştirme çakışmalarını telefonunuzdan çözmek için bu çalışma alanının çalıştığı bilgisayarda OCC’yı güncelleyin.",
       "markResolved": "Çözüldü olarak işaretle",
       "keepFile": "Dosyayı koru",
       "keepDeletion": "Silmeyi koru",
@@ -3395,7 +3395,7 @@
       "sort": "Proje Sıralaması",
       "subtitle": "Görevler sayfası için bir proje görünümü seçin.",
       "title": "GitHub Projects",
-      "unsupportedLayout": "Orca bu GitHub Projects düzenini henüz desteklemiyor.",
+      "unsupportedLayout": "OCC bu GitHub Projects düzenini henüz desteklemiyor.",
       "view": "Proje Görünümü"
     },
     "githubViewControls": {
@@ -3510,7 +3510,7 @@
       "connectLinearTitle": "Linear hesabınızı bağlayın",
       "jiraStatusFailed": "Jira durumu okunamadı",
       "updateDesktopMessage": "Bu mobil Görevler görünümü için masaüstü çalışma zamanının daha yeni bir sürümü gerekiyor.",
-      "updateDesktopTitle": "Orca masaüstü uygulamasını güncelleyin"
+      "updateDesktopTitle": "OCC masaüstü uygulamasını güncelleyin"
     },
     "options": {
       "all": "Tümü",
@@ -3609,7 +3609,7 @@
       "show": "Göster"
     },
     "projectDetailDrawer": {
-      "addRepositoryFromDesktop": "{{repository}} Orca'ya eklenmemiş. Bu repository'yi masaüstü uygulamasından ekleyin, ardından mobilde Görevler bölümünü yenileyin.",
+      "addRepositoryFromDesktop": "{{repository}} OCC'ya eklenmemiş. Bu repository'yi masaüstü uygulamasından ekleyin, ardından mobilde Görevler bölümünü yenileyin.",
       "clearType": "Türü temizle",
       "closeItem": "Öğeyi kapat",
       "copyGitHubLink": "GitHub bağlantısını kopyala",
@@ -3620,7 +3620,7 @@
       "issueType": "Sorun türü",
       "loadingIssueTypes": "Sorun türleri yükleniyor…",
       "mergePullRequest": "Pull request'i merge et",
-      "mergeRepositoryRequirement": "Merge için bu repository'nin Orca'da olması gerekir.",
+      "mergeRepositoryRequirement": "Merge için bu repository'nin OCC'da olması gerekir.",
       "noIssueTypes": "Bu repository için sorun türü yapılandırılmamış.",
       "noType": "Tür yok",
       "openInGitHub": "GitHub'da aç",
@@ -3628,7 +3628,7 @@
       "projectSubtitle": "GitHub Projesi · {{repository}}{{itemNumber}}",
       "pullRequest": "Pull request",
       "reopenItem": "Öğeyi yeniden aç",
-      "repositoryNotInOrca": "Repository Orca'da değil",
+      "repositoryNotInOrca": "Repository OCC'da değil",
       "status": "Durum",
       "type": "Tür",
       "workspaceCreationRequirement": "Çalışma alanları yalnızca GitHub sorunlarından ve pull request'lerinden oluşturulabilir."
@@ -3939,7 +3939,7 @@
       "automaticName": "Otomatik ad",
       "existing": "Mevcut dal",
       "existingHint": "Yeni commitler bu dala eklenir.",
-      "hostUpdateRequired": "Bir branch'i yeniden kullanmak veya ayrı bir branch oluşturmayı seçmek için çalışma alanının bulunduğu bilgisayardaki Orca'yı güncelleyin.",
+      "hostUpdateRequired": "Bir branch'i yeniden kullanmak veya ayrı bir branch oluşturmayı seçmek için çalışma alanının bulunduğu bilgisayardaki OCC'yı güncelleyin.",
       "new": "Yeni dal",
       "newHint": "Yeni bir yerel dal oluştur",
       "newName": "Yeni dal adı",
@@ -3968,7 +3968,7 @@
       "working": "Çalışıyor"
     },
     "hostWorkspaceListStates": {
-      "checkHost": "Bilgisayarınızın uyanık ve Orca'nın çalışır durumda olduğunu kontrol edin",
+      "checkHost": "Bilgisayarınızın uyanık ve OCC'nın çalışır durumda olduğunu kontrol edin",
       "empty": "Çalışma alanı yok",
       "loadFailed": "Bu sunucudan çalışma alanları yüklenemedi",
       "noFilterMatches": "Filtrelerle eşleşen çalışma alanı yok",

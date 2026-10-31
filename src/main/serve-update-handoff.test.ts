@@ -99,7 +99,7 @@ describe('serve update handoff', () => {
   it.runIf(process.platform === 'darwin')(
     "accepts the service's other casing of the same profile directory (#34382)",
     async (context) => {
-      const profile = join(root, 'Orca')
+      const profile = join(root, 'OCC')
       mkdirSync(profile)
       // Case-sensitive volumes have no second spelling to accept.
       if (!existsSync(join(root, 'orca'))) {

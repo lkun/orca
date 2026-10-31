@@ -1,6 +1,6 @@
 import type { BrowserExtensionMainWorldBridge } from './browser-extension-main-world'
 
-/** Main-only namespace listing a tab's frames with Orca's documentIds; never on `chrome`. */
+/** Main-only namespace listing a tab's frames with OCC's documentIds; never on `chrome`. */
 export const PRELOAD_DOCUMENT_TARGETS_NAMESPACE = 'orcaDocumentTargets'
 
 type ApiObject = Record<string, unknown>
@@ -10,11 +10,11 @@ type ExtensionCallable = (...args: unknown[]) => unknown
 export const PRELOAD_FIRST_DISCARDED_TAB_ID = 1_000_000_000
 
 /**
- * Orca names documents itself in webNavigation and webRequest (Electron gives main no Chromium
+ * OCC names documents itself in webNavigation and webRequest (Electron gives main no Chromium
  * document id), but Electron's native scripting and tabs.sendMessage resolve only Chromium's ids.
- * Side-effect-free probes resolve Orca's ids to native document ids before dispatch. Only proven
+ * Side-effect-free probes resolve OCC's ids to native document ids before dispatch. Only proven
  * document pairs name executeScript results. It also answers calls to a
- * discarded tab, whose id only Orca knows, with Chrome's errors instead of Electron's "No tab".
+ * discarded tab, whose id only OCC knows, with Chrome's errors instead of Electron's "No tab".
  *
  * Self-contained for the same reason as installBrowserExtensionApis: pages serialize it.
  */
@@ -38,7 +38,7 @@ export function installBrowserExtensionDocumentTargets(
   const nativeMessages = isObject(runtime.onMessage) ? runtime.onMessage : null
   const probeKey = 'orcaDocumentTargetProbe'
 
-  /** frameId → Orca's documentId for the tab's current documents. */
+  /** frameId → OCC's documentId for the tab's current documents. */
   const framesOf = async (tabId: unknown): Promise<Map<number, string>> => {
     const frames = new Map<number, string>()
     if (typeof tabId !== 'number') {

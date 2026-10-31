@@ -40,7 +40,7 @@ describe('a WSL bridge shell reports its folder', () => {
   function runBash(env: Record<string, string>): string {
     const rcfile = join(home, 'rcfile')
     writeFileSync(rcfile, getBashShellReadyRcfileContent())
-    // The user's own prompt hook keeps running alongside Orca's.
+    // The user's own prompt hook keeps running alongside OCC's.
     writeFileSync(join(home, '.bash_profile'), "PROMPT_COMMAND='echo USER_PROMPT_HOOK'\n")
     const result = spawnSync('bash', ['--noprofile', '--rcfile', rcfile, '-i'], {
       cwd: home,

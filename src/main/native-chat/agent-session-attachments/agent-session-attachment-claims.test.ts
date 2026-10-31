@@ -49,7 +49,7 @@ describe('agentSessionAttachmentReferences', () => {
   it("leaves a mention of any other store path as text: another server's, a ~ form, a bare name", () => {
     const mentions = [
       `@/home/other/agent-session-attachments/${UPLOAD_A}/a.txt`,
-      `~/Library/Application Support/Orca/agent-session-attachments/${UPLOAD_A}/x.png`,
+      `~/Library/Application Support/OCC/agent-session-attachments/${UPLOAD_A}/x.png`,
       `see agent-session-attachments/${UPLOAD_A}`,
       `/mnt${root}/${UPLOAD_A}/a.txt`
     ]

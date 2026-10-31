@@ -155,7 +155,7 @@ export async function viewClaudeAgentFromRow(agent: DashboardAgentRow): Promise<
             )
           : translate(
               'auto.lib.claudeAgentRowView.subagentNavigationSetup',
-              'Enable Claude subagent navigation in Settings → Agents, then launch Claude 2.1.300+ in Orca. Check that keybindings.json still binds Ctrl+Alt+G, H, or V to command:orca-agent-view.'
+              'Enable Claude subagent navigation in Settings → Agents, then launch Claude 2.1.300+ in OCC. Check that keybindings.json still binds Ctrl+Alt+G, H, or V to command:orca-agent-view.'
             )
       )
     } else {

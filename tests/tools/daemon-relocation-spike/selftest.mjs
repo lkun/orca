@@ -10,7 +10,7 @@ function makeSyntheticInventory() {
   return {
     appDir: 'C:\\App',
     unpackedRoot,
-    hostExe: { name: 'Orca.exe', ...f('C:\\App\\Orca.exe') },
+    hostExe: { name: 'OCC.exe', ...f('C:\\App\\OCC.exe') },
     runtimeData: [
       { name: 'icudtl.dat', ...f('C:\\App\\icudtl.dat') },
       { name: 'snapshot_blob.bin', ...f('C:\\App\\snapshot_blob.bin') },
@@ -89,7 +89,7 @@ function run() {
     const plan = resolveTierFileSet(inv, tier)
     check(`${tier}: no warnings`, plan.warnings.length === 0)
     const dests = plan.ops.map((o) => o.destRel)
-    check(`${tier}: has exe`, dests.includes('Orca.exe'))
+    check(`${tier}: has exe`, dests.includes('OCC.exe'))
     check(`${tier}: has icu`, dests.includes('icudtl.dat'))
     // Mirror full win-unpacked paths for require/native resolution from the copy.
     check(
@@ -114,9 +114,9 @@ function run() {
 
   const appDir = 'C:\\Users\\me\\AppData\\Local\\Programs\\orca'
   const modules = [
-    'C:\\Users\\me\\AppData\\Local\\Programs\\orca\\Orca.exe',
+    'C:\\Users\\me\\AppData\\Local\\Programs\\orca\\OCC.exe',
     'C:\\Windows\\System32\\kernel32.dll',
-    'C:\\Users\\me\\AppData\\Local\\orca-daemon-host\\Orca.exe'
+    'C:\\Users\\me\\AppData\\Local\\orca-daemon-host\\OCC.exe'
   ]
   const resident = findAppDirResidentModules(modules, appDir)
   check('detects app-dir module', resident.length === 1)
@@ -134,7 +134,7 @@ function run() {
   check(
     'relocated host has zero app-dir modules',
     findAppDirResidentModules(
-      ['C:\\work\\daemon-host\\Orca.exe', 'C:\\Windows\\System32\\ntdll.dll'],
+      ['C:\\work\\daemon-host\\OCC.exe', 'C:\\Windows\\System32\\ntdll.dll'],
       appDir
     ).length === 0
   )

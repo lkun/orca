@@ -43,7 +43,7 @@ type Props = {
   sessionId: string | null
   getSendCompletionGeneration: () => number
   keyboardInset: number
-  /** The Orca host that runs this chat, named for notices; null when unnamed. */
+  /** The OCC host that runs this chat, named for notices; null when unnamed. */
   hostName: string | null
 }
 

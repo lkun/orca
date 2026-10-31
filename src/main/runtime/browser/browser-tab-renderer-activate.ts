@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { ipcMain } from 'electron'
 
-/** Asks the renderer, which owns Orca's tab model, to make one browser page the active tab. */
+/** Asks the renderer, which owns OCC's tab model, to make one browser page the active tab. */
 export async function activateBrowserTabInRenderer(
   win: Electron.BrowserWindow,
   browserPageId: string

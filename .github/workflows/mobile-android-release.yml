@@ -188,13 +188,13 @@ jobs:
               fi
             fi
             if [ ! -s "$notes_file" ]; then
-              printf 'Orca Mobile Android %s\n' "$tag" > "$notes_file"
+              printf 'OCC Mobile Android %s\n' "$tag" > "$notes_file"
             fi
             write_notes_with_verification
 
             gh release create "$tag" \
               --repo "$GITHUB_REPOSITORY" \
-              --title "Orca Mobile Android $tag" \
+              --title "OCC Mobile Android $tag" \
               --prerelease \
               --latest=false \
               --notes-file "$notes_file" \

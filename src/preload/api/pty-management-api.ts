@@ -20,10 +20,10 @@ export type PtyManagementMacTccAttributionHealth = 'intact' | 'severed' | 'unkno
 
 export type PtyManagementDaemonCwdClass = DaemonPtyCwdClass
 
-// Access a fresh daemon would get: allowed needs restart; denied needs renewed Orca permission.
+// Access a fresh daemon would get: allowed needs restart; denied needs renewed OCC permission.
 export type PtyManagementFreshDaemonAccess = 'allowed' | 'denied' | 'unknown'
 
-// The daemon cannot read a folder Orca can.
+// The daemon cannot read a folder OCC can.
 export type PtyManagementFolderAccessMismatch = {
   /** Opaque per-daemon digest used to latch the notice, never a path. */
   daemonScope: string

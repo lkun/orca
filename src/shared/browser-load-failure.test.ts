@@ -58,7 +58,7 @@ describe('describeBrowserLoadFailure', () => {
     expect(result.recovery).toBe(recovery)
   })
 
-  it("keeps Orca's own messages (code 0) as they are", () => {
+  it("keeps OCC's own messages (code 0) as they are", () => {
     expect(
       english(0, 'https://example.com/', DIRECT, 'Unsupported browser URL: foo').description
     ).toBe('Unsupported browser URL: foo')
@@ -76,7 +76,7 @@ describe('describeBrowserLoadFailure', () => {
     expect(describeBrowserLoadFailure(synthesized, DIRECT).errorName).toBeNull()
   })
 
-  it('leaves certificate and Orca-coded failures to their own pages on mobile', () => {
+  it('leaves certificate and OCC-coded failures to their own pages on mobile', () => {
     const at = (code: number) => ({ code, description: '', validatedUrl: 'https://a/' })
     expect(isBrowserNetworkLoadFailure(at(-102))).toBe(true)
     expect(isBrowserNetworkLoadFailure(at(-202))).toBe(false)

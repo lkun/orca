@@ -1,4 +1,4 @@
-/** Host-resolved Orca session identity comes from the injected environment, never flags. Terminal agents lack it;
+/** Host-resolved OCC session identity comes from the injected environment, never flags. Terminal agents lack it;
  * orca status --json publishes it as caller. */
 export type OrchestrationCallerSession = {
   orcaSessionId: string
@@ -14,10 +14,10 @@ export type OrchestrationCallerRefusal = {
 /** Absent for non-session callers, unreachable runtimes or hosts predating orchestration.callerShow. */
 export type CliStatusCaller = OrchestrationCallerSession | OrchestrationCallerRefusal
 
-/** `null`: the caller is not an Orca session. */
+/** `null`: the caller is not an OCC session. */
 export type OrchestrationCallerShowResult = { caller: OrchestrationCallerSession | null }
 
-/** `orchestration.sessionAddress`: a session's Orca session ID, its `/clear` root's. */
+/** `orchestration.sessionAddress`: a session's OCC session ID, its `/clear` root's. */
 export type OrchestrationSessionAddressResult = { orcaSessionId: string }
 
 /** Where a party is now: a chat at its `/clear` lineage's live session, or a terminal. */

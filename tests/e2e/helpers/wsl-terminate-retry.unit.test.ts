@@ -9,7 +9,7 @@ const stillListed = {
 }
 
 describe('shouldRetryTerminate', () => {
-  it('retries a terminate that never took when Orca launched nothing since', () => {
+  it('retries a terminate that never took when OCC launched nothing since', () => {
     expect(shouldRetryTerminate(stillListed)).toBe(true)
   })
 

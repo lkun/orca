@@ -775,7 +775,7 @@ it.each(['available', 'unavailable', 'other-desktop'])(
     expect(inProgress).toBe(true)
     expect(hostFailure.failedAt).toBe(mode === 'other-desktop' ? 20 : 10)
     await act(async () => {
-      reply.reject(new Error('Timed out waiting for the remote Orca runtime to respond.'))
+      reply.reject(new Error('Timed out waiting for the remote OCC runtime to respond.'))
     })
     expect(remote!.getNativeChatRestartRun()?.continued).toEqual([
       { sessionId: 'a', outcome: 'unknown' }

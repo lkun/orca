@@ -58,7 +58,7 @@ beforeEach(() => {
     getAppMetrics: () => []
   })
   setProcessProp('platform', 'win32')
-  setProcessProp('execPath', join(installDir, 'Orca.exe'))
+  setProcessProp('execPath', join(installDir, 'OCC.exe'))
   setProcessProp('resourcesPath', join(installDir, 'resources'))
   hostRoot = join(getDaemonHostRootDir(), '9.9.9')
 })
@@ -150,7 +150,7 @@ describe('relocated process-host package', () => {
       const current = materializedRoot()
       expect(current).not.toBe(previous)
       expect(dirname(current)).toBe(hostRoot)
-      expect(existsSync(join(previous, 'Orca.exe'))).toBe(true)
+      expect(existsSync(join(previous, 'OCC.exe'))).toBe(true)
       expect(
         readFileSync(
           join(
@@ -171,12 +171,12 @@ describe('relocated process-host package', () => {
     Object.defineProperty(process.versions, 'electron', { value: '41.0.1', configurable: true })
     expect(getRelocatedDaemonHost()).toBeNull()
     expect(materializedRoot()).not.toBe(previous)
-    expect(existsSync(join(previous, 'Orca.exe'))).toBe(true)
+    expect(existsSync(join(previous, 'OCC.exe'))).toBe(true)
   })
 
   it('preserves a legacy version directory while publishing the new dependency layout', () => {
     mkdirSync(hostRoot, { recursive: true })
-    writeFileSync(join(hostRoot, 'Orca.exe'), 'live-legacy-exe')
+    writeFileSync(join(hostRoot, 'OCC.exe'), 'live-legacy-exe')
     writeFileSync(
       join(hostRoot, '.materialized.json'),
       JSON.stringify({
@@ -188,13 +188,13 @@ describe('relocated process-host package', () => {
     expect(getRelocatedDaemonHost()).toBeNull()
     const current = materializedRoot()
     expect(dirname(current)).toBe(hostRoot)
-    expect(readFileSync(join(hostRoot, 'Orca.exe'), 'utf8')).toBe('live-legacy-exe')
+    expect(readFileSync(join(hostRoot, 'OCC.exe'), 'utf8')).toBe('live-legacy-exe')
   })
 
   it('keeps the copied code ready after the entire install tree disappears', () => {
     const root = materializedRoot()
     rmSync(installDir, { recursive: true, force: true })
-    expect(getRelocatedDaemonHost()?.execPath).toBe(join(root, 'Orca.exe'))
+    expect(getRelocatedDaemonHost()?.execPath).toBe(join(root, 'OCC.exe'))
   })
 
   it('retains the build observed by this process when a newer same-version mirror exists', () => {
@@ -204,9 +204,9 @@ describe('relocated process-host package', () => {
     writeFileSync(modulePath, 'module.exports = { changed: true }')
     expect(materializedRoot()).not.toBe(initial)
     writeFileSync(modulePath, initialBytes)
-    expect(getRelocatedDaemonHost()?.execPath).toBe(join(initial, 'Orca.exe'))
+    expect(getRelocatedDaemonHost()?.execPath).toBe(join(initial, 'OCC.exe'))
     rmSync(installDir, { recursive: true, force: true })
-    expect(getRelocatedDaemonHost()?.execPath).toBe(join(initial, 'Orca.exe'))
+    expect(getRelocatedDaemonHost()?.execPath).toBe(join(initial, 'OCC.exe'))
   })
 
   it('declines an existing mirror when this installation has never identified its unavailable build', () => {
@@ -214,11 +214,11 @@ describe('relocated process-host package', () => {
     installDir = join(tempDir, 'unobserved-app')
     buildInstallFixture(installDir)
     rmSync(join(installDir, packageRel, 'dist', 'run-process.js'))
-    setProcessProp('execPath', join(installDir, 'Orca.exe'))
+    setProcessProp('execPath', join(installDir, 'OCC.exe'))
     setProcessProp('resourcesPath', join(installDir, 'resources'))
     expect(getRelocatedDaemonHost()).toBeNull()
     expect(materializeRelocatedDaemonHost()).toBeNull()
-    expect(existsSync(join(previous, 'Orca.exe'))).toBe(true)
+    expect(existsSync(join(previous, 'OCC.exe'))).toBe(true)
   })
 
   it('runs emitted bare imports from the relocated entry after removing the install tree', () => {

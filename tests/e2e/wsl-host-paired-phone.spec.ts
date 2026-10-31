@@ -101,7 +101,7 @@ test("a paired phone lists, opens, runs and launches on the desktop's WSL host, 
   orcaPage,
   electronApp
 }, testInfo) => {
-  // Two Orca instances, a pairing, a terminal and an agent launch on a cold runner.
+  // Two OCC instances, a pairing, a terminal and an agent launch on a cold runner.
   test.setTimeout(300_000)
   await waitForSessionReady(orcaPage)
   // The HUB is the "distro's orcad": its projects are the WSL host's projects.

@@ -14,7 +14,7 @@ export function useWorkspaceReferenceLinkActions(
   { closeHover, handleLinkActionsOpenChange, holdOpenUntilRefocus }: WorktreeCardDetailsHoverControl
 ) {
   const [linkActionRequest, setLinkActionRequest] = useState<LinkActionRequest | null>(null)
-  // Why: only an Orca-browser open moves the user elsewhere in the app; a
+  // Why: only an OCC-browser open moves the user elsewhere in the app; a
   // system-browser open should leave the card where it was.
   const closeHoverOnInternalRun = (action: LinkAction): LinkAction => ({
     ...action,

@@ -50,7 +50,7 @@ test('a relaunch whose saved tunnel port is taken moves to a free one and the pa
 
       await fixture.session.close(fixture.app!)
       fixture.app = null
-      // The quit releases the forward's listener; take its port before Orca starts again.
+      // The quit releases the forward's listener; take its port before OCC starts again.
       await expect(async () => {
         squatters.push(await occupy(before.localPort!))
       }).toPass({ timeout: 30_000 })

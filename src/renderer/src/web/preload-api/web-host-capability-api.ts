@@ -135,7 +135,7 @@ export function createComputerUsePermissionsApi(): NonNullable<
           helperAppPath: null,
           openedSettings: false,
           launchedHelper: false,
-          nextStep: 'Computer-use permissions are managed on the Orca server.'
+          nextStep: 'Computer-use permissions are managed on the OCC server.'
         }
       }),
     reset: () =>
@@ -154,9 +154,9 @@ export function createSkillsApi(): NonNullable<Partial<PreloadApi>['skills']> {
     discover: (target) =>
       callRuntimeResult<SkillDiscoveryResult>('skills.discover', target, 15_000),
     // Why: browser clients have no local skill homes; remote hosts plan their own (not here).
-    bundledPlan: () => Promise.reject(new Error('Updating Orca skills requires the desktop app.')),
+    bundledPlan: () => Promise.reject(new Error('Updating OCC skills requires the desktop app.')),
     bundledExecute: () =>
-      Promise.reject(new Error('Updating Orca skills requires the desktop app.')),
+      Promise.reject(new Error('Updating OCC skills requires the desktop app.')),
     prepareShare: () => Promise.reject(new Error('Skill publishing requires the desktop app.')),
     publishShare: () => Promise.reject(new Error('Skill publishing requires the desktop app.')),
     cancelShare: () => Promise.resolve(),

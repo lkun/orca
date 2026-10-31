@@ -214,7 +214,7 @@ export default function PluginCustomEditorFrame({
               )
             : translate(
                 'auto.components.editor.PluginCustomEditorFrame.editsHeld',
-                '{{value0}} is sending changes too quickly; Orca applies the latest one shortly.',
+                '{{value0}} is sending changes too quickly; OCC applies the latest one shortly.',
                 { value0: editor.title }
               )}
         </div>

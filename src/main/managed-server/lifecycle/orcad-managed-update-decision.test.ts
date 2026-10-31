@@ -38,7 +38,7 @@ describe('the three update intents', () => {
       reason: 'host-newer'
     })
     expect(admitOrcadRecordForIntent('update', '1.5.0')(newer, '1.5.0+ab')).toMatch(
-      /Orca 2\.0\.0 last ran/
+      /OCC 2\.0\.0 last ran/
     )
     expect(admitOrcadRecordForIntent('force', '1.5.0')(newer, '1.5.0+ab')).toBeNull()
     expect(admitOrcadRecordForIntent('update', '1.5.0')(rolledBack, '1.5.0+ab')).toBeNull()
@@ -59,7 +59,7 @@ describe('the Update offered for a running host', () => {
       deferredCandidateVersion: null
     })
 
-  it('offers this build only when it is not older than the Orca that runs the host', () => {
+  it('offers this build only when it is not older than the OCC that runs the host', () => {
     expect(offer(running)).toBe('0.1.0+ab')
     expect(offer(running, '1.4.0')).toBe('0.1.0+ab')
     expect(offer(running, '1.3.9')).toBeNull()

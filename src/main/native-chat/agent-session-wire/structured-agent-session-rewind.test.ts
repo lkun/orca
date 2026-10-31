@@ -333,7 +333,7 @@ describe('host rewind', () => {
       await attachAndStart(store.getRecord(HOST_TEST_SESSION)!.lease.runtimeFence)
     ).toMatchObject({ ok: true })
     expect((await host.journalSnapshot(HOST_TEST_SESSION)).items).toHaveLength(1)
-    // Personal messages retain Orca’s original text through provider reconstruction.
+    // Personal messages retain OCC’s original text through provider reconstruction.
     expect((await host.journalSnapshot(HOST_TEST_SESSION)).items[0]?.body).toEqual(
       hostTestMessage('0')
     )
@@ -624,7 +624,7 @@ describe('host rewind', () => {
     expect(store.getRecord(HOST_TEST_SESSION)?.rewind?.phase).toBe('completed')
   })
 
-  it("keeps a newer Orca's item of an unknown kind, in its place, through a Codex provider hydration", async () => {
+  it("keeps a newer OCC's item of an unknown kind, in its place, through a Codex provider hydration", async () => {
     expect(await host.attach(caller, hostTestAttachParams(null))).toMatchObject({ ok: true })
     const message = (turnId: string) => ({
       provider: 'codex' as const,

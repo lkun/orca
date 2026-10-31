@@ -224,7 +224,7 @@ export async function hasUncommittedChanges(
   return await anyRecordIsUserDirt(repoPath, records, options)
 }
 
-/** Only positively identified Orca-owned untracked symlinks are clean; uncertainty must preserve the user-work blocker. */
+/** Only positively identified OCC-owned untracked symlinks are clean; uncertainty must preserve the user-work blocker. */
 async function anyRecordIsUserDirt(
   worktreePath: string,
   records: readonly PorcelainV1Record[],
@@ -234,7 +234,7 @@ async function anyRecordIsUserDirt(
   if (sharedLinkPaths.length === 0 || !records.some((record) => record.xy === '??')) {
     return true
   }
-  // Exclude configured real symlinks only; translate guest paths before lstat or Orca-owned WSL links look like user dirt.
+  // Exclude configured real symlinks only; translate guest paths before lstat or OCC-owned WSL links look like user dirt.
   const sharedLinks = new Set(
     await findExistingWorktreeSymlinkPaths(worktreePath, sharedLinkPaths, {
       wslDistro: getHostedReviewLocalGitOptions(options).wslDistro

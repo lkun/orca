@@ -147,7 +147,7 @@ describe('federated fleet snapshots', () => {
     try {
       const result = await readFederatedFleetSnapshots({ runtime, db, dispatchIds })
 
-      // Orca never contacted these hosts, so calling them unavailable would fabricate a verdict.
+      // OCC never contacted these hosts, so calling them unavailable would fabricate a verdict.
       expect(result.errors.length).toBeGreaterThan(0)
       expect(result.errors.map((error) => error.code)).toEqual(
         result.errors.map(() => 'home_budget_exhausted')

@@ -26,7 +26,7 @@ export function toBrowserPageGuestViewportSize(
 /** The guest's live zoom level, or null until it can be read. */
 function readGuestZoomLevel(webview: Electron.WebviewTag | null): number | null {
   try {
-    // Why the live level: an embedder (UI) zoom change overwrites the guest's zoom behind Orca's back.
+    // Why the live level: an embedder (UI) zoom change overwrites the guest's zoom behind OCC's back.
     return webview?.getZoomLevel() ?? null
   } catch {
     // getZoomLevel throws until dom-ready, which is also when a saved site zoom lands.

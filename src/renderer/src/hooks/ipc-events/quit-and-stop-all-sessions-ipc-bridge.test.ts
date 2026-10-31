@@ -29,7 +29,7 @@ vi.mock('sonner', () => ({
 
 import { registerQuitAndStopAllSessionsIpcBridge } from './quit-and-stop-all-sessions-ipc-bridge'
 
-const FAILURE_MESSAGE = "Couldn't stop every terminal session, so Orca stayed open."
+const FAILURE_MESSAGE = "Couldn't stop every terminal session, so OCC stayed open."
 const CLEAN_SUMMARY: KillAllSummary = {
   failedCloseAttemptCount: 0,
   exactKillRejectedCount: 0,

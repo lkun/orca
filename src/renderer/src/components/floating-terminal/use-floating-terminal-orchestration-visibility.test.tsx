@@ -13,10 +13,10 @@ function makeCliStatus(overrides: Partial<CliInstallStatus> = {}): CliInstallSta
   return {
     platform: 'linux',
     commandName: 'orca',
-    commandPath: '/usr/local/bin/orca',
+    commandPath: '/usr/local/bin/occ',
     pathDirectory: '/usr/local/bin',
     pathConfigured: true,
-    launcherPath: '/opt/Orca/orca',
+    launcherPath: '/opt/OCC/orca',
     installMethod: 'symlink',
     supported: true,
     state: 'installed',

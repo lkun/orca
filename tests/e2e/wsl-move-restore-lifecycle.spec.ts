@@ -436,7 +436,7 @@ test('a moved pane shows its own history once, in its folder, across three reloa
               `[restore-lifecycle] wrong folder: terminals=${JSON.stringify(listed.result)} meta=${read('meta.json')} checkpointCwd=${JSON.stringify(/"cwd":"[^"]*"/.exec(read('checkpoint.json'))?.[0] ?? null)} tail=${JSON.stringify(pane.content.slice(-900))}`
             )
           }
-          // Where Orca started the pane's shell. A login profile that cds (CI runners' does, into
+          // Where OCC started the pane's shell. A login profile that cds (CI runners' does, into
           // GITHUB_WORKSPACE) moves every login shell after it starts; the folder it left is OLDPWD.
           expect
             .soft(

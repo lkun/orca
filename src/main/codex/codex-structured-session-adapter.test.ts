@@ -173,7 +173,7 @@ describe('CodexStructuredSessionAdapter.acquire', () => {
           'shell_environment_policy.set.ORCA_AGENT_SESSION_ID': 'session-1',
           'shell_environment_policy.set.ORCA_STRUCTURED_SESSION': '1',
           'shell_environment_policy.set.ORCA_CLI_COMMAND': expect.stringMatching(
-            /^[^:;]*[\\/]cli[\\/]bin[\\/]orca-dev$/
+            /^[^:;]*[\\/]cli[\\/]bin[\\/]occ-dev$/
           ),
           'shell_environment_policy.set.ORCA_USER_DATA_PATH': expect.any(String),
           'shell_environment_policy.set.ORCA_ENVIRONMENT': '',

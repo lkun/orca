@@ -208,7 +208,7 @@ describe('resolveWorkerEntryPath', () => {
   const WORKER_ENTRY_FILENAME = 'port-scan-command-worker-entry.js'
 
   it('resolves a packaged build under resourcesPath/app.asar/out/main', () => {
-    const resourcesPath = join(sep, 'Applications', 'Orca.app', 'Contents', 'Resources')
+    const resourcesPath = join(sep, 'Applications', 'OCC.app', 'Contents', 'Resources')
 
     const resolved = resolveWorkerEntryPath({
       isPackaged: true,
@@ -230,7 +230,7 @@ describe('resolveWorkerEntryPath', () => {
 
     const resolved = resolveWorkerEntryPath({
       isPackaged: false,
-      resourcesPath: join(sep, 'Applications', 'Orca.app', 'Contents', 'Resources'),
+      resourcesPath: join(sep, 'Applications', 'OCC.app', 'Contents', 'Resources'),
       moduleDir
     })
 

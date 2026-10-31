@@ -132,7 +132,7 @@ for (const { theme, sessionCount, viewportHeight } of [
     await orcaPage.getByRole('tab', { name: 'PTYs', exact: true }).click()
     await expect(
       orcaPage.getByText(
-        `${sessionCount} Orca PTYs on this computer · ${sessionCount} without a tab`,
+        `${sessionCount} OCC PTYs on this computer · ${sessionCount} without a tab`,
         { exact: true }
       )
     ).toBeVisible()
@@ -178,7 +178,7 @@ for (const { theme, sessionCount, viewportHeight } of [
       panel.locator('dl').getByText(`incarnation-${sessionCount - 1}`, { exact: true })
     ).toBeVisible()
     await expect(panel.locator('dl').getByText('Unavailable', { exact: true })).toHaveCount(2)
-    await panel.getByRole('button', { name: 'Copy Orca session ID', exact: true }).click()
+    await panel.getByRole('button', { name: 'Copy OCC session ID', exact: true }).click()
     expect(await electronApp.evaluate(({ clipboard }) => clipboard.readText())).toBe(lastSessionId)
     await orcaPage.screenshot({
       path: testInfo.outputPath(`local-pty-details-${theme}.png`),

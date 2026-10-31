@@ -32,7 +32,7 @@ export function promoteAgentTeamsShimPath(
   const remaining = currentPath
     .split(delimiter)
     .filter((entry) => entry.length > 0 && entry !== shimPath)
-  // Agent Teams must resolve Orca's tmux shim before any real tmux, including after host prepends.
+  // Agent Teams must resolve OCC's tmux shim before any real tmux, including after host prepends.
   env[currentPathKey] = [shimPath, ...remaining].join(delimiter)
 }
 

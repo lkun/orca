@@ -148,7 +148,7 @@ export async function main({ plugins = [] } = {}) {
   })
   if (current.length > 0) {
     console.error(
-      `[runtime-electron-ratchet] ${current.length} module(s) reachable from the Orca runtime, the CLI or structured-chat code import electron:
+      `[runtime-electron-ratchet] ${current.length} module(s) reachable from the OCC runtime, the CLI or structured-chat code import electron:
 ${current.map((file) => `  + ${file}`).join('\n')}
 
 The runtime and structured chat must run in orcad, the headless runtime, and the CLI runs on

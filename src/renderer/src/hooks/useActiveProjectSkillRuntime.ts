@@ -35,7 +35,7 @@ type ActiveProjectSkillRuntime = {
   terminalShellOverride?: string
   installDisabledReason: string | null
   canUseSkillFreshness: boolean
-  /** Where Update skills plans Orca's skills; null while that host is unknown. */
+  /** Where Update skills plans OCC's skills; null while that host is unknown. */
   bundledSkillTarget: BundledSkillTarget | null
 }
 

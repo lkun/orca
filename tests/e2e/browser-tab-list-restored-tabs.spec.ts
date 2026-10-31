@@ -1,5 +1,5 @@
 /**
- * After a restart Orca restores browser tabs lazily: only a tab the user opens gets a page.
+ * After a restart OCC restores browser tabs lazily: only a tab the user opens gets a page.
  * Agents still need every tab in the tab bar, so `tab list` reports the restored ones too, and a
  * command aimed at one loads it in the background without changing the tab the user sees.
  */
@@ -35,7 +35,7 @@ function activeBrowserTabId(page: Page, worktreeId: string): Promise<string | nu
 
 test('tab list reports restored tabs, and commands load them in the background', async (// oxlint-disable-next-line no-empty-pattern -- Playwright's second fixture arg is testInfo; the first must be an object destructure to opt out of the default fixture set.
 {}, testInfo) => {
-  // Launches Orca twice and waits out a 10 s visibility lease.
+  // Launches OCC twice and waits out a 10 s visibility lease.
   test.setTimeout(300_000)
   const repoPath = existsSync(TEST_REPO_PATH_FILE)
     ? readFileSync(TEST_REPO_PATH_FILE, 'utf-8').trim()

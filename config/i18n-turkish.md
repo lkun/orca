@@ -14,7 +14,7 @@ Catalog: `src/renderer/src/i18n/locales/tr.json`. Missing keys fall back to Engl
 
 ## Suffixes
 
-- Put an apostrophe before suffixes on proper names and acronyms, and choose the suffix by how the word is pronounced: `GitHub'da`, `Orca'ya`, `SSH'yi`, `CLI'yi`, `Linear'ın`.
+- Put an apostrophe before suffixes on proper names and acronyms, and choose the suffix by how the word is pronounced: `GitHub'da`, `OCC'ya`, `SSH'yi`, `CLI'yi`, `Linear'ın`.
 - English technical terms kept in English also take an apostrophe: `worktree'ler`, `commit'leri`, `branch'e`.
 - Established loanwords take the suffix directly: `terminalde`, `paneli`, `modele`, `repoda`.
 - When the suffix would go on the name of a UI section, rephrase instead: `Ayarlar bölümünde`, not `Ayarlar'da`.

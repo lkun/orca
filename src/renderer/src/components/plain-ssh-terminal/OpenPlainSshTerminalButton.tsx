@@ -32,7 +32,7 @@ export function OpenPlainSshTerminalButton({
       <span className="text-xs text-muted-foreground">
         {translate(
           'auto.components.plainSshTerminal.openHint',
-          'Keeps you working on the host while Orca can’t set up there.'
+          'Keeps you working on the host while OCC can’t set up there.'
         )}
       </span>
     </span>

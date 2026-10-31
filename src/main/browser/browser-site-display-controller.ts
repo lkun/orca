@@ -32,7 +32,7 @@ export class BrowserSiteDisplayController {
   private readonly guests = new Map<number, TrackedGuest>()
   private defaultZoomLevel = DEFAULT_BROWSER_PAGE_ZOOM_LEVEL
 
-  /** Restore page zoom when Electron propagates an Orca UI zoom change to webviews. */
+  /** Restore page zoom when Electron propagates an OCC UI zoom change to webviews. */
   followZoomSettings(ui: {
     getUI: () => PersistedUIState
     onUIChanged: (listener: (ui: PersistedUIState) => void) => () => void
@@ -110,7 +110,7 @@ export class BrowserSiteDisplayController {
     if (!display?.site || !profileId) {
       return display
     }
-    // Step from saved zoom; Electron may have overwritten the live level with Orca UI zoom.
+    // Step from saved zoom; Electron may have overwritten the live level with OCC UI zoom.
     const next = nextBrowserPageZoomLevel(display.zoomLevel, direction, this.defaultZoomLevel)
     const zoomLevel = next === this.defaultZoomLevel ? undefined : next
     if (zoomLevel !== (display.siteHasZoom ? display.zoomLevel : undefined)) {

@@ -1,11 +1,11 @@
 // File focus differs from terminal create's shared --focus help.
 const FILE_OPEN_FOCUS_HELP =
-  "--focus                Bring the user to the file (switches Orca's window to its worktree)"
+  "--focus                Bring the user to the file (switches OCC's window to its worktree)"
 
 const COMMAND_SCOPED_FLAG_HELP: Record<string, Record<string, string>> = {
   'reference add': {
     url: '--url <url-or-jira-key> Full review/issue URL or Jira key; use positionals or repeated --url',
-    'reference-site': '--reference-site <id> Jira site for bare keys; see orca jira connection'
+    'reference-site': '--reference-site <id> Jira site for bare keys; see occ jira connection'
   },
   'reference remove': {
     url: '--url <url>            Full review or issue URL; pass all URLs positionally or all as repeated --url',
@@ -25,7 +25,7 @@ const COMMAND_SCOPED_FLAG_HELP: Record<string, Record<string, string>> = {
     branch: '--branch <name>        Git branch name to use instead of the prefixed default',
     reference:
       '--reference <url-or-jira-key> Attach an issue/review URL or Jira key; repeat for several',
-    'reference-site': '--reference-site <id> Jira site for bare keys; see orca jira connection',
+    'reference-site': '--reference-site <id> Jira site for bare keys; see occ jira connection',
     pr: '--pr <number>          Linked GitHub pull request number',
     'gitlab-issue': '--gitlab-issue <number|url> Linked GitLab issue in the source project',
     'gitlab-mr': '--gitlab-mr <number|url> Linked GitLab merge request in the source project'

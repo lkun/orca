@@ -20,7 +20,7 @@ export type InboundMessage = {
   authorName?: string
   // What the agent reads: the mention dropped, the source's escapes undone.
   text: string
-  // Mentions Orca, or is a direct message to it.
+  // Mentions OCC, or is a direct message to it.
   mentioned: boolean
   direct: boolean
   // The source or its workspace is paused: input is neither delivered nor kept.
@@ -61,7 +61,7 @@ export type ConnectorAdapter = {
   // The acknowledgement on a message handed toward a machine.
   seen(place: ThreadPlace, messageId: string): PostBody
   status(view: ConversationView): PostBody
-  // Null when the prompt can't be answered here; it is answered in Orca instead.
+  // Null when the prompt can't be answered here; it is answered in OCC instead.
   card(prompt: AnswerablePrompt): PostBody | null
   isOpenCard(body: unknown): boolean
   settledCard(body: unknown, note: CardNote): PostBody

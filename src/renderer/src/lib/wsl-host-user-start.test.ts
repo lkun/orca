@@ -29,7 +29,7 @@ vi.mock('@/store', () => {
 import { startWslHostAndReloadProjects } from './wsl-host-user-start'
 import { connectRuntimeHostAndReloadProjects } from '../components/status-bar/runtime-environment-explicit-connect'
 
-const START_FAILED = 'Couldn’t start Ubuntu. Check it in Settings → Remote Orca Servers.'
+const START_FAILED = 'Couldn’t start Ubuntu. Check it in Settings → Remote OCC Servers.'
 
 beforeEach(() => {
   connectRuntime.mockReset().mockResolvedValue({ ok: true, result: {} })

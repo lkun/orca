@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/stablyai/orca/main/docs/schemas/plugins/orca-catalog.v2.schema.json",
-  "title": "Orca plugin catalog",
+  "title": "OCC plugin catalog",
   "description": "The orca-catalog.json file that lists installable plugins and their releases.",
   "type": "object",
   "properties": {
     "$schema": {
-      "description": "JSON Schema URL for editor completion. Ignored by Orca.",
+      "description": "JSON Schema URL for editor completion. Ignored by OCC.",
       "x-orca-since": "1.4.245",
       "type": "string",
       "maxLength": 2048
@@ -14,7 +14,7 @@
     "catalogVersion": {
       "type": "number",
       "const": 2,
-      "description": "Catalog format. Raised only for a change older Orca cannot ignore; a newer Orca reads this one.",
+      "description": "Catalog format. Raised only for a change older OCC cannot ignore; a newer OCC reads this one.",
       "x-orca-since": "1.4.245"
     },
     "name": {
@@ -24,7 +24,7 @@
       "description": "Catalog display name.",
       "x-orca-since": "1.4.245",
       "examples": [
-        "Orca Plugins"
+        "OCC Plugins"
       ]
     },
     "owner": {
@@ -44,7 +44,7 @@
       "items": {
         "$ref": "#/$defs/CatalogEntry"
       },
-      "description": "Listed plugins, at most 2048. Each `id` should appear once; Orca keeps the first. An entry this Orca cannot read is skipped, never fatal.",
+      "description": "Listed plugins, at most 2048. Each `id` should appear once; OCC keeps the first. An entry this OCC cannot read is skipped, never fatal.",
       "x-orca-since": "1.4.245"
     }
   },
@@ -61,7 +61,7 @@
         "id": {
           "type": "string",
           "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*\\.[a-z0-9]+(?:-[a-z0-9]+)*$",
-          "description": "`<publisher>.<id>`: the publisher is the repository owner, lowercased (Orca installs under this key, whatever the manifest's deprecated `publisher` says), and the id is the manifest's `id`. Each half is at most 64 characters, and the reserved names `constructor` and `prototype` are refused.",
+          "description": "`<publisher>.<id>`: the publisher is the repository owner, lowercased (OCC installs under this key, whatever the manifest's deprecated `publisher` says), and the id is the manifest's `id`. Each half is at most 64 characters, and the reserved names `constructor` and `prototype` are refused.",
           "x-orca-since": "1.4.245",
           "examples": [
             "acme.gleam-syntax"
@@ -71,7 +71,7 @@
           "$ref": "#/$defs/CatalogGitSource"
         },
         "ownerId": {
-          "description": "GitHub's numeric id of the repository owner, recorded the first time the plugin was listed. Names can be renamed or re-registered; this id cannot. Informational: Orca does not read it yet, and older Orca ignores it.",
+          "description": "GitHub's numeric id of the repository owner, recorded the first time the plugin was listed. Names can be renamed or re-registered; this id cannot. Informational: OCC does not read it yet, and older OCC ignores it.",
           "x-orca-since": "1.4.246",
           "examples": [
             1234567
@@ -101,7 +101,7 @@
           }
         },
         "releases": {
-          "description": "Installable releases, newest first. Orca installs the first one whose `minimumOrca` it meets, so keep older releases listed when you raise `engines.orca`. At most 32.",
+          "description": "Installable releases, newest first. OCC installs the first one whose `minimumOrca` it meets, so keep older releases listed when you raise `engines.orca`. At most 32.",
           "x-orca-since": "1.4.245",
           "minItems": 1,
           "maxItems": 32,
@@ -181,13 +181,13 @@
         "commit": {
           "type": "string",
           "pattern": "^[0-9a-f]{40}$",
-          "description": "Full SHA-1 commit Orca checks out for this release.",
+          "description": "Full SHA-1 commit OCC checks out for this release.",
           "x-orca-since": "1.4.245"
         },
         "contentHash": {
           "type": "string",
           "pattern": "^[0-9a-f]{64}$",
-          "description": "SHA-256 of the plugin's installed files, as Orca computes it at install.",
+          "description": "SHA-256 of the plugin's installed files, as OCC computes it at install.",
           "x-orca-since": "1.4.245"
         },
         "execution": {
@@ -207,14 +207,14 @@
         "minimumOrca": {
           "type": "string",
           "pattern": "^\\d+\\.\\d+\\.\\d+$",
-          "description": "The manifest's `engines.orca` without `>=`. Older Orca lists the plugin but will not install it.",
+          "description": "The manifest's `engines.orca` without `>=`. Older OCC lists the plugin but will not install it.",
           "x-orca-since": "1.4.245",
           "examples": [
             "1.4.245"
           ]
         },
         "types": {
-          "description": "Optional; Orca derives it from `contributes` and `execution`. When present, every kind of contribution the release carries, matching its manifest exactly. `instructions` needs the `declarative` profile or higher, `panel` and `editor` need `sandboxed-ui`, and `worker` needs `trusted-worker`.",
+          "description": "Optional; OCC derives it from `contributes` and `execution`. When present, every kind of contribution the release carries, matching its manifest exactly. `instructions` needs the `declarative` profile or higher, `panel` and `editor` need `sandboxed-ui`, and `worker` needs `trusted-worker`.",
           "x-orca-since": "1.4.245",
           "examples": [
             [
@@ -241,7 +241,7 @@
           }
         },
         "name": {
-          "description": "The manifest's `name`, so Orca can suggest the plugin before downloading it.",
+          "description": "The manifest's `name`, so OCC can suggest the plugin before downloading it.",
           "x-orca-since": "1.4.245",
           "examples": [
             "Gleam"
@@ -324,7 +324,7 @@
           }
         },
         "contributes": {
-          "description": "What the release adds, as the listing shows it. Generate it with the catalog tooling; Orca refuses an install whose manifest says otherwise.",
+          "description": "What the release adds, as the listing shows it. Generate it with the catalog tooling; OCC refuses an install whose manifest says otherwise.",
           "x-orca-since": "1.4.245",
           "maxItems": 64,
           "type": "array",
@@ -333,7 +333,7 @@
           }
         },
         "capabilities": {
-          "description": "Every capability the release asks for. Orca refuses an install whose manifest asks for different ones.",
+          "description": "Every capability the release asks for. OCC refuses an install whose manifest asks for different ones.",
           "x-orca-since": "1.4.245",
           "examples": [
             [
@@ -356,7 +356,7 @@
           }
         },
         "fileTypes": {
-          "description": "Extensions, without the dot, that this release opens. Orca suggests the plugin when such a file has no viewer.",
+          "description": "Extensions, without the dot, that this release opens. OCC suggests the plugin when such a file has no viewer.",
           "x-orca-since": "1.4.245",
           "type": "array",
           "items": {
@@ -365,7 +365,7 @@
           }
         },
         "editorFileTypes": {
-          "description": "The `fileTypes` this release opens in a custom editor. Orca suggests the plugin for such a file even when it already opens it as text.",
+          "description": "The `fileTypes` this release opens in a custom editor. OCC suggests the plugin for such a file even when it already opens it as text.",
           "x-orca-since": "1.4.245",
           "type": "array",
           "items": {
@@ -381,7 +381,7 @@
         "execution",
         "minimumOrca"
       ],
-      "description": "The exact release the catalog vouches for. Orca refuses bytes that differ."
+      "description": "The exact release the catalog vouches for. OCC refuses bytes that differ."
     },
     "CatalogImages": {
       "type": "object",
@@ -403,7 +403,7 @@
         }
       },
       "additionalProperties": false,
-      "description": "Images extracted from the release by catalog CI, which re-encodes them and strips metadata. Same rules as the manifest: icon PNG, WEBP, static, at least 128×128, square, at most 256 KB. Cover PNG, JPEG, WEBP, static, at least 800×500, at most 1024 KB. Screenshots PNG, JPEG, WEBP, static, at least 1280×800, at most 1536 KB. Images must not imitate Orca's trust badges."
+      "description": "Images extracted from the release by catalog CI, which re-encodes them and strips metadata. Same rules as the manifest: icon PNG, WEBP, static, at least 128×128, square, at most 256 KB. Cover PNG, JPEG, WEBP, static, at least 800×500, at most 1024 KB. Screenshots PNG, JPEG, WEBP, static, at least 1280×800, at most 1536 KB. Images must not imitate OCC's trust badges."
     },
     "CatalogImage": {
       "type": "object",
@@ -432,7 +432,7 @@
         "sha256": {
           "type": "string",
           "pattern": "^[0-9a-f]{64}$",
-          "description": "SHA-256 of the file's bytes; Orca refuses bytes that differ.",
+          "description": "SHA-256 of the file's bytes; OCC refuses bytes that differ.",
           "x-orca-since": "1.4.245"
         },
         "width": {
@@ -565,7 +565,7 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 160,
-          "description": "What the item is called in Orca.",
+          "description": "What the item is called in OCC.",
           "x-orca-since": "1.4.245",
           "examples": [
             "Dusk"
@@ -583,7 +583,7 @@
         "kind",
         "name"
       ],
-      "description": "One thing the release adds to Orca."
+      "description": "One thing the release adds to OCC."
     }
   }
 }

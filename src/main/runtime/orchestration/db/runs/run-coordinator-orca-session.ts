@@ -22,7 +22,7 @@ export function currentRunCoordinatorOrcaSessionIdSql(row: string): string {
     THEN ${row}.coordinator_orca_session_id END)`
 }
 
-/** The coordinator's `orca_session_id:<id>` address in SQL; NULL when it has no current Orca session id. */
+/** The coordinator's `orca_session_id:<id>` address in SQL; NULL when it has no current OCC session id. */
 export function currentRunCoordinatorSessionAddressSql(row: string): string {
   return orcaSessionAddressSql(currentRunCoordinatorOrcaSessionIdSql(row))
 }

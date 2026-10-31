@@ -180,7 +180,7 @@ describeOnWindows('isolated detached spawn against real Windows processes', () =
 })
 
 // Joins a kill-on-close job (strict: one that forbids breakaway), starts a sleeper through the
-// addon, reports, then exits so the job closes with it, as when Orca is killed in such a job.
+// addon, reports, then exits so the job closes with it, as when OCC is killed in such a job.
 const JOB_HELPER = `
 const [conptyUtils, addonPath, mode, resultFile] = process.argv.slice(2)
 const conpty = require(conptyUtils).loadNativeModule('conpty').module

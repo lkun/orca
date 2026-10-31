@@ -25,8 +25,8 @@ import { resolveBrowserExtensionTab } from './browser-extension-tab-model'
 
 /**
  * chrome.webRequest, observed rather than blocking. Electron 43 delivers no webRequest events to
- * MV3 workers, and Orca's own session handlers switch Electron's extension webRequest off anyway,
- * so Orca forwards what its handlers see. MV3 store extensions cannot block requests in Chrome
+ * MV3 workers, and OCC's own session handlers switch Electron's extension webRequest off anyway,
+ * so OCC forwards what its handlers see. MV3 store extensions cannot block requests in Chrome
  * either (webRequestBlocking is policy-only), so nothing they could do is lost.
  */
 
@@ -201,7 +201,7 @@ export function isRequestHiddenFromExtensions(details: {
   if (!WEB_URL.test(details.url)) {
     return true
   }
-  // Orca's own main-process requests carry neither a webContents nor an initiator.
+  // OCC's own main-process requests carry neither a webContents nor an initiator.
   if (details.webContentsId === undefined && details.initiatorOrigin === undefined) {
     return true
   }
@@ -256,7 +256,7 @@ const observedSessions = new WeakSet<Electron.Session>()
 const watchedSessions = new WeakSet<Electron.Session>()
 const OBSERVE_ALL = { urls: ['http://*/*', 'https://*/*', 'ws://*/*', 'wss://*/*'] }
 
-/** The events Orca does not otherwise handle, installed once a webRequest extension loads. */
+/** The events OCC does not otherwise handle, installed once a webRequest extension loads. */
 function observeRemainingEvents(session: Electron.Session): void {
   if (observedSessions.has(session)) {
     return
@@ -287,7 +287,7 @@ export function observeBrowserExtensionWebRequests(session: Electron.Session): v
   session.extensions.getAllExtensions().forEach(maybeObserve)
 }
 
-/** Extensions turned off: hand the session's request path back to Orca's own handlers alone. */
+/** Extensions turned off: hand the session's request path back to OCC's own handlers alone. */
 export function stopObservingBrowserExtensionWebRequests(session: Electron.Session): void {
   removeBrowserSessionHeadersReceived(session)
   removeBrowserSessionRequestLifecycle(session)

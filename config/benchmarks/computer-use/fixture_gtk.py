@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""GTK3 target for the cua-vs-Orca background bench. Writes state.json every 30 ms; obeys cmd."""
+"""GTK3 target for the cua-vs-OCC background bench. Writes state.json every 30 ms; obeys cmd."""
 import json
 import os
 import sys

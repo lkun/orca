@@ -254,7 +254,7 @@
       "config/scripts/node-server-qualification.test.mjs": 46,
       "config/scripts/node-server-release-parallelism.test.mjs": 179,
       "config/scripts/nsis-process-check.test.mjs": 44,
-      "config/scripts/orca-dev-bin.test.mjs": 103,
+      "config/scripts/occ-dev-bin.test.mjs": 103,
       "config/scripts/orcad-artifact-version.test.mjs": 276,
       "config/scripts/orcad-daemon-protocol-crossing.test.mjs": 88,
       "config/scripts/orcad-e2e-change-scope.test.mjs": 192,

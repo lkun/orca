@@ -13,7 +13,7 @@ function readAppDirArg(argv) {
     return explicit.slice('--app-dir='.length)
   }
   if (process.platform === 'darwin') {
-    return 'dist/mac-arm64/Orca.app'
+    return 'dist/mac-arm64/OCC.app'
   }
   if (process.platform === 'win32') {
     return 'dist/win-unpacked'
@@ -28,7 +28,7 @@ function getPackagedCliPath(appDir) {
   if (process.platform === 'win32') {
     return join(appDir, 'resources', 'bin', 'orca.exe')
   }
-  return join(appDir, 'resources', 'bin', 'orca-ide')
+  return join(appDir, 'resources', 'bin', 'occ-ide')
 }
 
 const appDir = resolve(readAppDirArg(process.argv.slice(2)))
@@ -78,7 +78,7 @@ try {
   smokeFailure = error
 }
 
-// Retry Windows cleanup locks from just-exited Orca.exe/crashpad descendants; persistent lock still throws unless it would mask smoke’s original failure.
+// Retry Windows cleanup locks from just-exited OCC.exe/crashpad descendants; persistent lock still throws unless it would mask smoke’s original failure.
 const cleanupFailure = await rm(tempRoot, {
   recursive: true,
   force: true,

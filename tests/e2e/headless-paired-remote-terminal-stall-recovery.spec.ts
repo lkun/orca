@@ -61,7 +61,7 @@ async function callRuntime<TResult>(page: Page, method: string, params: unknown)
   ) as Promise<TResult>
 }
 
-test('recovers an ACK-starved stream from an isolated headless Orca host @headful', async ({
+test('recovers an ACK-starved stream from an isolated headless OCC host @headful', async ({
   testRepoPath
 }) => {
   test.setTimeout(180_000)

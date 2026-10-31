@@ -50,7 +50,7 @@ export function AgentOpensAsControl({
   )
 }
 
-/** The program Orca downloads for an agent's chats, apart from its CLI; mounted only while its row is open. */
+/** The program OCC downloads for an agent's chats, apart from its CLI; mounted only while its row is open. */
 export function AgentChatRuntimeArea({
   agent,
   label

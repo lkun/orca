@@ -1,4 +1,4 @@
-/** Drop inherited Orca history paths so nested apps cannot reuse the outer pane's worktree history. */
+/** Drop inherited OCC history paths so nested apps cannot reuse the outer pane's worktree history. */
 
 /** Must match hashWorktreeId. */
 const WORKTREE_HASH = '[0-9a-f]{16}'

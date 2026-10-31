@@ -9,7 +9,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('electron', () => ({ app: mocks.app }))
 vi.mock('node:fs', () => ({ existsSync: mocks.existsSync }))
 vi.mock('../cli/bundled-cli-launcher-path', () => ({
-  getBundledLauncherPath: () => 'C:\\Orca\\resources\\bin\\orca.exe'
+  getBundledLauncherPath: () => 'C:\\OCC\\resources\\bin\\orca.exe'
 }))
 vi.mock('./windows-administrator-status', () => ({
   getWindowsAdministratorStatus: mocks.getWindowsAdministratorStatus
@@ -41,7 +41,7 @@ describe('Windows administrator restart', () => {
   it('preserves quoted arguments and keeps cancellation free of terminal restart requests', () => {
     process.argv.push(restartFlag)
     const plan = prepareWindowsAdministratorRestart()
-    expect(plan.execPath).toBe('C:\\Orca\\resources\\bin\\orca-administrator-restart.exe')
+    expect(plan.execPath).toBe('C:\\OCC\\resources\\bin\\orca-administrator-restart.exe')
     expect(plan.args?.slice(0, 2)).toEqual(['--orca-restart-as-administrator', process.execPath])
     expect(plan.args?.[2]).toBe(
       `"--remote-debugging-port=9333" "C:\\repo with spaces\\\\" "${restartFlag}"`

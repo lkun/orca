@@ -14,7 +14,7 @@ function workerWith(files: Record<string, string>) {
   return new TypeScriptWorker(
     { getMirrorModels: () => mirrors },
     {
-      // Monaco's defaults plus the JSX setting Orca applies in monaco-setup.
+      // Monaco's defaults plus the JSX setting OCC applies in monaco-setup.
       compilerOptions: { allowNonTsExtensions: true, target: 99, jsx: 1 },
       extraLibs: {},
       inlayHintsOptions: {}

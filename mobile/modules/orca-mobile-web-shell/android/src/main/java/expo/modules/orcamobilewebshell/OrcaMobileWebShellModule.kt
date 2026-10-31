@@ -12,7 +12,7 @@ class OrcaMobileWebShellModule : Module() {
   override fun definition() = ModuleDefinition {
     Name("OrcaMobileWebShell")
 
-    // Takes a FileProvider content:// URI; the grant lets the chosen viewer read Orca's cache file.
+    // Takes a FileProvider content:// URI; the grant lets the chosen viewer read OCC's cache file.
     AsyncFunction("presentPdf") { uri: String ->
       val activity = appContext.currentActivity ?: throw Exceptions.MissingActivity()
       val intent = Intent(Intent.ACTION_VIEW).apply {

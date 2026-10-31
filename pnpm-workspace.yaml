@@ -32,7 +32,7 @@ shamefullyHoist: true
 # allowlisted entries.
 pnpmfile: config/pnpmfile.cjs
 
-# Orca resolves the user’s Claude CLI via pathToClaudeCodeExecutable; exclude SDK’s ~95 MB/platform
+# OCC resolves the user’s Claude CLI via pathToClaudeCodeExecutable; exclude SDK’s ~95 MB/platform
 # bundled CLIs so that override stays mandatory.
 ignoredOptionalDependencies:
   - '@anthropic-ai/claude-agent-sdk-darwin-arm64'

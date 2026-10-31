@@ -64,7 +64,7 @@ export async function removeWslHostServer(
   return { serverStop: { ...serverStop, kept: true }, removed: false }
 }
 
-/** R39: undo of a move onto this host must not read a server kept for another Orca as stopped. */
+/** R39: undo of a move onto this host must not read a server kept for another OCC as stopped. */
 function noteServerKeptForPeers(
   userDataPath: string,
   environmentId: string,

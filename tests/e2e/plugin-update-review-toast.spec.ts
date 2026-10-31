@@ -127,7 +127,7 @@ test('tells once per version when an automatic update waits for review, and Revi
       0
     )
 
-    // A newer version of one plugin is told again, by name and Orca-derived publisher.
+    // A newer version of one plugin is told again, by name and OCC-derived publisher.
     await publish([PLUGINS[0]], '3.0.0')
     await runAutoUpdatePass(page)
     const single = page.locator('[data-sonner-toast]', {

@@ -80,7 +80,7 @@ function dispatchCount(): unknown {
 }
 
 describe('a chat as the assignee of orchestration dispatch', () => {
-  it('records the chat by its Orca session ID and sends an idle chat its task as a turn', async () => {
+  it('records the chat by its OCC session ID and sends an idle chat its task as a turn', async () => {
     await openChat(COORDINATOR)
     const worker = await openChat(PEER_CHAT)
     const { runId, taskId } = await coordinatorRunAndTask()
@@ -106,7 +106,7 @@ describe('a chat as the assignee of orchestration dispatch', () => {
     })
     const task = turnText(worker.turns[0]!)
     expect(task).toContain('build it')
-    expect(task).toContain(`Your Orca session ID is: ${WORKER}`)
+    expect(task).toContain(`Your OCC session ID is: ${WORKER}`)
     expect(task).toContain('The coordinator cannot see this chat')
     expect(task).toContain('More supervised work arrives in this chat')
     expect(task).not.toContain('this terminal')
@@ -209,7 +209,7 @@ describe('a chat as the assignee of orchestration dispatch', () => {
 
     expect(error).toMatchObject({
       code: 'terminal_is_coordinator',
-      message: expect.stringContaining("is this coordinator's own Orca session ID")
+      message: expect.stringContaining("is this coordinator's own OCC session ID")
     })
     expect(dispatchCount()).toEqual({ n: 0 })
     expect(db.getTask(taskId)?.status).toBe('ready')

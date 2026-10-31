@@ -23,7 +23,7 @@ import { resolveOrcadBrowserProvider, type OrcadBrowserProvider } from './orcad-
 import { agentBrowserCommandOf } from '../browser/agent-browser-bridge-test-harness'
 
 const FAKE_SIDECAR = join(import.meta.dirname, '__fixtures__', 'fake-orcad-electron-sidecar.cjs')
-const INSTALLED_EXECUTABLE = join('/Applications', 'Orca.app', 'Contents', 'MacOS', 'Orca')
+const INSTALLED_EXECUTABLE = join('/Applications', 'OCC.app', 'Contents', 'MacOS', 'OCC')
 
 let harnessRoot: string
 let controlPath: string

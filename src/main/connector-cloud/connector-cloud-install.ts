@@ -13,7 +13,7 @@ import { connectorAccount, desktopConnectorTokenMint } from './connector-token-m
 export type ConnectorCloudStore = ConnectorPlacesStore &
   Pick<RuntimeStore, 'getSettings' | 'onSettingsChanged'>
 
-/** Desktop only: the connector acts as the desktop's Orca account; `orca serve` has no sign-in yet. */
+/** Desktop only: the connector acts as the desktop's OCC account; `orca serve` has no sign-in yet. */
 export function createDesktopConnectorCloud(
   runtime: OrcaRuntimeService,
   store: ConnectorCloudStore,

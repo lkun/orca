@@ -87,7 +87,7 @@ describe('derived plugin publishers', () => {
       '/acme/dusk.git': source
     })
     const url = 'ssh://git@plugin.test/acme/dusk.git'
-    // Why staged directly: it records `brand-name.dusk` from a Git source, as older Orca did.
+    // Why staged directly: it records `brand-name.dusk` from a Git source, as older OCC did.
     const legacy = await installStagedPluginTree({
       pluginsDir,
       stagingDir: source,

@@ -77,12 +77,12 @@ describe('mapRuntimeError', () => {
     [
       'terminal_held_wsl_distro_stopped:Ubuntu',
       'stopped',
-      "The WSL distro Ubuntu is stopped, so Orca didn't start this terminal. Start the distro, then try again."
+      "The WSL distro Ubuntu is stopped, so OCC didn't start this terminal. Start the distro, then try again."
     ],
     [
       'terminal_held_wsl_distro_unverifiable:Ubuntu',
       'unverifiable',
-      "Orca couldn't check whether the WSL distro Ubuntu is running, so it didn't start this terminal. Start the distro, then try again."
+      "OCC couldn't check whether the WSL distro Ubuntu is running, so it didn't start this terminal. Start the distro, then try again."
     ]
   ])(
     'keeps runtime_error for a held terminal (%s) with a readable message',

@@ -229,7 +229,7 @@ export class OpenCodeHookService {
     )
   }
 
-  // Link config for live user edits; keep plugins real so Orca can install a sibling.
+  // Link config for live user edits; keep plugins real so OCC can install a sibling.
   private mirrorUserConfig(sourceDir: string, overlayDir: string): void {
     const previousManifest = readOpenCodeOverlayManifest(overlayDir)
     // Remove only mirrored paths; persistent overlays may contain OpenCode runtime directories.
@@ -263,7 +263,7 @@ export class OpenCodeHookService {
           const overlayPluginsDir = join(overlayDir, 'plugins')
           mkdirSync(overlayPluginsDir, { recursive: true })
           for (const pluginEntry of readdirSync(resolvedSource, { withFileTypes: true })) {
-            // Never mirror Orca’s filename: installation would overwrite the user’s target.
+            // Never mirror OCC’s filename: installation would overwrite the user’s target.
             if (
               pluginEntry.name === this.pluginFileName ||
               pluginEntry.name === this.tuiOnlyDirectory ||

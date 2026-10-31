@@ -97,7 +97,7 @@ function stashWebBuild(): () => void {
   }
 
   // Stash beside output: Windows temp may be on another drive, where rename cannot move directories.
-  const tempDir = mkdtempSync(join(dirname(outWebPath), '.orca-dev-web-stash-'))
+  const tempDir = mkdtempSync(join(dirname(outWebPath), '.occ-dev-web-stash-'))
   const stashedPath = join(tempDir, 'web')
   renameSync(outWebPath, stashedPath)
   return () => {
@@ -138,7 +138,7 @@ describe('run-electron-vite-dev web client prepare', () => {
 
   it('skips the initial web client build when no bundle exists', async () => {
     const restoreWebBuild = stashWebBuild()
-    const tempDir = mkdtempSync(join(tmpdir(), 'orca-dev-wrapper-'))
+    const tempDir = mkdtempSync(join(tmpdir(), 'occ-dev-wrapper-'))
     const pidFile = join(tempDir, 'grandchild.pid')
     const envFile = join(tempDir, 'env.json')
     const viteFile = join(tempDir, 'vite.txt')
@@ -192,7 +192,7 @@ describe('run-electron-vite-dev web client prepare', () => {
 
   it('builds the missing web client bundle when explicitly requested', async () => {
     const restoreWebBuild = stashWebBuild()
-    const tempDir = mkdtempSync(join(tmpdir(), 'orca-dev-wrapper-'))
+    const tempDir = mkdtempSync(join(tmpdir(), 'occ-dev-wrapper-'))
     const pidFile = join(tempDir, 'grandchild.pid')
     const envFile = join(tempDir, 'env.json')
     const viteFile = join(tempDir, 'vite.txt')

@@ -140,7 +140,7 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
     )
   }
 
-  it("hashes Orca's entry alike at group 0, after another group, and from a trusted project", async () => {
+  it("hashes OCC's entry alike at group 0, after another group, and from a trusted project", async () => {
     const scratch = mkdtempSync(join(root, 'scratch-'))
     const project = mkdtempSync(join(root, 'project-'))
     mkdirSync(join(project, '.codex'))
@@ -175,7 +175,7 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
     expect(Object.values(hashes).every((hash) => typeof hash === 'string')).toBe(true)
   })
 
-  it('lists every entry Orca wrote in a managed home as trusted and enabled, and writes nothing on a list', async () => {
+  it('lists every entry OCC wrote in a managed home as trusted and enabled, and writes nothing on a list', async () => {
     await installManagedHome()
     const files = ['hooks.json', 'config.toml'].map((name) => join(accountHome(), name))
     const before = files.map((file) => readFileSync(file, 'utf-8'))
@@ -330,7 +330,7 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
       )
     }
 
-    it('lists every entry Orca wrote as trusted and enabled, and a second check writes nothing', async () => {
+    it('lists every entry OCC wrote as trusted and enabled, and a second check writes nothing', async () => {
       await freshRealHomeWithEntry('trusted')
       const files = ['hooks.json', 'config.toml'].map((name) => join(realCodexHome(), name))
       const before = files.map((file) => readFileSync(file, 'utf-8'))

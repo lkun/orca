@@ -140,7 +140,7 @@ describe('stageWorktreeChanges', () => {
     ])
   })
 
-  describe('Orca shared symlinks', () => {
+  describe('OCC shared symlinks', () => {
     async function createSharedLinkWorktree(): Promise<{ repo: string; owner: string }> {
       const repo = await createRepo()
       const owner = await mkdtemp(path.join(tmpdir(), 'orca-stage-owner-'))

@@ -58,7 +58,7 @@ describe('relay provider normalization', () => {
       const { port, token } = relay.getCoordinates()
       const response = await fetch(`http://127.0.0.1:${port}/hook/${source}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+        headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
         body: JSON.stringify({ paneKey: PANE, tabId: 'tab-1', worktreeId: 'wt-1', payload })
       })
       expect(response.status).toBe(204)

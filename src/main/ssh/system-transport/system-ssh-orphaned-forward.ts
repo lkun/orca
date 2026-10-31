@@ -1,4 +1,4 @@
-/** Recover fixed ports only from parentless processes with the exact same Orca forward/host argv; user SSH and live Orca tunnels are excluded. */
+/** Recover fixed ports only from parentless processes with the exact same OCC forward/host argv; user SSH and live OCC tunnels are excluded. */
 import { parseWindowsCommandLine } from '@orca/process-host/windows-command-line'
 import { getFreshShellForegroundSnapshot } from '../../../shared/process-table-snapshot-reader'
 import { readWindowsProcessTableFresh } from '../../windows/windows-process-table'
@@ -55,7 +55,7 @@ function executableName(command: string): string {
   return splitExecutable(command).name
 }
 
-// Accept historical Orca argv: ExitOnForwardFailure=yes (pre STA-10471), missing LogLevel=INFO (pre #24863), or missing -S none.
+// Accept historical OCC argv: ExitOnForwardFailure=yes (pre STA-10471), missing LogLevel=INFO (pre #24863), or missing -S none.
 function normalizeForwardArgv(args: readonly string[]): string[] {
   const normalized: string[] = []
   let droppedLogLevel = false
@@ -88,7 +88,7 @@ function sshArgv(command: string, platform: NodeJS.Platform): string[] | null {
   return name === 'ssh' || name === 'ssh.exe' ? rest.split(' ') : null
 }
 
-/** Extra argv belongs to another SSH invocation; require the complete Orca forward. */
+/** Extra argv belongs to another SSH invocation; require the complete OCC forward. */
 function isOrcaForward(
   command: string,
   expectedArgs: readonly string[],
@@ -160,7 +160,7 @@ async function waitUntilGone(
   return isGone(pid, kill)
 }
 
-/** True when an orphaned Orca forward was signalled; false means nothing was touched. */
+/** True when an orphaned OCC forward was signalled; false means nothing was touched. */
 export async function stopOrphanedOrcaSshForward(
   localPort: number,
   expectedArgs: readonly string[],
@@ -178,7 +178,7 @@ export async function stopOrphanedOrcaSshForward(
     return false
   }
   console.warn(
-    `[ssh] Stopping a forward a previous Orca left on 127.0.0.1:${localPort} (pid ${orphan.pid})`
+    `[ssh] Stopping a forward a previous OCC left on 127.0.0.1:${localPort} (pid ${orphan.pid})`
   )
   const startedAtMs = await deps.readStartTimeMs(orphan.pid)
   try {

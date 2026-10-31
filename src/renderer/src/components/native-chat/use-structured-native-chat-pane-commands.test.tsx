@@ -246,14 +246,14 @@ describe('a structured chat tab', () => {
   it.each([null, ''])('keeps the session-ID fallback without a known owner: %s', (owner) => {
     const markup = renderToStaticMarkup(<StructuredChatTab owner={owner} />)
     expect(markup).not.toContain('Split Chat')
-    expect(markup).toContain('Copy Orca Session ID')
+    expect(markup).toContain('Copy OCC Session ID')
   })
 
-  it("offers Copy Orca Session ID, asking the tab's host for this session's Orca session ID", async () => {
+  it("offers Copy OCC Session ID, asking the tab's host for this session's OCC session ID", async () => {
     renderToStaticMarkup(<StructuredChatTab />)
 
     const item = items.list.find(
-      (candidate) => childrenText(candidate.children) === 'Copy Orca Session ID'
+      (candidate) => childrenText(candidate.children) === 'Copy OCC Session ID'
     )
     item?.onSelect?.()
 

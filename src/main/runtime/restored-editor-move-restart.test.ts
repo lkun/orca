@@ -59,7 +59,7 @@ function published(runtime: OrcaRuntimeService) {
   return new Map(reader.snapshot.map(({ key, layout }) => [key, layout]))
 }
 
-describe('an editor tab Orca moved survives restart', () => {
+describe('an editor tab OCC moved survives restart', () => {
   it('main loads the moved tab and its file record in the new workspace only', async () => {
     const { store, directory } = await harness()
     const runtime = new OrcaRuntimeService(store)

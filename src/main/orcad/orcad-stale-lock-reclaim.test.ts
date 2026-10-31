@@ -148,7 +148,7 @@ describe.skipIf(process.platform === 'win32')('reclaimStaleOrcadInstanceLock (#3
     }
     expect(result.message).toContain('nothing answers on this machine')
     expect(result.message).toContain('cannot rule out another machine with the same host name')
-    expect(result.message).toContain('no other machine sharing this home runs Orca')
+    expect(result.message).toContain('no other machine sharing this home runs OCC')
     expect(readOrcadInstanceLockRecord(join(root, ORCAD_LOCK_FILE_NAME))?.nonce).toBe(
       'stale-holder'
     )

@@ -9,7 +9,7 @@ export const SERVE_SUPERVISOR_BACKOFF_MAX_MS = 30_000
 export const SERVE_SUPERVISOR_STANDBY_BASE_MS = 5_000
 export const SERVE_SUPERVISOR_STANDBY_MAX_MS = 60_000
 export const SERVE_GAVE_UP_ADVICE =
-  'Fix the cause, then run `orca serve service install` again (or, outside a service, `orca serve --supervise --force` once).'
+  'Fix the cause, then run `occ serve service install` again (or, outside a service, `occ serve --supervise --force` once).'
 
 /** Persist across service-manager restarts; launchd has no start limit. */
 export type ServeSupervisorBrake = {
@@ -49,7 +49,7 @@ export function recordSupervisedFailure(
     input.now
   ]
   if (failures.length >= SERVE_SUPERVISOR_FAILURE_LIMIT) {
-    const reason = `Orca serve failed ${failures.length} times in ${SERVE_SUPERVISOR_FAILURE_WINDOW_MS / 60_000} minutes; the supervisor stopped restarting it. Last failure: ${input.reason}`
+    const reason = `OCC serve failed ${failures.length} times in ${SERVE_SUPERVISOR_FAILURE_WINDOW_MS / 60_000} minutes; the supervisor stopped restarting it. Last failure: ${input.reason}`
     return {
       record: { ...record, failures, gaveUp: { at: input.now, reason } },
       action: { kind: 'give-up', reason }

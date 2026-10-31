@@ -22,7 +22,7 @@ function folder(): string {
 
 describe('prepareClaudeSignInBrowser', () => {
   it.skipIf(process.platform === 'win32')(
-    'hands the link Claude gives BROWSER to Orca and leaves nothing behind',
+    'hands the link Claude gives BROWSER to OCC and leaves nothing behind',
     async () => {
       const home = folder()
       const browser = await prepareClaudeSignInBrowser({

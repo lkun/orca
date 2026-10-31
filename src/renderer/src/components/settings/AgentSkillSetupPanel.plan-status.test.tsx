@@ -53,7 +53,7 @@ it('keeps Check failed when the plan request fails', async () => {
   expect(await screen.findByText('Check failed')).toBeDefined()
   expect(screen.getByRole('button', { name: 'Re-check' })).toBeDefined()
   expect(screen.queryByRole('button', { name: 'Update' })).toBeNull()
-  expect(screen.queryByText('Update Orca on the server to install its skills.')).toBeNull()
+  expect(screen.queryByText('Update OCC on the server to install its skills.')).toBeNull()
 })
 
 it('uses the named plan for its pill when a detected agent still needs the skill', async () => {
@@ -173,7 +173,7 @@ it.each([
 
     fireEvent.click(install)
 
-    await screen.findByRole('button', { name: "Replace with Orca's copy" })
+    await screen.findByRole('button', { name: "Replace with OCC's copy" })
     expect(screen.getByText('Review skill')).toBeDefined()
     expect(screen.getByRole('button', { name: 'Details' })).toBeDefined()
     expect(mocks.execute).toHaveBeenCalledOnce()

@@ -244,7 +244,7 @@ export class IosEmulatorBackend implements EmulatorBackend {
         )
       }
     }
-    // Keep the native Simulator window hidden while Orca embeds its stream.
+    // Keep the native Simulator window hidden while OCC embeds its stream.
     await hideNativeSimulatorApp().catch(() => {})
     return { ...info, streamCodec: 'mjpeg', backend: 'ios' }
   }

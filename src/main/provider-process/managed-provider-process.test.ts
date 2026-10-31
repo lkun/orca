@@ -249,8 +249,8 @@ describe('managed provider process', () => {
 
   it("never blames the agent's CLI when the supervisor binary itself is gone", () => {
     const execPath = process.execPath
-    // Orca's binary replaced mid-update: the supervisor spawn finds no such file.
-    const gone = join(tmpdir(), 'orca-updated-away', 'Orca')
+    // OCC's binary replaced mid-update: the supervisor spawn finds no such file.
+    const gone = join(tmpdir(), 'orca-updated-away', 'OCC')
     Object.defineProperty(process, 'execPath', { configurable: true, value: gone })
     try {
       const fixture = fakeChild(null)

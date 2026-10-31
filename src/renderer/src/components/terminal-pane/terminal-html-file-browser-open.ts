@@ -2,7 +2,7 @@ import { absolutePathToFileUri } from '@/components/editor/markdown-internal-lin
 import { activateAndRevealWorktree } from '@/lib/worktree-activation'
 import { useAppStore } from '@/store'
 
-/** Renders a linked local HTML file in an Orca browser tab of the workspace. */
+/** Renders a linked local HTML file in an OCC browser tab of the workspace. */
 export function openHtmlFileInBrowser(
   filePath: string,
   worktreeId: string,

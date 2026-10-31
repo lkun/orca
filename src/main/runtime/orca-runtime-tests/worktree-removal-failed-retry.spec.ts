@@ -205,7 +205,7 @@ describe('runtime listing straight after a delete fails partway', () => {
       gitLists([])
       throw new Error(FAILURE)
     })
-    // Orca's follow-up delete of the folder Git left also fails, so the row stays listed.
+    // OCC's follow-up delete of the folder Git left also fails, so the row stays listed.
     vi.spyOn(localWorktreeFilesystem, 'removeLocalWorktreePath').mockRejectedValueOnce(
       new Error(FOLLOW_UP_DELETE_FAILURE)
     )

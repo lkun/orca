@@ -37,7 +37,7 @@ export function theme(input: PluginTemplateInput): PluginTemplate {
       }),
       'README.md': readme(
         input,
-        'An Orca app theme. Edit `themes/dark.json`; omitted tokens are derived from `--background` and `--foreground`.'
+        'An OCC app theme. Edit `themes/dark.json`; omitted tokens are derived from `--background` and `--foreground`.'
       ),
       ...COMMON_FILES
     }
@@ -70,7 +70,7 @@ export function terminalTheme(input: PluginTemplateInput): PluginTemplate {
           white: '#e8e0ff'
         }
       }),
-      'README.md': readme(input, 'An Orca terminal palette. Edit `terminal/dark.json`.'),
+      'README.md': readme(input, 'An OCC terminal palette. Edit `terminal/dark.json`.'),
       ...COMMON_FILES
     }
   }
@@ -105,7 +105,7 @@ export function iconTheme(input: PluginTemplateInput): PluginTemplate {
       'icons/markdown.svg': MARKDOWN_ICON,
       'README.md': readme(
         input,
-        'An Orca icon theme. `icons/theme.json` maps slots, file names and extensions to SVG files (paths from the plugin root).'
+        'An OCC icon theme. `icons/theme.json` maps slots, file names and extensions to SVG files (paths from the plugin root).'
       ),
       ...COMMON_FILES
     }
@@ -169,7 +169,7 @@ export function languagePack(input: PluginTemplateInput): PluginTemplate {
   return {
     description: 'Interface translation (data only, no approval needed)',
     files: {
-      'orca-plugin.json': manifest(input, 'Translates Orca into Brazilian Portuguese.', {
+      'orca-plugin.json': manifest(input, 'Translates OCC into Brazilian Portuguese.', {
         execution: 'data',
         contributes: {
           languagePacks: [
@@ -180,7 +180,7 @@ export function languagePack(input: PluginTemplateInput): PluginTemplate {
       'locales/pt-BR.json': json({ common: { cancel: 'Cancelar', retry: 'Tentar novamente' } }),
       'README.md': readme(
         input,
-        'An Orca language pack. Keys mirror the English catalog of Orca; add translated strings to `locales/pt-BR.json`, or change the locale in `orca-plugin.json`.'
+        'An OCC language pack. Keys mirror the English catalog of OCC; add translated strings to `locales/pt-BR.json`, or change the locale in `orca-plugin.json`.'
       ),
       ...COMMON_FILES
     }

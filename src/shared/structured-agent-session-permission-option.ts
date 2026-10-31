@@ -119,7 +119,7 @@ export function legacyHostPermissionDescriptor(): SessionOptionDescriptor {
           value: LEGACY_HOST_PERMISSION_VALUE,
           label: "Host's Agent Permissions",
           description:
-            "This host runs an older Orca that applies its Agent Permissions to every chat and can't ask per chat. Update Orca on the host to choose a mode here."
+            "This host runs an older OCC that applies its Agent Permissions to every chat and can't ask per chat. Update OCC on the host to choose a mode here."
         }
       ]
     },

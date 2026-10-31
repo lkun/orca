@@ -30,7 +30,7 @@ describe('OpenCode status plugin module contract', () => {
     OrcaOpenCodeStatusPlugin?: (ctx: unknown) => Promise<PluginHooks>
   }
 
-  // Isolate endpoint-file and environment inputs so tests cannot post to a live Orca session.
+  // Isolate endpoint-file and environment inputs so tests cannot post to a live OCC session.
   const ENV_KEYS = [
     'ORCA_OPENCODE_PLUGIN_API',
     'ORCA_PANE_KEY',

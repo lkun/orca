@@ -159,7 +159,7 @@ it('shows one status for an unreachable host instead of a stack of signals', () 
           status: 'error',
           runtimeStatus: null,
           compatibility: null,
-          error: 'Timed out waiting for the remote Orca runtime.'
+          error: 'Timed out waiting for the remote OCC runtime.'
         }}
         isActive={false}
         remoteUpdate={undefined}

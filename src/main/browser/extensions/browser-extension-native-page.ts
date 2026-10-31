@@ -9,7 +9,7 @@ export function isBrowserExtensionNativePage(contents: Electron.WebContents): bo
   return creatingNativePage || nativePages.has(contents)
 }
 
-/** Native extension bindings without Orca's API wrappers, always on a hidden document. */
+/** Native extension bindings without OCC's API wrappers, always on a hidden document. */
 export async function runBrowserExtensionNativePage(options: {
   session: Electron.Session
   extensionId: string

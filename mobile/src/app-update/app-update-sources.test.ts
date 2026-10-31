@@ -14,7 +14,7 @@ function fixture(name: string): unknown {
 }
 const tagRefs = fixture('github-mobile-android-tag-refs.json')
 const release050 = fixture('github-release-mobile-android-v0.0.50.json')
-const lookup = fixture('itunes-lookup-com.stably.orca.mobile.json')
+const lookup = fixture('itunes-lookup-com.lkun.occ.mobile.json')
 
 const REFS_URL =
   'https://api.github.com/repos/stablyai/orca/git/matching-refs/tags/mobile-android-v'
@@ -165,12 +165,12 @@ describe('GitHub release source (Android sideload)', () => {
 })
 
 describe('App Store source (iOS)', () => {
-  const LOOKUP = 'https://itunes.apple.com/lookup?bundleId=com.stably.orca.mobile'
+  const LOOKUP = 'https://itunes.apple.com/lookup?bundleId=com.lkun.occ.mobile'
 
   it('reads the store version and App Store page from the recorded lookup', () => {
     expect(parseAppStoreLookup(lookup)).toEqual({
       version: '0.0.51',
-      url: 'https://apps.apple.com/us/app/orca-ide/id6766130217?uo=4'
+      url: 'https://apps.apple.com/us/app/occ-ide/id6766130217?uo=4'
     })
   })
 
@@ -180,7 +180,7 @@ describe('App Store source (iOS)', () => {
     await expect(source.check('0.0.48', signal)).resolves.toEqual({
       kind: 'available',
       version: '0.0.51',
-      url: 'https://apps.apple.com/us/app/orca-ide/id6766130217?uo=4'
+      url: 'https://apps.apple.com/us/app/occ-ide/id6766130217?uo=4'
     })
     await expect(source.check('0.0.51', signal)).resolves.toEqual({ kind: 'current' })
   })

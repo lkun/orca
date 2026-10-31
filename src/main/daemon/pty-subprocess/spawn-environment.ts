@@ -40,7 +40,7 @@ const PANE_IDENTITY_ENV_KEYS = [
   // Not identity but equally per-spawn: an inherited copy names another launch's CLI.
   'ORCA_WSL_CLI_DIR',
   'JCODE_RUNTIME_DIR',
-  // Per-viewer: an Orca started from a remote viewer's pane must not mark its own local panes.
+  // Per-viewer: an OCC started from a remote viewer's pane must not mark its own local panes.
   REMOTE_VIEWER_CLIPBOARD_ENV,
   // A server's own launch marker; a user's `orcad` in this shell is not client-managed.
   ORCAD_MANAGED_ACTIVATION_ROOT_ENV,
@@ -73,7 +73,7 @@ function deleteRequestedDaemonEnvKeys(
       delete env[key]
     }
   }
-  // Persistent daemon state may differ from Electron; remove CODEX_HOME only if its Orca overlay owns it.
+  // Persistent daemon state may differ from Electron; remove CODEX_HOME only if its OCC overlay owns it.
   const deleteOrcaOwnedCodexHome =
     keys?.includes('ORCA_CODEX_HOME') === true &&
     env.ORCA_CODEX_HOME !== undefined &&
@@ -183,7 +183,7 @@ export function createDaemonPtyEnvironment(opts: PtySubprocessOptions): Record<s
     ...mergeGitConfigEnvProtocol(inheritedEnv, opts.env),
     TERM: 'xterm-256color',
     COLORTERM: 'truecolor',
-    TERM_PROGRAM: 'Orca',
+    TERM_PROGRAM: 'OCC',
     TERM_PROGRAM_VERSION: process.env.ORCA_APP_VERSION ?? '0.0.0-dev',
     FORCE_HYPERLINK: '1',
     [ORCA_IMAGE_PROTOCOL_ENV]: ORCA_IMAGE_PROTOCOL_VALUE

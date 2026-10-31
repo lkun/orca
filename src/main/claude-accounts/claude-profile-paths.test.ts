@@ -168,7 +168,7 @@ describe('Claude profile namespace', () => {
       prepareClaudeProfileDirectory(dataRoot, describeClaudeProfile(dataRoot, 'a', local), userHome)
     ).toThrow('separate directories')
   })
-  it("reads the user's own CLAUDE_CONFIG_DIR but never Orca's injected one", () => {
+  it("reads the user's own CLAUDE_CONFIG_DIR but never OCC's injected one", () => {
     expect(readUserClaudeConfigDir({})).toBeUndefined()
     expect(readUserClaudeConfigDir({ CLAUDE_CONFIG_DIR: '  ' })).toBeUndefined()
     expect(readUserClaudeConfigDir({ CLAUDE_CONFIG_DIR: '/cfg/claude/' })).toBe(
@@ -187,7 +187,7 @@ describe('Claude profile namespace', () => {
       })
     ).toBe(resolve('/cfg/claude'))
   })
-  it("keeps the user's own CLAUDE_CONFIG_DIR spelled as set, through an outer Orca too", () => {
+  it("keeps the user's own CLAUDE_CONFIG_DIR spelled as set, through an outer OCC too", () => {
     expect(readUserClaudeConfigDirAsSet({ CLAUDE_CONFIG_DIR: '/cfg/claude/' })).toBe('/cfg/claude/')
     const outer = {
       CLAUDE_CONFIG_DIR: '/data/claude-profiles/a/home',

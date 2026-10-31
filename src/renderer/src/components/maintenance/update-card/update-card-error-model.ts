@@ -65,7 +65,7 @@ export function buildUpdateCardErrorModel({
       footnote: {
         text: translate(
           'updates.installBlock.retainedDownload',
-          'Orca stays open. No need to download again.'
+          'OCC stays open. No need to download again.'
         )
       },
       primaryAction: {
@@ -113,7 +113,7 @@ export function buildUpdateCardErrorModel({
       title: translate('auto.components.UpdateCard.1339b82cee', 'HTTP/2 Download Blocked'),
       summary: translate(
         'auto.components.UpdateCard.http1RetryAvailable',
-        'Orca can retry through HTTP/1.1 compatibility mode.'
+        'OCC can retry through HTTP/1.1 compatibility mode.'
       ),
       explainer: translate(
         'auto.components.UpdateCard.90559b14e3',
@@ -135,7 +135,7 @@ export function buildUpdateCardErrorModel({
       title: translate('auto.components.UpdateCard.5b309b19f3', "Update Wasn't Installed"),
       summary: translate(
         'auto.components.UpdateCard.092f09fc14',
-        "The installer's publisher doesn't match Orca, so we stopped the update. Don't install this download; check official releases for a corrected version."
+        "The installer's publisher doesn't match OCC, so we stopped the update. Don't install this download; check official releases for a corrected version."
       ),
       detail: message,
       releaseUrl: getReleaseNotesUrlForVersion(null),

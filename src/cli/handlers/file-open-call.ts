@@ -3,7 +3,7 @@ import type { HandlerContext } from '../dispatch'
 import { RuntimeClientError, type RuntimeRpcSuccess } from '../runtime-client'
 
 const NO_APP_WINDOW_MESSAGE =
-  'This Orca server has no app window, so it cannot open files as tabs. Nothing was opened.'
+  'This OCC server has no app window, so it cannot open files as tabs. Nothing was opened.'
 
 function isRendererUnavailable(error: unknown): boolean {
   return (
@@ -27,7 +27,7 @@ export async function callFileOpen(
     }
     throw new RuntimeClientError('renderer_unavailable', NO_APP_WINDOW_MESSAGE, {
       nextSteps: [
-        'Open the file from the file explorer of an Orca app or mobile app connected to this server.',
+        'Open the file from the file explorer of an OCC app or mobile app connected to this server.',
         'To point a user at the file, give its path in your reply instead of opening a tab.'
       ]
     })

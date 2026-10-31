@@ -14,8 +14,8 @@ const WINDOWS_BARE_PATH = /^[A-Za-z0-9_.:/~-]+$/
 function buildPosixCommand(): string {
   const rootScript = '"${ORCA_AGENT_HOOK_ROOT-}/agent-hooks/codex-hook.sh"'
   const sharedScript = '"${HOME-}/.orca/agent-hooks/codex-hook.sh"'
-  // The root branch stays dormant until Orca sets its root; shared hooks require a pane and port.
-  // Outside Orca or with hooks off, only drain stdin, preserving the frozen command bytes.
+  // The root branch stays dormant until OCC sets its root; shared hooks require a pane and port.
+  // Outside OCC or with hooks off, only drain stdin, preserving the frozen command bytes.
   return [
     `: orca-agent-hook-form=${CODEX_HOOK_COMMAND_FORM};`,
     `if [ -n "\${ORCA_PANE_KEY-}" ] && [ -n "\${ORCA_AGENT_HOOK_ROOT-}" ] && [ -f ${rootScript} ]; then /bin/sh ${rootScript} || :;`,

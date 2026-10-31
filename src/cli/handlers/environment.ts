@@ -34,7 +34,7 @@ export const ENVIRONMENT_HANDLERS: Record<string, CommandHandler> = {
       if (current.result.machineName === undefined) {
         throw new RuntimeClientError(
           'incompatible_runtime',
-          'This Orca runtime does not support machine names. Update Orca on that host and try again.'
+          'This OCC runtime does not support machine names. Update OCC on that host and try again.'
         )
       }
       await client.call('settings.update', { machineName: requestedName })
@@ -62,8 +62,8 @@ export const ENVIRONMENT_HANDLERS: Record<string, CommandHandler> = {
   'host list': async ({ client, flags, json }) => {
     rejectLocalPairingStoreRetargeting(
       flags,
-      '`orca host list`. It answers from this machine\u2019s own pairing store, so a routed answer would name servers paired with a different machine.',
-      'Run `orca host list` on that machine to see the SSH targets registered there.'
+      '`occ host list`. It answers from this machine\u2019s own pairing store, so a routed answer would name servers paired with a different machine.',
+      'Run `occ host list` on that machine to see the SSH targets registered there.'
     )
     const sshTargets = (await listSshTargets(client)).map((target) => ({
       kind: 'ssh' as const,
@@ -99,8 +99,8 @@ export const ENVIRONMENT_HANDLERS: Record<string, CommandHandler> = {
   'environment list': async ({ flags, json }) => {
     rejectLocalPairingStoreRetargeting(
       flags,
-      '`orca environment list`. Paired servers are stored on this machine, so there is no other host to ask.',
-      'Run `orca environment list` on that machine to see the servers paired with it.'
+      '`occ environment list`. Paired servers are stored on this machine, so there is no other host to ask.',
+      'Run `occ environment list` on that machine to see the servers paired with it.'
     )
     const environments = listEnvironments(getDefaultUserDataPath()).map(redactRuntimeEnvironment)
     printResult(localSuccess({ environments }), json, formatEnvironmentList)

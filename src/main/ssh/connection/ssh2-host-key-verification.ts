@@ -78,7 +78,7 @@ type Ssh2HostKeyVerificationHost = {
 /** The denial this attempt's verifier recorded; local to one attempt so a stale one cannot leak. */
 type Ssh2HostKeyVerdict = {
   rejection: HostKeyVerificationError | null
-  /** Orca's own store holds a key for this endpoint, which system OpenSSH never consults. */
+  /** OCC's own store holds a key for this endpoint, which system OpenSSH never consults. */
   pinnedByOrcaStore: boolean
 }
 
@@ -128,7 +128,7 @@ export async function installSsh2HostKeyVerification(
   config.hostVerifier = createHostKeyVerifier({
     host: hostKeyLookupHost,
     port: config.port ?? 22,
-    // Print the lookup host in ssh-keygen -R guidance; the Orca label would remove no trusted entry.
+    // Print the lookup host in ssh-keygen -R guidance; the OCC label would remove no trusted entry.
     displayHost: hostKeyLookupHost,
     hostKeyStoreFile: boundSshHostKeyStoreFile() ?? undefined,
     strictHostKeyChecking: hostKeyResolved?.strictHostKeyChecking ?? 'ask',

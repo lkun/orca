@@ -5,9 +5,9 @@ import {
 
 /**
  * Electron allows one session.webRequest listener per event, so request decisions owned by other
- * layers (extension content blocking) run inside Orca's own handlers: the certificate guard's
+ * layers (extension content blocking) run inside OCC's own handlers: the certificate guard's
  * onBeforeRequest, the user agent policy's onBeforeSendHeaders and the onHeadersReceived installed
- * here. Each hook is called only after Orca's own policy for that event has run.
+ * here. Each hook is called only after OCC's own policy for that event has run.
  */
 export type BrowserSessionRequestDecider = {
   /** Null lets the request through; a promise holds it until the decision is known. */
@@ -74,7 +74,7 @@ function noteBlockedMainFrame(
   }
 }
 
-/** Answers an onBeforeRequest that Orca's own policy let through. */
+/** Answers an onBeforeRequest that OCC's own policy let through. */
 export function answerBrowserSessionBeforeRequest(
   session: Electron.Session,
   details: Electron.OnBeforeRequestListenerDetails,

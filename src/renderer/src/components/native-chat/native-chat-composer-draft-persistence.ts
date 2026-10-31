@@ -50,7 +50,7 @@ export function unavailableNativeChatComposerDraftImage(
     : image
 }
 
-/** A local paste in Orca's paste folder: it outlives the run, so a restore can show and send it. */
+/** A local paste in OCC's paste folder: it outlives the run, so a restore can show and send it. */
 export function isKeptLocalPaste(image: NativeChatComposerDraftImage): boolean {
   return !image.connectionId && isNativeChatKeptPastePath(image.path)
 }

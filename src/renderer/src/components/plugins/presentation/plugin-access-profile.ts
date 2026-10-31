@@ -49,7 +49,7 @@ export type PluginTrust = {
   worker: boolean
   /** Commands, shortcuts, recipes or agent instructions that act under your authority. */
   declarative: boolean
-  /** Publisher code drawing a view inside Orca (a panel or an editor); trusted, not sandboxed. */
+  /** Publisher code drawing a view inside OCC (a panel or an editor); trusted, not sandboxed. */
   panel: boolean
   /** Known to add a file editor. */
   editor: boolean

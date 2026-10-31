@@ -1,7 +1,7 @@
 import type { BrowserWindow } from 'electron'
 import { recordCoalescedDurableCrashBreadcrumb } from '../crash-reporting/durable-crash-breadcrumb'
 
-/** Windows killed/exit1 cannot identify Task Manager, EDR or Orca as the cause. Retain prior hang/load state to distinguish users terminating a frozen app from unexplained external kills. */
+/** Windows killed/exit1 cannot identify Task Manager, EDR or OCC as the cause. Retain prior hang/load state to distinguish users terminating a frozen app from unexplained external kills. */
 export type RendererLivenessAtDeath = {
   /** Set only while Chromium flags the renderer hung (needs ~15s of unacknowledged input); absent = not detected hung. */
   rendererUnresponsiveForMs?: number

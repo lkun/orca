@@ -36,7 +36,7 @@ export type MobileNativeChatSession = {
   // Unsettled reads or passive resets may still hold another tab’s history; wait before interpreting empty messages as a seed/retirement boundary.
   transcriptLoading: boolean
   error?: string
-  /** The read failed for good (damage, or a newer Orca's chat): the error says why, once, and
+  /** The read failed for good (damage, or a newer OCC's chat): the error says why, once, and
    *  there is nothing to send into. */
   readFailedFinally?: boolean
   hasMore: boolean

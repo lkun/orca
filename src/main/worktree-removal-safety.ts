@@ -167,7 +167,7 @@ export function canCleanupUnregisteredOrcaWorktreeDirectory(args: {
     return true
   }
 
-  // Users can create ordinary Git worktrees under Orca's root; path shape alone does not prove ownership.
+  // Users can create ordinary Git worktrees under OCC's root; path shape alone does not prove ownership.
   return false
 }
 

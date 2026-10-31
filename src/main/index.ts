@@ -113,7 +113,7 @@ const handleMacAppActivation = createMacAppActivationHandler({
   requestActivation: requestDesktopActivation
 })
 
-// Before anything spawns: no child may inherit Orca's std handles.
+// Before anything spawns: no child may inherit OCC's std handles.
 clearWindowsStdHandleInheritance()
 installWindowsIsolatedSpawner()
 // A relaunch or installer inherits the parent's published WSL gate state; this process recomputes.
@@ -174,7 +174,7 @@ if (preflightReady) {
     } catch (error) {
       const detail = error instanceof Error ? error.message : String(error)
       const message =
-        formatProfileStateStartupFailure(error) ?? `Orca could not finish starting: ${detail}`
+        formatProfileStateStartupFailure(error) ?? `OCC could not finish starting: ${detail}`
       const failureClass = profileStateStartupFailureClass(error)
       if (failureClass !== undefined) {
         recordDurableCrashBreadcrumb('profile_state_startup_failed', {
@@ -235,7 +235,7 @@ if (preflightReady) {
               formatProfileStateStartupFailure(error, translateMain) ??
               translateMain(
                 'startupFailure.finishFailed',
-                'Orca could not finish starting: {{detail}}',
+                'OCC could not finish starting: {{detail}}',
                 { detail }
               ),
             ...(failureClass === 'recovery-required' || failureClass === 'ambiguous-authority'

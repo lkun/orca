@@ -13,7 +13,7 @@ const capturedHooks: Record<string, unknown>[] = readFileSync(
   .split('\n')
   .map((line) => JSON.parse(line))
 
-// Orca's managed Grok hooks do not subscribe SubagentStart/SubagentStop.
+// OCC's managed Grok hooks do not subscribe SubagentStart/SubagentStop.
 const UNSUBSCRIBED = new Set(['subagent_start', 'subagent_stop'])
 
 function replay(scenario: string, edit = (hooks: Record<string, unknown>[]) => hooks) {

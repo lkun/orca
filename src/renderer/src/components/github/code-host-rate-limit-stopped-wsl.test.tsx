@@ -9,7 +9,7 @@ import { useGitHubRateLimitSnapshot } from './github-rate-limit-display'
 import { useGitLabRateLimitSnapshot } from '../gitlab/gitlab-rate-limit-display'
 
 const STOPPED = "WSL distro 'Ubuntu' is not running. Open a terminal in it to start it."
-const UNVERIFIABLE = "WSL didn't answer whether 'Ubuntu' is running, so Orca left it alone."
+const UNVERIFIABLE = "WSL didn't answer whether 'Ubuntu' is running, so OCC left it alone."
 const SNAPSHOT = { fetchedAt: 1 }
 
 const rateLimit = vi.fn()

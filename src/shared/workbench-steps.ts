@@ -1,4 +1,4 @@
-// Match agents-orchestration-steps so Explore Orca renders both step sequences through the same rail/body.
+// Match agents-orchestration-steps so Explore OCC renders both step sequences through the same rail/body.
 
 export type WorkbenchStepId = 'terminal' | 'editor' | 'browser'
 
@@ -23,14 +23,14 @@ export const WORKBENCH_STEPS: readonly WorkbenchStep[] = [
     id: 'editor',
     name: 'Editor',
     subtitle: 'Editor',
-    description: 'Use our Notion-style markdown editor to write notes without leaving Orca.'
+    description: 'Use our Notion-style markdown editor to write notes without leaving OCC.'
   },
   {
     id: 'browser',
     name: 'Browser',
     subtitle: 'Browser',
     description:
-      "Run your app in Orca's browser, send selected UI elements to agents, and let your agents interact with your webpage."
+      "Run your app in OCC's browser, send selected UI elements to agents, and let your agents interact with your webpage."
   }
 ] as const
 

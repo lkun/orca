@@ -83,7 +83,7 @@ export type PsQuery = {
   tty: string | null
 }
 
-/** The `ps` invocations Orca issues (`-axo`, `-p`, `-t`, empty headers); anything else returns null and keeps the real ps. */
+/** The `ps` invocations OCC issues (`-axo`, `-p`, `-t`, empty headers); anything else returns null and keeps the real ps. */
 export function parsePsQuery(args: readonly string[]): PsQuery | null {
   const columns: Column[] = []
   let all = false
@@ -119,7 +119,7 @@ export function parsePsQuery(args: readonly string[]): PsQuery | null {
       pids = [...new Set([...(pids ?? []), ...list])]
     } else if (arg === '-t') {
       const name = value()
-      // ps -t also takes lists; Orca names one terminal.
+      // ps -t also takes lists; OCC names one terminal.
       if (!name || tty !== null || /[\s,]/.test(name)) {
         return null
       }
@@ -128,7 +128,7 @@ export function parsePsQuery(args: readonly string[]): PsQuery | null {
       return null
     }
   }
-  // ps unions selections; Orca never combines them, so keep the real ps for that.
+  // ps unions selections; OCC never combines them, so keep the real ps for that.
   const selections = Number(all) + Number(pids !== null) + Number(tty !== null)
   return columns.length > 0 && selections === 1 ? { columns, pids, tty } : null
 }

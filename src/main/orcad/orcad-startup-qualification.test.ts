@@ -120,7 +120,7 @@ describe('orcad startup qualification', () => {
 
   it('qualifies only managed slots outside the app resources', () => {
     const managed = { [ORCAD_MANAGED_ACTIVATION_ROOT_ENV]: '/home/u/.orca-remote' }
-    const resources = join(slot, 'Orca.app', 'Contents', 'Resources')
+    const resources = join(slot, 'OCC.app', 'Contents', 'Resources')
 
     expect(isQualifiableOrcadSlot(join(slot, 'orcad-0.1.0+a'), managed, resources)).toBe(true)
     expect(isQualifiableOrcadSlot(join(slot, 'orcad-0.1.0+a'), managed, undefined)).toBe(true)

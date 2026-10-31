@@ -24,24 +24,24 @@ A plugin adds highlighting for a language through `contributes.syntaxes` in `orc
   surrounding pairs.
 - A plugin can contribute up to 16 syntaxes. Scope names must be unique within the plugin.
 
-## How Orca uses it
+## How OCC uses it
 
 - While a plugin is enabled, its syntax colors every file whose name or extension it declares,
-  replacing Orca's own guess for that file. For example, a MATLAB plugin that claims `.m` wins
-  over Orca's Objective-C, an OCaml plugin that claims `.ml` wins over F#, a Julia plugin wins
-  over Orca's basic Julia colors, and a Haskell or Erlang plugin colors `.hs` or `.erl` files that
-  Orca maps but has no grammar for.
-- The exception is a file Orca opens as TypeScript, JavaScript, JSON, CSS, SCSS, Less, HTML or
-  Markdown: those keep Orca's language, because it also drives completions, diagnostics, or
+  replacing OCC's own guess for that file. For example, a MATLAB plugin that claims `.m` wins
+  over OCC's Objective-C, an OCaml plugin that claims `.ml` wins over F#, a Julia plugin wins
+  over OCC's basic Julia colors, and a Haskell or Erlang plugin colors `.hs` or `.erl` files that
+  OCC maps but has no grammar for.
+- The exception is a file OCC opens as TypeScript, JavaScript, JSON, CSS, SCSS, Less, HTML or
+  Markdown: those keep OCC's language, because it also drives completions, diagnostics, or
   Markdown features that a plugin grammar would turn off. JSP (`.jsp`, `.jspf`) is not covered by
-  this exception; Orca shows it as HTML only until a real grammar is available.
+  this exception; OCC shows it as HTML only until a real grammar is available.
 - When several enabled syntaxes claim a file, an exact file name wins over an extension, a longer
   extension wins over a shorter one, and an exact tie goes to the lower syntax id
   (`plugin:...`), so the winner does not depend on load order. There is no per-file language
   picker yet, so a plugin that claims a broad extension such as `.txt` highlights every such file
-  while it is enabled; disable the plugin to get Orca's own colors back.
+  while it is enabled; disable the plugin to get OCC's own colors back.
 - Grammars load when a matching file opens, compile once in a worker, and stay warm while you
-  type. Each line has the same limits as Orca's own grammars (1,000 characters, 50 ms); from a
+  type. Each line has the same limits as OCC's own grammars (1,000 characters, 50 ms); from a
   line that exceeds them, the rest of the file stays plain.
 - Highlighting is applied as Monaco semantic tokens, so while a new pass runs the previous colors
   stay in place, shifted by your edits.

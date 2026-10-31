@@ -37,10 +37,10 @@ describe('getRequiredReleaseAssetNames', () => {
   it('includes both mac updater ZIP names for the tag version', () => {
     expect(getRequiredReleaseAssetNames('v1.4.27')).toEqual(
       expect.arrayContaining([
-        'Orca-1.4.27-mac.zip',
-        'Orca-1.4.27-mac.zip.blockmap',
-        'Orca-1.4.27-arm64-mac.zip',
-        'Orca-1.4.27-arm64-mac.zip.blockmap'
+        'OCC-1.4.27-mac.zip',
+        'OCC-1.4.27-mac.zip.blockmap',
+        'OCC-1.4.27-arm64-mac.zip',
+        'OCC-1.4.27-arm64-mac.zip.blockmap'
       ])
     )
   })
@@ -49,12 +49,12 @@ describe('getRequiredReleaseAssetNames', () => {
     expect(getRequiredReleaseAssetNames('v1.4.27')).toEqual(
       expect.arrayContaining([
         'latest-linux-arm64.yml',
-        'orca-linux.AppImage',
-        'orca-linux-arm64.AppImage',
-        'orca-ide_1.4.27_amd64.deb',
-        'orca-ide_1.4.27_arm64.deb',
-        'orca-ide-1.4.27.x86_64.rpm',
-        'orca-ide-1.4.27.aarch64.rpm'
+        'occ-linux.AppImage',
+        'occ-linux-arm64.AppImage',
+        'occ-ide_1.4.27_amd64.deb',
+        'occ-ide_1.4.27_arm64.deb',
+        'occ-ide-1.4.27.x86_64.rpm',
+        'occ-ide-1.4.27.aarch64.rpm'
       ])
     )
   })
@@ -66,12 +66,12 @@ describe('extractManifestAssetNames', () => {
       extractManifestAssetNames(
         [
           'files:',
-          '  - url: Orca-1.4.27-arm64-mac.zip',
-          '  - url: https://example.com/downloads/orca-windows-setup.exe',
-          'path: orca-linux.AppImage'
+          '  - url: OCC-1.4.27-arm64-mac.zip',
+          '  - url: https://example.com/downloads/occ-windows-setup.exe',
+          'path: occ-linux.AppImage'
         ].join('\n')
       )
-    ).toEqual(['Orca-1.4.27-arm64-mac.zip', 'orca-windows-setup.exe', 'orca-linux.AppImage'])
+    ).toEqual(['OCC-1.4.27-arm64-mac.zip', 'occ-windows-setup.exe', 'occ-linux.AppImage'])
   })
 })
 
@@ -129,14 +129,14 @@ describe('verifyRequiredReleaseAssets', () => {
         [
           'version: 1.4.27',
           'files:',
-          '  - url: orca-linux-arm64.AppImage.blockmap',
-          'path: orca-linux-arm64.AppImage'
+          '  - url: occ-linux-arm64.AppImage.blockmap',
+          'path: occ-linux-arm64.AppImage'
         ].join('\n')
       )
     )
 
     await expect(
       verifyRequiredReleaseAssets({ repo: 'stablyai/orca', tag, token: 'token' })
-    ).rejects.toThrow('Missing: orca-linux-arm64.AppImage.blockmap')
+    ).rejects.toThrow('Missing: occ-linux-arm64.AppImage.blockmap')
   })
 })

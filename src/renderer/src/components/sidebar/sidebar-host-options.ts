@@ -53,7 +53,7 @@ export type SidebarHostOption = {
   connectionStatus?: SshConnectionStatus
   aliasHostIds?: readonly ExecutionHostId[]
   mergedIntoHostId?: ExecutionHostId
-  /** Set on a WSL host's row: the distro its Orca server runs in. */
+  /** Set on a WSL host's row: the distro its OCC server runs in. */
   wslDistro?: string
   /** Why a listed WSL host cannot run: the experiment is off, or this build lacks its server files. */
   wslUnavailable?: 'turned-off' | 'server-files-missing'

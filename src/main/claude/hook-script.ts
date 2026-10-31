@@ -42,9 +42,9 @@ export function getManagedScript(
       'echo {}',
       // CLAUDE_CODE_SUBPROCESS_ENV_SCRUB drops ORCA_PANE_KEY; restore it before any guard reads it.
       ...buildWindowsScrubSafeEnvRestoreLines(),
-      // Refresh endpoint coordinates for PTYs surviving an Orca restart.
+      // Refresh endpoint coordinates for PTYs surviving an OCC restart.
       'if defined ORCA_AGENT_HOOK_ENDPOINT if exist "%ORCA_AGENT_HOOK_ENDPOINT%" call "%ORCA_AGENT_HOOK_ENDPOINT%" 2>nul',
-      // Outside an Orca pane the caller may abandon stdin; exit before owning it (#11549).
+      // Outside an OCC pane the caller may abandon stdin; exit before owning it (#11549).
       ...buildWindowsHookEnvironmentGuardLines(),
       WINDOWS_CLAUDE_BACKGROUND_JOB_GUARD,
       ...(options.skipWhenGrokImportsClaude ? buildWindowsGrokReplayGuardLines() : []),

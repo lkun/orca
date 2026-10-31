@@ -304,7 +304,7 @@ export function AgentLaunchChoiceEditor({
             permission?.argsSetPermission
               ? translate(
                   'settings.agents.permissionArgsTerminalOnly',
-                  'These arguments may control {{agent}}’s terminal permissions, so Orca adds no flag. Chats use the Permissions choice above.',
+                  'These arguments may control {{agent}}’s terminal permissions, so OCC adds no flag. Chats use the Permissions choice above.',
                   { agent: label }
                 )
               : undefined

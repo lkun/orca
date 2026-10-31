@@ -32,7 +32,7 @@ const PRIVATE_VALUES = {
   filename: 'salary-review.md',
   manifest: 'manifest={private-instructions}',
   acl: 'acl=private-user-id',
-  shareUrl: 'orca://skill-share/private-share-id',
+  shareUrl: 'occ://skill-share/private-share-id',
   uploadPolicy: 'policy=private-signed-upload',
   downloadGrant: 'https://storage.googleapis.com/private-bucket/object?X-Goog-Signature=secret',
   credential: 'authorization=Bearer private-access-token'

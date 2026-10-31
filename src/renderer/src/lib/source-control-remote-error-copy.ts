@@ -18,7 +18,7 @@ export function translateSubmodulePushFailureDetail(message: string): string | n
   if (!failure) {
     return null
   }
-  // Case-variant normalized text is not Orca's sentence; show it verbatim.
+  // Case-variant normalized text is not OCC's sentence; show it verbatim.
   if (
     failure.detail !==
     formatSubmodulePushFailureSentence(failure.submoduleName, failure.remoteChanged)
@@ -50,7 +50,7 @@ export function translateSubmodulePushFailureDetail(message: string): string | n
       )
 }
 
-// Detail is a whole sentence (translated Orca copy or verbatim git output).
+// Detail is a whole sentence (translated OCC copy or verbatim git output).
 export function operationFailedWithDetail(operation: RemoteOperation, detail: string): string {
   switch (operation) {
     case 'publish':

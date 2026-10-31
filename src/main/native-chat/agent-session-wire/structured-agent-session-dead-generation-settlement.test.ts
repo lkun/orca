@@ -237,7 +237,7 @@ describe('dead structured-session generation settlement', () => {
     expect(statuses[0]?.failure?.detail?.text.length).toBe(MAX_PROVIDER_DIAGNOSTIC_CHARS)
   })
 
-  it("words Orca's own fault as Orca's, never as the provider stopping", async () => {
+  it("words OCC's own fault as OCC's, never as the provider stopping", async () => {
     await seedUnfinishedWork()
 
     await settleObservedExitForTest({
@@ -257,7 +257,7 @@ describe('dead structured-session generation settlement', () => {
     expect(statuses).toEqual([
       {
         kind: 'status',
-        text: "Orca ran into a problem, so this didn't go through. Try again.",
+        text: "OCC ran into a problem, so this didn't go through. Try again.",
         failure: { kind: 'hostFault' },
         tone: 'error'
       }

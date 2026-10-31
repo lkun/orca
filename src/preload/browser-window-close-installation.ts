@@ -3,7 +3,7 @@ export const PRELOAD_BROWSER_GUEST_WINDOW_CLOSE_CHANNEL = 'orca:guest-window-clo
 
 /**
  * Runs serialized in the page's main world. The native close stays blocked: it destroyed the
- * guest under a live <webview> (#11763, #12040). Orca decides whether to close the tab instead.
+ * guest under a live <webview> (#11763, #12040). OCC decides whether to close the tab instead.
  */
 export function installBrowserWindowCloseGuard(requestClose: () => void): void {
   const close = (): void => {

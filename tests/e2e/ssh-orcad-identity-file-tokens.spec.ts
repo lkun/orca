@@ -40,7 +40,7 @@ test('an IdentityFile path with %r and %p tokens is the key Connect uses', async
   electronApp,
   orcaPage
 }, testInfo) => {
-  // Starts a Docker host and installs Orca's server there.
+  // Starts a Docker host and installs OCC's server there.
   test.setTimeout(6 * 60_000)
   host = startOrcadConvertHost('docker', testInfo)
   keyDir = mkdtempSync(path.join(os.tmpdir(), 'orca-identity-tokens-'))

@@ -6,7 +6,7 @@ import {
   type BrowserExtensionInstallPromptResponse
 } from '../../../shared/browser-extension-webstore'
 
-/** Main → renderer round trip for Orca's install/uninstall confirmation (mirrors the passkey picker). */
+/** Main → renderer round trip for OCC's install/uninstall confirmation (mirrors the passkey picker). */
 
 export const BROWSER_EXTENSION_INSTALL_PROMPT_TIMEOUT_MS = 5 * 60_000
 

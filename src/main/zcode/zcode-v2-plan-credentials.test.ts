@@ -225,7 +225,7 @@ describe('upstream-written ZCode v2 stores', () => {
     ).toEqual({ status: 'absent' })
   })
 
-  it('preserves the protected Orca key priority even if v2 is corrupt', async () => {
+  it('preserves the protected OCC key priority even if v2 is corrupt', async () => {
     install()
     writeFileSync(join(dir, '.zcode', 'v2', 'credentials.json'), 'broken')
     const result = await fetchZcodeRateLimits({

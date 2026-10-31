@@ -144,8 +144,8 @@ describe('releasing moved projects here', () => {
     expect(restore).toHaveBeenCalledOnce()
   })
 
-  // R39: removed here but kept running for another Orca, so only re-adding the host reaches it.
-  it('says a removed host kept for another Orca needs re-adding, not just connecting', async () => {
+  // R39: removed here but kept running for another OCC, so only re-adding the host reaches it.
+  it('says a removed host kept for another OCC needs re-adding, not just connecting', async () => {
     host.listed = false
     host.keptForPeers = true
     const result = await releaseWslMoveChainHere('/user-data', 'Ubuntu', [], () => ({

@@ -30,7 +30,7 @@ export function buildWindowsHookPowerShellCommand(
     options.fallbackStdout === undefined
       ? ''
       : `Write-Output ${quotePowerShellLiteral(options.fallbackStdout)}; `
-  // Answer gates before checking Orca context, then guard ReadToEnd against abandoned stdin.
+  // Answer gates before checking OCC context, then guard ReadToEnd against abandoned stdin.
   return `${envPrefix}if (Test-Path -LiteralPath ${quoted} -PathType Leaf) { & ${quoted}; exit $LASTEXITCODE }; ${fallback}${WINDOWS_POWERSHELL_HOOK_ENVIRONMENT_GUARD}; [Console]::In.ReadToEnd() | Out-Null; exit 0`
 }
 

@@ -251,8 +251,8 @@ describe('Windows CLI launcher', () => {
         const info = JSON.parse(inspect.stdout)
         const { version } = JSON.parse(readFileSync(join(projectRoot, 'package.json'), 'utf8'))
         expect(info.CompanyName).toBe('Stably AI')
-        expect(info.ProductName).toBe('Orca')
-        expect(info.FileDescription).toBe('Orca CLI Launcher')
+        expect(info.ProductName).toBe('OCC')
+        expect(info.FileDescription).toBe('OCC CLI Launcher')
         expect(info.FileVersion).toBe(`${version.split(/[+-]/)[0]}.0`)
         expect(info.ProductVersion).toBe(version)
         const binary = readFileSync(launcherPath)
@@ -295,7 +295,7 @@ describe('Windows CLI launcher', () => {
       const cliPath = join(resourcesPath, 'app.asar.unpacked', 'out', 'cli', 'index.js')
       mkdirSync(join(resourcesPath, 'bin'), { recursive: true })
       mkdirSync(dirname(cliPath), { recursive: true })
-      copyFileSync(process.execPath, join(appRoot, 'Orca.exe'))
+      copyFileSync(process.execPath, join(appRoot, 'OCC.exe'))
       writeFileSync(
         cliPath,
         `process.stdout.write(JSON.stringify({
@@ -431,7 +431,7 @@ describe('Windows CLI launcher', () => {
       const harnessPath = join(appRoot, 'DuplicatePathLauncher.exe')
       mkdirSync(dirname(launcherPath), { recursive: true })
       mkdirSync(dirname(cliPath), { recursive: true })
-      copyFileSync(process.execPath, join(appRoot, 'Orca.exe'))
+      copyFileSync(process.execPath, join(appRoot, 'OCC.exe'))
       writeFileSync(
         cliPath,
         `require('node:fs').writeFileSync(process.env.ORCA_TEST_OUTPUT, JSON.stringify({

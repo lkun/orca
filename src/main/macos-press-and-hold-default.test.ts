@@ -14,7 +14,7 @@ import {
   type PressAndHoldRecord
 } from './macos-press-and-hold-default'
 
-const ORCA_DOMAIN = 'com.stablyai.orca'
+const ORCA_DOMAIN = 'com.lkun.occ'
 
 type HostOverrides = Partial<PressAndHoldHost> & { record?: PressAndHoldRecord | null }
 
@@ -135,11 +135,11 @@ describe('ensureMacPressAndHoldDefault', () => {
       expect(writes).toEqual([])
     })
 
-    it('accepts Orca and its channel-scoped bundles, and nothing else', () => {
-      expect(isOrcaPreferencesDomain('com.stablyai.orca')).toBe(true)
-      expect(isOrcaPreferencesDomain('com.stablyai.orca.dev')).toBe(true)
+    it('accepts OCC and its channel-scoped bundles, and nothing else', () => {
+      expect(isOrcaPreferencesDomain('com.lkun.occ')).toBe(true)
+      expect(isOrcaPreferencesDomain('com.lkun.occ.dev')).toBe(true)
       expect(isOrcaPreferencesDomain('com.github.Electron')).toBe(false)
-      expect(isOrcaPreferencesDomain('com.stablyai.orcafake')).toBe(false)
+      expect(isOrcaPreferencesDomain('com.lkun.occfake')).toBe(false)
     })
   })
 
@@ -225,18 +225,18 @@ describe('readBundleIdentifierFromExecutablePath', () => {
   function bundleWithPlist(body: string): string {
     const root = mkdtempSync(join(tmpdir(), 'orca-press-hold-'))
     roots.push(root)
-    mkdirSync(join(root, 'Orca.app', 'Contents', 'MacOS'), { recursive: true })
-    writeFileSync(join(root, 'Orca.app', 'Contents', 'Info.plist'), body)
-    return join(root, 'Orca.app', 'Contents', 'MacOS', 'Orca')
+    mkdirSync(join(root, 'OCC.app', 'Contents', 'MacOS'), { recursive: true })
+    writeFileSync(join(root, 'OCC.app', 'Contents', 'Info.plist'), body)
+    return join(root, 'OCC.app', 'Contents', 'MacOS', 'OCC')
   }
 
   it('reads CFBundleIdentifier from the plist beside the executable', () => {
     const exe = bundleWithPlist(
-      '<plist><dict>\n<key>CFBundleName</key>\n<string>Orca</string>\n' +
-        '<key>CFBundleIdentifier</key>\n\t<string>com.stablyai.orca</string>\n</dict></plist>'
+      '<plist><dict>\n<key>CFBundleName</key>\n<string>OCC</string>\n' +
+        '<key>CFBundleIdentifier</key>\n\t<string>com.lkun.occ</string>\n</dict></plist>'
     )
 
-    expect(readBundleIdentifierFromExecutablePath(exe)).toBe('com.stablyai.orca')
+    expect(readBundleIdentifierFromExecutablePath(exe)).toBe('com.lkun.occ')
   })
 
   it('returns null when the plist is missing or carries no identifier', () => {

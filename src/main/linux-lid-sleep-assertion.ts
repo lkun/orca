@@ -81,10 +81,10 @@ export class LinuxLidSleepAssertion {
         'systemd-inhibit',
         [
           '--what=sleep:handle-lid-switch',
-          '--who=Orca',
+          '--who=OCC',
           '--why=Agents are working',
           '--mode=block',
-          // EOF releases the inhibitor even when Orca is killed without running cleanup.
+          // EOF releases the inhibitor even when OCC is killed without running cleanup.
           'cat'
         ],
         {

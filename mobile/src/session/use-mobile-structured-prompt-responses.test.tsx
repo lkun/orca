@@ -243,7 +243,7 @@ describe('useMobileStructuredPromptResponses', () => {
       expect(accepted).toBe(false)
       expect(sent).toEqual([])
       expect(onSendError).toHaveBeenCalledWith(
-        'Update Orca on your computer to send answers this long'
+        'Update OCC on your computer to send answers this long'
       )
     })
 
@@ -338,7 +338,7 @@ describe('useMobileStructuredPromptResponses', () => {
       if (!expectSent) {
         expect(sent).toEqual([])
         expect(onSendError).toHaveBeenCalledWith(
-          'Update Orca on your computer to send answers this long'
+          'Update OCC on your computer to send answers this long'
         )
         return
       }

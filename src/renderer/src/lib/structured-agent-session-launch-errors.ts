@@ -37,7 +37,7 @@ export class StructuredAgentSessionCreateUnknownOutcomeError extends StructuredA
   }
 }
 
-/** Orca cannot name the one host that owns the workspace, so no chat is started anywhere. */
+/** OCC cannot name the one host that owns the workspace, so no chat is started anywhere. */
 export class StructuredAgentSessionOwnerUnresolvedError extends Error {
   constructor(worktreeId: string) {
     super(`No single runtime owns workspace ${worktreeId}`)

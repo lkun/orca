@@ -67,7 +67,7 @@ export abstract class CliInstallLocation {
       // Why: development builds must not claim the production shell command.
       return DEV_COMMAND_NAME
     }
-    return this.platform === 'linux' ? LINUX_CLI_COMMAND_NAME : 'orca'
+    return this.platform === 'linux' ? LINUX_CLI_COMMAND_NAME : 'occ'
   }
 
   constructor(options: CliInstallerOptions = {}) {
@@ -181,7 +181,7 @@ export abstract class CliInstallLocation {
       if (!(await isExecutableFile(commandPath))) {
         continue
       }
-      // Orca terminals put the launcher's own dir first on PATH.
+      // OCC terminals put the launcher's own dir first on PATH.
       if (await isSameDirectoryEntry(commandPath, launcherPath)) {
         continue
       }
@@ -192,7 +192,7 @@ export abstract class CliInstallLocation {
           // Installing in the empty default slot can shadow this command without replacing it.
           continue
         }
-        // Match shell PATH precedence, including conflicts that shadow Orca.
+        // Match shell PATH precedence, including conflicts that shadow OCC.
         return commandPath
       }
     }
@@ -220,7 +220,7 @@ export abstract class CliInstallLocation {
         return join(this.homePath, '.local', 'bin', DEV_COMMAND_NAME)
       }
       if (this.platform === 'win32') {
-        return join(this.localAppDataPath, 'Programs', 'Orca Dev', 'bin', `${DEV_COMMAND_NAME}.cmd`)
+        return join(this.localAppDataPath, 'Programs', 'OCC Dev', 'bin', `${DEV_COMMAND_NAME}.cmd`)
       }
     }
 

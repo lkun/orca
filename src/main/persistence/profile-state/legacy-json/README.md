@@ -18,7 +18,7 @@ source can still be read as JSON, but every profile changed by a transfer or an
 offline settings command must first establish SQLite authority. The original
 JSON remains unchanged after import and may be much older than SQLite.
 
-Before using a JSON-only build, stop Orca and run the current bundled CLI's
+Before using a JSON-only build, stop OCC and run the current bundled CLI's
 `orca profile state rollback --latest-json --profile-id <id>` for each profile.
 Omitting `--profile-id` selects the active profile without changing the index. It exports the latest committed
 SQLite state and selects that JSON after archiving the current database and

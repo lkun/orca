@@ -46,7 +46,7 @@ export function wrapRuntimeHomeHookCommand(
   const windowsScript = `"\${HOME-}/.orca/agent-hooks/${scriptBaseName}.cmd"`
   const drain = POSIX_HOOK_STDIN_DRAIN_COMMAND
   const neutralJson = options.neutralJsonWhenMissing ? `printf '{}\\n'` : ''
-  // POSIX drains before answering; Windows answers and checks Orca context before reading abandoned stdin.
+  // POSIX drains before answering; Windows answers and checks OCC context before reading abandoned stdin.
   const posixMissingScriptFallback = neutralJson ? `${drain}; ${neutralJson}` : drain
   const windowsMissingScriptFallback = [
     ...(neutralJson ? [neutralJson] : []),

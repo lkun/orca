@@ -61,7 +61,7 @@ async function twoCardsBehindWork() {
   }
 }
 
-describe("a newer Orca's journal", () => {
+describe("a newer OCC's journal", () => {
   it('refuses the history read, a queued send, Send-now and Delete with the update words', async () => {
     const { first, second } = await twoCardsBehindWork()
     await reopenOnNewerOrcaDatabase(() => rig.host.close(HOST_TEST_SESSION, 'evict'))

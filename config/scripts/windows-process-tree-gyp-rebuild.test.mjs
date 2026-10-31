@@ -79,7 +79,7 @@ describe('windows-process-tree node-gyp rebuild', () => {
   })
 
   it('copies node-addon-api headers into the patched include dir', () => {
-    const packageDir = mkdtempSync(join(tmpdir(), 'orca-windows-process-tree-headers-'))
+    const packageDir = mkdtempSync(join(tmpdir(), 'occ-windows-process-tree-headers-'))
     try {
       const nodeAddonApiDir = join(packageDir, 'node_modules', 'node-addon-api')
       mkdirSync(nodeAddonApiDir, { recursive: true })
@@ -105,7 +105,7 @@ describe('inspecting a compiled windows-process-tree addon', () => {
   let dir
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-windows-process-tree-addon-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-windows-process-tree-addon-'))
   })
   afterEach(() => {
     removeTreeSync(dir)
@@ -140,7 +140,7 @@ describe('windows-process-tree CreationTime patch assertion', () => {
   let dir
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-windows-process-tree-creation-time-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-windows-process-tree-creation-time-'))
   })
   afterEach(() => {
     removeTreeSync(dir)

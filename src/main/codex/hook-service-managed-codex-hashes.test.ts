@@ -142,7 +142,7 @@ const timedOut: CodexHookAnswer = { kind: 'pending', failure: 'timed out' }
 const command = (): string => getManagedCommand(getManagedScriptPath())
 
 describe('managed-home Codex hook approval', () => {
-  it("approves Orca's entry with Codex's hash, enabled, only in the events Codex lists", async () => {
+  it("approves OCC's entry with Codex's hash, enabled, only in the events Codex lists", async () => {
     seedSystemUserStopHook()
     useCodexHashes()
 
@@ -210,7 +210,7 @@ describe('managed-home Codex hook approval', () => {
     useAnswer({
       kind: 'refused',
       codexVersion: 'codex-cli 0.127.0',
-      failure: 'Codex 0.127.0 is too old for Orca status; update Codex'
+      failure: 'Codex 0.127.0 is too old for OCC status; update Codex'
     })
 
     const status = await service.install()
@@ -249,7 +249,7 @@ describe('managed-home Codex hook approval', () => {
     ).toBeUndefined()
   })
 
-  it("leaves a user hook's approval in place in an event Codex does not list Orca's entry for", async () => {
+  it("leaves a user hook's approval in place in an event Codex does not list OCC's entry for", async () => {
     const systemHome = join(homes.tmpHome, '.codex')
     mkdirSync(systemHome, { recursive: true })
     writeFileSync(
@@ -298,11 +298,11 @@ describe('managed-home Codex hook approval', () => {
     ).toBe('sha256:codex-stop')
     expect(status).toMatchObject({
       state: 'installed',
-      detail: expect.stringContaining('Approved by Orca; not yet confirmed by Codex')
+      detail: expect.stringContaining('Approved by OCC; not yet confirmed by Codex')
     })
   })
 
-  it("leaves user trust byte-untouched while approving Orca's entries", async () => {
+  it("leaves user trust byte-untouched while approving OCC's entries", async () => {
     mkdirSync(managedHome(), { recursive: true })
     const userBlock = [
       '[hooks.state."/home/user/.codex/hooks.json:stop:3:1"]',
@@ -333,12 +333,12 @@ describe('managed-home Codex hook approval', () => {
     expect(trust.get(managedKey('session_start', 0))).toBeUndefined()
   })
 
-  it('reports why there is no status when Orca has not asked Codex yet', () => {
+  it('reports why there is no status when OCC has not asked Codex yet', () => {
     lookupInternals.resetForTesting()
 
     expect(new CodexHookService().getStatus(managedHome())).toMatchObject({
       state: 'not_installed',
-      detail: 'Orca has not asked Codex yet'
+      detail: 'OCC has not asked Codex yet'
     })
   })
 
@@ -538,7 +538,7 @@ describe('managed-home Codex hook approval', () => {
     expect(trust.get(userKey(1))).toBeUndefined()
   })
 
-  describe("Orca's own hash until Codex answers, as main wrote it", () => {
+  describe("OCC's own hash until Codex answers, as main wrote it", () => {
     const orcaStop = (): string | undefined => computeOrcaCodexHookHashes().stop ?? undefined
 
     function stopApproval(): string | undefined {
@@ -546,7 +546,7 @@ describe('managed-home Codex hook approval', () => {
         ?.trustedHash
     }
 
-    it("approves a fresh home with Orca's hash when Codex answers after the launch's wait", async () => {
+    it("approves a fresh home with OCC's hash when Codex answers after the launch's wait", async () => {
       useAnswer(new Promise(() => {}))
 
       const status = await new CodexHookService().install(undefined, false)
@@ -563,12 +563,12 @@ describe('managed-home Codex hook approval', () => {
       })
       expect(status).toMatchObject({
         state: 'installed',
-        detail: 'Approved by Orca; not yet confirmed by Codex (waiting for Codex to answer)'
+        detail: 'Approved by OCC; not yet confirmed by Codex (waiting for Codex to answer)'
       })
       expect(new CodexHookService().getStatus(managedHome()).detail).toBe(status.detail)
     })
 
-    it("keeps the approval main's grant recorded for Orca's entry until Codex answers", async () => {
+    it("keeps the approval main's grant recorded for OCC's entry until Codex answers", async () => {
       useAnswer(timedOut)
       const service = new CodexHookService()
       await service.install()
@@ -599,7 +599,7 @@ describe('managed-home Codex hook approval', () => {
       expect(service.getStatus(managedHome()).state).toBe('installed')
     })
 
-    it("does not report a user hook's approval left at Orca's key as Orca's", async () => {
+    it("does not report a user hook's approval left at OCC's key as OCC's", async () => {
       useAnswer(timedOut)
       const service = new CodexHookService()
       await service.install()
@@ -616,11 +616,11 @@ describe('managed-home Codex hook approval', () => {
 
       expect(service.getStatus(managedHome())).toMatchObject({
         state: 'partial',
-        detail: "Orca's hook entry is not approved yet (timed out)"
+        detail: "OCC's hook entry is not approved yet (timed out)"
       })
     })
 
-    it("approves a fresh home with Orca's hash while Codex is not found", async () => {
+    it("approves a fresh home with OCC's hash while Codex is not found", async () => {
       codex.fingerprintCodex.mockReturnValue(null)
 
       expect((await new CodexHookService().install()).state).toBe('installed')
@@ -636,11 +636,11 @@ describe('managed-home Codex hook approval', () => {
 
       expect(service.getStatus(managedHome())).toMatchObject({
         state: 'partial',
-        detail: "Orca's hook entry is not approved yet (timed out)"
+        detail: "OCC's hook entry is not approved yet (timed out)"
       })
     })
 
-    it("keeps each event's approval and gives Orca's hash to the rest until Codex answers", async () => {
+    it("keeps each event's approval and gives OCC's hash to the rest until Codex answers", async () => {
       useAnswer({
         kind: 'hashes',
         codexVersion: 'codex-cli 0.131.0',
@@ -663,7 +663,7 @@ describe('managed-home Codex hook approval', () => {
       )
     })
 
-    it("replaces a user hook's approval left at Orca's key with Orca's hash", async () => {
+    it("replaces a user hook's approval left at OCC's key with OCC's hash", async () => {
       useAnswer(timedOut)
       const service = new CodexHookService()
       await service.install()
@@ -684,7 +684,7 @@ describe('managed-home Codex hook approval', () => {
       expect(stopApproval()).toBe(orcaStop())
     })
 
-    it("replaces Orca's hash with Codex's once Codex answers", async () => {
+    it("replaces OCC's hash with Codex's once Codex answers", async () => {
       useAnswer(timedOut)
       const service = new CodexHookService()
       await service.install()
@@ -700,7 +700,7 @@ describe('managed-home Codex hook approval', () => {
       useAnswer({
         kind: 'refused',
         codexVersion: 'codex-cli 0.127.0',
-        failure: 'Codex 0.127.0 is too old for Orca status; update Codex'
+        failure: 'Codex 0.127.0 is too old for OCC status; update Codex'
       })
 
       const status = await new CodexHookService().install()
@@ -713,7 +713,7 @@ describe('managed-home Codex hook approval', () => {
       })
     })
 
-    it("approves with Orca's hash in a process that may not ask Codex, as the offline CLI is", async () => {
+    it("approves with OCC's hash in a process that may not ask Codex, as the offline CLI is", async () => {
       lookupInternals.resetForTesting()
 
       expect((await new CodexHookService().install()).state).toBe('installed')

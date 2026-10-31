@@ -92,7 +92,7 @@ export async function createMarkdownTokensProvider(
 
   const darkRules = markdownThemeRules(dark.default)
   const lightRules = markdownThemeRules(light.default)
-  // Why: Orca's editors all use the built-in theme names; redefining them keeps every setTheme caller unchanged.
+  // Why: OCC's editors all use the built-in theme names; redefining them keeps every setTheme caller unchanged.
   monaco.editor.defineTheme('vs-dark', {
     base: 'vs-dark',
     inherit: true,

@@ -183,7 +183,7 @@ export function resolveCommand(
     {
       binary: 'wsl.exe',
       args: buildWslExecArgs(wsl.distro, ['bash', '-c', shellCmd]),
-      // Use a stable Win32 spawn cwd; inheriting Orca's deletable UNC cwd can break CreateProcessW.
+      // Use a stable Win32 spawn cwd; inheriting OCC's deletable UNC cwd can break CreateProcessW.
       cwd: resolveWslInteropSpawnCwd(),
       wsl,
       wslMode: 'non-login-shell'

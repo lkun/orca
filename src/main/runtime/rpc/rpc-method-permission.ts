@@ -5,11 +5,11 @@ export type RpcMethodPermission =
   /** Projects, worktrees, terminals, files, git, browser, orchestration and integrations; equals
    *  running commands as this host's user. */
   | 'workspace'
-  /** Drives this machine's own desktop: clicks, keys and app state outside Orca. */
+  /** Drives this machine's own desktop: clicks, keys and app state outside OCC. */
   | 'desktop-control'
   /** Adds, removes or switches agent and integration accounts and their credentials. */
   | 'accounts-admin'
-  /** Changes Orca settings. */
+  /** Changes OCC settings. */
   | 'settings-write'
   /** Installs, publishes or removes agent skills. */
   | 'skills-admin'

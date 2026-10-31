@@ -83,7 +83,7 @@ beforeEach(() => {
     mkdirSync(join(home, '.orca', 'agent-hooks'), { recursive: true })
     writeFileSync(join(home, '.codex', 'hooks.json'), '{\n  "hooks": {}\n}\n')
     writeFileSync(join(home, '.codex', 'config.toml'), 'model = "user-model"\n')
-    writeFileSync(join(home, '.orca', 'agent-hooks', SCRIPT_NAME), '# another Orca wrote this\n')
+    writeFileSync(join(home, '.orca', 'agent-hooks', SCRIPT_NAME), '# another OCC wrote this\n')
   }
   vi.stubEnv('ORCA_USER_DATA_PATH', appUserData)
   vi.stubEnv('CODEX_HOME', managedHome)

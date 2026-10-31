@@ -26,7 +26,7 @@ async function waitUntil(predicate: () => boolean, timeoutMs: number): Promise<b
   return false
 }
 
-describe('fish keeps per-worktree history under the session Orca names', () => {
+describe('fish keeps per-worktree history under the session OCC names', () => {
   let home: string | null = null
 
   it('has the fish this suite needs when CI requires one', () => {

@@ -77,7 +77,7 @@ describe('CodexStructuredSessionAdapter prompts', () => {
         id: 11,
         code: -32001,
         message:
-          'Orca could not durably record item/commandExecution/requestApproval prompt (closed)'
+          'OCC could not durably record item/commandExecution/requestApproval prompt (closed)'
       }
     ])
     await expect(

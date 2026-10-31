@@ -11,7 +11,7 @@ import { getCodexManagedScriptFileName } from './codex-hook-identity'
 import { getRealHomeCodexHookHome, type CodexHookHome } from './codex-hook-orca-approvals'
 import { mutateRealHomeHooksPreservingUserTrust } from './codex-user-hook-trust-moves'
 
-/** Move shifted user approvals; the caller removes Orca's own approvals. */
+/** Move shifted user approvals; the caller removes OCC's own approvals. */
 export function sweepRealHomeCodexHook(
   home: CodexHookHome = getRealHomeCodexHookHome()
 ): 'removed' | 'unavailable' {

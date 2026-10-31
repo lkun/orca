@@ -3,7 +3,7 @@ import { noticeText } from './connector-copy.js'
 import type { PostBody } from './connector-posts.js'
 import { discordText } from './discord-text.js'
 
-// The channel a message sits in: a top-level mention's thread doesn't exist until Orca first posts.
+// The channel a message sits in: a top-level mention's thread doesn't exist until OCC first posts.
 export const messageChannel = (place: ThreadPlace, messageId: string) =>
   messageId === place.threadId ? place.containerId : place.threadId
 

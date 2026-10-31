@@ -48,7 +48,7 @@ function waitForSpawn(child: WorkerThreadChildProcess): Promise<number> {
   )
 }
 
-// After worker-loop death libuv can no longer reap POSIX children; zombies persist until Orca exits.
+// After worker-loop death libuv can no longer reap POSIX children; zombies persist until OCC exits.
 async function isRunning(pid: number): Promise<boolean> {
   try {
     process.kill(pid, 0)

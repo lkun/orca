@@ -367,7 +367,7 @@ describe.skipIf(process.platform === 'win32')('the fixes the old wrapper was bui
     }
   })
 
-  itWithZsh('refuses an inherited ZDOTDIR that is an Orca wrapper dir (#15258)', async () => {
+  itWithZsh('refuses an inherited ZDOTDIR that is an OCC wrapper dir (#15258)', async () => {
     // Older parents can supply stale ORCA_ORIG_ZDOTDIR without passing through Node's ownership check.
     const home = makeZshHome({ '.zshrc': 'export ORCA_TEST_FROM_ZSHRC=1\n' })
     const foreign = join(home, 'other-terminal', 'zsh')
@@ -388,7 +388,7 @@ describe.skipIf(process.platform === 'win32')('the fixes the old wrapper was bui
     }
   })
 
-  itWithZsh('leaves a nested Orca nothing of its own to inherit (#11044, #11146)', async () => {
+  itWithZsh('leaves a nested OCC nothing of its own to inherit (#11044, #11146)', async () => {
     const home = makeZshHome({ '.zshrc': 'export ORCA_TEST_FROM_ZSHRC=1\n' })
     try {
       const { values } = await runZshPty({

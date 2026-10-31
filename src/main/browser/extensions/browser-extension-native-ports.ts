@@ -20,7 +20,7 @@ import { startNativeHost, type NativeHostConnection } from './browser-extension-
 
 export type NativePortEvent =
   | { type: 'message'; json: string }
-  /** `teardown`: Orca closed it because its context ended, so nobody is listening. */
+  /** `teardown`: OCC closed it because its context ended, so nobody is listening. */
   | { type: 'disconnect'; error: string; teardown?: boolean }
 
 type PortOwner =

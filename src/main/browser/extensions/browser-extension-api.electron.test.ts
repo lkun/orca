@@ -39,7 +39,7 @@ const report = (prefix, run) => run().then(
   (error) => console.log(prefix + JSON.stringify({ error: String((error && error.stack) || error) }))
 );
 `
-// Electron never fires storage.onChanged in workers; Orca relays the worker's and pages' writes.
+// Electron never fires storage.onChanged in workers; OCC relays the worker's and pages' writes.
 const STORAGE_LISTENERS = `
 const storageEvents = [];
 const syncEvents = [];
@@ -55,7 +55,7 @@ const seeded = chrome.storage.local.set({ seed: 'old' });
   console.log('ORCA_EXT_STORAGE ' + JSON.stringify(storageEvents));
 })();
 `
-// Electron disables storage.sync; Orca backs it in main and fires its events in pages and workers.
+// Electron disables storage.sync; OCC backs it in main and fires its events in pages and workers.
 const WORKER_SYNC = `
 const syncWritten = chrome.storage.sync.set({ fromWorker: 1 });
 (async () => {
@@ -213,7 +213,7 @@ beforeAll(async () => {
     join(extensionDir, 'manifest.json'),
     JSON.stringify({
       manifest_version: 3,
-      name: 'Orca API probe',
+      name: 'OCC API probe',
       version: '1.0.0',
       permissions: ['tabs', 'webNavigation', 'storage'],
       // A module worker under a policy that limits connect-src: the wrapper must still reach main.
@@ -239,7 +239,7 @@ beforeAll(async () => {
   )
   writeFileSync(join(extensionDir, 'frame.js'), FRAME_SCRIPT)
   writeFileSync(join(extensionDir, 'frame.html'), '<!doctype html><script src="frame.js"></script>')
-  // Chrome removes extension APIs from manifest sandbox pages; Orca's bridge must not restore them.
+  // Chrome removes extension APIs from manifest sandbox pages; OCC's bridge must not restore them.
   writeFileSync(
     join(extensionDir, 'sandboxed.js'),
     `const getAll = globalThis.chrome?.windows?.getAll
@@ -335,7 +335,7 @@ describe('browser extension APIs in a real Electron session', () => {
       lastError: 'No window with id: 999999.',
       popout: expect.any(Number)
     })
-    // A popout page's "current" window and tab are its own, not Orca's main window.
+    // A popout page's "current" window and tab are its own, not OCC's main window.
     expect(status.page).toEqual({
       chromeMissing: [],
       browserMissing: [],

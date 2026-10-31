@@ -97,7 +97,7 @@ describe('CodexHookService', () => {
     expect(existsSync(managedHooksJsonPath)).toBe(true)
   })
 
-  it('installs PermissionRequest with trust so Codex approval prompts reach Orca', async () => {
+  it('installs PermissionRequest with trust so Codex approval prompts reach OCC', async () => {
     const systemCodexHome = join(homes.tmpHome, '.codex')
     mkdirSync(systemCodexHome, { recursive: true })
     writeFileSync(
@@ -135,7 +135,7 @@ describe('CodexHookService', () => {
 
     expect(status).toMatchObject({
       state: 'error',
-      detail: expect.stringContaining('defines hook approvals in a form Orca cannot add to')
+      detail: expect.stringContaining('defines hook approvals in a form OCC cannot add to')
     })
     const managedToml = join(homes.userDataDir, 'codex-runtime-home', 'home', 'config.toml')
     expect(readFileSync(managedToml, 'utf-8')).not.toContain('[hooks.state.')
@@ -312,7 +312,7 @@ describe('CodexHookService', () => {
           prompt: '你好世界',
           hook_event_name: 'UserPromptSubmit'
         })
-        // Remove inherited Orca endpoints so the hook cannot post to the running app.
+        // Remove inherited OCC endpoints so the hook cannot post to the running app.
         const cleanEnv = { ...process.env }
         for (const key of Object.keys(cleanEnv)) {
           if (key.startsWith('ORCA_')) {
@@ -346,14 +346,14 @@ describe('CodexHookService', () => {
     }
   )
 
-  it('keeps hooks isolated by Orca userData instead of mutating system ~/.codex', async () => {
+  it('keeps hooks isolated by OCC userData instead of mutating system ~/.codex', async () => {
     const systemCodexHome = join(homes.tmpHome, '.codex')
     const systemHooksPath = join(systemCodexHome, 'hooks.json')
     const existingSystemHooks = '{"hooks":{"Stop":[{"hooks":[{"command":"user-hook"}]}]}}\n'
     mkdirSync(systemCodexHome, { recursive: true })
     writeFileSync(systemHooksPath, existingSystemHooks, 'utf-8')
 
-    const devUserDataDir = mkdtempSync(join(tmpdir(), 'orca-dev-codex-user-data-'))
+    const devUserDataDir = mkdtempSync(join(tmpdir(), 'occ-dev-codex-user-data-'))
     const prodUserDataDir = mkdtempSync(join(tmpdir(), 'orca-prod-codex-user-data-'))
     try {
       getPathMock.mockImplementation((name: string) => {

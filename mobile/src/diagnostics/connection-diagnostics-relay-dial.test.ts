@@ -80,7 +80,7 @@ function diagnose(entries: readonly ConnectionLogEntry[]) {
 const HOST_OFFLINE_CAUSE =
   'Relay answered, but the desktop is not connected to it (close code 4404, host offline).'
 const HOST_OFFLINE_STEP =
-  'Check the desktop is awake, Orca is running, and it is signed in to Orca Cloud.'
+  'Check the desktop is awake, OCC is running, and it is signed in to OCC Cloud.'
 
 describe('diagnoseConnection on the relay-4404 export', () => {
   // The export ends before a new outcome, so the latest evidence predates resume.
@@ -172,7 +172,7 @@ describe('diagnoseConnection on the other relay close codes', () => {
       detail: 'RelayDirectorHttpError: relay director resolve failed (503); retry-after=30000ms'
     }
     expect(diagnose([appResumed(), lanOpening(), director]).likelyCause).toBe(
-      'Relay service was temporarily unavailable and asked Orca to retry in 30s.'
+      'Relay service was temporarily unavailable and asked OCC to retry in 30s.'
     )
   })
 })

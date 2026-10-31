@@ -127,7 +127,7 @@ export function removeZCodeManagedHooks(
   let changed = false
 
   for (const [eventName, value] of Object.entries(nextEvents)) {
-    // Preserve malformed/non-array values Orca never owned.
+    // Preserve malformed/non-array values OCC never owned.
     if (!Array.isArray(value)) {
       continue
     }

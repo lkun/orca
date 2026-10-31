@@ -120,7 +120,7 @@ function ownedPidFile(prefix: string) {
 }
 
 describe('ACP connection to a directly launched agent that closes stdout but keeps running', () => {
-  it('leaves the turn running and the agent alive until Orca closes it', async () => {
+  it('leaves the turn running and the agent alive until OCC closes it', async () => {
     const owned = ownedPidFile('orca-acp-broken-stream-')
     const { pidFile } = owned
     let stdoutEnded = false

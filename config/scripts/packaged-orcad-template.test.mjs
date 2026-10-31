@@ -130,7 +130,7 @@ describe('packaged orcad template', () => {
     await writeFile(
       list,
       [
-        'Orca.exe',
+        'OCC.exe',
         `resources\\orcad-template\\targets\\win32-x64\\${conpty.replaceAll('/', '\\')}`
       ].join('\r\n')
     )

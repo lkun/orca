@@ -86,7 +86,7 @@ describe('WSL host Claude folder refresh', () => {
       terminal: {}
     })
     await refresh({ wslDistro: DISTRO, claude: {}, terminal: {} })
-    // An id that is not an Orca account id is skipped, never a failed launch.
+    // An id that is not an OCC account id is skipped, never a failed launch.
     await refresh({
       wslDistro: DISTRO,
       claude: { CLAUDE_CONFIG_DIR: '/home/u/my.profile/home' },

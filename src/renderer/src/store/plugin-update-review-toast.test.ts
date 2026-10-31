@@ -57,7 +57,7 @@ beforeEach(() => {
 })
 
 describe('announcePluginUpdateReviews', () => {
-  it('names one held update, its Orca-derived publisher, and only opens its review', async () => {
+  it('names one held update, its OCC-derived publisher, and only opens its review', async () => {
     const { announcePluginUpdateReviews } = await loadToast()
     announcePluginUpdateReviews([notice('octo.demo')])
     const { title, options } = lastWarning()

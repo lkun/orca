@@ -369,7 +369,7 @@ pnpm() {
 `
 
 function runBuild({ os = 'Windows', hit = '', outcome = '', manifest = 'valid', compile = '0' }) {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-windows-prebuild-workflow-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-windows-prebuild-workflow-'))
   const log = join(directory, 'commands')
   try {
     mkdirSync(join(directory, 'out/orcad-prebuilds'), { recursive: true })

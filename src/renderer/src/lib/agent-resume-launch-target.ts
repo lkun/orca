@@ -29,7 +29,7 @@ export type AgentResumeLaunchTargetArgs = {
   tabShellOverride?: string | null
   /** OS the SSH execution host reported; null/undefined when unknown. */
   remotePlatform?: NodeJS.Platform | null
-  /** OS a paired Orca server reported; null/undefined when unknown. */
+  /** OS a paired OCC server reported; null/undefined when unknown. */
   runtimeHostPlatform?: NodeJS.Platform | null
   /** The Windows shell a paired server spawns its terminals in; null/undefined when unreported. */
   runtimeHostTerminalWindowsShell?: string | null
@@ -74,7 +74,7 @@ function lastRuntimeHostStatus(
     : null
 }
 
-/** OS a paired Orca server last reported, for `runtime:` hosts only. */
+/** OS a paired OCC server last reported, for `runtime:` hosts only. */
 export function resolveRuntimeHostReportedPlatform(
   state: Pick<AppState, 'runtimeStatusByEnvironmentId'>,
   executionHostId: string | null
@@ -82,7 +82,7 @@ export function resolveRuntimeHostReportedPlatform(
   return lastRuntimeHostStatus(state, executionHostId)?.hostPlatform ?? null
 }
 
-/** The Windows shell a paired Orca server last reported for its terminals, for `runtime:` hosts only. */
+/** The Windows shell a paired OCC server last reported for its terminals, for `runtime:` hosts only. */
 export function resolveRuntimeHostTerminalWindowsShell(
   state: Pick<AppState, 'runtimeStatusByEnvironmentId'>,
   executionHostId: string | null

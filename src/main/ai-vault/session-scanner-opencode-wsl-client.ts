@@ -59,7 +59,7 @@ export async function openCodeWslClient(
     throw new AiVaultScanIssueError(aiVaultScanIssueText('openCodeWslReaderNotPrepared'))
   }
   if (runtime.error !== undefined) {
-    // The preparing placeholder is Orca's own table text; real setup failures stay verbatim.
+    // The preparing placeholder is OCC's own table text; real setup failures stay verbatim.
     throw runtime.error === AI_VAULT_SCAN_ISSUE_COPY.openCodeWslReaderPreparing
       ? new AiVaultScanIssueError(aiVaultScanIssueText('openCodeWslReaderPreparing'))
       : new Error(runtime.error)

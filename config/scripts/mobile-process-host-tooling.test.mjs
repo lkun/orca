@@ -87,7 +87,7 @@ it('runs the RPC diff with a mobile-only dependency link and no compiled host pa
   expect(init.code, init.stderr).toBe(0)
   const commit = command(root, 'git', [
     '-c',
-    'user.name=Orca Test',
+    'user.name=OCC Test',
     '-c',
     'user.email=orca-test@example.invalid',
     '-c',

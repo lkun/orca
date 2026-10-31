@@ -2,7 +2,7 @@ import type { CliInstallStatus } from '../../shared/cli-install-types'
 import { getBridgePathFromCommandPath, getPosixDirname } from './wsl-cli-scripts'
 import { quotePosixShellDoubleQuotedApostrophe } from '../../shared/shell-argument-quoting'
 
-const WSL_COMMAND_NAME = 'orca-ide'
+const WSL_COMMAND_NAME = 'occ-ide'
 
 export type WslCliRunOptions = {
   /** Only the `$PATH` check needs it; everything else reads $HOME or absolute paths. */
@@ -119,7 +119,7 @@ export function unsupportedWslCliStatus(
   }
 }
 
-/** The distro was deleted (`wsl --unregister`), so nothing of Orca's is left in it. */
+/** The distro was deleted (`wsl --unregister`), so nothing of OCC's is left in it. */
 export function deletedDistroWslCliStatus(distro: string): CliInstallStatus {
   return {
     platform: 'linux',
@@ -183,7 +183,7 @@ export async function resolveReadyWslCliState(args: {
     return {
       status: unsupportedWslCliStatus(
         hostStatus.unsupportedReason ?? 'launcher_missing',
-        hostStatus.detail ?? 'The Windows Orca CLI launcher is missing.'
+        hostStatus.detail ?? 'The Windows OCC CLI launcher is missing.'
       )
     }
   }
@@ -212,7 +212,7 @@ export async function resolveReadyWslCliState(args: {
     return {
       status: unsupportedWslCliStatus(
         'launcher_missing',
-        'WSL Windows interop is unavailable; Orca cannot launch the Windows CLI from WSL.'
+        'WSL Windows interop is unavailable; OCC cannot launch the Windows CLI from WSL.'
       )
     }
   }

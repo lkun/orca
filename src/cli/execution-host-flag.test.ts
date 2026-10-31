@@ -104,7 +104,7 @@ describe('resolveHostFlagEnvironmentId', () => {
 
     await expect(
       resolveHostFlagEnvironmentId(flags({ host: 'runtime:env-missing' }), NO_SELECTION)
-    ).rejects.toThrow('no paired Orca server is named or has id env-missing')
+    ).rejects.toThrow('no paired OCC server is named or has id env-missing')
   })
 
   it('accepts the environment name as well as its id', async () => {
@@ -130,7 +130,7 @@ describe('resolveHostFlagEnvironmentId', () => {
       resolveHostFlagEnvironmentId(flags({ host: 'runtime:env-1' }), {
         listSshTargets: listSshTargetsMock,
         verifySshTargets: listSshTargetsMock,
-        pairingCode: 'orca://pair?x',
+        pairingCode: 'occ://pair?x',
         environmentSelector: null
       })
     ).rejects.toThrow('not both')
@@ -147,7 +147,7 @@ describe('resolveHostFlagEnvironmentId', () => {
         pairingCode: null,
         environmentSelector: { value: 'other', label: '--environment' }
       })
-    ).rejects.toThrow('name different Orca servers')
+    ).rejects.toThrow('name different OCC servers')
   })
 
   it('names the ambient variable when ORCA_ENVIRONMENT is the conflicting selector', async () => {
@@ -161,7 +161,7 @@ describe('resolveHostFlagEnvironmentId', () => {
         pairingCode: null,
         environmentSelector: { value: 'staging', label: 'ORCA_ENVIRONMENT' }
       })
-    ).rejects.toThrow('ORCA_ENVIRONMENT staging name different Orca servers')
+    ).rejects.toThrow('ORCA_ENVIRONMENT staging name different OCC servers')
   })
 
   it('hands an agent the known environment ids to retry with', async () => {
@@ -297,7 +297,7 @@ describe('unprefixed --host aliases', () => {
 
     await expect(
       resolveHostFlagEnvironmentId(flags({ host: 'awin' }), NO_SELECTION)
-    ).rejects.toThrow('Ambiguous Orca server in --host awin')
+    ).rejects.toThrow('Ambiguous OCC server in --host awin')
   })
 
   it('refuses to route an alias to a paired server when SSH targets cannot be read', async () => {
@@ -496,7 +496,7 @@ describe('resolveEnvironmentSelectorForStore', () => {
     listSshTargetsMock.mockResolvedValue([])
 
     await expect(resolveEnvironmentSelectorForStore('nowhere', listSshTargetsMock)).rejects.toThrow(
-      'no paired Orca server is named or has id nowhere'
+      'no paired OCC server is named or has id nowhere'
     )
   })
 })

@@ -280,7 +280,7 @@ describe('client host authority connection identity', () => {
   })
 })
 
-describe('client host identity for a server Orca re-pairs in place', () => {
+describe('client host identity for a server OCC re-pairs in place', () => {
   it.each([
     ['managed SSH', SSH_DEPLOYMENT],
     ['WSL', WSL_DEPLOYMENT]

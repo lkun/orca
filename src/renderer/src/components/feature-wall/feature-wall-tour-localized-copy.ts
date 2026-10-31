@@ -18,7 +18,7 @@ const getWorkflowCopyById = createLocalizedCatalog(
       title: translate('featureWall.workflows.workspaces.title', 'Workspaces'),
       lede: translate(
         'featureWall.workflows.workspaces.lede',
-        'Orca splits each task into an isolated workspace so agents can run in parallel.'
+        'OCC splits each task into an isolated workspace so agents can run in parallel.'
       )
     },
     tasks: {
@@ -32,14 +32,14 @@ const getWorkflowCopyById = createLocalizedCatalog(
       title: translate('featureWall.workflows.agents.title', 'Agents'),
       lede: translate(
         'featureWall.workflows.agents.lede',
-        'Run several agents at once, track their progress, and let automation drive Orca when it helps.'
+        'Run several agents at once, track their progress, and let automation drive OCC when it helps.'
       )
     },
     workbench: {
       title: translate('featureWall.workflows.workbench.title', 'Workbench'),
       lede: translate(
         'featureWall.workflows.workbench.lede',
-        'Bring your terminal setup into Orca, then split panes to keep servers, tests, logs, and agents running side by side.'
+        'Bring your terminal setup into OCC, then split panes to keep servers, tests, logs, and agents running side by side.'
       )
     },
     review: {
@@ -67,7 +67,7 @@ const getStepCopyById = createLocalizedCatalog(
       subtitle: translate('featureWall.steps.orchestration.name', 'Orchestration'),
       description: translate(
         'featureWall.steps.orchestration.description',
-        'Enable agents to manage and coordinate Orca workspaces to execute larger tasks.'
+        'Enable agents to manage and coordinate OCC workspaces to execute larger tasks.'
       )
     },
     usage: {
@@ -91,7 +91,7 @@ const getStepCopyById = createLocalizedCatalog(
       subtitle: translate('featureWall.steps.editor.name', 'Editor'),
       description: translate(
         'featureWall.steps.editor.description',
-        'Use our Notion-style markdown editor to write notes without leaving Orca.'
+        'Use our Notion-style markdown editor to write notes without leaving OCC.'
       )
     },
     browser: {
@@ -99,7 +99,7 @@ const getStepCopyById = createLocalizedCatalog(
       subtitle: translate('featureWall.steps.browser.name', 'Browser'),
       description: translate(
         'featureWall.steps.browser.description',
-        "Run your app in Orca's browser, send selected UI elements to agents, and let your agents interact with your webpage."
+        "Run your app in OCC's browser, send selected UI elements to agents, and let your agents interact with your webpage."
       )
     },
     notes: {
@@ -138,7 +138,7 @@ const getTileTitleById = createLocalizedCatalog((): Record<FeatureWallMediaTileI
   'tile-06': translate('featureWall.tiles.tile06.title', 'Remote workspaces'),
   'tile-07': translate('featureWall.tiles.tile07.title', 'Monaco editor, drag-to-agent'),
   'tile-08': translate('featureWall.tiles.tile08.title', 'Inline review, back to the agent'),
-  'tile-09': translate('featureWall.tiles.tile09.title', 'Orca CLI'),
+  'tile-09': translate('featureWall.tiles.tile09.title', 'OCC CLI'),
   'tile-10': translate('featureWall.tiles.tile10.title', 'Keyboard-native'),
   'tile-11': translate('featureWall.tiles.tile11.title', 'Usage & rate-limit aware'),
   'tile-12': translate('featureWall.tiles.tile12.title', 'PDFs, images, CSV, Markdown')

@@ -35,7 +35,7 @@ describe('terminal-daemon status', () => {
       daemon: {
         verdict: 'exited',
         pid: 4288,
-        detail: 'pid 4288 is gone; Orca starts a new daemon with the next terminal',
+        detail: 'pid 4288 is gone; OCC starts a new daemon with the next terminal',
         processCeiling: null
       }
     })

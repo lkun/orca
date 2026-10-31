@@ -24,7 +24,7 @@ export const ORCAD_SERVER_TARGET_FILENAME = '.server-target'
 /** The pinned Node executableSha256 enters the version hash here. Never ship .build-target in Node slots:
  * Bun-era selectors exit 78 without bun-runtime (design D7.1 R5). */
 export const ORCAD_NODE_RUNTIME_MARKER_FILENAME = '.runtime-node'
-/** Beside the slot dirs and shared across Orca versions (design D2): `runtimes/node-<sha256>/bin/node`. */
+/** Beside the slot dirs and shared across OCC versions (design D2): `runtimes/node-<sha256>/bin/node`. */
 export const ORCAD_RUNTIMES_DIRNAME = 'runtimes'
 export const ORCAD_NODE_RUNTIME_DIR_PREFIX = 'node-'
 export const ORCAD_NODE_RUNTIME_POSIX_EXECUTABLE = 'bin/node'

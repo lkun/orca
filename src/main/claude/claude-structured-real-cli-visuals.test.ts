@@ -27,7 +27,7 @@ const suiteTitle = `Claude real CLI chat visuals${realClaudeCliGate.skipReason ?
 
 describe.skipIf(!realClaudeAvailable)(suiteTitle, () => {
   it.skipIf(!realClaudeAuthenticated)(
-    "loads the visuals skill through Orca's launch and grants the chat folder",
+    "loads the visuals skill through OCC's launch and grants the chat folder",
     async () => {
       const claudeConfigDir = process.env.CLAUDE_CONFIG_DIR?.trim() || join(homedir(), '.claude')
       const scratch = await mkdtemp(join(tmpdir(), 'orca-real-cli-visuals-'))

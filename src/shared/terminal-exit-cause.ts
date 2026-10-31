@@ -1,7 +1,7 @@
 /** Build exit causes only from observed evidence: stop paths synthesize codes, node-pty reports 0 for signals,
  * and macOS login reports its own status (STA-4536, STA-4603). Missing evidence stays unknown. */
 export type TerminalExitCause =
-  /** Teardown was requested through Orca — a close, a stop, a worktree removal. Not a failure. */
+  /** Teardown was requested through OCC — a close, a stop, a worktree removal. Not a failure. */
   | { kind: 'operator_close' }
   /** The host reported a signal. The agent did not choose to stop. */
   | { kind: 'signaled'; signal: number }

@@ -83,22 +83,22 @@ export const AGENT_SESSION_REFUSAL_REASONS = {
     'claudeAccountSetupFailed',
     /** Settings → Agents → Command names no program this host can run. */
     'agentCommandNotRunnable',
-    /** The runtime Orca installs for the agent is not installed on this host. */
+    /** The runtime OCC installs for the agent is not installed on this host. */
     'runtimeNotInstalled',
     /** The agent refuses Full access while it runs as root. */
     'fullAccessAsRoot',
-    /** Orca's launch preparation on the host failed before any agent process was spawned. */
+    /** OCC's launch preparation on the host failed before any agent process was spawned. */
     'launchPreparationFailed',
     /** A terminal may still be writing the chat's conversation, so its agent did not start. */
     'conversationOpenInTerminal',
     'conversationOpenElsewhere',
-    /** The agent started, then Orca could not open the chat's conversation for it. */
+    /** The agent started, then OCC could not open the chat's conversation for it. */
     'attachFailed'
   ],
   agent_session_ownership_unknown: [
     'sessionNotAttached',
     'noLiveOwner',
-    /** Orca cannot prove an agent process it recorded or started has exited. */
+    /** OCC cannot prove an agent process it recorded or started has exited. */
     'ownerUnproven',
     'claimConflicted',
     'recordMissing',
@@ -140,7 +140,7 @@ export const AGENT_SESSION_REFUSAL_REASONS = {
     'journalCorrupt',
     /** Any other failed open, which can clear. */
     'journalUnavailable',
-    /** A newer Orca wrote the journal, or this chat's rows; only an update writes past it. */
+    /** A newer OCC wrote the journal, or this chat's rows; only an update writes past it. */
     'journalWrittenByNewerOrca'
   ],
   structured_agent_session_unsupported: [

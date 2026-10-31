@@ -18,7 +18,7 @@ import { recordTerminalUserInputForLeaf } from './terminal-input-activity'
 import { splitTerminalPaneWithInheritedCwd } from './terminal-pane-split-with-inherited-cwd'
 import type { TerminalPaneContextController } from './use-terminal-pane-context-actions'
 
-// Match xterm’s forced selection: Shift (Option on Mac) withholds TUI mouse reports, leaving Orca to paste.
+// Match xterm’s forced selection: Shift (Option on Mac) withholds TUI mouse reports, leaving OCC to paste.
 function terminalForcesSelectionForClick(event: React.MouseEvent): boolean {
   return navigator.userAgent.includes('Mac') ? event.altKey : event.shiftKey
 }
@@ -119,7 +119,7 @@ export function useTerminalPaneMobileActions(controller: TerminalPaneContextCont
       if (!targetPane) {
         return
       }
-      // Always arm suppression for Chromium’s mouseup paste; forward tracking-mode reports unless the selection modifier makes Orca the sole paste owner.
+      // Always arm suppression for Chromium’s mouseup paste; forward tracking-mode reports unless the selection modifier makes OCC the sole paste owner.
       event.preventDefault()
       armPrimarySelectionNativePasteSuppression()
       if (

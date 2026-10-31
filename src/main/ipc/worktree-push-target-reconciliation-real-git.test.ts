@@ -54,7 +54,7 @@ beforeEach(async () => {
   forkPath = join(scratchDir, 'fork')
   await mkdir(repoPath, { recursive: true })
   await git(['init', '-q'], repoPath)
-  await git(['config', 'user.name', 'Orca Test'], repoPath)
+  await git(['config', 'user.name', 'OCC Test'], repoPath)
   await git(['config', 'user.email', 'orca@example.test'], repoPath)
   await git(['config', 'commit.gpgSign', 'false'], repoPath)
   await git(['config', 'core.hooksPath', '.git/no-hooks'], repoPath)
@@ -63,7 +63,7 @@ beforeEach(async () => {
   await git(['commit', '-qm', 'seed'], repoPath)
 
   await git(['clone', '-q', repoPath, forkPath], scratchDir)
-  await git(['config', 'user.name', 'Orca Test'], forkPath)
+  await git(['config', 'user.name', 'OCC Test'], forkPath)
   await git(['config', 'user.email', 'orca@example.test'], forkPath)
   await git(['config', 'commit.gpgSign', 'false'], forkPath)
   await git(['config', 'core.hooksPath', '.git/no-hooks'], forkPath)
@@ -147,10 +147,10 @@ describe('reconcileOrphanedPrRemotesWithExec against the real Git binary', () =>
     await expect(git(['remote'], repoPath)).resolves.not.toContain(FORK_REMOTE)
   })
 
-  it('reclaims a remote orphaned by a worktree removed outside Orca (path 3)', async () => {
+  it('reclaims a remote orphaned by a worktree removed outside OCC (path 3)', async () => {
     const worktreePath = join(scratchDir, 'wt-externally-removed')
     await git(['worktree', 'add', '-q', worktreePath, '-b', 'contributor/fix-local-2'], repoPath)
-    // External worktree removal leaves stale Orca metadata without a cleanup event.
+    // External worktree removal leaves stale OCC metadata without a cleanup event.
     await git(['worktree', 'remove', '--force', worktreePath], repoPath)
 
     const reclaimed = await reconcileOrphanedPrRemotesWithExec(

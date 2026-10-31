@@ -253,19 +253,19 @@ describe('orchestration session callers at the dispatch entry', () => {
       expect(h.db.getMessageById(messageId)).toMatchObject({ read: 0 })
     }
 
-    it('an id that names no Orca session', async () => {
+    it('an id that names no OCC session', async () => {
       await expectRefusedWithNoEffects(
         'ffffffff-0000-4000-8000-000000000000',
         CODES.unknown,
-        /No Orca agent session .* exists on this host/
+        /No OCC agent session .* exists on this host/
       )
     })
 
     it('a terminal handle presented as a session id', async () => {
-      await expectRefusedWithNoEffects('term_4f2c9a0b', CODES.unknown, /not an Orca session ID/)
+      await expectRefusedWithNoEffects('term_4f2c9a0b', CODES.unknown, /not an OCC session ID/)
     })
 
-    it("a provider's session id, with a hint naming the Orca id", async () => {
+    it("a provider's session id, with a hint naming the OCC id", async () => {
       const response = await h.dispatch(
         orchestrationRequest('orchestration.runCurrent', {}, { sessionId: PROVIDER_ID_X })
       )
@@ -273,7 +273,7 @@ describe('orchestration session callers at the dispatch entry', () => {
         ok: false,
         error: {
           code: CODES.providerId,
-          message: `${PROVIDER_ID_X} is the provider's own session id, which changes on /clear. This session's Orca session ID is orca_session_id:${SESSION_X}; set ORCA_AGENT_SESSION_ID=${SESSION_X} instead. No effects were applied.`,
+          message: `${PROVIDER_ID_X} is the provider's own session id, which changes on /clear. This session's OCC session ID is orca_session_id:${SESSION_X}; set ORCA_AGENT_SESSION_ID=${SESSION_X} instead. No effects were applied.`,
           data: { orcaSessionId: SESSION_X, effectsApplied: false }
         }
       })

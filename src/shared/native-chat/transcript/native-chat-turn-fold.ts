@@ -51,7 +51,7 @@ export function nativeChatTurnFoldRow(
           isBackgroundTaskBlock(block) ||
           isStoppedBeforeStartBlock(block)
       ),
-    // A row about Orca's own stop is stored red for clients that predate it; it reports no failure.
+    // A row about OCC's own stop is stored red for clients that predate it; it reports no failure.
     reportsFailure: message.blocks.some(
       (block) =>
         block.type === 'text' &&

@@ -798,7 +798,7 @@ describe('remote hook service installers', () => {
   })
 
   it('refreshes remote named profiles that keep the plugin enabled, and only those', async () => {
-    const marker = '# Managed by Orca. Do not edit; changes may be overwritten.\n'
+    const marker = '# Managed by OCC. Do not edit; changes may be overwritten.\n'
     const profiles = '/home/dev/.hermes/profiles'
     const disabledConfig = 'plugins:\n  enabled: [orca-status]\n  disabled: [orca-status]\n'
     const { sftp, fs } = createFakeSftp({

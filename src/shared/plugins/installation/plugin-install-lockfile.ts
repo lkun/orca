@@ -100,7 +100,7 @@ export const pluginLockEntrySchema = z
     contentHash: z.string().regex(PLUGIN_CONTENT_HASH_PATTERN),
     /** New descriptive name, accepted for forward compatibility. */
     consentFingerprint: z.string().min(1).max(256).optional(),
-    /** v1 on-disk name retained so existing Orca builds can read new lockfiles. */
+    /** v1 on-disk name retained so existing OCC builds can read new lockfiles. */
     capabilityHash: z.string().min(1).max(256).optional(),
     installedAt: z.number().finite().nonnegative()
   })

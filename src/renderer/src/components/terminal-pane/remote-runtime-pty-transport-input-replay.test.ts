@@ -311,7 +311,7 @@ describe('remote pane input across a silent outage', () => {
     transport.sendInput(paste, 'driving')
     subscriptionCallbacks?.onError?.({
       code: 'remote_runtime_unavailable',
-      message: 'Could not connect to the remote Orca runtime.'
+      message: 'Could not connect to the remote OCC runtime.'
     })
     transport.sendInput('B\r', 'driving')
 
@@ -371,7 +371,7 @@ describe('remote pane input across a silent outage', () => {
         transport.sendInput(paste, 'driving')
         subscriptionCallbacks?.onError?.({
           code: 'remote_runtime_unavailable',
-          message: 'Could not connect to the remote Orca runtime.'
+          message: 'Could not connect to the remote OCC runtime.'
         })
         transport.sendInput('B\r', 'driving')
         // Finish validation while the replacement is blocked, before the 8 ms suffix debounce.
@@ -430,7 +430,7 @@ describe('remote pane input across a silent outage', () => {
     transport.sendInput('2', 'driving')
     subscriptionCallbacks?.onError?.({
       code: 'remote_runtime_unavailable',
-      message: 'Could not connect to the remote Orca runtime.'
+      message: 'Could not connect to the remote OCC runtime.'
     })
     transport.sendInput('3', 'driving')
     transport.sendInput('\r', 'driving')
@@ -450,7 +450,7 @@ describe('remote pane input across a silent outage', () => {
       runtimeSubscribe.mockImplementation(
         async (_args: unknown, callbacks: NonNullable<MultiplexSubscriptionCallbacks>) => {
           if (!hostReachable) {
-            throw Object.assign(new Error('Could not connect to the remote Orca runtime.'), {
+            throw Object.assign(new Error('Could not connect to the remote OCC runtime.'), {
               code: 'remote_runtime_unavailable'
             })
           }
@@ -493,7 +493,7 @@ describe('remote pane input across a silent outage', () => {
       runtimeSubscribe.mockImplementation(
         async (_args: unknown, callbacks: NonNullable<MultiplexSubscriptionCallbacks>) => {
           if (!hostReachable) {
-            throw Object.assign(new Error('Could not connect to the remote Orca runtime.'), {
+            throw Object.assign(new Error('Could not connect to the remote OCC runtime.'), {
               code: 'remote_runtime_unavailable'
             })
           }
@@ -538,7 +538,7 @@ describe('remote pane input across a silent outage', () => {
       runtimeSubscribe.mockImplementation(
         async (_args: unknown, callbacks: NonNullable<MultiplexSubscriptionCallbacks>) => {
           if (!hostReachable) {
-            throw Object.assign(new Error('Could not connect to the remote Orca runtime.'), {
+            throw Object.assign(new Error('Could not connect to the remote OCC runtime.'), {
               code: 'remote_runtime_unavailable'
             })
           }

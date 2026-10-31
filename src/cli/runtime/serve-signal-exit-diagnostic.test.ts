@@ -35,7 +35,7 @@ function superviseUntilExit(code: number | null, signal: NodeJS.Signals | null):
 
 function superviseChild(child: FakeChildProcess): Promise<number> {
   return superviseForegroundServe({
-    spec: { program: '/Applications/Orca.app/Contents/MacOS/Orca', args: ['--serve'] },
+    spec: { program: '/Applications/OCC.app/Contents/MacOS/OCC', args: ['--serve'] },
     spawnChild: vi.fn() as never,
     handoffPath: null,
     child: child as never,
@@ -60,9 +60,9 @@ describe('serveSignalExitError', () => {
     expect(error.message).toContain('_RegisterApplication')
     expect(error.data).toMatchObject({
       nextSteps: [
-        expect.stringContaining('desktop Orca is already running'),
+        expect.stringContaining('desktop OCC is already running'),
         expect.stringContaining('refuse for 30 minutes'),
-        expect.stringContaining('~/Library/Logs/DiagnosticReports/Orca-*.ips')
+        expect.stringContaining('~/Library/Logs/DiagnosticReports/OCC-*.ips')
       ]
     })
   })
@@ -71,7 +71,7 @@ describe('serveSignalExitError', () => {
     for (const platform of ['linux', 'win32'] as const) {
       const error = serveSignalExitError('SIGABRT', platform)
 
-      expect(error.message).toBe('Orca serve exited via SIGABRT.')
+      expect(error.message).toBe('OCC serve exited via SIGABRT.')
       expect(error.data).toBeUndefined()
     }
   })
@@ -79,13 +79,13 @@ describe('serveSignalExitError', () => {
   it('does not claim the macOS cause for other darwin signals', () => {
     const error = serveSignalExitError('SIGKILL', 'darwin')
 
-    expect(error.message).toBe('Orca serve exited via SIGKILL.')
+    expect(error.message).toBe('OCC serve exited via SIGKILL.')
     expect(error.data).toBeUndefined()
   })
 
   it('stays clear when neither a code nor a signal is reported', () => {
     expect(serveSignalExitError(null, 'darwin').message).toBe(
-      'Orca serve exited without reporting an exit code or signal.'
+      'OCC serve exited without reporting an exit code or signal.'
     )
   })
 })
@@ -116,7 +116,7 @@ describe('superviseForegroundServe signal exits', () => {
     expect(child.kill).toHaveBeenCalledTimes(2)
 
     child.emit('exit', null, 'SIGKILL')
-    await expect(supervised).rejects.toThrow('Orca serve exited via SIGKILL.')
+    await expect(supervised).rejects.toThrow('OCC serve exited via SIGKILL.')
   })
 
   it('lets a shared-console Windows child handle Ctrl-C gracefully', async () => {
@@ -170,7 +170,7 @@ describe('superviseForegroundServe signal exits', () => {
     await rm(missingParent, { recursive: true })
     const child = new FakeChildProcess()
     const supervised = superviseForegroundServe({
-      spec: { program: '/Applications/Orca.app/Contents/MacOS/Orca', args: ['--serve'] },
+      spec: { program: '/Applications/OCC.app/Contents/MacOS/OCC', args: ['--serve'] },
       spawnChild: vi.fn() as never,
       handoffPath: join(missingParent, 'handoff.json'),
       child: child as never,
@@ -208,7 +208,7 @@ describe('superviseForegroundServe signal exits', () => {
     setPlatform('linux')
 
     await expect(superviseUntilExit(null, 'SIGABRT')).rejects.toThrow(
-      'Orca serve exited via SIGABRT.'
+      'OCC serve exited via SIGABRT.'
     )
   })
 

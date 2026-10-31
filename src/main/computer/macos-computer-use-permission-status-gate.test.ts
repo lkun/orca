@@ -17,7 +17,7 @@ vi.mock('./macos-computer-use-permissions', () => ({
 function statusWith(accessibility: ComputerUsePermissionStatus): ComputerUsePermissionStatusResult {
   return {
     platform: 'darwin',
-    helperAppPath: '/Applications/Orca Computer Use.app',
+    helperAppPath: '/Applications/OCC Computer Use.app',
     helperUnavailableReason: null,
     permissions: [
       { id: 'accessibility', status: accessibility },
@@ -216,7 +216,7 @@ describe('createPermissionStatusGate', () => {
       .mockResolvedValueOnce(granted)
     const gate = createPermissionStatusGate(probe)
 
-    // A web read starts a probe; the user grants and returns to Orca a second later.
+    // A web read starts a probe; the user grants and returns to OCC a second later.
     void gate.read()
     await vi.advanceTimersByTimeAsync(1_000)
     const onReturn = gate.read()

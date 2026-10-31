@@ -33,7 +33,7 @@ export async function DocsHeader() {
         <div className="flex shrink-0 items-center gap-6">
           <Link
             href="/docs"
-            aria-label="Orca docs"
+            aria-label="OCC docs"
             className="group flex shrink-0 items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
           >
             <Image src="/docs/logo.svg" alt="" width={40} height={25} />
@@ -73,7 +73,7 @@ export async function DocsHeader() {
             target="_blank"
             rel="noopener noreferrer"
             className="hidden size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 sm:flex"
-            aria-label="Join Orca on Discord"
+            aria-label="Join OCC on Discord"
           >
             <MessageCircle className="size-4" aria-hidden="true" />
           </a>
@@ -82,7 +82,7 @@ export async function DocsHeader() {
             target="_blank"
             rel="noopener noreferrer"
             className="hidden size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 sm:flex"
-            aria-label="Follow Orca on X"
+            aria-label="Follow OCC on X"
           >
             <span aria-hidden="true" className="text-[15px] font-semibold leading-none">
               𝕏

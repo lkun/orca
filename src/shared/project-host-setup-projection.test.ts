@@ -41,9 +41,9 @@ describe('project host setup projection', () => {
   const timestampedSibling = repo({
     id: 'local-repo',
     path: '/Users/alice/orca',
-    displayName: 'Orca',
+    displayName: 'OCC',
     addedAt: 100,
-    upstream: { owner: 'StablyAI', repo: 'Orca' }
+    upstream: { owner: 'StablyAI', repo: 'OCC' }
   })
   const unknownSibling = repo({
     id: 'remote-repo',
@@ -159,8 +159,8 @@ describe('project host setup projection', () => {
       repo({
         id: 'local-repo',
         path: '/Users/alice/orca',
-        displayName: 'Orca',
-        upstream: { owner: 'StablyAI', repo: 'Orca' }
+        displayName: 'OCC',
+        upstream: { owner: 'StablyAI', repo: 'OCC' }
       }),
       repo({
         id: 'remote-repo',
@@ -175,7 +175,7 @@ describe('project host setup projection', () => {
     expect(projection.projects[0]).toMatchObject({
       id: 'github:stablyai/orca',
       sourceRepoIds: ['local-repo', 'remote-repo'],
-      providerIdentity: { provider: 'github', owner: 'StablyAI', repo: 'Orca' }
+      providerIdentity: { provider: 'github', owner: 'StablyAI', repo: 'OCC' }
     })
     expect(getProjectHostSetupsForProject(projection.setups, 'github:stablyai/orca')).toHaveLength(
       2
@@ -253,7 +253,7 @@ describe('project host setup projection', () => {
       repo({
         id: 'local-repo',
         path: '/Users/alice/orca',
-        displayName: 'Orca',
+        displayName: 'OCC',
         repoIcon: {
           type: 'image',
           src: 'https://github.com/stablyai.png?size=64',
@@ -270,7 +270,7 @@ describe('project host setup projection', () => {
           type: 'image',
           src: 'https://github.com/stablyai.png?size=64',
           source: 'github',
-          label: 'StablyAI/Orca'
+          label: 'StablyAI/OCC'
         }
       })
     ])
@@ -520,7 +520,7 @@ describe('getProjectIdForProviderIdentity', () => {
       getProjectIdForProviderIdentity({
         provider: 'github',
         owner: 'Acme',
-        repo: 'Orca',
+        repo: 'OCC',
         host: 'GITHUB.ACME.TEST:8443'
       })
     ).toBe('github:github.acme.test:8443/acme/orca')

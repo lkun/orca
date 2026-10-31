@@ -81,7 +81,7 @@ export function PluginCardAction({
       <span className="text-xs whitespace-nowrap text-status-warning-text">
         {translate(
           'auto.components.settings.PluginManagerRows.needsOrca',
-          'Needs Orca {{value0}}',
+          'Needs OCC {{value0}}',
           {
             value0: needsOrca
           }

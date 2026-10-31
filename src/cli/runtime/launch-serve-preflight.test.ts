@@ -45,7 +45,7 @@ describe('serveOrcaApp: Electron serve preflight', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     spawnMock.mockReturnValue(new FakeChildProcess())
-    vi.stubEnv('ORCA_APP_EXECUTABLE', '/opt/orca/orca')
+    vi.stubEnv('ORCA_APP_EXECUTABLE', '/opt/occ/orca')
     vi.stubEnv('ORCA_SERVE_RUNTIME', 'electron')
     vi.stubEnv('ORCA_USER_DATA_PATH', PROFILE)
   })
@@ -97,7 +97,7 @@ describe.skipIf(process.platform === 'win32')(
         try {
           vi.clearAllMocks()
           vi.stubEnv('ORCA_USER_DATA_PATH', root)
-          vi.stubEnv('ORCA_APP_EXECUTABLE', '/opt/orca/orca')
+          vi.stubEnv('ORCA_APP_EXECUTABLE', '/opt/occ/orca')
           vi.stubEnv('ORCA_SERVE_RUNTIME', 'electron')
           writeFileSync(
             join(root, 'orca-runtime.json'),

@@ -84,7 +84,7 @@ const TERMINATE_GRACE_MS = 10_000
  * `stopped` resolves on the first not-running read, which must come within the grace; only
  * running reads before it are forgiven, so a real boot is never waited out. Any running read
  * after it is a boot. Three failed reads in a row fail the guard. With `retryTerminate`, a terminate
- * that never took is re-issued once, and only while Orca has launched nothing since `spawnsBefore`.
+ * that never took is re-issued once, and only while OCC has launched nothing since `spawnsBefore`.
  */
 export function watchDistroRunning(
   distro: string,
@@ -158,7 +158,7 @@ export function watchDistroRunning(
         ) {
           retried = true
           // Loud on purpose: a pattern of these is a runner problem worth chasing.
-          timeline(`RETRYING --terminate: ${distro} still listed and Orca launched nothing since`)
+          timeline(`RETRYING --terminate: ${distro} still listed and OCC launched nothing since`)
           console.warn(`[e9-guard] WARNING: --terminate of ${distro} did not take; retrying once`)
           clearTimeout(grace)
           grace = armGrace()

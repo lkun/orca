@@ -6,7 +6,7 @@ export function sourceControlVariableDescription(variable: SourceControlActionVa
     case 'basePrompt':
       return translate(
         'sourceControl.variables.basePrompt',
-        'Orca’s built-in prompt for this action, including the context Orca knows how to gather safely.'
+        'OCC’s built-in prompt for this action, including the context OCC knows how to gather safely.'
       )
     case 'branch':
       return translate('sourceControl.variables.branch', 'The current source-control branch name.')
@@ -58,7 +58,7 @@ export function sourceControlVariableDescription(variable: SourceControlActionVa
     case 'assistantMessage':
       return translate(
         'sourceControl.variables.assistantMessage',
-        'The initial agent response, when Orca has one available.'
+        'The initial agent response, when OCC has one available.'
       )
     case 'linkedIssue':
       return translate(

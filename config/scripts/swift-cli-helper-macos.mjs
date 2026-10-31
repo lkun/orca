@@ -67,7 +67,7 @@ export function buildDevSwiftCliHelpers(macOsDir) {
       })
     } catch (error) {
       console.warn(
-        `[orca-dev] ${executable} helper build failed (${fallback}): ${error?.message ?? error}`
+        `[occ-dev] ${executable} helper build failed (${fallback}): ${error?.message ?? error}`
       )
     }
   }

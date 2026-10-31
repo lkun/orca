@@ -19,7 +19,7 @@ const ENTRY_POINTS = [
   'config/scripts/rebuild-native-deps.mjs',
   'config/scripts/verify-cli-bin.mjs',
   'config/scripts/install-dev-cli.mjs',
-  'config/scripts/orca-dev.mjs',
+  'config/scripts/occ-dev.mjs',
   'config/scripts/runtime-serve-terminal-smoke.mjs',
   'config/scripts/orcad-terminal-smoke-change-scope.mjs'
 ]

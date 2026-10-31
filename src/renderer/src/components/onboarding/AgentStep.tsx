@@ -75,7 +75,7 @@ export function AgentStep({
               i18n={i18n}
               defaults={translate(
                 'auto.components.onboarding.AgentStep.agentNotOnPath',
-                "<agent>{{agent}}</agent> isn't on your PATH yet. Orca will set it as your default and you can install it any time.",
+                "<agent>{{agent}}</agent> isn't on your PATH yet. OCC will set it as your default and you can install it any time.",
                 { agent: selectedEntry.label }
               )}
               components={{ agent: <span className="font-medium text-foreground" /> }}

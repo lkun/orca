@@ -69,7 +69,7 @@ describe('ACP prompt content', () => {
     ).toMatchObject({ kind: 'attachmentInvalid', attachment: { reason: 'unsupportedType' } })
   })
 
-  it('refuses invalid sources and pathless formats before anything leaves Orca', async () => {
+  it('refuses invalid sources and pathless formats before anything leaves OCC', async () => {
     expect(await refusal(message({ type: 'image-ref', path: 'relative.png' }))).toMatchObject({
       attachment: { reason: 'noSource' }
     })

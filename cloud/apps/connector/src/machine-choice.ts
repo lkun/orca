@@ -20,7 +20,7 @@ export type PlaceOption = { project: string; hostName: string }
 
 export type MachineChoice =
   | { kind: 'chosen'; hostId: string; hostName: string; placeId: string; agent: string }
-  // None of the person's machines runs an Orca that can take this source's work.
+  // None of the person's machines runs an OCC that can take this source's work.
   | { kind: 'no_machine' }
   | { kind: 'ask'; options: PlaceOption[] }
 

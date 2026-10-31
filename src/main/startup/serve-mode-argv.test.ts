@@ -70,15 +70,15 @@ describe('serve-mode-argv', () => {
   it('leaves real GUI launch argv alone', () => {
     // False serve detection replaces a desktop window with a listening runtime; exercise actual desktop argv shapes.
     for (const argv of [
-      ['/Applications/Orca.app/Contents/MacOS/Orca', '-psn_0_123456'],
-      ['C:\\Program Files\\Orca\\Orca.exe', '--squirrel-firstrun'],
-      ['C:\\Program Files\\Orca\\Orca.exe', 'orca://worktree/serve'],
-      ['/opt/orca/orca-ide', '/home/u/serve'],
+      ['/Applications/OCC.app/Contents/MacOS/OCC', '-psn_0_123456'],
+      ['C:\\Program Files\\OCC\\OCC.exe', '--squirrel-firstrun'],
+      ['C:\\Program Files\\OCC\\OCC.exe', 'occ://worktree/serve'],
+      ['/opt/occ/occ-ide', '/home/u/serve'],
       // Value tokens named serve are never subcommands.
-      ['/opt/orca/orca-ide', '--pairing-code', 'serve'],
-      ['/opt/orca/orca-ide', '--environment=serve'],
-      ['/opt/orca/orca-ide', '--', 'serve'],
-      ['/opt/orca/orca-ide', 'Serve']
+      ['/opt/occ/occ-ide', '--pairing-code', 'serve'],
+      ['/opt/occ/occ-ide', '--environment=serve'],
+      ['/opt/occ/occ-ide', '--', 'serve'],
+      ['/opt/occ/occ-ide', 'Serve']
     ]) {
       expect(argvRequestsServeMode(argv), argv.join(' ')).toBe(false)
       expect(normalizeServeModeArgv(argv)).toEqual(argv)
@@ -117,14 +117,14 @@ describe('serve-mode-argv', () => {
   it('keeps Electron-injected Chromium switches while normalizing direct serve', () => {
     expect(
       normalizeServeModeArgv([
-        '/opt/orca/orca-ide',
+        '/opt/occ/occ-ide',
         '--disable-features=FedCm,DirectSockets',
         'serve',
         '--port',
         '6768'
       ])
     ).toEqual([
-      '/opt/orca/orca-ide',
+      '/opt/occ/occ-ide',
       '--disable-features=FedCm,DirectSockets',
       '--serve',
       '--serve-port',

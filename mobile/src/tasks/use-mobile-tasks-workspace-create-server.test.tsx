@@ -168,7 +168,7 @@ describe('creating a workspace from a task on a server repo', () => {
       sentBy.get(client)?.find((sent) => sent.method === 'preflight.detectAgents')?.params
     ).toEqual({ repoId: SERVER_REPO.id })
     expect(pushed).toHaveLength(1)
-    expect(new URL(pushed[0]!, 'orca://x').searchParams.get('executionHost')).toBe('runtime:vm')
+    expect(new URL(pushed[0]!, 'occ://x').searchParams.get('executionHost')).toBe('runtime:vm')
   })
 
   it("keeps a desktop repo's workspace on the desktop", async () => {
@@ -178,6 +178,6 @@ describe('creating a workspace from a task on a server repo', () => {
     expect(
       sentBy.get(client)?.find((sent) => sent.method === 'preflight.detectAgents')?.params
     ).toEqual({ repoId: DESKTOP_REPO.id })
-    expect(new URL(pushed[0]!, 'orca://x').searchParams.get('executionHost')).toBeNull()
+    expect(new URL(pushed[0]!, 'occ://x').searchParams.get('executionHost')).toBeNull()
   })
 })

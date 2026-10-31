@@ -7,7 +7,7 @@ export const getPluginsPaneSearchEntries = createLocalizedCatalog((): SettingsSe
     title: translate('auto.components.settings.plugins.search.title', 'Plugins'),
     description: translate(
       'auto.components.settings.plugins.search.description',
-      'Install and manage Orca plugins (Alpha).'
+      'Install and manage OCC plugins (Alpha).'
     ),
     keywords: [
       translate('auto.components.settings.plugins.search.install', 'install plugin'),

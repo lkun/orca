@@ -114,7 +114,7 @@ function formatDevInstanceLabel(branch, worktreeName) {
 }
 
 function createDockTitle(branch, label) {
-  return `Orca: ${branch || label || 'dev'}`
+  return `OCC: ${branch || label || 'dev'}`
 }
 
 function seedDevInstanceIdentityEnv() {
@@ -155,7 +155,7 @@ function sanitizeMacAppBundleName(value) {
       .join('')
       .replace(/\s+/g, ' ')
       .trim()
-      .slice(0, 120) || 'Orca'
+      .slice(0, 120) || 'OCC'
   )
 }
 
@@ -212,7 +212,7 @@ function prepareMacDevElectronApp() {
     electronVersion = JSON.parse(readFileSync(electronPackagePath, 'utf8')).version ?? null
   } catch {}
 
-  const title = process.env.ORCA_DEV_DOCK_TITLE || 'Orca: dev'
+  const title = process.env.ORCA_DEV_DOCK_TITLE || 'OCC: dev'
   const identityKey = process.env.ORCA_DEV_INSTANCE_KEY || repoRoot
   // v11 stabilizes Info.plist/cdhash; ignored stale marker fields permit schema narrowing without another bump.
   const bundleLayoutVersion = 'stable-cdhash-dock-name-from-bundle-dir-v11'
@@ -294,7 +294,7 @@ function prepareMacDevElectronApp() {
     existsSync(chromiumResourcePath)
   ) {
     console.warn(
-      `[orca-dev] Another dev instance is running from this bundle; reusing it instead of rebuilding. Quit the other instance (or delete ${distDir}) to force a rebuild.`
+      `[occ-dev] Another dev instance is running from this bundle; reusing it instead of rebuilding. Quit the other instance (or delete ${distDir}) to force a rebuild.`
     )
     process.env.ELECTRON_EXEC_PATH = executablePath
     return
@@ -339,7 +339,7 @@ function prepareMacDevElectronApp() {
     )
   } catch (error) {
     console.warn(
-      `[orca-dev] notification-status helper build failed (permission card falls back to probes): ${error?.message ?? error}`
+      `[occ-dev] notification-status helper build failed (permission card falls back to probes): ${error?.message ?? error}`
     )
   }
 
@@ -352,7 +352,7 @@ function prepareMacDevElectronApp() {
   } catch (error) {
     signed = false
     console.warn(
-      `[orca-dev] ad-hoc codesign failed (dev notifications will not deliver): ${error?.message ?? error}`
+      `[occ-dev] ad-hoc codesign failed (dev notifications will not deliver): ${error?.message ?? error}`
     )
   }
   // Write reuse marker only after signing: otherwise unsigned cache permanently loses notifications/stable Keychain identity; retry copying next launch instead.
@@ -427,7 +427,7 @@ async function prepareDevProfile({ kind, userDataPath }) {
   try {
     await seedDevProfile({ sourceDir, targetDir: userDataPath })
   } catch (error) {
-    console.error(`[orca-dev] Profile seed skipped: ${error.message}`)
+    console.error(`[occ-dev] Profile seed skipped: ${error.message}`)
   }
 }
 
@@ -439,7 +439,7 @@ function prepareDevCliWrapper(userDataPath) {
   })
 
   process.env.PATH = `${binDir}${path.delimiter}${process.env.PATH ?? ''}`
-  console.log(`[orca-dev] Prepared wrapper in ${binDir}`)
+  console.log(`[occ-dev] Prepared wrapper in ${binDir}`)
 }
 
 function getElectronExecutable() {
@@ -455,7 +455,7 @@ const devProfile = resolveDevProfile({
   instanceKey: process.env.ORCA_DEV_INSTANCE_KEY,
   mode: requestedProfileMode
 })
-// Why: Electron main reads this; without it main falls back to the shared orca-dev profile.
+// Why: Electron main reads this; without it main falls back to the shared occ-dev profile.
 process.env.ORCA_DEV_USER_DATA_PATH = devProfile.userDataPath
 if (!isHelpOrVersion) {
   await prepareDevProfile(devProfile)
@@ -496,7 +496,7 @@ function prepareDevWebClient() {
   // Start fresh worktree immediately: pairing can use non-browser URLs while optional web bundle is unavailable.
   if (!existsSync(getDevWebClientIndexPath()) && process.env.ORCA_DEV_WEB_PREPARE !== '1') {
     console.error(
-      '[orca-dev] Web client bundle missing; skipping pairing web build. Run `pnpm run build:web` or set ORCA_DEV_WEB_PREPARE=1 when you need browser pairing.'
+      '[occ-dev] Web client bundle missing; skipping pairing web build. Run `pnpm run build:web` or set ORCA_DEV_WEB_PREPARE=1 when you need browser pairing.'
     )
     return
   }
@@ -504,7 +504,7 @@ function prepareDevWebClient() {
     return
   }
   const inputs = captureDevWebClientInputs(repoRoot)
-  console.error('[orca-dev] Building web client for pairing in the background...')
+  console.error('[occ-dev] Building web client for pairing in the background...')
   // Pairing reads out/web per request, so a stale bundle must not delay Electron startup.
   // Stage then swap, so an interrupted build never leaves out/web empty.
   const stagingDir = path.join(repoRoot, 'out', '.web-next')
@@ -529,14 +529,14 @@ function prepareDevWebClient() {
     // Priority is best effort; the build still runs at normal priority.
   }
   build.once('error', (error) => {
-    console.error(`[orca-dev] Web client build failed to start: ${error.message}`)
+    console.error(`[occ-dev] Web client build failed to start: ${error.message}`)
   })
   build.once('exit', (code, signal) => {
     webClientBuild = null
     if (code !== 0) {
       if (!isShuttingDown) {
         console.error(
-          `[orca-dev] Web client build failed (${signal ?? code}); pairing serves the previous bundle`
+          `[occ-dev] Web client build failed (${signal ?? code}); pairing serves the previous bundle`
         )
       }
       return
@@ -546,19 +546,19 @@ function prepareDevWebClient() {
       rmSync(outDir, { recursive: true, force: true })
       renameSync(stagingDir, outDir)
       recordDevWebClientInputs(repoRoot, inputs)
-      console.error('[orca-dev] Web client for pairing is ready')
+      console.error('[occ-dev] Web client for pairing is ready')
     } catch (error) {
-      console.error(`[orca-dev] Could not install the web client build: ${error.message}`)
+      console.error(`[occ-dev] Could not install the web client build: ${error.message}`)
     }
   })
 }
 
 if (!isHelpOrVersion && process.env.ORCA_DEV_INSTANCE_LABEL) {
-  console.error(`[orca-dev] Instance: ${process.env.ORCA_DEV_INSTANCE_LABEL}`)
+  console.error(`[occ-dev] Instance: ${process.env.ORCA_DEV_INSTANCE_LABEL}`)
 }
 // Log background-launch mode so automation’s focus-preserving behavior is visible.
 if (!isHelpOrVersion && process.env.ORCA_BACKGROUND_LAUNCH === '1') {
-  console.error('[orca-dev] Background launch: window stays off screen; automate through CDP')
+  console.error('[occ-dev] Background launch: window stays off screen; automate through CDP')
 }
 let forwardedExtras = []
 if (!isHelpOrVersion) {

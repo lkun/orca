@@ -3,8 +3,8 @@
 # Skill sharing commands
 
 Agents can publish one or more installed skills behind one unlisted link through the
-signed-in Orca account. The user must first grant the separate, default-off permission in
-Settings → Share Skills ("Allow agents and the Orca CLI to publish skill links"). There is
+signed-in OCC account. The user must first grant the separate, default-off permission in
+Settings → Share Skills ("Allow agents and the OCC CLI to publish skill links"). There is
 no CLI or RPC way to grant it. Manual publishing from the reviewed desktop flow remains
 available without this agent permission.
 
@@ -23,16 +23,16 @@ ORCA skills share --skill <selector> [--skill <selector> ...] --bundle-name <nam
 - Skill folders can contain scripts, configuration, or credentials. The permission is
   authority, not intent: publish only the skills the user named and never widen the set.
 - A denied command fails with `agent_skill_sharing_disabled`. Do not retry; the user turned
-  the permission off. Mention the switch only if they asked to share skills through Orca.
-- On a headless Orca server, skill and artifact sharing fail with `sharing_unavailable_on_host`.
-  Do not retry; the host has no Orca cloud sign-in, so the user must share from the desktop app.
-- Orca stages one agent-published bundle at a time per host. If another publish is active,
+  the permission off. Mention the switch only if they asked to share skills through OCC.
+- On a headless OCC server, skill and artifact sharing fail with `sharing_unavailable_on_host`.
+  Do not retry; the host has no OCC cloud sign-in, so the user must share from the desktop app.
+- OCC stages one agent-published bundle at a time per host. If another publish is active,
   wait for it to finish before retrying `agent_skill_sharing_busy`.
 - Sharing again under a `--bundle-name` the account already published adds a new version to
   that package. `agent_skill_bundle_name_taken` means the name is already in use; do not
   retry, ask the user for a different name.
-- Run the command in an Orca terminal on the machine that stores the skills. Forwarded WSL,
-  SSH, and paired-runtime invocations fail before discovery so Orca cannot read from the
+- Run the command in an OCC terminal on the machine that stores the skills. Forwarded WSL,
+  SSH, and paired-runtime invocations fail before discovery so OCC cannot read from the
   wrong filesystem.
 - The JSON result contains the unlisted URL and public share/package/version IDs. It never
   includes cloud authentication tokens.

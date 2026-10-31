@@ -3,7 +3,7 @@ import type { ProcessTreeKillScope } from '@orca/process-host/process-tree-kill-
 import { recordCoalescedDurableCrashBreadcrumb } from './durable-crash-breadcrumb'
 
 // Reports see only kills recorded in Electron main; remote-host rings and uninstrumented paths are absent.
-// An empty count does not prove Orca issued no kill.
+// An empty count does not prove OCC issued no kill.
 
 export type SelfInitiatedTreeKillScope = ProcessTreeKillScope | 'win-pty-job'
 
@@ -72,7 +72,7 @@ export function recordSelfInitiatedTreeKill({
   })
 }
 
-/** Record a refused attempt to target Orca's own Chromium process. */
+/** Record a refused attempt to target OCC's own Chromium process. */
 export function recordRefusedOwnChromiumTreeKill(target: {
   pid: number
   site: string

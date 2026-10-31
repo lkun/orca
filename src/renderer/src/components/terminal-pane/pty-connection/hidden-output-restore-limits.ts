@@ -14,7 +14,7 @@ export const HIDDEN_OUTPUT_RESTORE_REMOTE_OUTCOME_MAX_ATTEMPTS = 7
 export const HIDDEN_OUTPUT_RESTORE_LOCAL_GATE_MAX_ATTEMPTS = 30
 // Disclose skipped hidden output only when recovery is unavailable.
 export const HIDDEN_OUTPUT_RESTORE_UNAVAILABLE_WARNING =
-  '\r\n[Orca skipped hidden terminal output because main recovery was unavailable.]\r\n'
+  '\r\n[OCC skipped hidden terminal output because main recovery was unavailable.]\r\n'
 // Distinguish a permanent host inability to supply an image from exhausted transient retries.
 export const PARK_REVEAL_NO_HOST_IMAGE_WARNING =
-  "\r\n[Orca could not restore this terminal's history from its host.]\r\n"
+  "\r\n[OCC could not restore this terminal's history from its host.]\r\n"

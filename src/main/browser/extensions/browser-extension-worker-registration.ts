@@ -48,7 +48,7 @@ const WORKER_REGISTRATION_WAIT_MS = 10_000
 
 /**
  * loadExtension resolves before Chromium has registered the worker, and until it has, every start
- * fails ("Failed to start service worker."). The load waits so Orca's lifecycle events and
+ * fails ("Failed to start service worker."). The load waits so OCC's lifecycle events and
  * restored tabs start a worker that exists. Listen before loading: registration can finish first.
  */
 export function whenWorkerRegistered(sess: Electron.Session, extensionId: string): Promise<void> {

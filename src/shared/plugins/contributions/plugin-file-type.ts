@@ -37,7 +37,7 @@ export function pluginEditorFileTypes(
   return catalogFileTypes(contributes.customEditors)
 }
 
-/** Why a purpose: a file Orca already highlights only gets an editor suggestion, never a syntax one. */
+/** Why a purpose: a file OCC already highlights only gets an editor suggestion, never a syntax one. */
 export type PluginFileTypeSuggestionPurpose = 'open' | 'editor'
 
 /** The last extension of a path, lowercased; null for dotfiles and names without one. */
@@ -52,7 +52,7 @@ export function fileTypeOfPath(filePath: string): string | null {
 }
 
 export type PluginFileTypeSuggestionSettings = {
-  /** Off stops suggesting plugins for files Orca can't highlight or open. Absent means on. */
+  /** Off stops suggesting plugins for files OCC can't highlight or open. Absent means on. */
   pluginFileTypeSuggestions?: boolean
   /** File types the user chose never to get a suggestion for. */
   pluginDismissedFileTypes?: string[]

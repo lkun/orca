@@ -40,7 +40,7 @@ describe('describeScheduledRefusal under a WSL move', () => {
     expect(refusalFor(repo('repo-1'))).toBe(WSL_MOVE_IN_PROGRESS)
     expect(refusalFor(repo('repo-1'), false)).toBe(WSL_MOVE_IN_PROGRESS)
     expect(WSL_MOVE_IN_PROGRESS).toBe(
-      "This automation's project is moving to its WSL host, so Orca skipped this run. Runs resume when the move finishes."
+      "This automation's project is moving to its WSL host, so OCC skipped this run. Runs resume when the move finishes."
     )
   })
 
@@ -48,7 +48,7 @@ describe('describeScheduledRefusal under a WSL move', () => {
     seedWslMoveCutover(userDataPath, cutover('move-1', 'destination-committed'))
     expect(refusalFor(repo('repo-1'))).toBe(WSL_MOVE_OWNED_BY_HOST)
     expect(WSL_MOVE_OWNED_BY_HOST).toBe(
-      "This automation's project now runs on its WSL host, which runs this automation there. Orca no longer runs this local copy."
+      "This automation's project now runs on its WSL host, which runs this automation there. OCC no longer runs this local copy."
     )
   })
 

@@ -73,7 +73,7 @@ export function getShellLaunchConfig(
       return UNWRAPPED
     }
     if (!wrapperTreeUsable()) {
-      // Incomplete ZDOTDIR wrappers skip user configuration; prefer losing Orca features to breaking the shell.
+      // Incomplete ZDOTDIR wrappers skip user configuration; prefer losing OCC features to breaking the shell.
       return { args: ['-l'], env: {}, supportsReadyMarker: false }
     }
     return {

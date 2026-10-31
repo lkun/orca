@@ -11,7 +11,7 @@ import { TUI_AGENT_DISPLAY_NAMES } from './tui-agent-display-names'
 
 export const EXTRA_AGENT_ARGS_MAX_BYTES = 4096
 export const EXTRA_AGENT_ARGS_HOST_UPDATE_REQUIRED =
-  'Update Orca on this host to use extra arguments.'
+  'Update OCC on this host to use extra arguments.'
 export const EXTRA_AGENT_ARGS_REQUIRE_FRESH_SESSION =
   'Extra arguments require a fresh session for every run.'
 
@@ -27,7 +27,7 @@ type ExtraAgentArgOption = {
 const MODEL_OPTION = { kind: 'model', aliases: ['--model'] } as const
 const MODEL_OR_M_OPTION = { kind: 'model', aliases: ['-m', '--model'] } as const
 
-// Allowlist paired-client extras so they cannot alter permissions or Orca-owned prompt/resume/cwd/print/config/MCP flags.
+// Allowlist paired-client extras so they cannot alter permissions or OCC-owned prompt/resume/cwd/print/config/MCP flags.
 const EXTRA_AGENT_ARG_OPTIONS: Partial<Record<TuiAgent, readonly ExtraAgentArgOption[]>> = {
   claude: [
     MODEL_OPTION,

@@ -1,7 +1,7 @@
 import { isProtectedPluginTranslationPath } from '../artifacts/plugin-language-pack-artifact'
 
 /** Packs below this share of translated strings stay installed but can't be chosen as the UI
- *  language, since switching to one would leave most of Orca in English. */
+ *  language, since switching to one would leave most of OCC in English. */
 export const PLUGIN_LANGUAGE_PACK_MIN_COVERAGE = 80
 
 function collectStringPaths(

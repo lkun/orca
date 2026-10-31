@@ -128,7 +128,7 @@ async function expectRenderedLink(page: Page, worktreeId: string, url: string): 
     .toMatch(/^cookie:/)
 }
 
-test('a managed SSH terminal link opens in the Orca Browser through the SSH host', async (// oxlint-disable-next-line no-empty-pattern -- Owns app launch.
+test('a managed SSH terminal link opens in the OCC Browser through the SSH host', async (// oxlint-disable-next-line no-empty-pattern -- Owns app launch.
 {}, testInfo) => {
   test.setTimeout(5 * 60_000)
   const target = startDockerSshHostTarget(testInfo)
@@ -170,7 +170,7 @@ test('a managed SSH terminal link opens in the Orca Browser through the SSH host
     )
     const tabId = await openTerminalTab(page, seeded.worktreeId)
 
-    // The link action popover offers the Orca Browser for a managed server's pane.
+    // The link action popover offers the OCC Browser for a managed server's pane.
     const popoverUrl = `${SSH_REMOTE_ONLY_ORIGIN}/echo/popover`
     await printLink(page, tabId, SSH_REMOTE_ONLY_ORIGIN, '/echo/popover')
     const popoverPoint = await terminalLinkPoint(page, tabId, popoverUrl)
@@ -179,7 +179,7 @@ test('a managed SSH terminal link opens in the Orca Browser through the SSH host
     const popover = page.locator('[data-terminal-link-action-popover]')
     await expect(popover).toBeVisible()
     await expect(popover.getByRole('button').filter({ hasText: 'System Browser' })).toBeVisible()
-    const orcaBrowser = popover.getByRole('button').filter({ hasText: 'Orca Browser' })
+    const orcaBrowser = popover.getByRole('button').filter({ hasText: 'OCC Browser' })
     await expect(orcaBrowser).toBeVisible()
     await page.screenshot({ path: testInfo.outputPath('managed-terminal-link-popover.png') })
     await orcaBrowser.click()
@@ -190,12 +190,12 @@ test('a managed SSH terminal link opens in the Orca Browser through the SSH host
     await expect
       .poll(() => readSshRemoteOnlyRequests(target).map((request) => request.path), {
         timeout: 60_000,
-        message: 'the Orca Browser page never reached the SSH host'
+        message: 'the OCC Browser page never reached the SSH host'
       })
       .toContain('/echo/popover')
     await expectRenderedLink(page, seeded.worktreeId, popoverUrl)
 
-    // Cmd/Ctrl-click opens a remote localhost dev-server URL straight into the Orca Browser.
+    // Cmd/Ctrl-click opens a remote localhost dev-server URL straight into the OCC Browser.
     const modifierUrl = `http://localhost:${SSH_REMOTE_ONLY_PORT}/echo/modifier`
     await printLink(page, tabId, `http://localhost:${SSH_REMOTE_ONLY_PORT}`, '/echo/modifier')
     const modifierPoint = await terminalLinkPoint(page, tabId, modifierUrl)

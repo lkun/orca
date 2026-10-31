@@ -50,7 +50,7 @@ test('Quick Open finds a file in a monorepo-sized managed workspace', async (// 
     await input.fill('module-with-a-long-descriptive-name-00042')
     await expect(dialog.getByRole('option').first()).toBeVisible({ timeout: 60_000 })
     await expect(dialog.getByText('Loading files...')).toHaveCount(0)
-    await expect(dialog).not.toContainText('Remote Orca runtime closed the connection')
+    await expect(dialog).not.toContainText('Remote OCC runtime closed the connection')
     await page.screenshot({ path: testInfo.outputPath('managed-quick-open.png') })
   })
 })
@@ -137,7 +137,7 @@ test('a saved forward whose local port is taken after a restart shows why, and c
     )
     await fixture.session.close(launched.app)
     fixture.app = null
-    // Another process takes the port while Orca is closed, so the restore can't bind it.
+    // Another process takes the port while OCC is closed, so the restore can't bind it.
     const holder = createServer()
     await new Promise<void>((resolve) => holder.listen(localPort, '127.0.0.1', resolve))
     try {
@@ -221,7 +221,7 @@ test('a managed terminal reports agent status from hooks and from Pi-style title
       tabId,
       [
         '( sleep 0.2; curl -sS -X POST "http://127.0.0.1:${ORCA_AGENT_HOOK_PORT}/hook/codex"',
-        '-H "X-Orca-Agent-Hook-Token: ${ORCA_AGENT_HOOK_TOKEN}"',
+        '-H "X-OCC-Agent-Hook-Token: ${ORCA_AGENT_HOOK_TOKEN}"',
         '--data-urlencode "paneKey=${ORCA_PANE_KEY}" --data-urlencode "tabId=${ORCA_TAB_ID}"',
         '--data-urlencode "worktreeId=${ORCA_WORKTREE_ID}" --data-urlencode "env=${ORCA_AGENT_HOOK_ENV}"',
         '--data-urlencode "version=${ORCA_AGENT_HOOK_VERSION}"',

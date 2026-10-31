@@ -76,7 +76,7 @@ jobs:
         id: cache-installer
         uses: actions/cache/restore@v4
         with:
-          path: dist/orca-windows-setup.exe
+          path: dist/occ-windows-setup.exe
           key: branch-installer-${{ inputs.trace_installer && format('trace-{0}-', hashFiles('tests/tools/win-update-e2e/trace-installer-branches.mjs')) || '' }}${{ hashFiles('src/**', 'config/**', 'native/**', 'resources/**', 'mobile/**', 'patches/**', 'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml') }}
 
       - name: Install dependencies
@@ -106,7 +106,7 @@ jobs:
         if: steps.cache-installer.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
-          path: dist/orca-windows-setup.exe
+          path: dist/occ-windows-setup.exe
           key: ${{ steps.cache-installer.outputs.cache-primary-key }}
 
       # A released base also exercises its old uninstaller; default runs isolate this branch.
@@ -123,7 +123,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           New-Item -ItemType Directory -Force artifacts | Out-Null
-          $exe = "dist/orca-windows-setup.exe"
+          $exe = "dist/occ-windows-setup.exe"
           if (-not (Test-Path $exe)) { throw "Installer not found at $exe" }
           $log = "artifacts/survival-output.log"
           $harnessArgs = @('--to', $exe, '--expect', $env:EXPECT, '--soak-seconds', '60')

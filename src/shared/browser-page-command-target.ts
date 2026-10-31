@@ -9,7 +9,7 @@ export type BrowserHistoryNavigateCommand = BrowserPageCommandTarget & {
   direction: 'back' | 'forward'
 }
 
-/** A tab chord a focused page hands back to Orca; the renderer replays it as a key event. */
+/** A tab chord a focused page hands back to OCC; the renderer replays it as a key event. */
 export type BrowserPageTabShortcut = Pick<
   WindowShortcutInput,
   'key' | 'code' | 'alt' | 'meta' | 'control' | 'shift' | 'doubleTapModifier'

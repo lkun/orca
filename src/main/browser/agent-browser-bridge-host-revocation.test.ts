@@ -185,7 +185,7 @@ describe('AgentBrowserBridge under a host revocation', () => {
     await vi.waitFor(() => expect(proxy.stop).toHaveBeenCalled())
     helperCallbacks[0]!(
       null,
-      JSON.stringify({ success: false, error: 'The Orca desktop stopped sharing its browser' }),
+      JSON.stringify({ success: false, error: 'The OCC desktop stopped sharing its browser' }),
       ''
     )
 

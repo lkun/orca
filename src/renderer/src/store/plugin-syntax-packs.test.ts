@@ -34,14 +34,14 @@ describe('resolvePluginSyntaxForFile', () => {
     expect(resolve(entries, 'C:\\repo\\INDEX.JSP')).toBe('plugin:jsp')
   })
 
-  it('lets a plugin color languages Orca maps but never registers a grammar for', () => {
+  it('lets a plugin color languages OCC maps but never registers a grammar for', () => {
     const entries = [syntax('haskell', ['.hs']), syntax('erlang', ['.erl', '.hrl'])]
     expect(resolve(entries, '/repo/Main.hs')).toBe('plugin:haskell')
     expect(resolve(entries, '/repo/app.erl')).toBe('plugin:erlang')
     expect(resolve(entries, '/repo/app.hrl')).toBe('plugin:erlang')
   })
 
-  it('keeps Orca languages with language services or Markdown features', () => {
+  it('keeps OCC languages with language services or Markdown features', () => {
     const entries = [syntax('greedy', ['.ts', '.js', '.json', '.css', '.html', '.md'])]
     for (const file of ['a.ts', 'a.js', 'a.json', 'a.css', 'a.html', 'a.md']) {
       expect(resolve(entries, `/repo/${file}`)).toBeNull()

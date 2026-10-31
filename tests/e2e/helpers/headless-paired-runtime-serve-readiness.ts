@@ -102,7 +102,7 @@ export function isHeadlessPairedRuntimeServeReadyLine(line: string): boolean {
 
 function redactPairingMaterial(value: string): string {
   return value
-    .replace(PAIRING_URL_PATTERN, 'orca://[redacted]')
+    .replace(PAIRING_URL_PATTERN, 'occ://[redacted]')
     .replace(WEB_CLIENT_PAIRING_PATTERN, '$1[redacted]')
 }
 

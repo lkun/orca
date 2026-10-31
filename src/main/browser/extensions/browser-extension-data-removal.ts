@@ -50,7 +50,7 @@ export function throwIfBrowserExtensionStorageAwaitingRestart(
   extensionId: string
 ): void {
   if (isStorageAwaitingRestart(sess, extensionId)) {
-    throw new Error("Restart Orca to finish removing this extension's old data, then try again")
+    throw new Error("Restart OCC to finish removing this extension's old data, then try again")
   }
 }
 
@@ -134,7 +134,7 @@ export async function clearBrowserExtensionProfileSessionData(
  * Attach-time cleanup, like Chrome's extension garbage collector: before anything opens them,
  * delete what uninstalled extensions left in this profile, including storage marked at uninstall
  * whose id was installed again since. Uninstall reaches only the profiles open then, so another
- * Orca profile's leftovers go here. A disabled extension keeps its data.
+ * OCC profile's leftovers go here. A disabled extension keeps its data.
  */
 export function removeUninstalledBrowserExtensionData(
   sess: Electron.Session,

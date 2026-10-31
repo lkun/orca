@@ -24,7 +24,7 @@ afterAll(() => {
 })
 
 describe('Qoder managed configuration', () => {
-  it('preserves user hooks and trust, installs idempotently, then removes only Orca hooks', () => {
+  it('preserves user hooks and trust, installs idempotently, then removes only OCC hooks', () => {
     const path = join(sandbox.home, '.qoder', 'settings.json')
     const userHook = { hooks: [{ type: 'command', command: 'echo user-hook' }] }
     writeFileSync(

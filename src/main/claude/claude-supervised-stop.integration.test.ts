@@ -43,7 +43,7 @@ const FAKE_CLAUDE = String.raw`
   setInterval(() => {}, 60000)
 `
 
-// A killable stand-in for Orca's main launches the production spawn spec.
+// A killable stand-in for OCC's main launches the production spawn spec.
 const OWNER = String.raw`
   const { spawn } = require('node:child_process')
   const spec = JSON.parse(process.env.ORCA_TEST_SPAWN_SPEC)
@@ -195,7 +195,7 @@ describe.runIf(process.platform !== 'win32')('Claude under the POSIX provider su
     expect(alive(pids.claude)).toBe(false)
   })
 
-  it("stops Claude and its tool when Orca's main dies, and leaves a daemon that left its tree alone", async () => {
+  it("stops Claude and its tool when OCC's main dies, and leaves a daemon that left its tree alone", async () => {
     const specs: ProcessSpec[] = []
     createClaudeCodeProcessSpawn((spec) => {
       specs.push(spec)

@@ -289,29 +289,29 @@ describe('Claude accounts section', () => {
     expect(markup.match(/>Remove<\/button>/g)).toHaveLength(2)
   })
 
-  it("names System default's login and warns only when an older Orca may have copied it there", () => {
+  it("names System default's login and warns only when an older OCC may have copied it there", () => {
     const saved = {
       accounts: [account('a', 'A@example.test')],
       systemDefaultEmail: 'a@example.test'
     }
     const copied = render({ ...saved, systemDefaultMayBeCopied: true })
     expect(copied).toContain('System default: a@example.test')
-    expect(copied).toContain('An earlier Orca version may have copied that login there.')
+    expect(copied).toContain('An earlier OCC version may have copied that login there.')
     expect(copied).toContain('>Dismiss</button>')
     // Saving your own login as an account too is normal: no copy evidence, no warning.
-    expect(render(saved)).not.toContain('An earlier Orca version')
+    expect(render(saved)).not.toContain('An earlier OCC version')
     expect(
       render(
         { ...saved, systemDefaultMayBeCopied: true },
         { claudeCopiedSystemDefaultNoticeDismissed: true }
       )
-    ).not.toContain('An earlier Orca version')
+    ).not.toContain('An earlier OCC version')
     const own = render({
       ...saved,
       systemDefaultEmail: 'me@example.test',
       systemDefaultMayBeCopied: true
     })
     expect(own).toContain('System default: me@example.test')
-    expect(own).not.toContain('An earlier Orca version')
+    expect(own).not.toContain('An earlier OCC version')
   })
 })

@@ -76,7 +76,7 @@ const updatePropertiesSchema = z
   .partial()
   .loose()
 
-/** Resolves an extension-requested URL through Orca's rules; extension pages must be loaded in `sess`. */
+/** Resolves an extension-requested URL through OCC's rules; extension pages must be loaded in `sess`. */
 export function requireOpenableUrl(
   caller: BrowserExtensionCaller,
   rawUrl: string | undefined,
@@ -168,7 +168,7 @@ export function registerTabsNamespace(): void {
         z.tuple([queryInfoSchema.optional(), z.array(nativeTabSchema)]),
         (caller, queryInfo, nativeTabs) => queryTabs(caller, queryInfo ?? {}, nativeTabs)
       ),
-      // Why a null native result: Electron's get fails for a discarded tab, which only Orca knows.
+      // Why a null native result: Electron's get fails for a discarded tab, which only OCC knows.
       get: defineBrowserExtensionMethod(
         z.tuple([tabIdSchema, nativeTabSchema.nullable()]),
         (caller, tabId, nativeTab) => {
@@ -213,7 +213,7 @@ export function registerTabsNamespace(): void {
           }
         }
       ),
-      // Why main-side: Electron's native update navigates without Orca's URL rules.
+      // Why main-side: Electron's native update navigates without OCC's URL rules.
       update: defineBrowserExtensionMethod(
         z.union([
           z.tuple([updatePropertiesSchema]),

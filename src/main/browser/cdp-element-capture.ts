@@ -1,7 +1,7 @@
 // A helper-resolved remote object; its session is the debugger's, undefined for the page itself.
 export type CapturedElement = { objectId: string; sessionId: string | undefined }
 
-/** Records the element the helper's calls run on, so Orca can act on that exact node. */
+/** Records the element the helper's calls run on, so OCC can act on that exact node. */
 export class CdpElementCapture {
   // Undefined while not capturing.
   private captured: CapturedElement | null | undefined

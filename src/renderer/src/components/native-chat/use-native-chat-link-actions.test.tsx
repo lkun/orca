@@ -125,7 +125,7 @@ describe('native chat transcript links', () => {
     fireEvent.click(await screen.findByRole('link', { name: 'the PR' }))
 
     expect(screen.getByText('https://github.com/o/r/pull/1')).toBeTruthy()
-    expect(screen.getByText('Orca Browser')).toBeTruthy()
+    expect(screen.getByText('OCC Browser')).toBeTruthy()
     expect(screen.getByText('System Browser')).toBeTruthy()
     expect(mocks.openHttpLink).not.toHaveBeenCalled()
   })
@@ -170,7 +170,7 @@ describe('native chat transcript links', () => {
 
     fireEvent.click(await screen.findByRole('link', { name: 'the PR' }))
 
-    expect(screen.queryByText('Orca Browser')).toBeNull()
+    expect(screen.queryByText('OCC Browser')).toBeNull()
     expect(mocks.openHttpLink).toHaveBeenCalledWith(
       'https://github.com/o/r/pull/1',
       expect.objectContaining({ forceInApp: true })

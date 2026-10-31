@@ -60,7 +60,7 @@ function appendDiscoveredFiles(target: string[], source: readonly string[]): voi
 }
 
 export function getCodexSessionsDirectory(): string {
-  // The primary runtime uses an Orca-owned home regardless of ambient CODEX_HOME.
+  // The primary runtime uses an OCC-owned home regardless of ambient CODEX_HOME.
   return join(getOrcaManagedCodexHomePath(), 'sessions')
 }
 

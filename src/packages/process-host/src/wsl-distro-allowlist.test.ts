@@ -53,7 +53,7 @@ describe('internal WSL distro allowlist', () => {
   })
 
   it('allowlisted: lets every distro-targeting form through, case-insensitively', () => {
-    vi.stubEnv(WSL_DISTRO_ALLOWLIST_ENV, 'orca-test-a, Orca-Test-B')
+    vi.stubEnv(WSL_DISTRO_ALLOWLIST_ENV, 'orca-test-a, OCC-Test-B')
     for (const args of [
       ['-d', 'orca-test-a', '--exec', 'sh', '-c', 'echo -d Ubuntu'],
       ['--distribution', 'ORCA-TEST-B', '-u', 'root', '--cd', '~', '--exec', 'id'],

@@ -556,7 +556,7 @@ export class RelayObservability implements RelayRuntimeObserver {
   recordReadiness(observation: RelayReadinessObservation): void {
     this.write({
       severity: observation.ready && !observation.degraded ? 'INFO' : 'WARNING',
-      message: 'Orca Relay readiness check',
+      message: 'OCC Relay readiness check',
       event: 'orca_relay_readiness_check',
       metricVersion: 1,
       ...this.identity,
@@ -569,8 +569,8 @@ export class RelayObservability implements RelayRuntimeObserver {
     this.write({
       severity: event.grace === 'recovered' ? 'INFO' : 'WARNING',
       message: entered
-        ? 'Orca Relay readiness entered last-known-good grace'
-        : 'Orca Relay readiness left last-known-good grace',
+        ? 'OCC Relay readiness entered last-known-good grace'
+        : 'OCC Relay readiness left last-known-good grace',
       event: entered ? 'orca_relay_readiness_grace_entered' : 'orca_relay_readiness_grace_left',
       metricVersion: 1,
       ...this.identity,
@@ -694,7 +694,7 @@ export class RelayObservability implements RelayRuntimeObserver {
     this.eventLoop.reset()
     this.write({
       severity: 'INFO',
-      message: 'Orca Relay runtime metrics',
+      message: 'OCC Relay runtime metrics',
       event: 'orca_relay_runtime_metrics',
       metricVersion: 2,
       fixLevel: RELAY_FIX_LEVEL,

@@ -67,7 +67,7 @@ export function buildWslCodexLoginArgs(
     '  exit 127',
     'fi',
     `export CODEX_HOME=${quotePosixShell(linuxHomePath)}`,
-    // Avoid a second tab when Orca opens the link.
+    // Avoid a second tab when OCC opens the link.
     ...(options.orcaOpensSignInLink ? ['export BROWSER=true'] : []),
     'exec "$resolved" login'
   ].join('\n')

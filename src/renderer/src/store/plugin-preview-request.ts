@@ -34,7 +34,7 @@ export function requestPluginUpdateReview(updateReview: PluginUpdateReviewReques
   state.openSettingsPage()
 }
 
-/** An `orca://plugins/...` link: opens Settings → Plugins at that plugin; never installs. */
+/** An `occ://plugins/...` link: opens Settings → Plugins at that plugin; never installs. */
 export function openPluginInstallLink(raw: string): void {
   const link = parsePluginInstallLink(raw)
   if (!link) {

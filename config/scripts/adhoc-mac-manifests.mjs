@@ -7,7 +7,7 @@ function expectedNames(arch, version) {
   if (!['arm64', 'x64'].includes(arch) || !/^[0-9][0-9A-Za-z.+-]*$/.test(version)) {
     throw new Error('Invalid Mac architecture or version')
   }
-  return [`Orca-${version}${arch === 'arm64' ? '-arm64' : ''}-mac.zip`, `orca-macos-${arch}.dmg`]
+  return [`OCC-${version}${arch === 'arm64' ? '-arm64' : ''}-mac.zip`, `occ-macos-${arch}.dmg`]
 }
 
 export function validateManifest(manifest, arch, version) {

@@ -55,7 +55,7 @@ describe('legacy TUI identity admitted by the execution-host relay', () => {
     const { port, token } = server.getCoordinates()
     const response = await fetch(`http://127.0.0.1:${port}/hook/opencode`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+      headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
       body: JSON.stringify({
         paneKey,
         tabId: paneKey.split(':')[0],

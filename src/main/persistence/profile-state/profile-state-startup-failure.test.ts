@@ -16,7 +16,7 @@ describe('profile-state startup failure formatting', () => {
     const error = new ProfileStateDatabaseOpenError('newer-schema', 'Newer schema: 999')
     expect(profileStateStartupFailureClass(error)).toBe('newer-schema')
     const message = formatProfileStateStartupFailure(error)
-    expect(message).toContain('newer version of Orca')
+    expect(message).toContain('newer version of OCC')
     expect(message).not.toContain('rollback')
     expect(message).not.toContain('unreadable')
   })
@@ -44,7 +44,7 @@ describe('profile-state startup failure formatting', () => {
     )
 
     expect(message).toContain(
-      'Orca cannot safely choose a profile-state authority: both profile stores are present'
+      'OCC cannot safely choose a profile-state authority: both profile stores are present'
     )
     expect(message).toContain('neither is selected automatically')
     expect(message).toContain('orca profile state rollback --current-json')
@@ -84,13 +84,13 @@ describe('profile-state startup failure formatting', () => {
     )
     expect(profileStateStartupFailureClass(error)).toBe('writer-unavailable')
     expect(formatProfileStateStartupFailure(error)).toBe(
-      'Orca could not start profile persistence. Restart Orca; if the problem continues, repair or reinstall this build.'
+      'OCC could not start profile persistence. Restart OCC; if the problem continues, repair or reinstall this build.'
     )
   })
 
   it('reports an admission race as a conflicting writer', () => {
     const error = new ProfileStateRevisionConflictError(2, 3)
     expect(profileStateStartupFailureClass(error)).toBe('revision-conflict')
-    expect(formatProfileStateStartupFailure(error)).toContain('Close other Orca processes')
+    expect(formatProfileStateStartupFailure(error)).toContain('Close other OCC processes')
   })
 })

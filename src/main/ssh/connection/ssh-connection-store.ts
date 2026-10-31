@@ -323,7 +323,7 @@ export class SshConnectionStore {
           changed.push(updated)
         }
       } else if (routeDuplicates.has(alias)) {
-        // Another name for a machine already in Orca; inserting it would show its sessions twice.
+        // Another name for a machine already in OCC; inserting it would show its sessions twice.
         continue
       } else {
         const inserted: SshTarget = {
@@ -346,12 +346,12 @@ export function getRuntimeOwnedSshTargetId(runtimeId: string): string {
   return `${RUNTIME_OWNED_SSH_TARGET_ID_PREFIX}${runtimeId}`
 }
 
-/** Any target Orca created as an implementation detail; hidden from SSH-host surfaces. */
+/** Any target OCC created as an implementation detail; hidden from SSH-host surfaces. */
 export function isRuntimeOwnedSshTarget(target: SshTarget): boolean {
   return target.owner !== undefined
 }
 
-/** A host serving (or being set up for) a managed Orca server: visible, but never a direct relay. */
+/** A host serving (or being set up for) a managed OCC server: visible, but never a direct relay. */
 export function isManagedOrcadSshTarget(target: SshTarget): boolean {
   return target.orcadFence !== undefined || target.orcadProvisioning !== undefined
 }

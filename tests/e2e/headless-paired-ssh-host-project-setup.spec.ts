@@ -8,7 +8,7 @@ import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runti
 import { launchPairedWebClient } from './helpers/paired-electron-client'
 import { toSshExecutionHostId } from '../../src/shared/execution-host'
 
-const REFUSAL = "This Orca server can't add projects on its SSH hosts."
+const REFUSAL = "This OCC server can't add projects on its SSH hosts."
 
 test('a paired client refuses project setup on its server’s SSH host with a clear reason', async () => {
   // Boots a headless server and a paired Electron client before the refusal is observable.

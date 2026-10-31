@@ -32,7 +32,7 @@ const MATCHES_IN_LINE = 750
 /** Search runs on every keystroke on the renderer thread; this bound rejects visible freezes. */
 const FULL_SCAN_BUDGET_MS = 5_000
 
-// Use Orca’s decoration options to exercise highlight-all, the original crash entry point.
+// Use OCC’s decoration options to exercise highlight-all, the original crash entry point.
 const SEARCH_DECORATIONS = {
   matchBackground: '#5c4a00',
   matchBorder: '#5c4a00',

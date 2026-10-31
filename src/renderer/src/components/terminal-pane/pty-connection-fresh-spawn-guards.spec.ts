@@ -382,7 +382,7 @@ export function registerPtyConnectionFreshSpawnGuardsTests(): void {
 
       expect(deps.onPtyErrorRef.current).toHaveBeenCalledWith(
         1,
-        expect.stringContaining('Orca attempts background recovery for managed local and WSL homes')
+        expect.stringContaining('OCC attempts background recovery for managed local and WSL homes')
       )
     })
 

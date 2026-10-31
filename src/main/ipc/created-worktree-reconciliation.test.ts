@@ -55,7 +55,7 @@ describe('findCreatedWorktree', () => {
 
   it('keeps Windows drive, slash, and case normalization on the direct path', () => {
     const created = {
-      path: String.raw`C:\Users\Orca\feature`,
+      path: String.raw`C:\Users\OCC\feature`,
       branch: 'refs/heads/other'
     }
 

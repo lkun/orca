@@ -100,7 +100,7 @@ vi.mock('./MobilePageContent', () => ({
         Pair another device
       </button>
       <button type="button" onClick={() => props.handleConnectionModeChange('automatic')}>
-        Orca Relay
+        OCC Relay
       </button>
       <button type="button" onClick={() => props.handleConnectionModeChange('local-only')}>
         LAN
@@ -151,7 +151,7 @@ describe('MobilePage pairing connection mode', () => {
       available: true,
       qrDataUrl: 'data:image/png;base64,qr',
       qrSize: 218,
-      pairingUrl: 'orca://pair#automatic'
+      pairingUrl: 'occ://pair#automatic'
     })
     listNetworkInterfaces.mockReset().mockResolvedValue({ interfaces: [] })
     // Reset the shared device cache so prior tests cannot determine this test’s opening stage.
@@ -229,7 +229,7 @@ describe('MobilePage pairing connection mode', () => {
     resolveRotatedLocalQr?.({
       available: true,
       qrDataUrl: 'data:image/png;base64,local-qr',
-      pairingUrl: 'orca://pair#local'
+      pairingUrl: 'occ://pair#local'
     })
     await waitFor(() => expect(screen.getByTestId('pairing-qr')).toHaveTextContent('local-qr'))
   })
@@ -280,7 +280,7 @@ describe('MobilePage pairing connection mode', () => {
     await waitFor(() => expect(screen.getByTestId('pairing-qr')).toHaveTextContent('base64,qr'))
     getPairingQR.mockClear()
 
-    await user.click(screen.getByRole('button', { name: 'Orca Relay' }))
+    await user.click(screen.getByRole('button', { name: 'OCC Relay' }))
     await waitFor(() => expect(screen.getByTestId('mode')).toHaveTextContent('automatic'))
     await waitFor(() => expect(screen.getByTestId('pairing-qr')).toHaveTextContent('none'))
     await act(async () => {})
@@ -292,7 +292,7 @@ describe('MobilePage pairing connection mode', () => {
     mocks.storeState.orcaProfileAuthStatus = { state: 'local' }
     const user = userEvent.setup()
     await openPairingStep()
-    await user.click(screen.getByRole('button', { name: 'Orca Relay' }))
+    await user.click(screen.getByRole('button', { name: 'OCC Relay' }))
     await waitFor(() => expect(screen.getByTestId('pairing-qr')).toHaveTextContent('none'))
     getPairingQR.mockClear()
 
@@ -310,7 +310,7 @@ describe('MobilePage pairing connection mode', () => {
     await user.click(screen.getByRole('button', { name: 'Enter flow' }))
     await user.click(screen.getByRole('button', { name: 'Continue' }))
 
-    await user.click(screen.getByRole('button', { name: 'Orca Relay' }))
+    await user.click(screen.getByRole('button', { name: 'OCC Relay' }))
     await waitFor(() => expect(screen.getByTestId('pairing-qr')).toHaveTextContent('none'))
     getPairingQR.mockClear()
 
@@ -332,7 +332,7 @@ describe('MobilePage pairing connection mode', () => {
     resolveRelayQr?.({
       available: true,
       qrDataUrl: 'data:image/png;base64,qr',
-      pairingUrl: 'orca://pair#automatic'
+      pairingUrl: 'occ://pair#automatic'
     })
     await waitFor(() => expect(screen.getByTestId('pairing-qr')).toHaveTextContent('base64,qr'))
     expect(screen.getByTestId('mode')).toHaveTextContent('automatic')
@@ -355,7 +355,7 @@ describe('MobilePage pairing connection mode', () => {
       available: true,
       qrDataUrl: null,
       qrError: 'encoding_failed',
-      pairingUrl: 'orca://pair?code=copy-fallback',
+      pairingUrl: 'occ://pair?code=copy-fallback',
       endpoint: 'wss://host.example/large',
       connectionMode: 'automatic'
     })
@@ -386,7 +386,7 @@ describe('MobilePage pairing connection mode', () => {
     getPairingQR.mockResolvedValueOnce({
       available: true,
       qrDataUrl: 'data:image/png;base64,retried',
-      pairingUrl: 'orca://pair#retried',
+      pairingUrl: 'occ://pair#retried',
       endpoint: 'ws://host',
       connectionMode: 'automatic'
     })
@@ -428,7 +428,7 @@ describe('MobilePage pairing connection mode', () => {
     getPairingQR.mockResolvedValueOnce({
       available: true,
       qrDataUrl: 'data:image/png;base64,local',
-      pairingUrl: 'orca://pair#local',
+      pairingUrl: 'occ://pair#local',
       endpoint: 'ws://host',
       connectionMode: 'local-only'
     })
@@ -443,7 +443,7 @@ describe('MobilePage pairing connection mode', () => {
       resolveRetry?.({
         available: true,
         qrDataUrl: 'data:image/png;base64,stale-relay',
-        pairingUrl: 'orca://pair#stale-relay',
+        pairingUrl: 'occ://pair#stale-relay',
         endpoint: 'ws://relay',
         connectionMode: 'automatic'
       })
@@ -460,7 +460,7 @@ describe('MobilePage pairing connection mode', () => {
       available: true,
       qrDataUrl: null,
       qrError: 'encoding_failed',
-      pairingUrl: 'orca://pair?code=copy-fallback',
+      pairingUrl: 'occ://pair?code=copy-fallback',
       endpoint: 'wss://custom.example/large',
       connectionMode: 'automatic'
     })

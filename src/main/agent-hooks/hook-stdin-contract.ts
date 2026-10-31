@@ -109,9 +109,9 @@ export function buildPosixHookSpoolLines(source: string, eventNameVar?: string):
       ? `  case "\${${eventNameVar}:-}" in PreToolUse|PostToolUse|PostToolUseFailure) return 0 ;; esac`
       : '  case "$payload" in *\'"PreToolUse"\'*|*\'"PostToolUse"\'*|*\'"PostToolUseFailure"\'*) return 0 ;; esac',
     '  [ -n "${ORCA_AGENT_HOOK_ENDPOINT:-}" ] || return 0',
-    // Stale endpoint variables outside Orca must not accumulate unattributed spool records.
+    // Stale endpoint variables outside OCC must not accumulate unattributed spool records.
     '  [ -n "${ORCA_PANE_KEY:-}" ] || return 0',
-    // A stale variable must not create spool state for an absent Orca installation.
+    // A stale variable must not create spool state for an absent OCC installation.
     '  [ -r "$ORCA_AGENT_HOOK_ENDPOINT" ] || return 0',
     '  spool_base=${ORCA_AGENT_HOOK_ENDPOINT%/*}',
     '  spool_dir="$spool_base/spool"',
@@ -142,7 +142,7 @@ const WINDOWS_HOOK_ENVIRONMENT_VARS = [
   'ORCA_PANE_KEY'
 ] as const
 
-// Windows callers may leave stdin open outside Orca: guard first; POSIX must capture first to avoid EPIPE.
+// Windows callers may leave stdin open outside OCC: guard first; POSIX must capture first to avoid EPIPE.
 export function buildWindowsHookEnvironmentGuardLines(): string[] {
   return WINDOWS_HOOK_ENVIRONMENT_VARS.map((name) => `if "%${name}%"=="" exit /b 0`)
 }
@@ -152,7 +152,7 @@ export const WINDOWS_GIT_BASH_HOOK_ENVIRONMENT_GUARD = `if ${WINDOWS_HOOK_ENVIRO
   (name) => `[ -z "\${${name}-}" ]`
 ).join(' || ')}; then exit 0; fi`
 
-/** Check Orca context before any PowerShell ReadToEnd to avoid hanging on abandoned stdin. */
+/** Check OCC context before any PowerShell ReadToEnd to avoid hanging on abandoned stdin. */
 export const WINDOWS_POWERSHELL_HOOK_ENVIRONMENT_GUARD = `if (${WINDOWS_HOOK_ENVIRONMENT_VARS.map(
   (name) => `-not $env:${name}`
 ).join(' -or ')}) { exit 0 }`

@@ -11,7 +11,7 @@ const { turnedOnDarkBuildDefines } = createRequire(import.meta.url)('../dark-bui
 export const ORCAD_ENTRY_POINT = 'src/main/orcad/main.ts'
 export const ORCAD_LAUNCHER_ENTRY_POINT = 'src/main/orcad/launcher.ts'
 export const ORCAD_SERVER_BUILD_TARGET = 'node24'
-// Host entry points must load before Orca selects its bundled runtime.
+// Host entry points must load before OCC selects its bundled runtime.
 const ORCAD_COMPAT_BUILD_TARGET = 'node18'
 export const ORCAD_CHILD_ENTRY_POINTS = {
   watcher: 'src/main/ipc/filesystem/watcher-process/parcel-watcher-process-entry.ts',

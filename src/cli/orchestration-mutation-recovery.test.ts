@@ -46,7 +46,7 @@ describe('orchestration mutation recovery', () => {
     )
     expect((result.data as { nextSteps?: string[] }).nextSteps).toEqual([
       'Run orca orchestration worker-show --dispatch dispatch_1 --json before retrying.',
-      'After inspecting the Dispatch, if keyed recovery is still needed, run orca orchestration worker-start --task task_1 --retry-request request_1 from this same terminal. --retry-request reuses the same operation identity so Orca can replay, join, or safely recover it without starting a separate duplicate.'
+      'After inspecting the Dispatch, if keyed recovery is still needed, run orca orchestration worker-start --task task_1 --retry-request request_1 from this same terminal. --retry-request reuses the same operation identity so OCC can replay, join, or safely recover it without starting a separate duplicate.'
     ])
   })
 
@@ -109,7 +109,7 @@ describe('orchestration mutation recovery', () => {
         orchestrationRequestId: 'request_3',
         dispatchId: 'dispatch_3',
         originalCommand: [
-          'orca-dev',
+          'occ-dev',
           'orchestration',
           'worker-start',
           '--task',
@@ -121,8 +121,8 @@ describe('orchestration mutation recovery', () => {
     ) as RuntimeClientError
 
     expect((result.data as { nextSteps?: string[] }).nextSteps).toEqual([
-      'Run orca-dev orchestration worker-show --dispatch dispatch_3 --json before retrying.',
-      "After inspecting the Dispatch, if keyed recovery is still needed, run orca-dev orchestration worker-start --task 'task 3' --comment 'literal $(do-not-run)' --retry-request request_3 from this same terminal. --retry-request reuses the same operation identity so Orca can replay, join, or safely recover it without starting a separate duplicate."
+      'Run occ-dev orchestration worker-show --dispatch dispatch_3 --json before retrying.',
+      "After inspecting the Dispatch, if keyed recovery is still needed, run occ-dev orchestration worker-start --task 'task 3' --comment 'literal $(do-not-run)' --retry-request request_3 from this same terminal. --retry-request reuses the same operation identity so OCC can replay, join, or safely recover it without starting a separate duplicate."
     ])
     expect(result.message).toContain("'literal $(do-not-run)'")
   })
@@ -132,14 +132,14 @@ describe('orchestration mutation recovery', () => {
       new RuntimeClientError('runtime_timeout', 'request timed out', {
         orchestrationRequestId: 'request_4',
         originalCommand:
-          'orca-ide orchestration worker-stop --dispatch dispatch_4 --comment "quoted value"'
+          'occ-ide orchestration worker-stop --dispatch dispatch_4 --comment "quoted value"'
       })
     ) as RuntimeClientError
 
     expect(
       (result.data as { recovery?: { retryCommand?: string[] } }).recovery?.retryCommand
     ).toEqual([
-      'orca-ide',
+      'occ-ide',
       'orchestration',
       'worker-stop',
       '--dispatch',
@@ -217,12 +217,12 @@ describe('orchestration mutation recovery', () => {
     expect(
       renderResolvedOrchestrationCommand(
         'orca orchestration worker-show --dispatch ctx_1 --json',
-        'C:\\Program Files\\Orca\\orca-ide.cmd',
+        'C:\\Program Files\\OCC\\occ-ide.cmd',
         'win32',
         { ComSpec: 'C:\\Windows\\System32\\cmd.exe' }
       )
     ).toBe(
-      '"C:\\Program Files\\Orca\\orca-ide.cmd" "orchestration" "worker-show" "--dispatch" "ctx_1" "--json"'
+      '"C:\\Program Files\\OCC\\occ-ide.cmd" "orchestration" "worker-show" "--dispatch" "ctx_1" "--json"'
     )
   })
 

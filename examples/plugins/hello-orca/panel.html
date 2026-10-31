@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <style>
-      /* The host injects Orca design tokens as CSS custom properties. */
+      /* The host injects OCC design tokens as CSS custom properties. */
       body {
         margin: 0;
         padding: 12px;
@@ -36,14 +36,14 @@
     </style>
   </head>
   <body>
-    <h1>Hello Orca 👋</h1>
+    <h1>Hello OCC 👋</h1>
     <p>Panel + worker command + events, gated by consent.</p>
     <button id="ctx">Read workspace context</button>
     <button id="notify">Show a notification</button>
     <p class="status" id="status"></p>
     <script>
       'use strict'
-      // Orca injects a frozen window.orca before this script runs.
+      // OCC injects a frozen window.orca before this script runs.
       var statusEl = document.getElementById('status')
 
       document.getElementById('ctx').addEventListener('click', function () {

@@ -35,7 +35,7 @@ const CASES = [
   {
     name: 'a key the host rejects',
     reason: /authentication methods failed/i,
-    nextStep: 'The host didn’t accept any sign-in Orca offered',
+    nextStep: 'The host didn’t accept any sign-in OCC offered',
     refused: false
   }
 ] as const

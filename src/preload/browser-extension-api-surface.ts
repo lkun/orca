@@ -34,7 +34,7 @@ export type BrowserExtensionSurfaceNamespace = {
 
 export type BrowserExtensionSurface = Record<string, BrowserExtensionSurfaceNamespace>
 
-// Orca owns all action state (Electron's built-ins keep none main can read), so nothing runs natively.
+// OCC owns all action state (Electron's built-ins keep none main can read), so nothing runs natively.
 const ACTION_SURFACE: BrowserExtensionSurfaceNamespace = {
   methods: {
     setTitle: {},
@@ -102,7 +102,7 @@ export const BROWSER_EXTENSION_API_SURFACE: BrowserExtensionSurface = {
   },
   tabs: {
     methods: {
-      // Electron answers url/title (with its permission checks); Orca adds window and activation.
+      // Electron answers url/title (with its permission checks); OCC adds window and activation.
       query: {
         native: {
           omitKeys: [
@@ -151,7 +151,7 @@ export const BROWSER_EXTENSION_API_SURFACE: BrowserExtensionSurface = {
       'onCreatedNavigationTarget'
     ]
   },
-  // Why Orca's events: Electron never fires these, and a native one would double-fire if it starts.
+  // Why OCC's events: Electron never fires these, and a native one would double-fire if it starts.
   runtime: {
     methods: { openOptionsPage: {} },
     events: ['onInstalled', 'onStartup']

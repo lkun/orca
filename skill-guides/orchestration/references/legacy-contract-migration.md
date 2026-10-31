@@ -11,4 +11,4 @@ ORCA orchestration check --run <adopted_run_id> --json
 ```
 
 Never take over from an active coordinator, and never start a second editor
-just because Orca updated.
+just because OCC updated.

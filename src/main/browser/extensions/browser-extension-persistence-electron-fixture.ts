@@ -32,7 +32,7 @@ if (
 const fixtureStatusPath = statusPath
 const fixtureExtensionDirectory = extensionDirectory
 
-// Orca's preflight registers this before ready; the worker shim calls main through it.
+// OCC's preflight registers this before ready; the worker shim calls main through it.
 protocol.registerSchemesAsPrivileged([BROWSER_EXTENSION_API_CUSTOM_SCHEME])
 
 const presentationCalls: string[] = []
@@ -88,7 +88,7 @@ function capture(message: string): void {
   }
 }
 
-/** Orca's main window with one registered tab on `url`, made active the way the renderer does. */
+/** OCC's main window with one registered tab on `url`, made active the way the renderer does. */
 async function openTab(url: string): Promise<Electron.WebContents> {
   const host = new BrowserWindow({
     show: false,
@@ -155,7 +155,7 @@ async function run(): Promise<void> {
   } as unknown as Electron.ContextMenuParams
   status.menu = buildBrowserExtensionPageContextMenu(guest, params)?.groups ?? null
   writeStatus()
-  // An extension command, then one Orca owns (Mod+Shift+F), typed into the tab.
+  // An extension command, then one OCC owns (Mod+Shift+F), typed into the tab.
   const mod = process.platform === 'darwin' ? 'meta' : 'control'
   for (const keyCode of ['L', 'F']) {
     guest.sendInputEvent({ type: 'keyDown', keyCode, modifiers: [mod, 'shift'] })

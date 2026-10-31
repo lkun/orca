@@ -48,7 +48,7 @@ const settings = {
   defaultTuiAgent: null
 }
 
-/** The launched CLI name is the whole decision: `orca` is the relay shim, `orca-ide` is local. */
+/** The launched CLI name is the whole decision: `orca` is the relay shim, `occ-ide` is local. */
 function launchCliNameFor(repo: Repo): string {
   return buildWorktreeStartupForAgent({
     repo,
@@ -68,7 +68,7 @@ describe('buildWorktreeStartupForAgent host resolution', () => {
 
   it('keeps the Linux rename for a local row carrying a stale connection', () => {
     expect(launchCliNameFor(makeRepo({ connectionId: 'm4air', executionHostId: 'local' }))).toBe(
-      'orca-ide'
+      'occ-ide'
     )
   })
 

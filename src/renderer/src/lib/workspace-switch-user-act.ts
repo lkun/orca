@@ -1,6 +1,6 @@
 /**
  * The user's own switches to a workspace (opening it, picking one of its tabs) in this window. Only
- * these may wake or start a stopped WSL distro (E9); launch restore, a reload, remounts and Orca's own
+ * these may wake or start a stopped WSL distro (E9); launch restore, a reload, remounts and OCC's own
  * `setActiveWorktree` never note one. Keys are store worktree ids (`folder:<id>` for folders).
  */
 const lastSwitchAt = new Map<string, number>()

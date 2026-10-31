@@ -45,7 +45,7 @@ export function setTerminalScopesForTest(
   active = scopes ? { scopes, log } : null
 }
 
-/** Match Orca’s exact wrapper paths so an unrelated user systemd-run is not hidden. */
+/** Match OCC’s exact wrapper paths so an unrelated user systemd-run is not hidden. */
 export function isTerminalScopeWrapper(processName: string): boolean {
   return (
     active !== null &&

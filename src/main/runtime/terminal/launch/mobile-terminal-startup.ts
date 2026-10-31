@@ -144,7 +144,7 @@ export abstract class OrcaRuntimeWithResolveMobileSessionTerminalCommand extends
           // Quote for the execution host, even when the mobile client runs another OS.
           platform: launchRuntime.platform,
           shell: agentLaunchQuotingShell(launchRuntime),
-          // SSH uses relay-shim orca, never the local Linux orca-ide rename.
+          // SSH uses relay-shim orca, never the local Linux occ-ide rename.
           isRemote: Boolean(workspace.connectionId)
         })
       ),

@@ -92,7 +92,7 @@ jobs:
         run: |
           mkdir -p artifacts
           node tests/tools/win-update-e2e/serve-switch.mjs \
-            --installer dist/orca-windows-setup.exe \
+            --installer dist/occ-windows-setup.exe \
             --template out/orcad-template 2>&1 | tee artifacts/serve-switch.log
           exit "${PIPESTATUS[0]}"
 

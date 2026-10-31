@@ -31,7 +31,7 @@ export async function refreshCodexRuntimeUserHooksExclusively(
   getStatus: (runtimeHomePath: string) => AgentHookInstallStatus
 ): Promise<AgentHookInstallStatus> {
   const configPath = getConfigPath(runtimeHomePath)
-  // Save in-Orca approvals before rewriting the runtime positions they are keyed against.
+  // Save in-OCC approvals before rewriting the runtime positions they are keyed against.
   promoteCodexRuntimeHookApprovalsToSystem(runtimeHomePath)
   const config = readHooksJson(configPath)
   if (!config) {
@@ -92,7 +92,7 @@ export async function removeCodexHooksExclusively(
 ): Promise<AgentHookInstallStatus> {
   const configPath = getConfigPath()
   if (existsSync(configPath)) {
-    // Rebuild first to move user approvals back from slots shifted by Orca's group.
+    // Rebuild first to move user approvals back from slots shifted by OCC's group.
     await refreshCodexRuntimeUserHooksExclusively(getOrcaManagedCodexHomePath(), getStatus)
   }
   const configExists = existsSync(configPath)

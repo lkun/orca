@@ -32,7 +32,7 @@ export const AGENT_OUTPUT_FAILURE_COPY: Record<
   kimiUnreadableOutput: (values) =>
     translate(
       'sourceControl.textGenerationFailure.kimiUnreadableOutput',
-      "Kimi returned output Orca couldn't read. Try again.",
+      "Kimi returned output OCC couldn't read. Try again.",
       values
     ),
   kimiSessionOccupied: (values) =>

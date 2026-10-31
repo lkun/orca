@@ -111,7 +111,7 @@ export function spawnDaemonChildProcess(
       ...childOptions,
       modulePath: forkEntryPath,
       args: scriptArgs,
-      // Keep the byte-identical Orca.exe outside the updater's kill zone.
+      // Keep the byte-identical OCC.exe outside the updater's kill zone.
       ...(relocatedExecPath ? { execPath: relocatedExecPath } : {}),
       execArgv: [...process.execArgv, ...DAEMON_V8_FLAGS],
       env: daemonEnv

@@ -26,10 +26,10 @@ import {
   releaseModuleExport
 } from './release-checkout'
 
-// Newer journals must yield the newer-Orca refusal to old clients, never damage wording.
+// Newer journals must yield the newer-OCC refusal to old clients, never damage wording.
 // Unknown bodies remain writable here; also probe the older host’s handling of those rows.
 const SUITE_TIMEOUT_MS = 180_000
-// The last release that does not know the newer-Orca reason: its words fall back to the code's.
+// The last release that does not know the newer-OCC reason: its words fall back to the code's.
 const BEFORE_NEWER_REASON_REF = 'v1.4.218'
 // Pin a main build sharing this database/schema for writable downgrade; move to the first release that ships it.
 const WRITABLE_BASELINE_REF = '3727100cc9dbcea6201f8a3e506676a3c4b53b18'
@@ -79,7 +79,7 @@ const NEWER_NESTED_LITERAL = {
   subject: { kind: 'diff', path: 'a.ts' }
 }
 
-/** A row of a kind this build does not know: the journal's open is refused as a newer Orca's. */
+/** A row of a kind this build does not know: the journal's open is refused as a newer OCC's. */
 const NEWER_ROW_KIND = { kind: 'future-mark' }
 
 // Write two current journal items, then a newer body or an unknown closed row.
@@ -124,7 +124,7 @@ async function storedRows(): Promise<string[]> {
   return rows.map((row) => row.rowJson)
 }
 
-/** This host's refusal of a newer Orca's chat, as `history` and `subscribe` raise it. */
+/** This host's refusal of a newer OCC's chat, as `history` and `subscribe` raise it. */
 async function newerChatRefusal(): Promise<AgentSessionRefusalReference> {
   await journalWithNewerRow()
   const failure = await journals.open({ identity: IDENTITY, stateDirectory: directory }).then(
@@ -156,7 +156,7 @@ async function releasedReader(ref: string) {
   return { words, isFinal }
 }
 
-describe('a chat a newer Orca saved, across versions', () => {
+describe('a chat a newer OCC saved, across versions', () => {
   it(
     'old client against new host: a release before the reason words it as an unreadable history and keeps retrying',
     async () => {

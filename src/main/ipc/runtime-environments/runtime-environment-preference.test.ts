@@ -214,7 +214,7 @@ describe('Active Server after a saved host is removed', () => {
   it('distinguishes a new profile from an unavailable registry for repair reads', () => {
     expect(listEnvironments(userDataPath)).toEqual([])
     expect(() => listEnvironments(userDataPath, { requireStoreFile: true })).toThrow(
-      'Could not read Orca environments'
+      'Could not read OCC environments'
     )
   })
 })

@@ -17,7 +17,7 @@ export function observeJournalProviderActivity(
     return
   }
   const identity = parseAgentJournalItemKey(itemId)
-  // Codex detail rows use Orca IDs; fallback rows already identify their provider.
+  // Codex detail rows use OCC IDs; fallback rows already identify their provider.
   if (
     !identity ||
     (identity.provider === 'orca' &&

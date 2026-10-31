@@ -121,7 +121,7 @@ describe('host-driven worktree sleep keeps the slept agent resumable', () => {
     expect(spawnCommand(spawn, 1)).not.toContain('--dangerously-skip-permissions')
   })
 
-  it('resumes an Orca-launched session with the recipe its launch recorded', async () => {
+  it('resumes an OCC-launched session with the recipe its launch recorded', async () => {
     const { runtime, spawn, reportAgent } = makeRuntime(null)
     await userActivate(runtime)
     reportAgent()

@@ -50,7 +50,7 @@ describe('legacy TUI identity admitted by the canonical hook server', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+        'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
       },
       body: JSON.stringify({
         paneKey,
@@ -237,7 +237,7 @@ describe('legacy TUI identity admitted by the canonical hook server', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': ORCA_AGENT_HOOK_TOKEN
+          'X-OCC-Agent-Hook-Token': ORCA_AGENT_HOOK_TOKEN
         },
         body: JSON.stringify({
           paneKey: PANE_A,

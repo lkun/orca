@@ -98,7 +98,7 @@ export function AgentPermissionsSetting(props: AgentPermissionsSettingProps): Re
           <p className="text-xs text-muted-foreground">
             {translate(
               'settings.agents.autoUnsupported',
-              'Approve for me needs a newer Orca on this host.'
+              'Approve for me needs a newer OCC on this host.'
             )}
           </p>
         ) : null}

@@ -29,18 +29,18 @@ import {
 } from './browser-extension-storage-sync'
 
 /**
- * Orca's API shim for extension service workers, bundled into one standalone script that Orca's
+ * OCC's API shim for extension service workers, bundled into one standalone script that OCC's
  * background wrapper loads before the extension's own worker (importScripts or a side-effect
  * import). It installs the same `chrome.*` additions as the page preload, over fetch instead of IPC.
  */
 
 const FAILED: BrowserExtensionInvokeReply = {
   ok: false,
-  error: 'Orca could not handle this extension call'
+  error: 'OCC could not handle this extension call'
 }
 const RECONNECT_DELAY_MS = 1000
 
-// Why captured now: extension code that wraps fetch later must not see or break Orca's calls.
+// Why captured now: extension code that wraps fetch later must not see or break OCC's calls.
 const nativeFetch = globalThis.fetch.bind(globalThis)
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>

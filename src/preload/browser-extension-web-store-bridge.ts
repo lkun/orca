@@ -17,7 +17,7 @@ export const PRELOAD_WEB_STORE_EVENT_CHANNEL = 'browserExtension:webStoreEvent'
 
 /**
  * The store page's "Add to Chrome" bridge. Main re-checks the sender (exact origin, top frame,
- * Orca browser tab in a local profile) on every call; this side only relays.
+ * OCC browser tab in a local profile) on every call; this side only relays.
  */
 export function installChromeWebStoreBridge(): void {
   // Why: raw require keeps the sandboxed preload standalone in the main-process CJS build.
@@ -41,7 +41,7 @@ export function installChromeWebStoreBridge(): void {
         )
         return reply
       } catch {
-        return { error: 'Orca could not handle this request' }
+        return { error: 'OCC could not handle this request' }
       }
     },
     onEvent: (handler) => {

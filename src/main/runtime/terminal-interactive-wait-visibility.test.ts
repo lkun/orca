@@ -240,7 +240,7 @@ describe('Interactive wait visibility and terminal admission', () => {
 
     describe('prompts the runtime already matched but never surfaced', () => {
       it('surfaces a startup trust screen on the pane, not only on terminal wait', async () => {
-        // A pane on its trust screen still wears Orca's tab title; the agent has set none.
+        // A pane on its trust screen still wears OCC's tab title; the agent has set none.
         const { runtime, handle } = await createPane({
           paneTitle: 'sta4513-claude',
           foregroundProcess: 'claude',

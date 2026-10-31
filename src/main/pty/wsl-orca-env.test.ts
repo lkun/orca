@@ -27,7 +27,7 @@ describe('addOrcaWslInteropEnv', () => {
     }
   )
 
-  it('marks the Orca terminal handle for Windows to WSL env import', () => {
+  it('marks the OCC terminal handle for Windows to WSL env import', () => {
     const env: Record<string, string> = { ORCA_TERMINAL_HANDLE: 'term_wsl' }
 
     addOrcaWslInteropEnv(env)
@@ -77,12 +77,12 @@ describe('addOrcaWslInteropEnv', () => {
   it('marks OMP status and hook env for Windows to WSL import', () => {
     const env: Record<string, string> = {
       ORCA_TERMINAL_HANDLE: 'term_wsl',
-      ORCA_USER_DATA_PATH: 'C:\\Users\\jin\\AppData\\Roaming\\Orca',
-      ORCA_CLI_COMMAND: 'orca-ide',
-      ORCA_WSL_CLI_DIR: 'C:\\Users\\jin\\AppData\\Roaming\\Orca\\wsl-managed-cli\\hash',
-      ORCA_CODEX_LAUNCH_PREFLIGHT: 'C:\\Program Files\\Orca\\resources\\bin\\orca.exe',
+      ORCA_USER_DATA_PATH: 'C:\\Users\\jin\\AppData\\Roaming\\OCC',
+      ORCA_CLI_COMMAND: 'occ-ide',
+      ORCA_WSL_CLI_DIR: 'C:\\Users\\jin\\AppData\\Roaming\\OCC\\wsl-managed-cli\\hash',
+      ORCA_CODEX_LAUNCH_PREFLIGHT: 'C:\\Program Files\\OCC\\resources\\bin\\orca.exe',
       ORCA_CODEX_ISOLATE: '0',
-      ORCA_OMP_FRESH_CONFIG: 'C:\\Orca\\fresh-session.yml',
+      ORCA_OMP_FRESH_CONFIG: 'C:\\OCC\\fresh-session.yml',
       ORCA_OMP_STATUS_EXTENSION: 'C:\\Users\\jin\\.omp\\agent\\extensions\\orca-agent-status.ts',
       ORCA_PRIME_AGENT_STATUS_EXTENSION: 'C:\\stale\\orca-agent-status.ts',
       ORCA_PANE_KEY: 'tab-1:leaf-1',
@@ -170,7 +170,7 @@ describe('addOrcaWslInteropEnv', () => {
 
   it('path-translates a Windows hook endpoint but passes a guest-side one untouched', () => {
     const windowsEnv: Record<string, string> = {
-      ORCA_AGENT_HOOK_ENDPOINT: 'C:\\Users\\jin\\AppData\\Roaming\\Orca\\agent-hooks\\endpoint.cmd'
+      ORCA_AGENT_HOOK_ENDPOINT: 'C:\\Users\\jin\\AppData\\Roaming\\OCC\\agent-hooks\\endpoint.cmd'
     }
     addOrcaWslInteropEnv(windowsEnv)
     expect(windowsEnv.WSLENV).toContain('ORCA_AGENT_HOOK_ENDPOINT/p')
@@ -288,8 +288,8 @@ describe('addOrcaWslInteropEnv', () => {
   it('never crosses a Windows OpenCode config dir into the guest', () => {
     // Windows overlays can leak through inherited relay/daemon env; never translate them into guest OpenCode config roots.
     const env: Record<string, string> = {
-      OPENCODE_CONFIG_DIR: 'C:\\Users\\jin\\AppData\\Roaming\\Orca\\opencode-overlays\\abc',
-      ORCA_OPENCODE_CONFIG_DIR: 'C:\\Users\\jin\\AppData\\Roaming\\Orca\\opencode-overlays\\abc'
+      OPENCODE_CONFIG_DIR: 'C:\\Users\\jin\\AppData\\Roaming\\OCC\\opencode-overlays\\abc',
+      ORCA_OPENCODE_CONFIG_DIR: 'C:\\Users\\jin\\AppData\\Roaming\\OCC\\opencode-overlays\\abc'
     }
     addOrcaWslInteropEnv(env)
     expect(env.WSLENV).not.toContain('OPENCODE_CONFIG_DIR')

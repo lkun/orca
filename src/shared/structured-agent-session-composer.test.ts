@@ -168,7 +168,7 @@ describe('agent-implemented commands pass through to the agent', () => {
         sessionCommands
       })
     ).toEqual(PASSED_THROUGH)
-    // Orca still runs its own commands even when the session reports them.
+    // OCC still runs its own commands even when the session reports them.
     expect(isStructuredAgentSessionComposerCommand('/compact', 'omp', sessionCommands)).toBe(true)
   })
 

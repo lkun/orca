@@ -6,10 +6,10 @@ import {
 } from './live-remote-freeze-rpc.mjs'
 
 describe('live remote freeze RPC', () => {
-  it('resolves the Orca CLI for managed, dev, Linux, and default runtimes', () => {
+  it('resolves the OCC CLI for managed, dev, Linux, and default runtimes', () => {
     expect(resolveOrcaCliCommand({ env: { ORCA_CLI_COMMAND: 'custom-orca' } })).toBe('custom-orca')
-    expect(resolveOrcaCliCommand({ env: { ORCA_DEV_REPO_ROOT: '/repo' } })).toBe('orca-dev')
-    expect(resolveOrcaCliCommand({ env: {}, platform: 'linux' })).toBe('orca-ide')
+    expect(resolveOrcaCliCommand({ env: { ORCA_DEV_REPO_ROOT: '/repo' } })).toBe('occ-dev')
+    expect(resolveOrcaCliCommand({ env: {}, platform: 'linux' })).toBe('occ-ide')
     expect(resolveOrcaCliCommand({ env: {}, platform: 'win32' })).toBe('orca')
   })
 
@@ -17,7 +17,7 @@ describe('live remote freeze RPC', () => {
     const invocation = resolveOrcaCliInvocation({
       env: {
         APPDATA: 'C:\\Users\\dev\\AppData\\Roaming',
-        ORCA_CLI_COMMAND: 'C:\\repo\\out\\bin\\orca-dev.cmd',
+        ORCA_CLI_COMMAND: 'C:\\repo\\out\\bin\\occ-dev.cmd',
         ORCA_DEV_REPO_ROOT: 'C:\\repo'
       },
       platform: 'win32',
@@ -28,7 +28,7 @@ describe('live remote freeze RPC', () => {
       command: 'C:\\Program Files\\nodejs\\node.exe',
       prefixArgs: ['C:\\repo\\out\\cli\\index.js'],
       env: {
-        ORCA_USER_DATA_PATH: 'C:\\Users\\dev\\AppData\\Roaming\\orca-dev',
+        ORCA_USER_DATA_PATH: 'C:\\Users\\dev\\AppData\\Roaming\\occ-dev',
         ORCA_DEV_CLI_INVOCATION: '1',
         ORCA_APP_EXECUTABLE: 'C:\\repo\\node_modules\\electron\\dist\\electron.exe',
         ORCA_APP_EXECUTABLE_NEEDS_APP_ROOT: '1'

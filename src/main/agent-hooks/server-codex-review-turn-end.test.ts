@@ -60,7 +60,7 @@ describe('Codex turn completion without Stop', () => {
           headers: {
             'Content-Type': 'application/json',
             Connection: 'close',
-            'X-Orca-Agent-Hook-Token': coordinates.token
+            'X-OCC-Agent-Hook-Token': coordinates.token
           },
           body: JSON.stringify(body)
         })

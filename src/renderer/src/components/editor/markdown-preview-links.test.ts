@@ -164,7 +164,7 @@ describe('resolveMarkdownPreviewHttpOpenOptions', () => {
     ).toEqual({ worktreeId: 'wt-1', modifierHeld: true, sourceOwner: { kind: 'local' } })
   })
 
-  it('routes a plain Cmd-click through the worktree so it can open in Orca', () => {
+  it('routes a plain Cmd-click through the worktree so it can open in OCC', () => {
     expect(
       resolveMarkdownPreviewHttpOpenOptions(
         { metaKey: true, ctrlKey: false, shiftKey: false },

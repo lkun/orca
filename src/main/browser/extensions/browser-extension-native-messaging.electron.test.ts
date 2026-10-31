@@ -25,7 +25,7 @@ import { resolveElectronProbeLaunch } from '../electron-probe-display-launch'
 
 vi.setConfig({ testTimeout: 60_000, expect: { poll: { timeout: 45_000, interval: 200 } } })
 
-// A Chrome-style host: length-prefixed JSON both ways. It ignores stdin closing, so only Orca
+// A Chrome-style host: length-prefixed JSON both ways. It ignores stdin closing, so only OCC
 // killing it ends it.
 const ECHO_HOST = `
 const le = require('os').endianness() === 'LE';
@@ -157,7 +157,7 @@ beforeAll(async () => {
     join(extensionDir, 'manifest.json'),
     JSON.stringify({
       manifest_version: 3,
-      name: 'Orca native messaging probe',
+      name: 'OCC native messaging probe',
       version: '1.0.0',
       permissions: ['nativeMessaging'],
       background: { service_worker: 'worker.js' }
@@ -278,7 +278,7 @@ describe('chrome.runtime native messaging in a real Electron session', () => {
     expect(readStatus().presentationCalls).toEqual([])
   })
 
-  it('kills a host whose port is still open when Orca quits', async () => {
+  it('kills a host whose port is still open when OCC quits', async () => {
     await expect.poll(() => readStatus().lingering).toBeDefined()
     const pid = readStatus().lingering?.message?.pid ?? 0
     expect(isRunning(pid)).toBe(true)

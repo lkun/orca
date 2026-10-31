@@ -13,7 +13,7 @@ afterEach(() => {
   vi.resetModules()
 })
 
-/** One launch of Orca as the given Orca profile, with fresh store singletons. */
+/** One launch of OCC as the given OCC profile, with fresh store singletons. */
 async function openStoresAs(orcaProfileId: string) {
   const { configureBrowserExtensionProfileDataDirectory } =
     await import('./browser-extension-profile-data-directory')
@@ -28,8 +28,8 @@ async function openStoresAs(orcaProfileId: string) {
   return { sync, state, dnr }
 }
 
-describe('browser extension data per Orca profile', () => {
-  it('keeps one Orca profile’s "default" browser profile data from another', async () => {
+describe('browser extension data per OCC profile', () => {
+  it('keeps one OCC profile’s "default" browser profile data from another', async () => {
     const personal = await openStoresAs('local-default')
     personal.sync.write('default', EXTENSION, { token: 'personal-secret' })
     personal.state.update('default', EXTENSION, (current) => ({

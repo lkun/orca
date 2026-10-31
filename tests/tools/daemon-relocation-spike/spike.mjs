@@ -1,4 +1,4 @@
-// Find minimal copied run-as-node Orca files for real ConPTY without install-dir handles; Windows packaged build required.
+// Find minimal copied run-as-node OCC files for real ConPTY without install-dir handles; Windows packaged build required.
 // --selftest validates pure logic anywhere; see README.md.
 
 import { randomUUID } from 'node:crypto'

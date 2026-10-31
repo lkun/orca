@@ -90,7 +90,7 @@ async function stillRunning(
       return running
     }
   }
-  throw new Error('codex app-server listed more background terminals than Orca reads')
+  throw new Error('codex app-server listed more background terminals than OCC reads')
 }
 
 /** Confirm termination against each thread's list; request failures throw unless a survivor is confirmed. */

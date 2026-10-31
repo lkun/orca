@@ -84,7 +84,7 @@ describe('new profile consent seeding', () => {
   it('refuses an incapable runtime before admission or profile creation', () => {
     vi.spyOn(database, 'isProfileStateSqliteAvailable').mockReturnValue(false)
     expect(() => seedNewOrcaProfileTelemetryConsent(profileId, telemetry, root)).toThrow(
-      'bundled Orca runtime'
+      'bundled OCC runtime'
     )
     expect(existsSync(join(root, '.profile-state-access'))).toBe(false)
     expect(existsSync(join(root, 'profiles'))).toBe(false)

@@ -1,7 +1,7 @@
 /** Shared WSL guest/ripgrep artifact names. Keep erasable-only TypeScript: Node build-wsl-guest.mjs imports via type stripping,
  * which rejects enums, namespaces and parameter properties. */
 
-/** Every host platform Orca bundles programs for. */
+/** Every host platform OCC bundles programs for. */
 export const REMOTE_BUNDLE_PLATFORMS = [
   'linux-x64',
   'linux-arm64',

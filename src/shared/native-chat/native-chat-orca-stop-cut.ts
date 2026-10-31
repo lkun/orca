@@ -1,4 +1,4 @@
-// Derive Orca-stop cuts from the journal for Continue; never store them. Host rechecks under the session lock before sending.
+// Derive OCC-stop cuts from the journal for Continue; never store them. Host rechecks under the session lock before sending.
 
 import {
   readAgentSessionOrcaStop,

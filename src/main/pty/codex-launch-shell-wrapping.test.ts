@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { shouldUseShellReadyStartupDelivery } from '../../shared/codex-startup-delivery'
 import { selectShellStartupFeatures } from '../shell-startup-features'
 
-// Orca-launched Codex needs shell wrapping to receive --no-daemon.
+// OCC-launched Codex needs shell wrapping to receive --no-daemon.
 const COMMAND = "codex 'fix the bug'"
 const NO_DAEMON = 'set -- --no-daemon "$@"'
 const FISH_NO_DAEMON = 'set argv --no-daemon $argv'
@@ -32,7 +32,7 @@ function wrapperText(config: { args: string[] | null; env: Record<string, string
     : (config.args ?? []).join('\n')
 }
 
-describe.skipIf(process.platform === 'win32')('Orca Codex launch shells carry the wrapper', () => {
+describe.skipIf(process.platform === 'win32')('OCC Codex launch shells carry the wrapper', () => {
   let userData: string
   const original = process.env.ORCA_USER_DATA_PATH
 

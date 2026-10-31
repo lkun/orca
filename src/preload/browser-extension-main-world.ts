@@ -22,7 +22,7 @@ type ExtensionCallable = (...args: unknown[]) => unknown
 /**
  * Pages run it through contextBridge.executeInMainWorld, which serializes the function: it must
  * not reference anything outside its own body (a test enforces this). Workers run it directly
- * from Orca's worker shim.
+ * from OCC's worker shim.
  *
  * Adds the surface's methods and events to `chrome`, mirrors them onto `browser`, and accepts both
  * callback and promise calls, setting chrome.runtime.lastError for failed callback calls.

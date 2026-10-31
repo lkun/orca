@@ -95,7 +95,7 @@ test.describe('File Open & Markdown Preview', () => {
 
     // Assert the file’s real heading so a blank editor cannot pass via store state.
     const expectedHeading = clickedFile?.endsWith('README.md')
-      ? /Orca E2E Test Repo/i
+      ? /OCC E2E Test Repo/i
       : /CLAUDE\.md/i
     // Allow cold EditorPanel → Markdown chunk loading and ProseMirror boot before the heading paints.
     await expect(orcaPage.getByRole('heading', { name: expectedHeading, level: 1 })).toBeVisible({

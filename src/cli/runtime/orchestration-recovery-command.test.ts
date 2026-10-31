@@ -6,10 +6,10 @@ import {
 
 describe('orchestration recovery command identity', () => {
   it.each([
-    ['configured dev', { ORCA_CLI_COMMAND: 'orca-dev' }, 'darwin', 'orca-dev'],
-    ['configured WSL', { ORCA_CLI_COMMAND: 'orca-ide' }, 'linux', 'orca-ide'],
-    ['dev checkout', { ORCA_DEV_REPO_ROOT: '/repo' }, 'darwin', 'orca-dev'],
-    ['packaged Linux', {}, 'linux', 'orca-ide'],
+    ['configured dev', { ORCA_CLI_COMMAND: 'occ-dev' }, 'darwin', 'occ-dev'],
+    ['configured WSL', { ORCA_CLI_COMMAND: 'occ-ide' }, 'linux', 'occ-ide'],
+    ['dev checkout', { ORCA_DEV_REPO_ROOT: '/repo' }, 'darwin', 'occ-dev'],
+    ['packaged Linux', {}, 'linux', 'occ-ide'],
     ['local macOS', {}, 'darwin', 'orca'],
     ['local Windows', {}, 'win32', 'orca']
   ] as const)('resolves the %s CLI identity', (_name, env, platform, expected) => {
@@ -49,7 +49,7 @@ describe('orchestration recovery command identity', () => {
       buildOrchestrationRecoveryCommand(
         'orchestration.workerStart',
         { task: 'task_1' },
-        'orca-dev',
+        'occ-dev',
         [
           'orchestration',
           'worker-start',
@@ -61,7 +61,7 @@ describe('orchestration recovery command identity', () => {
         ]
       )
     ).toEqual([
-      'orca-dev',
+      'occ-dev',
       'orchestration',
       'worker-start',
       '--task',
@@ -106,10 +106,10 @@ describe('orchestration recovery command identity', () => {
 
   it('supports the explicit executable-first form', () => {
     expect(
-      buildOrchestrationRecoveryCommand('orca-ide', 'orchestration.workerStop', {
+      buildOrchestrationRecoveryCommand('occ-ide', 'orchestration.workerStop', {
         dispatch: 'dispatch_1'
       })
-    ).toEqual(['orca-ide', 'orchestration', 'worker-stop', '--dispatch', 'dispatch_1'])
+    ).toEqual(['occ-ide', 'orchestration', 'worker-stop', '--dispatch', 'dispatch_1'])
   })
 
   it('reconstructs worker-retain when raw argv is unavailable', () => {

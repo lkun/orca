@@ -85,7 +85,7 @@ function setup(options: { publishesPort?: boolean } = {}) {
         ? { state: 'serving' }
         : {
             state: 'unverifiable',
-            detail: 'The managed Orca server process is live but is not answering.'
+            detail: 'The managed OCC server process is live but is not answering.'
           }
   )
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: a test double for the members the tunnel manager calls.

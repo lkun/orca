@@ -52,7 +52,7 @@ function requireManager(platform: NodeJS.Platform): void {
   if (!resolveServeServiceManager(platform)) {
     throw new RuntimeClientError(
       'unsupported_platform',
-      '`orca serve service` is not available on Windows yet. Run `orca serve` under a service wrapper of your own.'
+      '`occ serve service` is not available on Windows yet. Run `occ serve` under a service wrapper of your own.'
     )
   }
 }
@@ -157,7 +157,7 @@ export async function readServeServiceStatus(
   deps: ServeServiceDeps = defaultDeps()
 ): Promise<ServeServiceStatus> {
   requireManager(deps.platform)
-  const spec = serviceSpec(deps, { command: 'orca' })
+  const spec = serviceSpec(deps, { command: 'occ' })
   const base = {
     installed: existsSync(spec.unitPath),
     manager: spec.manager,
@@ -216,7 +216,7 @@ export async function uninstallServeService(
   deps: ServeServiceDeps = defaultDeps()
 ): Promise<Record<string, unknown>> {
   requireManager(deps.platform)
-  const spec = serviceSpec(deps, { command: 'orca' })
+  const spec = serviceSpec(deps, { command: 'occ' })
   await (spec.manager === 'launchd'
     ? deps.run('launchctl', ['bootout', `gui/${deps.uid}/${spec.name}`])
     : deps.run('systemctl', ['--user', 'disable', '--now', spec.name]))

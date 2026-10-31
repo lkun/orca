@@ -51,7 +51,7 @@ export function prependOrcaCliDirToChildPath(
       : devCliBin
     return join(devCliBin, platform === 'win32' ? `${DEV_COMMAND_NAME}.cmd` : DEV_COMMAND_NAME)
   } else if (platform === 'linux') {
-    // Managed children need bare `orca` to reach the CLI instead of GNOME's screen reader.
+    // Managed children need bare `occ` to reach the CLI instead of GNOME's screen reader.
     const shimDir = ensureLinuxTerminalOrcaCliShimDir({ userDataPath: opts.userDataPath })
     if (shimDir) {
       env.ORCA_CLI_BIN_DIR = shimDir
@@ -59,7 +59,7 @@ export function prependOrcaCliDirToChildPath(
         .split(pathDelimiter)
         .filter((entry) => entry.length > 0 && entry !== shimDir)
       env.PATH = [shimDir, ...inheritedEntries].join(pathDelimiter)
-      const launcher = join(shimDir, 'orca')
+      const launcher = join(shimDir, 'occ')
       env.ORCA_CLI_COMMAND = launcher
       env.ORCA_USER_DATA_PATH = opts.userDataPath
       return launcher
@@ -73,7 +73,7 @@ export function prependOrcaCliDirToChildPath(
     env[resolvePathEnvKey(env, platform)] = inheritedPath
       ? `${bundledCliBin}${pathDelimiter}${inheritedPath}`
       : bundledCliBin
-    // Why the native launcher on Windows: `orca.cmd` refuses message bodies cmd.exe would mangle.
+    // Why the native launcher on Windows: `occ.cmd` refuses message bodies cmd.exe would mangle.
     return getBundledLauncherPath(platform, opts.resourcesPath)
   }
   return null

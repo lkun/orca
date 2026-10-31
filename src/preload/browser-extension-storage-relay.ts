@@ -12,7 +12,7 @@ type StorageChanges = Record<string, { oldValue?: unknown; newValue?: unknown }>
 /**
  * Electron never fires chrome.storage.onChanged in extension service workers. This wraps each
  * area's set/remove/clear to compute Chrome-shaped changes: a page reports them to main, which
- * forwards them to the same extension's worker; in a worker, onChanged becomes an Orca event fed by
+ * forwards them to the same extension's worker; in a worker, onChanged becomes an OCC event fed by
  * those reports and the worker's own writes. Pages keep the native onChanged, which works.
  * Known gap: writes from content scripts (web pages' isolated worlds) never reach the worker.
  * Sync is not wrapped: Electron disables it and installBrowserExtensionStorageSync replaces it.

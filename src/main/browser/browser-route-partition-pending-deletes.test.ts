@@ -116,7 +116,7 @@ it('never deletes a listed path that is not strictly inside Partitions', async (
 })
 
 it('compares Windows partition folders case-insensitively', async () => {
-  const winRoot = 'C:\\Users\\Me\\AppData\\Orca\\Partitions'
+  const winRoot = 'C:\\Users\\Me\\AppData\\OCC\\Partitions'
   expect(browserRoutePartitionDirectoryKey(`${winRoot}\\Abc`, win32.resolve)).toBe(
     browserRoutePartitionDirectoryKey(
       'c:\\users\\me\\appdata\\orca\\partitions\\abc',

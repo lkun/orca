@@ -12,8 +12,8 @@ describe('readServeInstallEvidence', () => {
 
   beforeEach(async () => {
     root = await mkdtemp(join(tmpdir(), 'orca-install-hold-'))
-    bundle = join(root, 'Orca.app')
-    executable = join(bundle, 'Contents', 'MacOS', 'Orca')
+    bundle = join(root, 'OCC.app')
+    executable = join(bundle, 'Contents', 'MacOS', 'OCC')
     await mkdir(join(bundle, 'Contents', 'MacOS'), { recursive: true })
     await writeFile(executable, '')
   })
@@ -23,7 +23,7 @@ describe('readServeInstallEvidence', () => {
   })
 
   const shipIt = (b: string): string =>
-    `${b}/Contents/Frameworks/Squirrel.framework/Resources/ShipIt com.stablyai.orca.ShipIt /state.plist`
+    `${b}/Contents/Frameworks/Squirrel.framework/Resources/ShipIt com.lkun.occ.ShipIt /state.plist`
 
   it('holds while ShipIt replaces this bundle, and when the check cannot run', async () => {
     await expect(

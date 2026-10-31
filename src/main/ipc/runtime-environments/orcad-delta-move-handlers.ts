@@ -38,7 +38,7 @@ export function registerOrcadDeltaMoveHandlers(getUserDataPath: () => string): v
         (entry) => entry.id === target.orcadFence?.environmentId
       )
       if (!environment) {
-        throw new Error('This host’s Orca server is no longer registered.')
+        throw new Error('This host’s OCC server is no longer registered.')
       }
       const result = await runOrcadDeltaMove({
         userDataPath,
@@ -87,7 +87,7 @@ function requireChangedHost(args: { sshTargetId: string } | undefined) {
   const store = targetStore.getOrcadMigrationSource()
   const target = store.getSshTarget(sshTargetId)
   if (!target?.orcadFence?.sourceChangedAt) {
-    throw new Error('This SSH host has no changes from an older Orca to resolve.')
+    throw new Error('This SSH host has no changes from an older OCC to resolve.')
   }
   return { store, claims, target, environmentId: target.orcadFence.environmentId }
 }

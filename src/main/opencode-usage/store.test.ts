@@ -197,7 +197,7 @@ describe('OpenCodeUsageStore', () => {
     expect(persistedJson).not.toContain('\n')
   })
 
-  it('reports no data for Orca scope when only non-Orca OpenCode usage exists', async () => {
+  it('reports no data for OCC scope when only non-OCC OpenCode usage exists', async () => {
     const store = createStoreWithState({
       sessions: [
         makeSession({

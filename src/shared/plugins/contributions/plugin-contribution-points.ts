@@ -87,11 +87,11 @@ export const PLUGIN_PLANNED_CONTRIBUTION_POINTS: Readonly<
   statusBarItems:
     'Declarative status bar widgets (label, icon, tooltip) whose values a worker updates.',
   sidebarCards: 'Declarative left-sidebar cards with fixed layouts whose values a worker updates.',
-  mcpServers: 'MCP server definitions that Orca offers to the agents it launches.',
-  skills: 'Agent skills shipped as files that Orca installs for the agents it launches.',
+  mcpServers: 'MCP server definitions that OCC offers to the agents it launches.',
+  skills: 'Agent skills shipped as files that OCC installs for the agents it launches.',
   hooks:
-    'Agent lifecycle hooks, such as before and after a tool call, for the agents Orca launches.',
-  settings: 'Typed plugin settings that Orca renders in its own settings UI.'
+    'Agent lifecycle hooks, such as before and after a tool call, for the agents OCC launches.',
+  settings: 'Typed plugin settings that OCC renders in its own settings UI.'
 }
 
 function reservedList(purpose: string) {

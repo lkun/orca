@@ -29,7 +29,7 @@ function cloneProcessEnv(): Record<string, string> {
   return env
 }
 
-// System-default routing strips only Orca-marked inherited CODEX_HOME overlays; preserve user overrides.
+// System-default routing strips only OCC-marked inherited CODEX_HOME overlays; preserve user overrides.
 function withoutOrcaCodexHomeOverride(base: Record<string, string>): Record<string, string> {
   const env = { ...base }
   if (env.ORCA_CODEX_HOME && env.CODEX_HOME === env.ORCA_CODEX_HOME) {
@@ -44,7 +44,7 @@ function readInheritedOrShellEnvVar(
   sourceName: string | undefined,
   base: Record<string, string> | undefined
 ): string | undefined {
-  // Prefer saved overlay source, then chat login-shell base, over inherited Orca values.
+  // Prefer saved overlay source, then chat login-shell base, over inherited OCC values.
   return (
     (sourceName ? process.env[sourceName] : undefined) ??
     base?.[name] ??
@@ -125,7 +125,7 @@ export async function prepareLocalCommitMessageAgentEnv(
       const wslCodexHome = codexHomePath ? parseWslUncPath(codexHomePath) : null
       if (target?.runtime === 'wsl') {
         const codexHomeForTarget = wslCodexHome?.linuxPath ?? null
-        // Fallback still strips Orca overlays so system-default WSL cannot inherit managed CODEX_HOME.
+        // Fallback still strips OCC overlays so system-default WSL cannot inherit managed CODEX_HOME.
         return {
           ok: true,
           env: codexHomeForTarget

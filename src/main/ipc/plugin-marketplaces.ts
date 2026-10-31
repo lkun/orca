@@ -45,7 +45,7 @@ const installMarketplacePluginSchema = marketplacePluginSchema.extend({
   enableIfData: z.literal(true).optional(),
   /** The preview's consentFingerprint: one-click approves only these exact bytes. */
   expectedFingerprint: z.string().min(1).max(256).optional(),
-  /** The page was opened from an `orca://plugins/...` link; only labels install telemetry. */
+  /** The page was opened from an `occ://plugins/...` link; only labels install telemetry. */
   fromInstallLink: z.literal(true).optional()
 })
 const installedPluginSchema = z.strictObject({

@@ -41,7 +41,7 @@ export function registerHostAccountLaunchEnvTests(): void {
       const accounts = new RuntimeAccountController()
       expect(() => accounts.getSnapshot()).toThrow('Account services are not configured')
       accounts.setHostLaunchEnv(LAUNCH_ENV)
-      expect(() => accounts.getSnapshot()).toThrow(/Orca desktop app.*Ubuntu \(WSL\)/)
+      expect(() => accounts.getSnapshot()).toThrow(/OCC desktop app.*Ubuntu \(WSL\)/)
     })
 
     it('runs AI commit text under the selected accounts', async () => {

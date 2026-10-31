@@ -1,4 +1,4 @@
-// Mirror of cloud/packages/connector-contract/src for the machine side of the Orca Cloud connector.
+// Mirror of cloud/packages/connector-contract/src for the machine side of the OCC Cloud connector.
 import { z } from 'zod'
 import type { PendingPrompt } from './agent-pending-prompt'
 
@@ -31,13 +31,13 @@ export const CONNECTOR_CLIENT_LIMITS = {
   maxDisplayTextLength: 200
 } as const
 
-// Machine-side readers: they keep what this Orca uses and ignore fields a newer cloud adds.
+// Machine-side readers: they keep what this OCC uses and ignore fields a newer cloud adds.
 export const ConnectorErrorResponse = z.object({ error: z.string().min(1) })
 
 // Each hello gets a revision above every earlier one for this machine; polls, acks and events carry it.
 export const ConnectorHelloResponse = z.object({ helloRev: z.number().int().positive() })
 
-/** Where an Orca Cloud conversation comes from. */
+/** Where an OCC Cloud conversation comes from. */
 export const CONNECTOR_CLOUD_SOURCES = ['slack', 'discord', 'linear'] as const
 
 export const ConnectorConversation = z.object({
@@ -46,7 +46,7 @@ export const ConnectorConversation = z.object({
 })
 export type ConnectorConversation = z.infer<typeof ConnectorConversation>
 
-/** The conversation as Orca Cloud names it; null for one that never came through the cloud (e.g. `dev`). */
+/** The conversation as OCC Cloud names it; null for one that never came through the cloud (e.g. `dev`). */
 export function cloudConversation(key: {
   source: string
   externalId: string
@@ -80,10 +80,10 @@ export const ConnectorDelivery = z.discriminatedUnion('kind', [
 ])
 export type ConnectorDelivery = z.infer<typeof ConnectorDelivery>
 
-/** Enough of a delivery this Orca cannot read to settle it as unsupported. */
+/** Enough of a delivery this OCC cannot read to settle it as unsupported. */
 export const ConnectorDeliveryId = z.object({ deliveryId: z.string().min(1) })
 
-// Each delivery and the control are read one by one, so one this Orca cannot read never drops the rest.
+// Each delivery and the control are read one by one, so one this OCC cannot read never drops the rest.
 export const ConnectorPollResponse = z.object({
   serverNow: z.number().int().positive(),
   holdMs: z.number().int().nonnegative(),

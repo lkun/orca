@@ -34,8 +34,8 @@ describe('classifyWindowsTreeKillTarget', () => {
     expect(classifyWindowsTreeKillTarget(4242, rows, ORCA_PID)).toBe('own')
   })
 
-  it('documents that a recycled PID under another Orca pane still classifies as own', () => {
-    // Recycled as a tool under another pane, PID 4242 still has Orca ancestry.
+  it('documents that a recycled PID under another OCC pane still classifies as own', () => {
+    // Recycled as a tool under another pane, PID 4242 still has OCC ancestry.
     const rows = [link(ORCA_PID, 900), link(7000, ORCA_PID), link(7100, 7000), link(4242, 7100)]
     expect(classifyWindowsTreeKillTarget(4242, rows, ORCA_PID)).toBe('own')
   })
@@ -55,7 +55,7 @@ describe('classifyWindowsTreeKillTarget', () => {
     expect(classifyWindowsTreeKillTarget(4242, rows, ORCA_PID)).toBe('foreign')
   })
 
-  it('rejects a chain longer than the ConPTY/winpty depth even if Orca is above it', () => {
+  it('rejects a chain longer than the ConPTY/winpty depth even if OCC is above it', () => {
     const rows = [
       link(ORCA_PID, 900),
       link(10, ORCA_PID),

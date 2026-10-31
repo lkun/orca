@@ -121,7 +121,7 @@ describe('getPiTitlebarExtensionSource', () => {
     vi.useRealTimers()
   })
 
-  it('registers nothing outside an Orca pane', () => {
+  it('registers nothing outside an OCC pane', () => {
     expect(createHarness({ paneKey: '' }).handlers).toEqual({})
   })
 

@@ -3,7 +3,7 @@ import { join } from 'node:path'
 
 export function buildInstallFixture(root: string): void {
   mkdirSync(root, { recursive: true })
-  writeFileSync(join(root, 'Orca.exe'), 'exe-bytes')
+  writeFileSync(join(root, 'OCC.exe'), 'exe-bytes')
   const processHostDir = join(root, 'resources', 'node_modules', '@orca', 'process-host')
   mkdirSync(join(processHostDir, 'dist'), { recursive: true })
   mkdirSync(join(processHostDir, 'src'), { recursive: true })

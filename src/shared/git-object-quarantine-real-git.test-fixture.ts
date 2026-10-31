@@ -55,7 +55,7 @@ export function createDivergentRepoFixture(): DivergentRepoFixture {
   }
 
   execFileSync('git', ['init', '--quiet', repoPath])
-  git(repoPath, 'config', 'user.name', 'Orca Test')
+  git(repoPath, 'config', 'user.name', 'OCC Test')
   git(repoPath, 'config', 'user.email', 'orca@example.test')
   git(repoPath, 'config', 'commit.gpgSign', 'false')
   git(repoPath, 'config', 'core.hooksPath', '.git/no-hooks')

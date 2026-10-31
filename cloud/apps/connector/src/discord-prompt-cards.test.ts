@@ -12,7 +12,7 @@ const approval = (summary: string, optionId = 'allow_once') => ({
 })
 
 describe('Discord prompt cards', () => {
-  it('leaves a prompt whose option id can’t fit a button to Orca', () => {
+  it('leaves a prompt whose option id can’t fit a button to OCC', () => {
     expect(discordCard(approval('ls'))).not.toBeNull()
     expect(discordCard(approval('ls', 'x'.repeat(94)))).toBeNull()
   })

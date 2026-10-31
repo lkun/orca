@@ -74,7 +74,7 @@ export type BrowserExtensionPopupOptions = {
   /** Relative to the extension root, as manifest/action.setPopup give it. */
   popupPath: string
   anchor: BrowserExtensionAnchorRect
-  /** Web links the popup opens with target=_blank go to a new Orca tab. */
+  /** Web links the popup opens with target=_blank go to a new OCC tab. */
   openTab: (url: string) => void
 }
 
@@ -87,14 +87,14 @@ function popupUrl(extensionId: string, popupPath: string): string {
 }
 
 /**
- * The action popup: a frameless child of Orca's window under the clicked button, loaded in the
+ * The action popup: a frameless child of OCC's window under the clicked button, loaded in the
  * extension's profile session (whose preload gives it the extension APIs). It follows its content's
  * size within Chrome's limits and closes on blur, Escape or a second click.
  */
 export function openBrowserExtensionPopup(options: BrowserExtensionPopupOptions): BrowserWindow {
   const mainWindow = getBrowserExtensionMainWindow()
   if (!mainWindow) {
-    throw new BrowserExtensionApiError('Orca has no window to show the popup in')
+    throw new BrowserExtensionApiError('OCC has no window to show the popup in')
   }
   const url = popupUrl(options.extensionId, options.popupPath)
   closeBrowserExtensionPopup()
@@ -124,7 +124,7 @@ export function openBrowserExtensionPopup(options: BrowserExtensionPopupOptions)
       sandbox: true,
       contextIsolation: true,
       nodeIntegration: false,
-      // Why: framed extension pages need Orca's preload (safety: main-window-webview-security.ts).
+      // Why: framed extension pages need OCC's preload (safety: main-window-webview-security.ts).
       nodeIntegrationInSubFrames: true,
       webSecurity: true
     }

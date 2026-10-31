@@ -83,7 +83,7 @@ describe('removeRealHomeCodexHookForOptOut', () => {
     expect(existsSync(join(home, '.codex'))).toBe(false)
   })
 
-  it("keeps a malformed hooks.json's bytes, Orca's trust and its ledger", async () => {
+  it("keeps a malformed hooks.json's bytes, OCC's trust and its ledger", async () => {
     mkdirSync(join(home, '.codex'))
     const entry: CodexTrustEntry = { ...orcaStopAt(hooksJsonPath()), timeoutSec: 10 }
     writeFileSync(configTomlPath(), upsertHookTrustEntriesInContent('', [entry]), 'utf-8')
@@ -103,7 +103,7 @@ describe('removeRealHomeCodexHookForOptOut', () => {
     expect(await removeRealHomeCodexHookForOptOut([])).toBe('unavailable')
   })
 
-  it('removes only hash-proven Orca trust from a mixed hook group', async () => {
+  it('removes only hash-proven OCC trust from a mixed hook group', async () => {
     mkdirSync(join(home, '.codex'))
     const userCommand = 'my-user-hook.sh'
     writeFileSync(
@@ -139,7 +139,7 @@ describe('removeRealHomeCodexHookForOptOut', () => {
     expect(trust.has(computeTrustKey(entries[1]!))).toBe(false)
   })
 
-  it("moves the approval of a user hook that sat after Orca's, so it stays approved", async () => {
+  it("moves the approval of a user hook that sat after OCC's, so it stays approved", async () => {
     mkdirSync(join(home, '.codex'))
     const before = { type: 'command', command: 'before.sh' }
     const after = { type: 'command', command: 'after.sh' }
@@ -166,7 +166,7 @@ describe('removeRealHomeCodexHookForOptOut', () => {
     expect(trust.get(computeTrustKey(afterAt(2)))).toBeUndefined()
   })
 
-  it("removes Orca's approval holding Codex's own hash, which Orca cannot compute", async () => {
+  it("removes OCC's approval holding Codex's own hash, which OCC cannot compute", async () => {
     mkdirSync(join(home, '.codex'))
     writeFileSync(
       hooksJsonPath(),

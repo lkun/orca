@@ -174,8 +174,8 @@ it('keeps denied access retryable if a foreground permission read fails', async 
 })
 
 it.each([
-  'https://apps.apple.com/app/orca-ide/id6766130217',
-  ' HTTPS://APPS.APPLE.COM/us/app/orca-ide/id6766130217?mt=8\n',
+  'https://apps.apple.com/app/occ-ide/id6766130217',
+  ' HTTPS://APPS.APPLE.COM/us/app/occ-ide/id6766130217?mt=8\n',
   'https://www.onorca.dev/download/android',
   'https://onorca.dev/download/android/',
   'https://testflight.apple.com/join/YjeGMQBA',
@@ -201,16 +201,16 @@ it.each([
 it.each([
   'https://example.com',
   'https://www.onorca.dev.evil.example/download/android',
-  'https://apps.apple.com@evil.example/app/orca-ide/id6766130217',
+  'https://apps.apple.com@evil.example/app/occ-ide/id6766130217',
   'https://apps.apple.com/app/another-app/id123',
   'https://testflight.apple.com/join/another-app',
   'https://github.com/another/orca/releases/download/mobile-android-v0.0.52/app-release.apk',
-  'orca://pair?code=broken'
+  'occ://pair?code=broken'
 ])('keeps unrelated and malformed QR codes invalid: %s', async (data) => {
   mocks.permission = { granted: true, canAskAgain: true }
   await render()
   await act(async () => findByHostType(root(), 'CameraView').props.onBarcodeScanned({ data }))
-  expect(screen()).toContain('Not a valid Orca QR code')
+  expect(screen()).toContain('Not a valid OCC QR code')
   expect(mocks.start).not.toHaveBeenCalled()
 })
 
@@ -228,7 +228,7 @@ it('localizes the download QR guidance', async () => {
   )
 })
 
-it.each(['orca://pair?code=', 'orca://pair#'])(
+it.each(['occ://pair?code=', 'occ://pair#'])(
   'still pairs from an older desktop QR using %s',
   async (prefix) => {
     const offer = {

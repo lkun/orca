@@ -41,7 +41,7 @@ function gestureKey(profileId: string, extensionId: string): string {
 }
 
 /**
- * Chrome lets permissions.request run only inside a user gesture. Orca records the gestures it
+ * Chrome lets permissions.request run only inside a user gesture. OCC records the gestures it
  * delivers to an extension (menu click, command, notification click, toolbar click).
  */
 export function noteBrowserExtensionUserGesture(

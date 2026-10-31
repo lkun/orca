@@ -94,7 +94,7 @@ export function containsBrowserExtensionPermissions(
   )
 }
 
-/** Host patterns an extension may use in Orca-owned checks: the manifest's plus granted ones. */
+/** Host patterns an extension may use in OCC-owned checks: the manifest's plus granted ones. */
 export function browserExtensionHostPatterns(
   manifest: ManifestLike,
   state: Pick<BrowserExtensionProfileState, 'grantedPermissions' | 'grantedOrigins'>

@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { stampOrcadAppVersion } from './orcad-host-adapters'
 
-describe('the Orca version a server reports', () => {
+describe('the OCC version a server reports', () => {
   let root: string
   let saved: string | undefined
 
@@ -23,7 +23,7 @@ describe('the Orca version a server reports', () => {
     }
   })
 
-  it('replaces a version inherited from the Orca that started it', () => {
+  it('replaces a version inherited from the OCC that started it', () => {
     process.env.ORCA_APP_VERSION = '1.4.300'
     mkdirSync(join(root, 'out'), { recursive: true })
     writeFileSync(join(root, 'out', 'package.json'), JSON.stringify({ version: '1.4.224' }))

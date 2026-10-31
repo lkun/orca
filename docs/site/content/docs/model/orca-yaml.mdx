@@ -5,7 +5,7 @@ description: Local worktree setup, terminal defaults, shared directories, and co
 
 Put `orca.yaml` and `.worktreeinclude` at the repository root. `orca.yaml` supplies project defaults; `.worktreeinclude` lists ignored files to carry into new worktrees. Commit these configuration files so other users can use the same rules. Keep secrets in the ignored files they refer to.
 
-This reference covers **local Git worktrees**. [Folder workspaces](/docs/model/worktrees#multi-repo-project-groups--folder-workspaces) do not create a Git checkout or run these copy/share steps. For other execution targets, see [Ways to run Orca](/docs/ways-to-run).
+This reference covers **local Git worktrees**. [Folder workspaces](/docs/model/worktrees#multi-repo-project-groups--folder-workspaces) do not create a Git checkout or run these copy/share steps. For other execution targets, see [Ways to run OCC](/docs/ways-to-run).
 
 ## Example
 
@@ -31,7 +31,7 @@ The `.cache` directory must already exist and be gitignored in the primary check
 
 ## Accepted keys and defaults
 
-All keys are optional. Script, title, command, and path values must be strings; Orca trims them and drops empty or oversized values. Invalid fields are skipped while valid siblings still apply. Unknown keys do not configure additional behavior.
+All keys are optional. Script, title, command, and path values must be strings; OCC trims them and drops empty or oversized values. Invalid fields are skipped while valid siblings still apply. Unknown keys do not configure additional behavior.
 
 | Key                          | Accepted value                                                                                                                                                                                        | When omitted                                                                  |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
@@ -47,7 +47,7 @@ All keys are optional. Script, title, command, and path values must be strings; 
 
 ### Parse failures and limits
 
-**Invalid YAML or a duplicate mapping key anywhere rejects the whole file.** Orca does not keep the last duplicate value. A non-mapping root, excessive alias expansion, or an oversized file also produces no configuration. A YAML checker that accepts duplicate keys does not establish that Orca will accept the file.
+**Invalid YAML or a duplicate mapping key anywhere rejects the whole file.** OCC does not keep the last duplicate value. A non-mapping root, excessive alias expansion, or an oversized file also produces no configuration. A YAML checker that accepts duplicate keys does not establish that OCC will accept the file.
 
 | Limit                                                                                                     | Result when exceeded                                                                                          |
 | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -60,7 +60,7 @@ All keys are optional. Script, title, command, and path values must be strings; 
 
 ## Which checkout supplies the configuration?
 
-The **primary checkout** is the repository folder registered in Orca. It may be on a different branch from the new worktree.
+The **primary checkout** is the repository folder registered in OCC. It may be on a different branch from the new worktree.
 
 | Configuration                                         | Read from                                                                                    |
 | ----------------------------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -74,7 +74,7 @@ Changing a feature branch's `.worktreeinclude` or shared-directory list does not
 
 ## Setup, archive, and command selection
 
-In **Settings → Repository**, setup can run automatically, ask each time, or be skipped by default. A new repository defaults to running setup. The [CLI](/docs/cli/reference#worktrees) accepts `--setup run|skip|inherit`; `inherit` follows that Settings policy. A valid file does not bypass Orca's command approval.
+In **Settings → Repository**, setup can run automatically, ask each time, or be skipped by default. A new repository defaults to running setup. The [CLI](/docs/cli/reference#worktrees) accepts `--setup run|skip|inherit`; `inherit` follows that Settings policy. A valid file does not bypass OCC's command approval.
 
 **Command source & orca.yaml** controls setup and archive scripts:
 
@@ -84,9 +84,9 @@ In **Settings → Repository**, setup can run automatically, ask each time, or b
 | **Local only** (`local-only`)      | Only the local hook; the YAML hook is ignored.  |
 | **Run both** (`run-both`)          | YAML first, then local, joined into one script. |
 
-When no source choice is saved, a nonempty local hook selects **Local only** for that hook; otherwise Orca uses **orca.yaml only**. Shared directories are independent of this command-source choice.
+When no source choice is saved, a nonempty local hook selects **Local only** for that hook; otherwise OCC uses **orca.yaml only**. Shared directories are independent of this command-source choice.
 
-Setup runs in a **Setup** terminal. On macOS/Linux, Orca writes a Bash runner with `set -e`; supported shell options on a leading `#!` line are replayed. On native Windows, the runner uses `.cmd` syntax and calls each nonempty line, stopping on failure. A leading POSIX-shell `#!` line opts into Bash only when Git Bash is configured and available; otherwise the `.cmd` runner refuses the script before running any commands. Choosing PowerShell as the terminal does not turn a setup script into PowerShell code.
+Setup runs in a **Setup** terminal. On macOS/Linux, OCC writes a Bash runner with `set -e`; supported shell options on a leading `#!` line are replayed. On native Windows, the runner uses `.cmd` syntax and calls each nonempty line, stopping on failure. A leading POSIX-shell `#!` line opts into Bash only when Git Bash is configured and available; otherwise the `.cmd` runner refuses the script before running any commands. Choosing PowerShell as the terminal does not turn a setup script into PowerShell code.
 
 The setup runner receives:
 
@@ -107,7 +107,7 @@ Archive hooks run before local removal; the CLI requires `--run-hooks` to enable
 
 In the **desktop create composer**, an agent/startup command takes the first template tab, so the **first tab's template command is not run**. Reserve that tab for the agent and put other commands in later tabs. Local CLI creation with `--agent` instead creates a separate startup terminal alongside the configured tabs; every allowed template command can run. Tab commands do not wait for setup to finish, so a command that needs installed dependencies should be run after setup completes. The example's Git status command does not depend on the install.
 
-`issueCommand` has its own override: nonempty `.orca/issue-command` content wins over YAML. Clearing that local file restores the shared template. This is separate from the setup/archive command-source choice. Templates support `{{artifact_url}}` for the linked item's URL and legacy `{{issue}}` for its number; the composer decides whether to use the template. Shared YAML commands use Orca's approval flow, which can reuse saved trust; local overrides are treated as user-authored and do not trigger that shared-command prompt.
+`issueCommand` has its own override: nonempty `.orca/issue-command` content wins over YAML. Clearing that local file restores the shared template. This is separate from the setup/archive command-source choice. Templates support `{{artifact_url}}` for the linked item's URL and legacy `{{issue}}` for its number; the composer decides whether to use the template. Shared YAML commands use OCC's approval flow, which can reuse saved trust; local overrides are treated as user-authored and do not trigger that shared-command prompt.
 
 ```yaml
 issueCommand: |
@@ -135,7 +135,7 @@ YAML shared paths normalize backslashes to `/`, remove a leading `./` and traili
 .vscode/settings.json
 ```
 
-Use **one literal path per line**, anchored to the repository root. Blank lines and lines starting with `#` are ignored; inline comments are not stripped. Backslashes, a leading `./`, and trailing `/` are normalized and duplicates are removed. Glob patterns containing `*` or `?` and negation starting with `!` are skipped. Use relative paths without traversal or `.git`; only existing, gitignored entries are copied. The include file must be a regular file no larger than 256 KiB; Orca considers at most 1,000 valid literal path candidates.
+Use **one literal path per line**, anchored to the repository root. Blank lines and lines starting with `#` are ignored; inline comments are not stripped. Backslashes, a leading `./`, and trailing `/` are normalized and duplicates are removed. Glob patterns containing `*` or `?` and negation starting with `!` are skipped. Use relative paths without traversal or `.git`; only existing, gitignored entries are copied. The include file must be a regular file no larger than 256 KiB; OCC considers at most 1,000 valid literal path candidates.
 
 Ordinary include copying is limited to **2 GiB total file bytes and 50,000 filesystem entries** per new worktree, measured before copying. APFS clones do not consume the byte budget, but still consume the entry budget; a fallback to ordinary copying must fit the byte budget. An entry that exceeds the remaining budget is skipped and creation reports a warning. Earlier refused entries can also exhaust the bounded sizing walk, leaving later entries unmeasured. These are admission limits, not quotas against files growing during copying.
 

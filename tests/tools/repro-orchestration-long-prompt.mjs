@@ -367,7 +367,7 @@ function parseInjectedIds(text) {
     taskId: /Your task ID is:\s*(task_[A-Za-z0-9_]+)/.exec(text)?.[1] ?? null,
     dispatchId: /--dispatch-id\s+(ctx_[A-Za-z0-9_]+)/.exec(text)?.[1] ?? null,
     coordinatorHandle:
-      /Your coordinator's (?:terminal handle|Orca session ID) is:\s*(\S+)/.exec(text)?.[1] ?? null
+      /Your coordinator's (?:terminal handle|OCC session ID) is:\s*(\S+)/.exec(text)?.[1] ?? null
   }
 }
 
@@ -474,12 +474,12 @@ async function main() {
     console.log(`Usage:
   node tests/tools/repro-orchestration-long-prompt.mjs [--mode codex-like|wire] [--size-kb 80]
 
-The parent mode requires a running Orca runtime and creates temporary Orca
+The parent mode requires a running OCC runtime and creates temporary OCC
 terminals. The fake worker records whether orchestration dispatch delivered a
 long prompt in a safe agent-input contract.
 
 Options:
-  --cli <path>         Orca CLI command (default: ORCA_REPRO_CLI or orca)
+  --cli <path>         OCC CLI command (default: ORCA_REPRO_CLI or orca)
   --worktree <path>   Worktree path for temporary terminals (default: cwd)
   --timeout-ms <n>    Wait budget for terminal/report operations
   --keep-terminals    Leave temporary terminals open for inspection

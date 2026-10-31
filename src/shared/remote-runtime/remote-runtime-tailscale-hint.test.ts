@@ -6,7 +6,7 @@ import {
   withRemoteRuntimeTailscaleHint
 } from './remote-runtime-tailscale-hint'
 
-const UNREACHABLE = 'Could not connect to the remote Orca runtime.'
+const UNREACHABLE = 'Could not connect to the remote OCC runtime.'
 
 describe('isTailscaleEndpoint', () => {
   it('matches MagicDNS hostnames', () => {
@@ -65,20 +65,20 @@ describe('withRemoteRuntimeTailscaleHint', () => {
   it('covers the close and timeout failure variants', () => {
     expect(
       withRemoteRuntimeTailscaleHint(
-        'Remote Orca runtime closed the connection.',
+        'Remote OCC runtime closed the connection.',
         'ws://192.168.1.10:6768'
       )
     ).toContain('connect both devices to Tailscale')
     expect(
       withRemoteRuntimeTailscaleHint(
-        'Timed out while connecting to the remote Orca runtime.',
+        'Timed out while connecting to the remote OCC runtime.',
         'wss://host.ts.net'
       )
     ).toContain('Funnel reverted to tailnet-only')
   })
 
   it('leaves non-connectivity errors untouched', () => {
-    const auth = 'Remote Orca runtime rejected the pairing token.'
+    const auth = 'Remote OCC runtime rejected the pairing token.'
     expect(withRemoteRuntimeTailscaleHint(auth, 'ws://192.168.1.10:6768')).toBe(auth)
   })
 

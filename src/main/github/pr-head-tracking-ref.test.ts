@@ -47,7 +47,7 @@ describe('fetchPrHeadTrackingRef', () => {
     expect(gitExecFileAsyncMock).not.toHaveBeenCalled()
   })
 
-  it('fetches a GitHub pull head into its remote-scoped Orca ref for local repos', async () => {
+  it('fetches a GitHub pull head into its remote-scoped OCC ref for local repos', async () => {
     const localRef = await fetchGitHubPullRequestHeadRef(
       { path: '/repo', connectionId: null },
       'origin',

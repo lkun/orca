@@ -157,7 +157,7 @@ function TerminalLimitField({ scope }: { scope: SettingsHostScope }): React.JSX.
         : status?.source === 'environment'
           ? translate(
               'settings.terminal.limit.environment',
-              'This Orca instance has a terminal limit set by its environment. Remove the override on this host to edit it here.'
+              'This OCC instance has a terminal limit set by its environment. Remove the override on this host to edit it here.'
             )
           : null
   const label = translate('settings.terminal.limit.label', 'Maximum running terminals')

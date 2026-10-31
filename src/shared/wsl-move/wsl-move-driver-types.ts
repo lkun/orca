@@ -48,7 +48,7 @@ export type WslMoveRefusalCode =
   | 'wsl_move_nothing_new'
   /** The distro has no connected WSL host. */
   | 'wsl_move_host_unavailable'
-  /** The host runs an older Orca that cannot take this move; it must update first. */
+  /** The host runs an older OCC that cannot take this move; it must update first. */
   | 'wsl_move_host_update_required'
   /** Terminals, automations or dispatches in scope must finish first: see `blockers`. */
   | 'wsl_move_terminals_blocked'
@@ -109,7 +109,7 @@ export type WslMoveResult =
        */
       reloadRequired: true
       /**
-       * Automations the host has not turned back on yet; Orca retries until it confirms. The
+       * Automations the host has not turned back on yet; OCC retries until it confirms. The
        * dialog must say they are off on the host for now, never hide it.
        */
       automationsPending?: string[]

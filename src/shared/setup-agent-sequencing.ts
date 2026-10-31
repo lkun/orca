@@ -130,7 +130,7 @@ function buildPosixStartupScript(
     `if [ "$seen" = ${nonceValue} ]; then`,
     `rm -f ${marker} ${tmp} 2>/dev/null;`,
     // Announce success so “Waiting for setup...” does not linger. Install launch functions only after setup
-    // may have supplied codex; fresh bash -lc does not read Orca’s wrapper.
+    // may have supplied codex; fresh bash -lc does not read OCC’s wrapper.
     `if [ "$status" = "0" ]; then echo ${quotePosixShellUnlessPlainNoAt(SETUP_COMPLETE_MESSAGE)} >&2;\n${getPosixCodexShellLaunchPreflight() + getPosixClaudeShellFunction()}if [ -n "\${${SETUP_AGENT_SEQUENCE_STARTUP_COMMAND_ENV}:-}" ]; then eval "\$${SETUP_AGENT_SEQUENCE_STARTUP_COMMAND_ENV}"; exit "$?"; else ${startupSuccessCommand}; fi; fi;`,
     'echo "Setup failed; skipping agent startup." >&2;',
     'exit "${status:-1}";',
@@ -232,7 +232,7 @@ function buildWindowsStartupCommand(
     // to a reporting catch; never rethrow and abort startup over a broken security module.
     "$orcaProgress = $ProgressPreference; $ProgressPreference = 'SilentlyContinue'",
     'try { Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force -ErrorAction Stop } ' +
-      'catch { [Console]::Error.WriteLine("Orca: could not relax the execution policy for this " + ' +
+      'catch { [Console]::Error.WriteLine("OCC: could not relax the execution policy for this " + ' +
       '"session (" + $_.FullyQualifiedErrorId + "). A startup command that runs a .ps1 " + ' +
       '"may be blocked.") }',
     '$ProgressPreference = $orcaProgress',

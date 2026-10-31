@@ -17,7 +17,7 @@ export function withRuntimeUnreachableHint(
     case 'wsl':
       // WSL is reached locally through wsl.exe; a Tailscale hint cannot help.
       return UNREACHABLE_RE.test(message)
-        ? `${message} The Orca server in the WSL distro ${host.deployment.distro} isn’t answering; connect it again in Settings → Remote Orca Servers → WSL hosts.`
+        ? `${message} The OCC server in the WSL distro ${host.deployment.distro} isn’t answering; connect it again in Settings → Remote OCC Servers → WSL hosts.`
         : message
   }
 }

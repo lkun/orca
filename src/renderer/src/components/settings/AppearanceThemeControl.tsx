@@ -62,7 +62,7 @@ export function AppearanceThemeControl({
   )
 }
 
-/** The app theme painted while Orca is in one mode: built-in or any enabled plugin theme of it. */
+/** The app theme painted while OCC is in one mode: built-in or any enabled plugin theme of it. */
 export function AppearanceThemeSlotSelect({
   base,
   label,

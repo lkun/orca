@@ -43,7 +43,7 @@ const HOOK_PROBLEMS: readonly [string, () => void][] = [
   [
     'Codex is too old to approve hooks',
     () => {
-      const failure = 'Codex 0.120.0 is too old for Orca status; update Codex'
+      const failure = 'Codex 0.120.0 is too old for OCC status; update Codex'
       mocks.deriveCodexHookHashes.mockResolvedValue({
         kind: 'refused',
         codexVersion: 'codex-cli 0.120.0',

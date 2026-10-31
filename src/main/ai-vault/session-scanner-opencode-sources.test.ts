@@ -67,7 +67,7 @@ describe('opencodeDiscoveries', () => {
     })
   })
 
-  it('scans managed account stores that Orca launches OpenCode with', async () => {
+  it('scans managed account stores that OCC launches OpenCode with', async () => {
     vi.stubEnv('XDG_DATA_HOME', '/xdg/data')
     const accountDir = join(
       '/user-data',

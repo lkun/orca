@@ -21,7 +21,7 @@ describe('EmulatorSessionRegistry managed-session liveness', () => {
     }
   })
 
-  it('drops a managed device that stopped outside Orca and keeps the running one', async () => {
+  it('drops a managed device that stopped outside OCC and keeps the running one', async () => {
     const registry = registryWith('emulator-5554', 'emulator-5556')
     expect(await registry.pruneGoneManagedSessions(census(['emulator-5554']))).toBe(true)
     expect(registry.getActiveForWorktree('wt0')?.deviceUdid).toBe('emulator-5554')

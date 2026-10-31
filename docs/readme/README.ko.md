@@ -1,13 +1,13 @@
 <h1 align="center">
-  <a href="https://onOrca.dev"><img src="../../resources/build/icon.png" alt="Orca" width="64" valign="middle" /></a> Orca
+  <a href="https://onOrca.dev"><img src="../../resources/build/icon.png" alt="OCC" width="64" valign="middle" /></a> OCC
 </h1>
 
 <p align="center">
   <a href="https://github.com/stablyai/orca"><img src="https://img.shields.io/github/stars/stablyai/orca?style=flat&amp;label=%E2%98%85&amp;color=08C" alt="GitHub 스타" /></a>
   <a href="https://github.com/stablyai/orca/releases"><img src="../assets/readme-downloads.svg" alt="전체 릴리스 누적 다운로드 수" /></a>
   <img src="https://img.shields.io/badge/license-MIT-08C?style=flat" alt="라이선스: MIT" />
-  <a href="https://discord.gg/fzjDKHxv8Q"><img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="Orca Discord 참여" /></a>
-  <a href="https://x.com/orca_build"><img src="https://img.shields.io/badge/X-000000?logo=x&logoColor=white" alt="X에서 Orca 팔로우" /></a>
+  <a href="https://discord.gg/fzjDKHxv8Q"><img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="OCC Discord 참여" /></a>
+  <a href="https://x.com/orca_build"><img src="https://img.shields.io/badge/X-000000?logo=x&logoColor=white" alt="X에서 OCC 팔로우" /></a>
   <img src="https://img.shields.io/badge/macOS%20%7C%20Windows%20%7C%20Linux-4493F8?style=flat-square" alt="지원 플랫폼: macOS, Windows, Linux" />
 </p>
 
@@ -20,10 +20,10 @@
   Codex, Claude Code, OpenCode, Pi를 나란히 실행하세요. — 각 에이전트는 자체 worktree에서 실행되고 한곳에서 추적됩니다.
 </p>
 
-<h3 align="center"><a href="https://onorca.dev/download"><ins>Orca 다운로드</ins></a></h3>
+<h3 align="center"><a href="https://onorca.dev/download"><ins>OCC 다운로드</ins></a></h3>
 
 <p align="center">
-  <img src="../assets/readme-hero.jpg" alt="병렬 worktree에서 에이전트를 실행 중인 Orca 데스크톱 앱과 한쪽 모서리에 보이는 Orca 모바일 companion 앱" width="960" />
+  <img src="../assets/readme-hero.jpg" alt="병렬 worktree에서 에이전트를 실행 중인 OCC 데스크톱 앱과 한쪽 모서리에 보이는 OCC 모바일 companion 앱" width="960" />
 </p>
 
 ## 기능
@@ -36,11 +36,11 @@
 
 휴대폰에서 에이전트를 모니터링하고 조종하세요 — 에이전트가 완료되면 알림을 받고 어디서든 후속 지시를 보낼 수 있습니다.
 
-[iOS App Store](https://apps.apple.com/us/app/orca-ide/id6766130217) · [Android APK](https://www.onorca.dev/download/android) · [문서 →](https://www.onorca.dev/docs/mobile)
+[iOS App Store](https://apps.apple.com/us/app/occ-ide/id6766130217) · [Android APK](https://www.onorca.dev/download/android) · [문서 →](https://www.onorca.dev/docs/mobile)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/mobile"><picture><source srcset="../assets/feature-wall/mobile-companion-app-showcase.gif" type="image/gif"><img src="../assets/feature-wall/mobile-companion-app-showcase.jpg" alt="Orca 데스크톱과 모바일 companion 앱" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/mobile"><picture><source srcset="../assets/feature-wall/mobile-companion-app-showcase.gif" type="image/gif"><img src="../assets/feature-wall/mobile-companion-app-showcase.jpg" alt="OCC 데스크톱과 모바일 companion 앱" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -96,7 +96,7 @@ PR, issue, 프로젝트 보드를 앱 안에서 탐색하세요 — 어떤 작�
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/review/linear"><picture><source srcset="../../resources/onboarding/feature-wall/tile-03.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-03.poster.jpg" alt="Orca의 GitHub 및 Linear 작업 워크플로" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/review/linear"><picture><source srcset="../../resources/onboarding/feature-wall/tile-03.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-03.poster.jpg" alt="OCC의 GitHub 및 Linear 작업 워크플로" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -118,7 +118,7 @@ PR, issue, 프로젝트 보드를 앱 안에서 탐색하세요 — 어떤 작�
 
 ### AI Diff 주석
 
-diff의 어느 줄에든 코멘트를 남기고 에이전트에게 바로 보내세요 — Orca를 떠나지 않고 리뷰하고 수정하고 커밋할 수 있습니다.
+diff의 어느 줄에든 코멘트를 남기고 에이전트에게 바로 보내세요 — OCC를 떠나지 않고 리뷰하고 수정하고 커밋할 수 있습니다.
 
 [문서 →](https://www.onorca.dev/docs/review/annotate-ai-diff)
 
@@ -144,15 +144,15 @@ diff의 어느 줄에든 코멘트를 남기고 에이전트에게 바로 보내
 <tr>
 <td width="50%" valign="middle">
 
-### Orca CLI
+### OCC CLI
 
-에이전트도 Orca를 조작할 수 있습니다 — `orca worktree create`, `snapshot`, `click`, `fill`로 모든 워크플로를 스크립팅하세요.
+에이전트도 OCC를 조작할 수 있습니다 — `orca worktree create`, `snapshot`, `click`, `fill`로 모든 워크플로를 스크립팅하세요.
 
 [문서 →](https://www.onorca.dev/docs/cli/overview)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/cli/overview"><picture><source srcset="../../resources/onboarding/feature-wall/tile-09.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-09.poster.jpg" alt="CLI에서 Orca 스크립팅" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/cli/overview"><picture><source srcset="../../resources/onboarding/feature-wall/tile-09.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-09.poster.jpg" alt="CLI에서 OCC 스크립팅" width="100%" /></picture></a>
 </td>
 </tr>
 </table>
@@ -170,7 +170,7 @@ diff의 어느 줄에든 코멘트를 남기고 에이전트에게 바로 보내
 
 ## 지원 에이전트
 
-**모든 CLI 에이전트**와 함께 작동합니다 — 터미널에서 실행되는 에이전트라면 Orca에서도 실행됩니다.
+**모든 CLI 에이전트**와 함께 작동합니다 — 터미널에서 실행되는 에이전트라면 OCC에서도 실행됩니다.
 
 <p>
   <a href="https://docs.anthropic.com/claude/docs/claude-code"><kbd><img src="../assets/claude-logo.svg" alt="Claude Code logo" width="16" valign="middle" /> Claude Code</kbd></a> &nbsp;
@@ -216,7 +216,7 @@ diff의 어느 줄에든 코멘트를 남기고 에이전트에게 바로 보내
 ### 데스크톱 — macOS, Windows, Linux
 
 - **[onOrca.dev에서 다운로드](https://onorca.dev/download)**
-- 또는 빌드를 직접 받기: [macOS Apple Silicon](https://github.com/stablyai/orca/releases/latest/download/orca-macos-arm64.dmg) · [macOS Intel](https://github.com/stablyai/orca/releases/latest/download/orca-macos-x64.dmg) · [Windows (.exe)](https://github.com/stablyai/orca/releases/latest/download/orca-windows-setup.exe) · [Linux AppImage](https://github.com/stablyai/orca/releases/latest/download/orca-linux.AppImage) · [전체 빌드](https://github.com/stablyai/orca/releases/latest)
+- 또는 빌드를 직접 받기: [macOS Apple Silicon](https://github.com/stablyai/orca/releases/latest/download/occ-macos-arm64.dmg) · [macOS Intel](https://github.com/stablyai/orca/releases/latest/download/occ-macos-x64.dmg) · [Windows (.exe)](https://github.com/stablyai/orca/releases/latest/download/occ-windows-setup.exe) · [Linux AppImage](https://github.com/stablyai/orca/releases/latest/download/occ-linux.AppImage) · [전체 빌드](https://github.com/stablyai/orca/releases/latest)
 
 _또는 패키지 매니저로 설치:_
 
@@ -235,7 +235,7 @@ yay -S stably-orca-bin
 
 데스크톱 앱과 페어링해 휴대폰에서 에이전트를 모니터링하고 조종하세요.
 
-- **iOS:** [App Store에서 다운로드](https://apps.apple.com/us/app/orca-ide/id6766130217)
+- **iOS:** [App Store에서 다운로드](https://apps.apple.com/us/app/occ-ide/id6766130217)
 - **Android:** [APK 다운로드](https://www.onorca.dev/download/android) · [설치 가이드](https://www.onorca.dev/docs/android-apk)
 
 ---
@@ -244,12 +244,12 @@ yay -S stably-orca-bin
 
 - **Discord:** **[Discord](https://discord.gg/fzjDKHxv8Q)** 커뮤니티에 참여하세요.
 - **Twitter / X:** 업데이트와 공지는 **[@orca_build](https://x.com/orca_build)** 를 팔로우하세요.
-- **WeChat:** QR 코드를 스캔해 Orca 커뮤니티 WeChat 그룹에 참여하세요.
+- **WeChat:** QR 코드를 스캔해 OCC 커뮤니티 WeChat 그룹에 참여하세요.
 
-  <img src="../assets/wechat-qr.jpg" alt="Orca 커뮤니티 WeChat 그룹 QR 코드" width="160" />
+  <img src="../assets/wechat-qr.jpg" alt="OCC 커뮤니티 WeChat 그룹 QR 코드" width="160" />
 
 - **피드백과 아이디어:** 우리는 빠르게 출시합니다. 필요한 기능이 있나요? [새 기능을 요청](https://github.com/stablyai/orca/issues)하세요.
-- **개인정보 보호:** Orca가 수집하는 익명 사용 데이터와 수집 거부 방법은 [개인정보 및 텔레메트리 문서](https://www.onorca.dev/docs/telemetry)를 참고하세요.
+- **개인정보 보호:** OCC가 수집하는 익명 사용 데이터와 수집 거부 방법은 [개인정보 및 텔레메트리 문서](https://www.onorca.dev/docs/telemetry)를 참고하세요.
 - **응원하기:** 이 리포지토리에 [Star](https://github.com/stablyai/orca)를 눌러 매일 공개되는 릴리스 소식을 확인해 주세요.
 
 ---
@@ -259,7 +259,7 @@ yay -S stably-orca-bin
 기여하거나 로컬에서 실행하고 싶으신가요? [CONTRIBUTING.md](../../.github/CONTRIBUTING.md) 가이드를 확인하세요.
 
 <a href="https://github.com/stablyai/orca/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=stablyai/orca" alt="Orca 기여자" />
+  <img src="https://contrib.rocks/image?repo=stablyai/orca" alt="OCC 기여자" />
 </a>
 
 <p align="center">
@@ -272,4 +272,4 @@ Windows 코드 서명은 [SignPath.io](https://signpath.io)가 후원·제공하
 
 ## 라이선스
 
-Orca는 [MIT 라이선스](../../LICENSE)에 따라 자유롭게 사용할 수 있는 오픈 소스입니다.
+OCC는 [MIT 라이선스](../../LICENSE)에 따라 자유롭게 사용할 수 있는 오픈 소스입니다.

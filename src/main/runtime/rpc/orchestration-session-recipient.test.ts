@@ -65,7 +65,7 @@ describe('a send addressed to an agent session', () => {
     await vi.waitFor(() => expect(deliver).toHaveBeenCalledWith(ADDRESS_X, expect.anything()))
   })
 
-  it('accepts a bare Orca session id and normalizes it', async () => {
+  it('accepts a bare OCC session id and normalizes it', async () => {
     expect(await send(SESSION_X)).toMatchObject({
       ok: true,
       result: { message: { to_handle: ADDRESS_X } }
@@ -101,9 +101,9 @@ describe('a send addressed to an agent session', () => {
   it.each([
     ['a provider id', () => `orca_session_id:${PROVIDER_ID_X}`],
     ['a bare provider id', () => PROVIDER_ID_X]
-  ])('hands back the Orca session address to paste instead of %s', async (_label, to) => {
+  ])('hands back the OCC session address to paste instead of %s', async (_label, to) => {
     expect(errorMessage(await send(to()))).toBe(
-      `${PROVIDER_ID_X} is the provider's own session id, which changes on /clear. This session's Orca session ID is orca_session_id:${SESSION_X}; address it by that instead. No message was sent.`
+      `${PROVIDER_ID_X} is the provider's own session id, which changes on /clear. This session's OCC session ID is orca_session_id:${SESSION_X}; address it by that instead. No message was sent.`
     )
   })
 
@@ -287,7 +287,7 @@ describe('mail sent to a session address reaches the mailbox that session reads'
     expect(message).toMatchObject({ to_handle: ADDRESS_X })
   })
 
-  it('refuses an Orca session this host does not run, or has no record of', async () => {
+  it('refuses an OCC session this host does not run, or has no record of', async () => {
     h.records.set(
       SESSION_X,
       sessionRecord(SESSION_X, { location: { executionHostId: 'ssh:devbox' } })

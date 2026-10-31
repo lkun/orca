@@ -15,7 +15,7 @@ export const TEXT_GENERATION_FAILURE_COPY = {
   outputTooLarge:
     '{{label}} CLI command produced too much output. Check the agent CLI configuration and try again.',
   windowsBatchUnsafeArguments:
-    "{{label}} runs through a Windows batch script that cannot take the multi-line prompt as an argument. Point Settings at the agent's executable, or use a custom command without {prompt} so Orca sends the prompt on stdin.",
+    "{{label}} runs through a Windows batch script that cannot take the multi-line prompt as an argument. Point Settings at the agent's executable, or use a custom command without {prompt} so OCC sends the prompt on stdin.",
   cliTerminated: '{{label}} CLI command was terminated before exiting.',
   cliTerminatedWithDetail: '{{label}} CLI command was terminated before exiting: {{detail}}',
   cliFailed: '{{label}} CLI command failed with code {{exitCode}}.',

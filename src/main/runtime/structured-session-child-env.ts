@@ -1,6 +1,6 @@
-/** Name children by stable Orca session id; provider ids rotate on clear. Reject cross-host claims; retain worker handles for non-orchestration surfaces.
+/** Name children by stable OCC session id; provider ids rotate on clear. Reject cross-host claims; retain worker handles for non-orchestration surfaces.
  * Pin the CLI by absolute launcher and user-data path because login shells can reorder PATH; older CLIs refuse the structured marker.
- * Reuse the PTY CLI-path rule: Linux installs as orca-ide to avoid GNOME Orca (#7904). Never fall back to bare or inherited launchers.
+ * Reuse the PTY CLI-path rule: Linux installs as occ-ide to avoid GNOME OCC (#7904). Never fall back to bare or inherited launchers.
  * Empty remote selectors to mask the parent env; explicit flags still work, and login profiles can re-export selectors.
  * Omit pane identity: hooks and mobile status assume a live PTY leaf. Resolve worker identity at every spawn, including recovery and clear. */
 

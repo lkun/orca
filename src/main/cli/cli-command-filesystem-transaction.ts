@@ -138,7 +138,7 @@ export async function inspectStableCommand(
       return { fileSha256, rawSymlinkTarget, snapshot: afterEvidence, status }
     }
   }
-  throw new Error(`The command at ${commandPath} changed while Orca inspected it.`)
+  throw new Error(`The command at ${commandPath} changed while OCC inspected it.`)
 }
 
 export async function quarantineCommandPath(commandPath: string): Promise<CommandQuarantine> {
@@ -202,7 +202,7 @@ export function buildMacPrivilegedSymlinkReadableCommand(args: {
 }): string {
   const commandPath = quotePosixShellDoubleQuotedApostrophe(args.commandPath)
   const changed = quotePosixShellDoubleQuotedApostrophe(
-    `The command at ${args.commandPath} changed while Orca inspected it.`
+    `The command at ${args.commandPath} changed while OCC inspected it.`
   )
   return (
     `if [ -L ${commandPath} ] && [ "$(/usr/bin/stat -f '%d:%i' ${commandPath})" = ${quotePosixShellDoubleQuotedApostrophe(`${args.expected.dev}:${args.expected.ino}`)} ]; ` +

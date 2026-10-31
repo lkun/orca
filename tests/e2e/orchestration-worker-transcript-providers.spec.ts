@@ -126,7 +126,7 @@ async function sendProviderHook() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Orca-Agent-Hook-Token': process.env.ORCA_AGENT_HOOK_TOKEN
+      'X-OCC-Agent-Hook-Token': process.env.ORCA_AGENT_HOOK_TOKEN
     },
     body: JSON.stringify({
       paneKey: process.env.ORCA_PANE_KEY,

@@ -243,7 +243,7 @@ describe.skipIf(process.platform === 'win32')('RuntimeClient', () => {
 
     await expect(client.getCliStatus()).rejects.toMatchObject({ code: 'runtime_unavailable' })
     const error = await client.getCliStatus().catch((failure: unknown) => failure)
-    expect(formatCliError(error)).not.toContain('Orca is not running')
+    expect(formatCliError(error)).not.toContain('OCC is not running')
     await expect(client.openOrca(1)).rejects.toMatchObject({ code: 'runtime_open_timeout' })
     expect(launchOrcaApp).toHaveBeenCalledTimes(1)
   })
@@ -448,9 +448,9 @@ describe.skipIf(process.platform === 'win32')('RuntimeClient', () => {
     if (!(failure instanceof RuntimeClientError)) {
       throw new Error('Expected a runtime client error', { cause: failure })
     }
-    expect(failure.message).toBe('Orca closed the connection before responding.')
+    expect(failure.message).toBe('OCC closed the connection before responding.')
     expect(failure.data).toEqual({
-      nextSteps: ['Check that Orca is open and that this terminal can access it.']
+      nextSteps: ['Check that OCC is open and that this terminal can access it.']
     })
     expect(request).toMatchObject({ method: 'orchestration.workerShow' })
     expect(request).not.toHaveProperty('orchestrationRequestId')

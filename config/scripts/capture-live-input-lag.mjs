@@ -6,14 +6,14 @@ import {
   stopRendererTimingProbe
 } from './idle-cpu-renderer-timing-probe.mjs'
 
-// Called with an already-attached main Orca page; never launches, focuses, or reloads it.
+// Called with an already-attached main OCC page; never launches, focuses, or reloads it.
 export async function captureLiveInputLag(page, durationMs = 30_000) {
   if (!Number.isFinite(durationMs) || durationMs < 1_000 || durationMs > 60_000) {
     throw new Error('Capture duration must be 1–60 seconds')
   }
   const identity = await page.evaluate(async () => {
     if (!window.api?.app?.getIdentity) {
-      throw new Error('Target is not the main Orca renderer')
+      throw new Error('Target is not the main OCC renderer')
     }
     if (window.__orcaLiveInputLag || window.__orcaIdleCpuTimingProbe) {
       throw new Error('A renderer timing probe already exists; stop it before capturing')

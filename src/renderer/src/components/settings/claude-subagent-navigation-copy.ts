@@ -11,7 +11,7 @@ export function getClaudeSubagentNavigationTitle(): string {
 export function getClaudeSubagentNavigationDescription(): string {
   return translate(
     'auto.components.settings.claudeSubagentNavigation.description',
-    'Open Claude subagents from the sidebar. Adds a shortcut to Claude’s keybindings.json and loads an Orca mod in new Orca panes. Requires Claude 2.1.300+ and status hooks. Turning off removes Orca’s shortcut; shortcuts you delete stay deleted.'
+    'Open Claude subagents from the sidebar. Adds a shortcut to Claude’s keybindings.json and loads an OCC mod in new OCC panes. Requires Claude 2.1.300+ and status hooks. Turning off removes OCC’s shortcut; shortcuts you delete stay deleted.'
   )
 }
 

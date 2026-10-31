@@ -22,7 +22,7 @@ export type UpdateCandidate = {
   entry: PluginListEntry
   preview: PluginMarketplaceHostInstallPreview | null
   error: boolean
-  /** Oldest Orca the update runs on, when this Orca is older. */
+  /** Oldest OCC the update runs on, when this OCC is older. */
   needsOrca: string | null
 }
 
@@ -221,7 +221,7 @@ export function CandidateRow({
       <p className="text-xs text-destructive">
         {translate(
           'auto.components.settings.PluginMarketplaceListingRow.blocked',
-          "Blocked by Orca's safety list: {{value0}}",
+          "Blocked by OCC's safety list: {{value0}}",
           { value0: preview.blockedByKillList.reason }
         )}
       </p>
@@ -237,7 +237,7 @@ export function CandidateRow({
       <p className="text-xs text-status-warning-text">
         {translate(
           'auto.components.settings.PluginUpdateAllDialog.needsOrca',
-          'Needs Orca {{value0}} or later',
+          'Needs OCC {{value0}} or later',
           { value0: needsOrca }
         )}
       </p>

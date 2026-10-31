@@ -88,7 +88,7 @@ export async function executeDesktopBrowserBridgeRequest(
     if (signal?.aborted) {
       throw new BridgeRefusal(
         DESKTOP_BROWSER_BRIDGE_UNAVAILABLE_CODE,
-        'The Orca desktop stopped sharing its browser before this command ran.'
+        'The OCC desktop stopped sharing its browser before this command ran.'
       )
     }
     deps.markWorkspaceDriven(workspaceId)
@@ -174,7 +174,7 @@ async function scopeRequest(
   if (!requestedWorkspaceId && !page) {
     throw new BridgeRefusal(
       DESKTOP_BROWSER_BRIDGE_SCOPE_CODE,
-      'Run this command inside a workspace on this host, or pass --worktree, so Orca knows which workspace’s browser tabs it may use.'
+      'Run this command inside a workspace on this host, or pass --worktree, so OCC knows which workspace’s browser tabs it may use.'
     )
   }
   const workspaceId = await deps.resolveWorkspace({ workspaceId: requestedWorkspaceId, page })

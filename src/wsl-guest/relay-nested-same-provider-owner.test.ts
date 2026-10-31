@@ -22,7 +22,7 @@ it('keeps a nested claude -p out of the owner row, then admits a Claude after th
     const post = async (pid: number, payload: Record<string, unknown>) => {
       const response = await fetch(`http://127.0.0.1:${port}/hook/claude`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+        headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
         body: JSON.stringify({
           paneKey,
           tabId: 'tab-1',

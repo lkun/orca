@@ -105,7 +105,7 @@ const COPY: Record<UpdaterFailureCode, (param: Param, count: CountParam) => stri
           {
             count: minutes,
             defaultValue_one:
-              "GitHub rate limit reached. Try again in about {{count}} minute, or run `gh auth login` so Orca can use your account's higher limit."
+              "GitHub rate limit reached. Try again in about {{count}} minute, or run `gh auth login` so OCC can use your account's higher limit."
           }
         )
   }

@@ -93,7 +93,7 @@ export function resolveClaudeAgentTeamsShimBin(
     return override
   }
   return (
-    findExecutableOnPath(process.platform === 'win32' ? 'orca-dev.cmd' : 'orca-dev', pathValue) ??
+    findExecutableOnPath(process.platform === 'win32' ? 'occ-dev.cmd' : 'occ-dev', pathValue) ??
     findExecutableOnPath(getOrcaCliCommandNameForPlatform(process.platform), pathValue)
   )
 }

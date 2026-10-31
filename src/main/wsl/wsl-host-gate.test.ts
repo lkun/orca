@@ -211,7 +211,7 @@ describe('WSL hosts gate', () => {
       expect(isWslHostsServing({ [WSL_HOSTS_GATE_STATE_ENV]: 'serve-only' })).toBe(true)
     })
 
-    // A child of an older Orca, or a garbled value, must keep today's env-only reading.
+    // A child of an older OCC, or a garbled value, must keep today's env-only reading.
     it('falls back to the internal gate env in a child when nothing valid was published', () => {
       expect(isWslHostsServing({ ORCA_INTERNAL_WSL_HOSTS: '1' })).toBe(true)
       // With the gate env on, a garbled value must not read as 'closed'.

@@ -62,16 +62,16 @@ describe('stopWslHostServer', () => {
     expect(all.decommission).toHaveBeenCalledWith(census(0), 'runtime-a')
   })
 
-  it('keeps a server another Orca shares: only this desktop lets go, nothing ends', async () => {
+  it('keeps a server another OCC shares: only this desktop lets go, nothing ends', async () => {
     const { all, order } = steps({
       peerDesktops: vi.fn(async (): Promise<WslHostPeerDesktops> => ({
         kind: 'shared',
-        names: ['Orca Dev']
+        names: ['OCC Dev']
       }))
     })
     await expect(stopWslHostServer(all)).resolves.toEqual({
       stopped: true,
-      keptForOtherDesktops: ['Orca Dev']
+      keptForOtherDesktops: ['OCC Dev']
     })
     expect(order).toEqual(['closeBridge'])
   })
@@ -85,7 +85,7 @@ describe('stopWslHostServer', () => {
     await expect(stopWslHostServer(all)).resolves.toMatchObject({
       stopped: false,
       verdict: 'unverifiable',
-      reason: expect.stringContaining('another Orca on this computer')
+      reason: expect.stringContaining('another OCC on this computer')
     })
     expect(order).toEqual(['closeBridge'])
   })
@@ -119,7 +119,7 @@ describe('stopWslHostServer', () => {
     expect(result).toEqual({
       stopped: false,
       reason:
-        'Terminals that refused to close: term_1 (gone::/home/me/old): selector_not_found 1 terminal session kept running. Orca’s server kept running: 1 terminal is still running on this host.',
+        'Terminals that refused to close: term_1 (gone::/home/me/old): selector_not_found 1 terminal session kept running. OCC’s server kept running: 1 terminal is still running on this host.',
       verdict: 'live'
     })
   })
@@ -164,7 +164,7 @@ describe('stopWslHostServer', () => {
     })
     await expect(stopWslHostServer(all)).resolves.toEqual({
       stopped: false,
-      reason: 'Orca’s server stopped, but its terminal daemon is still running.',
+      reason: 'OCC’s server stopped, but its terminal daemon is still running.',
       verdict: 'live'
     })
   })

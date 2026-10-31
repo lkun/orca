@@ -409,7 +409,7 @@ it.each([401, 503])(
 it('keeps an idle account last-good usage when its access token expires overnight', async () => {
   await service.fetchInactiveClaudeAccountsOnOpen()
   const originalAt = cached('A')?.updatedAt
-  // Why: Orca never refreshes a Claude login, so an idle account's usage 401s until Claude runs in it.
+  // Why: OCC never refreshes a Claude login, so an idle account's usage 401s until Claude runs in it.
   fixture.now += 2 * 60 * 60 * 1000
   fixture.status = 401
   await service.fetchInactiveClaudeAccountsOnOpen()

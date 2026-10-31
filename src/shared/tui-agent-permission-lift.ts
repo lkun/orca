@@ -33,7 +33,7 @@ export function liftAgentPermissionArgs(
   return { choice: result.choices.permissionMode ?? null, args: result.userArgs }
 }
 
-/** A recorded launch without Orca's permission flag; recorded text it cannot rebuild stays whole. */
+/** A recorded launch without OCC's permission flag; recorded text it cannot rebuild stays whole. */
 export function dropRecordedAgentPermissionArgs(
   agent: TuiAgent,
   recorded: { agentArgs?: string | null; agentCommand?: string | null },
@@ -99,7 +99,7 @@ type AgentPermissionProfile = Required<
   >
 >
 
-/** Migrate exact Orca permission recipes once, preserving unrelated text on own; absent flags also mean own because those launches passed none. */
+/** Migrate exact OCC permission recipes once, preserving unrelated text on own; absent flags also mean own because those launches passed none. */
 export function migrateAgentPermissionChoice(
   settings: Partial<AgentPermissionProfile>,
   platform: NodeJS.Platform | null | undefined = agentPermissionHostPlatform()

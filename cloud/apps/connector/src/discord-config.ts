@@ -5,7 +5,7 @@ import { decodeDiscordPublicKey } from './discord-signature.js'
 export type DiscordConfig = {
   // Verifies interaction requests.
   publicKey: KeyObject
-  // One Orca bot for every server: the gateway session and all REST calls use it.
+  // One OCC bot for every server: the gateway session and all REST calls use it.
   botToken: string
   // Messages and clicks from any other server are acknowledged and ignored.
   guildIds: ReadonlySet<string>

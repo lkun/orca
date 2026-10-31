@@ -1,6 +1,6 @@
 ---
 title: Install
-description: Download Orca for macOS, Windows, or Linux, and opt into RC builds.
+description: Download OCC for macOS, Windows, or Linux, and opt into RC builds.
 ---
 
 import { Callout } from '@/components/docs/prose'
@@ -9,7 +9,7 @@ import { Callout } from '@/components/docs/prose'
 
 <div className="my-4 rounded-md border border-border bg-card p-4 md:hidden">
   <p className="mb-3 text-sm text-muted-foreground">
-    Orca is a desktop app. Download the latest build for your platform from GitHub:
+    OCC is a desktop app. Download the latest build for your platform from GitHub:
   </p>
   <a
     href="https://github.com/stablyai/orca/releases/latest"
@@ -22,17 +22,17 @@ import { Callout } from '@/components/docs/prose'
 <ul className="hidden md:block">
   <li>
     **macOS:** [Apple
-    Silicon](https://github.com/stablyai/orca/releases/latest/download/orca-macos-arm64.dmg) ·
-    [Intel](https://github.com/stablyai/orca/releases/latest/download/orca-macos-x64.dmg)
+    Silicon](https://github.com/stablyai/orca/releases/latest/download/occ-macos-arm64.dmg) ·
+    [Intel](https://github.com/stablyai/orca/releases/latest/download/occ-macos-x64.dmg)
   </li>
   <li>
     **Windows:**
-    [installer](https://github.com/stablyai/orca/releases/latest/download/orca-windows-setup.exe)
+    [installer](https://github.com/stablyai/orca/releases/latest/download/occ-windows-setup.exe)
   </li>
   <li>
     **Linux:** AppImage
-    [x64](https://github.com/stablyai/orca/releases/latest/download/orca-linux.AppImage) ·
-    [arm64](https://github.com/stablyai/orca/releases/latest/download/orca-linux-arm64.AppImage) ·
+    [x64](https://github.com/stablyai/orca/releases/latest/download/occ-linux.AppImage) ·
+    [arm64](https://github.com/stablyai/orca/releases/latest/download/occ-linux-arm64.AppImage) ·
     [.deb](https://github.com/stablyai/orca/releases) ·
     [.rpm](https://github.com/stablyai/orca/releases) — see [Linux](#linux) for which to pick
   </li>
@@ -41,7 +41,7 @@ import { Callout } from '@/components/docs/prose'
 
 ### Homebrew (macOS)
 
-Orca is also published as a Homebrew cask, auto-bumped on every stable release:
+OCC is also published as a Homebrew cask, auto-bumped on every stable release:
 
 ```
 brew install --cask stablyai/orca/orca
@@ -51,7 +51,7 @@ brew install --cask stablyai/orca/orca
 
 ## First launch
 
-On first launch Orca will:
+On first launch OCC will:
 
 - Ask for access to your home directory so it can add repos.
 - Offer to import `~/.claude`, `~/.codex`, and Ghostty terminal settings if present.
@@ -59,9 +59,9 @@ On first launch Orca will:
 
 ## Updates
 
-Orca auto-updates by default, tracking the **stable** channel. Stable releases are vetted; **RC (release candidate)** builds ship new features first, often daily.
+OCC auto-updates by default, tracking the **stable** channel. Stable releases are vetted; **RC (release candidate)** builds ship new features first, often daily.
 
-On Linux, whether Orca can apply an update itself depends on which package you installed. See [Linux](#linux) before you pick one.
+On Linux, whether OCC can apply an update itself depends on which package you installed. See [Linux](#linux) before you pick one.
 
 There is no permanent in-app opt-in for the RC channel. Modifier clicks on **Check for Updates** ([Settings → General → Updates](/docs/settings), or the app / Help menu):
 
@@ -69,13 +69,13 @@ There is no permanent in-app opt-in for the RC channel. Modifier clicks on **Che
 | ------------------------------------------------------ | ------------------------------------------------------------------------------ |
 | **Shift+click**                                        | Include the latest **RC** prerelease                                           |
 | **Cmd+click** (macOS) / **Ctrl+click** (Windows/Linux) | Latest **perf**-tagged prerelease                                              |
-| **Option+click** (macOS only)                          | Pick a **validated local macOS build** that passes Orca’s compatibility checks |
+| **Option+click** (macOS only)                          | Pick a **validated local macOS build** that passes OCC’s compatibility checks |
 
 You can still download any build directly from the [GitHub Releases page](https://github.com/stablyai/orca/releases).
 
 <Callout title="Don't like the current update">
   Older versions are always available on the [GitHub Releases
-  page](https://github.com/stablyai/orca/releases). Orca will not force-downgrade your worktree data
+  page](https://github.com/stablyai/orca/releases). OCC will not force-downgrade your worktree data
   if you go back.
 </Callout>
 
@@ -95,17 +95,17 @@ Each published release ships three Linux packages — an **AppImage**, a **`.deb
 
 | Package      | Pick it when                                              | Updates                                                           |
 | ------------ | --------------------------------------------------------- | ----------------------------------------------------------------- |
-| **AppImage** | You want Orca to update itself, like on macOS and Windows | Orca downloads and applies the update in place                    |
-| **`.deb`**   | You manage software with `apt` on Debian or Ubuntu        | Orca tells you a version is out and hands you the install command |
+| **AppImage** | You want OCC to update itself, like on macOS and Windows | OCC downloads and applies the update in place                    |
+| **`.deb`**   | You manage software with `apt` on Debian or Ubuntu        | OCC tells you a version is out and hands you the install command |
 | **`.rpm`**   | You manage software with `dnf`, `yum`, or `zypper`        | Same as `.deb`                                                    |
 
-The AppImage has a stable download link per architecture — [`orca-linux.AppImage`](https://github.com/stablyai/orca/releases/latest/download/orca-linux.AppImage) for x64 and [`orca-linux-arm64.AppImage`](https://github.com/stablyai/orca/releases/latest/download/orca-linux-arm64.AppImage) for arm64 — and needs `chmod +x` before its first run, because GitHub release assets carry no permission bits. The `.deb` and `.rpm` filenames carry the version and architecture, and the two formats spell architecture differently (`orca-ide_<version>_amd64.deb` or `_arm64.deb`; `orca-ide-<version>.x86_64.rpm` or `.aarch64.rpm`), so take those from the [Releases page](https://github.com/stablyai/orca/releases) rather than a fixed URL.
+The AppImage has a stable download link per architecture — [`occ-linux.AppImage`](https://github.com/stablyai/orca/releases/latest/download/occ-linux.AppImage) for x64 and [`occ-linux-arm64.AppImage`](https://github.com/stablyai/orca/releases/latest/download/occ-linux-arm64.AppImage) for arm64 — and needs `chmod +x` before its first run, because GitHub release assets carry no permission bits. The `.deb` and `.rpm` filenames carry the version and architecture, and the two formats spell architecture differently (`orca-ide_<version>_amd64.deb` or `_arm64.deb`; `occ-ide-<version>.x86_64.rpm` or `.aarch64.rpm`), so take those from the [Releases page](https://github.com/stablyai/orca/releases) rather than a fixed URL.
 
 #### How updating works
 
-**The AppImage self-updates.** Choose it if you want automatic updates. Orca checks for a new release, you click **Update**, and it replaces the AppImage in place — the same flow as macOS and Windows.
+**The AppImage self-updates.** Choose it if you want automatic updates. OCC checks for a new release, you click **Update**, and it replaces the AppImage in place — the same flow as macOS and Windows.
 
-**The `.deb` and `.rpm` do not self-update.** Orca still notices the new version and downloads the package, then gives you a **Copy Install Command** button. Copy it rather than retyping it: Orca resolves every program to an absolute path in a trusted system directory and single-quotes the package path, so what you paste looks like this:
+**The `.deb` and `.rpm` do not self-update.** OCC still notices the new version and downloads the package, then gives you a **Copy Install Command** button. Copy it rather than retyping it: OCC resolves every program to an absolute path in a trusted system directory and single-quotes the package path, so what you paste looks like this:
 
 ```
 /usr/bin/sudo /usr/bin/apt install -- '/home/you/.cache/orca-updater/pending/orca-ide_1.4.194_amd64.deb'
@@ -113,27 +113,27 @@ The AppImage has a stable download link per architecture — [`orca-linux.AppIma
 
 Which package manager appears depends on what your system actually has: `apt`, else `dpkg -i`, for a `.deb`; `zypper`, `dnf`, `yum`, then `rpm -Uvh` for an `.rpm`. The download directory follows `XDG_CACHE_HOME` when that is set and falls back to `~/.cache` when it is not.
 
-**Quit Orca before you run the command**, then reopen it once the install finishes. You are replacing the files of a running application, and the package manager cannot swap them safely underneath a live process. Orca deliberately never escalates privileges to do this for you: installing a system package needs root, `orca serve` runs as an unprivileged user, and a headless machine has no authentication agent to prompt. VS Code and Signal make the same call on `.deb`.
+**Quit OCC before you run the command**, then reopen it once the install finishes. You are replacing the files of a running application, and the package manager cannot swap them safely underneath a live process. OCC deliberately never escalates privileges to do this for you: installing a system package needs root, `orca serve` runs as an unprivileged user, and a headless machine has no authentication agent to prompt. VS Code and Signal make the same call on `.deb`.
 
-**A distro-managed build is left alone.** If you are running a repackaged Orca — an AUR build, a Nix derivation — Orca sees that no package manager it can drive owns this install and stops offering a download it could never apply. It still reports that a new version exists, so you can update the way you normally would.
+**A distro-managed build is left alone.** If you are running a repackaged OCC — an AUR build, a Nix derivation — OCC sees that no package manager it can drive owns this install and stops offering a download it could never apply. It still reports that a new version exists, so you can update the way you normally would.
 
 <Callout title="Planned: a signed apt/yum repository">
   [#18086](https://github.com/stablyai/orca/issues/18086) tracks publishing a signed repository so
-  your OS package manager owns Orca updates the way it owns everything else. It does not exist yet —
+  your OS package manager owns OCC updates the way it owns everything else. It does not exist yet —
   today, `.deb` and `.rpm` updates are the manual step described above.
 </Callout>
 
-#### The CLI command is `orca-ide`
+#### The CLI command is `occ-ide`
 
-On Linux the [Orca CLI](/docs/cli/reference) installs as **`orca-ide`**, not `orca`. GNOME Orca — the screen reader that ships by default on Ubuntu and other GNOME desktops — already owns `/usr/bin/orca`, and Orca will not shadow it. The `.deb` and `.rpm` packages are named `orca-ide` for the same reason.
+On Linux the [OCC CLI](/docs/cli/reference) installs as **`occ-ide`**, not `orca`. GNOME OCC — the screen reader that ships by default on Ubuntu and other GNOME desktops — already owns `/usr/bin/occ`, and OCC will not shadow it. The `.deb` and `.rpm` packages are named `occ-ide` for the same reason.
 
-- The `.deb` and `.rpm` put `orca-ide` on your `PATH` at install time, as `/usr/bin/orca-ide`.
-- With the AppImage, register the CLI from [Settings → General → Orca CLI](/docs/settings). That installs `~/.local/bin/orca-ide`.
-- Inside Orca's own terminals, bare `orca` works. Orca puts a shim on the `PATH` of the terminals it manages, so agents and scripts running there use the same command as on macOS and Windows.
-- On a headless host, a packaged `orca serve` writes a bare `orca` into `~/.local/bin` as it starts, unless a file it does not own already holds that name. It writes that _during_ startup, so it is never what starts the server — the first launch is always [`orca-ide serve`](/docs/remote-servers).
+- The `.deb` and `.rpm` put `occ-ide` on your `PATH` at install time, as `/usr/bin/occ-ide`.
+- With the AppImage, register the CLI from [Settings → General → OCC CLI](/docs/settings). That installs `~/.local/bin/occ-ide`.
+- Inside OCC's own terminals, bare `orca` works. OCC puts a shim on the `PATH` of the terminals it manages, so agents and scripts running there use the same command as on macOS and Windows.
+- On a headless host, a packaged `orca serve` writes a bare `orca` into `~/.local/bin` as it starts, unless a file it does not own already holds that name. It writes that _during_ startup, so it is never what starts the server — the first launch is always [`occ-ide serve`](/docs/remote-servers).
 
-Do not verify with `command -v orca`: on a GNOME desktop that succeeds and resolves to the screen reader. Use `orca-ide` in your own shell and `orca` inside Orca. If you want the short name everywhere and you do not use the screen reader, link it yourself:
+Do not verify with `command -v orca`: on a GNOME desktop that succeeds and resolves to the screen reader. Use `occ-ide` in your own shell and `orca` inside OCC. If you want the short name everywhere and you do not use the screen reader, link it yourself:
 
 ```
-ln -s "$(command -v orca-ide)" ~/.local/bin/orca
+ln -s "$(command -v occ-ide)" ~/.local/bin/occ
 ```

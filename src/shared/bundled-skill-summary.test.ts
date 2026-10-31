@@ -125,11 +125,11 @@ describe('summarizeBundledSkillOutcomes', () => {
     })
     expect(summary).toMatchObject({ ok: true, exitCode: 0 })
     expect(summary.skills.map((skill) => skill.line)).toEqual([
-      'Updated · 1 skipped: Skill edited outside Orca',
-      'No change · 1 skipped: Skill edited outside Orca'
+      'Updated · 1 skipped: Skill edited outside OCC',
+      'No change · 1 skipped: Skill edited outside OCC'
     ])
     expect(summary.skills[0].leftAlone).toEqual([
-      { path: '/leave', reason: 'Skill edited outside Orca', code: 'edited' }
+      { path: '/leave', reason: 'Skill edited outside OCC', code: 'edited' }
     ])
     for (const status of ['changed', 'failed'] as const) {
       expect(
@@ -182,7 +182,7 @@ describe('summarizeBundledSkillOutcomes', () => {
       '/cursor'
     ])
     expect(summary.skills[2].line).toBe(
-      "No change · 1 skipped: Skill edited outside Orca; The shared copy isn't Orca's"
+      "No change · 1 skipped: Skill edited outside OCC; The shared copy isn't OCC's"
     )
   })
 })

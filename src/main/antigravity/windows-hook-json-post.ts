@@ -48,7 +48,7 @@ function finish() {
     request = http.request({ hostname: '127.0.0.1', port, path: '/hook/antigravity', method: 'POST', headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Length': Buffer.byteLength(body),
-      'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+      'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
     } }, response => { response.resume(); response.on('end', () => { clearTimeout(postTimer); exit(); }); });
     request.on('error', () => { clearTimeout(postTimer); exit(); });
     request.end(body);

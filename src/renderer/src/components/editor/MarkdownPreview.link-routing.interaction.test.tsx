@@ -181,7 +181,7 @@ describe('MarkdownPreview http link routing (Cmd vs Cmd+Shift click)', () => {
     })
   }
 
-  it('plain Cmd-click opens the link in the Orca browser', () => {
+  it('plain Cmd-click opens the link in the OCC browser', () => {
     const anchor = render()
     click(anchor, { metaKey: true })
     expect(createBrowserTabMock).toHaveBeenCalledWith('wt-1', 'https://example.com/', {

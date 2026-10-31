@@ -153,7 +153,7 @@ export function AddRepoLocalStartStep({
           <DialogDescription>
             {translate(
               'auto.components.sidebar.AddRepoStartSteps.acf895cb42',
-              'Add a project to get started with Orca.'
+              'Add a project to get started with OCC.'
             )}
           </DialogDescription>
         ) : null}

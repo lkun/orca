@@ -6,7 +6,7 @@ import esbuild from 'esbuild'
 // IIFE isolates declarations. Keep source readable for crash reports/console; size is small relative to xterm engine.
 const mobileRoot = path.join(import.meta.dirname, '..')
 
-/** The oldest WebView Orca supports, matching the engine bundle's own floor (#7030). */
+/** The oldest WebView OCC supports, matching the engine bundle's own floor (#7030). */
 const TARGET = 'chrome74'
 
 const ENTRY = path.join(mobileRoot, 'src', 'terminal', 'document', 'native-document-entry.ts')

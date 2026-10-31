@@ -45,7 +45,7 @@ export type WslMoveHost = {
   /** The distro's registry id, which binds the move to this exact distro; absent when unknown. */
   distroGuid?: string
   capabilities: readonly string[]
-  /** Read after the connect re-saved the deployment link; absent when no Orca profile is active. */
+  /** Read after the connect re-saved the deployment link; absent when no OCC profile is active. */
   browserLoginsNotCarried?: WslMoveBrowserCookieFreshPartitionReason
   catalog: OrcadMigrationDestinationCatalog
   /** Commit naming every blob sent, so the host refuses a commit missing one. */

@@ -82,7 +82,7 @@ describe('Help menu renderer target', () => {
     expect(safelyRevealWindow).not.toHaveBeenCalled()
   })
 
-  it('keeps routing Help actions to another full Orca window that invoked them', () => {
+  it('keeps routing Help actions to another full OCC window that invoked them', () => {
     const main = fakeWindow()
     const other = fakeWindow()
     state.mainWindow = asBrowserWindow(main)

@@ -89,7 +89,7 @@ describe('mailbox delivery into a pane awaiting the user', () => {
   it.each([
     ['sent', 'driving', '\x1b[2J\x1b[H', 5000],
     ['abandoned past the cap', 'driving', '', USER_INPUT_HOLD_CAP_MS],
-    ["not for Orca's own launch draft", 'launch', '', 0]
+    ["not for OCC's own launch draft", 'launch', '', 0]
   ] as const)(
     'holds the pointer while the composer has an unsent draft; %s',
     async (_label, inputKind, screenAfter, waitAfterMs) => {

@@ -40,7 +40,7 @@ export function resumeFailureGuidance(
 function manualContinuationText(): string {
   return translate(
     'auto.components.NativeChatResumeFailureGuidance.fallback',
-    'Orca couldn’t resume this chat. Open it to continue manually.'
+    'OCC couldn’t resume this chat. Open it to continue manually.'
   )
 }
 
@@ -49,7 +49,7 @@ function reasonGuidance(failure: Pick<ResumeFailure, 'outcome' | 'reason'>): Res
     return {
       text: translate(
         'auto.components.NativeChatResumeFailureGuidance.unconfirmed',
-        'Orca couldn’t confirm the “continue” message was delivered. Open the chat and check before sending another.'
+        'OCC couldn’t confirm the “continue” message was delivered. Open the chat and check before sending another.'
       ),
       primary: 'open',
       secondary: null
@@ -60,7 +60,7 @@ function reasonGuidance(failure: Pick<ResumeFailure, 'outcome' | 'reason'>): Res
     return {
       text: translate(
         'auto.components.NativeChatResumeFailureGuidance.superseded',
-        'Open the chat and reply. New work arrived in it right after the restart, so Orca didn’t send its “continue” message.'
+        'Open the chat and reply. New work arrived in it right after the restart, so OCC didn’t send its “continue” message.'
       ),
       primary: 'open',
       secondary: null
@@ -70,7 +70,7 @@ function reasonGuidance(failure: Pick<ResumeFailure, 'outcome' | 'reason'>): Res
     return {
       text: translate(
         'auto.components.NativeChatResumeFailureGuidance.conflict',
-        'This chat is open in another Orca window or terminal. Close it there, then retry.'
+        'This chat is open in another OCC window or terminal. Close it there, then retry.'
       ),
       primary: 'retry',
       secondary: 'open'
@@ -110,7 +110,7 @@ function reasonGuidance(failure: Pick<ResumeFailure, 'outcome' | 'reason'>): Res
     return {
       text: translate(
         'auto.components.NativeChatResumeFailureGuidance.unsupported',
-        'This chat can’t be resumed by Orca. Open it to see where it stopped.'
+        'This chat can’t be resumed by OCC. Open it to see where it stopped.'
       ),
       primary: 'open',
       secondary: 'dismiss'

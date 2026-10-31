@@ -113,7 +113,7 @@ describe("Codex's definitive answer", () => {
           new CodexAppServerUnsupportedError('method not found: hooks/list')
         )
     ],
-    ["it does not list Orca's entry", 1, () => listHashedHooks('sha256:stop', false)],
+    ["it does not list OCC's entry", 1, () => listHashedHooks('sha256:stop', false)],
     ['it hashes a moved copy differently, twice', 2, () => listHashedHooks('sha256:moved')]
   ])('is refused and saved for the version when %s', async (_, asks, answer) => {
     answer()

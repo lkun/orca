@@ -112,7 +112,7 @@ export function classifyHookTrustKey(key: string, homeDir: string): 'home-scoped
     return 'home-scoped'
   }
   const homeFiles = ['hooks.json', 'config.toml'].flatMap((file) => {
-    // WSL homes require Linux separators even when Orca runs on Windows.
+    // WSL homes require Linux separators even when OCC runs on Windows.
     const logicalPath = `${homeDir.replace(/[\\/]+$/, '')}/${file}`
     return [logicalPath, getCodexExplicitHomeHookSourcePath(logicalPath)]
   })

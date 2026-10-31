@@ -107,7 +107,7 @@ describe("orcad migration requests fit the host's sealed inbound frame", () => {
     const manifest = manifestOfBytes(760 * 1024)
     await expect(
       commitRemoteOrcadMigrationCatalog(pairingCode, manifest, { expectedBlobs: manyBlobs })
-    ).rejects.toThrow(/too large to move to its Orca server/)
+    ).rejects.toThrow(/too large to move to its OCC server/)
     expect(sendRequest).not.toHaveBeenCalled()
   })
 

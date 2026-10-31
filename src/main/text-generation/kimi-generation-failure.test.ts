@@ -19,7 +19,7 @@ vi.mock('../network/macos-tailscale-dns-diagnostic', async (original) => {
       })
   }
 })
-const invalid = /Kimi returned output Orca couldn't read\. Try again\./
+const invalid = /Kimi returned output OCC couldn't read\. Try again\./
 const occupied = /Kimi.*active in another client.*Stop.*exit.*try again/
 const unknown = /^Kimi couldn't finish.*execution host.*check.*retrying/
 const earlier = sourceShapedKimiOutput('Earlier answer')

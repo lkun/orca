@@ -43,7 +43,7 @@ function setup(verdicts: OrcadTunnelIdentity[], rereadPort: number) {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: a test double for the two members forwarding calls.
     forwards: { addForward, removeForwardAndWait } as unknown as SshPortForwardManager,
     localPort: 46_768,
-    label: 'Managed Orca server',
+    label: 'Managed OCC server',
     remotePort: 6_768,
     rereadRemotePort,
     verify,
@@ -90,15 +90,15 @@ describe('forwardToVerifiedOrcad', () => {
     expect(state.removeForwardAndWait).toHaveBeenCalledWith('forward-1')
   })
 
-  it('says the host dropped this pairing, not that another Orca holds the port', async () => {
+  it('says the host dropped this pairing, not that another OCC holds the port', async () => {
     const state = setup(
-      [{ verdict: 'unpaired', detail: 'Remote Orca runtime rejected the pairing token.' }],
+      [{ verdict: 'unpaired', detail: 'Remote OCC runtime rejected the pairing token.' }],
       58_520
     )
     const result = forwardToVerifiedOrcad(state.args)
     await expect(result).rejects.toBeInstanceOf(OrcadManagedPairingRejectedError)
     await expect(result).rejects.toThrow(/no longer accepts this desktop's pairing/)
-    await expect(result).rejects.not.toThrow(/another Orca/)
+    await expect(result).rejects.not.toThrow(/another OCC/)
     expect(state.removeForwardAndWait).toHaveBeenCalledWith('forward-1')
     // A pinned server's token refusal needs pairing repair, not a port change.
     expect(state.rereadRemotePort).not.toHaveBeenCalled()

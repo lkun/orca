@@ -24,7 +24,7 @@ export function resolveChecksPanelHostedReviewHttpOpenOptions(
 /** Where a Shift+modifier click lands, or null when it lands where a plain click already does. */
 export type ChecksPanelHostedReviewModifierDestination = 'system-browser' | 'orca' | null
 
-// Mirror routing inputs so inverted modifiers reaching Orca still get a discoverable hint.
+// Mirror routing inputs so inverted modifiers reaching OCC still get a discoverable hint.
 export function resolveChecksPanelHostedReviewModifierDestination(
   settings:
     | {

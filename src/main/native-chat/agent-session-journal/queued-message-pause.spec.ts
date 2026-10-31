@@ -172,7 +172,7 @@ export function registerQueuedMessagePauseTests(): void {
       expect(pauseTables()).toBe(0)
     })
 
-    it("any turn sent after the Stop and accepted lifts it, Orca's own mail included", async () => {
+    it("any turn sent after the Stop and accepted lifts it, OCC's own mail included", async () => {
       const journal = await open()
       await turn(journal, 'before-stop', false)
       await userStop(journal)
@@ -212,7 +212,7 @@ export function registerQueuedMessagePauseTests(): void {
       expect(pauseTables()).toBe(0)
     })
 
-    it('any accepted turn after /clear lifts its pause, a launch prompt Orca sent included', async () => {
+    it('any accepted turn after /clear lifts its pause, a launch prompt OCC sent included', async () => {
       const journal = await open()
       await queueDraft(journal, 'carried')
       await clearContext(journal)

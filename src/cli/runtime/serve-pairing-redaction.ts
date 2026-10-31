@@ -3,7 +3,7 @@ import type { superviseForegroundServe } from './serve-update-supervisor'
 import { createInterface } from 'node:readline'
 
 export const PAIRING_HIDDEN_LINE =
-  'Pairing URL: hidden because this supervised server is not writing to a terminal. Pair from the desktop app, or run `orca serve` in a terminal.'
+  'Pairing URL: hidden because this supervised server is not writing to a terminal. Pair from the desktop app, or run `occ serve` in a terminal.'
 
 /** Remove readiness pairing secrets, retaining state for multiline QR output. */
 export function createPairingRedactor(): (line: string) => string | null {

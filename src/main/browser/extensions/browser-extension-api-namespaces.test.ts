@@ -421,7 +421,7 @@ describe('privacy settings', () => {
     ])
     await expect(
       call(VAULT, 'privacy', 'network.networkPredictionEnabled.set', [{ value: false }])
-    ).rejects.toThrow('cannot be changed in Orca')
+    ).rejects.toThrow('cannot be changed in OCC')
     // Privacy Badger reads these and only writes settings it may control.
     await expect(call(OTHER, 'privacy', 'websites.topicsEnabled.get', [{}])).resolves.toEqual({
       value: false,
@@ -843,7 +843,7 @@ async function listenFrame(extensionId: string, namespace: string, event: string
 }
 
 describe('chrome.extension access checks', () => {
-  it('reports no file or incognito access, matching how Orca loads extensions', async () => {
+  it('reports no file or incognito access, matching how OCC loads extensions', async () => {
     expect(await call(VAULT, 'extension', 'isAllowedFileSchemeAccess', [])).toBe(false)
     expect(await call(VAULT, 'extension', 'isAllowedIncognitoAccess', [])).toBe(false)
   })

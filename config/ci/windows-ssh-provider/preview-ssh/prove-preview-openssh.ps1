@@ -185,7 +185,7 @@ try {
     $account=@{name=$accountName;sid=$null;home=$null}
     $ownedAccounts.Add($account)
     Write-Stage 'private-user-create-start'
-    $user=New-LocalUser -Name $accountName -Password $password -AccountNeverExpires -PasswordNeverExpires -Description 'Ephemeral Orca SSH qualification'
+    $user=New-LocalUser -Name $accountName -Password $password -AccountNeverExpires -PasswordNeverExpires -Description 'Ephemeral OCC SSH qualification'
     Write-Stage 'private-user-create-complete'
     $account.sid=$user.SID.Value
     Write-Stage 'private-user-group-start'

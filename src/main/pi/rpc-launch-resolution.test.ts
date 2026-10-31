@@ -205,7 +205,7 @@ describe('Pi host launch resolution', () => {
     expect(() => piRpcProviderLink(forked, elsewhere, 2, 'bad', 200)).toThrow('did not fork')
   })
 
-  it('resumes the stored session file after Orca restarts and reopens the store', async () => {
+  it('resumes the stored session file after OCC restarts and reopens the store', async () => {
     const h = await setup()
     const file = join(root, 'conversation.jsonl')
     await writeFile(file, `${JSON.stringify({ type: 'session', cwd: h.workspace })}\n`)

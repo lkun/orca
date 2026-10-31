@@ -41,7 +41,7 @@ export async function runOrcaCli(
 }
 
 async function runOrcaCliOnce(args: string[]): Promise<CliResult> {
-  const devCli = join(process.cwd(), 'config/scripts/orca-dev.mjs')
+  const devCli = join(process.cwd(), 'config/scripts/occ-dev.mjs')
   const command = process.env.ORCA_COMPUTER_CLI ?? process.execPath
   const cliArgs = process.env.ORCA_COMPUTER_CLI ? args : [devCli, ...args]
   const env = process.env.ORCA_COMPUTER_CLI
@@ -128,7 +128,7 @@ async function waitForOrcaRuntimeReady(): Promise<void> {
   ]
     .filter(Boolean)
     .join(' ')
-  throw new Error(`Orca runtime metadata was not ready at ${metadataPath}.${detail}`)
+  throw new Error(`OCC runtime metadata was not ready at ${metadataPath}.${detail}`)
 }
 
 function delay(ms: number): Promise<void> {
@@ -137,7 +137,7 @@ function delay(ms: number): Promise<void> {
 
 async function ensureOrcaRuntimeServed(): Promise<void> {
   if (!orcaServeProcess || orcaServeProcess.exitCode !== null) {
-    const devCli = join(process.cwd(), 'config/scripts/orca-dev.mjs')
+    const devCli = join(process.cwd(), 'config/scripts/occ-dev.mjs')
     const env = await createComputerE2ERuntimeEnv()
     orcaServeStdout = ''
     orcaServeStderr = ''
@@ -190,6 +190,6 @@ function isMissingRuntimeMetadataError(args: string[], error: unknown): boolean 
   const message = String((error as { message?: unknown }).message)
   return (
     message.includes('"code": "runtime_unavailable"') &&
-    message.includes('Could not read Orca runtime metadata')
+    message.includes('Could not read OCC runtime metadata')
   )
 }

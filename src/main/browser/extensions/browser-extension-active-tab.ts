@@ -4,7 +4,7 @@ import { webContents } from 'electron'
  * activeTab: invoking an extension on a tab (its action, one of its keyboard commands or context
  * menu items) lets it read that tab's URL and title until the tab loads another document or
  * closes, or the extension unloads, as Chrome grants it.
- * Orca's own APIs honor the grant too (tabs.captureVisibleTab). Script access does not follow:
+ * OCC's own APIs honor the grant too (tabs.captureVisibleTab). Script access does not follow:
  * Electron's native scripting.executeScript/insertCSS check only manifest host permissions, and
  * Electron has no API to add Chromium's per-tab grant, so those calls still fail with Chrome's
  * "Cannot access contents of the page" error. tabs.sendMessage needs no host access and works.

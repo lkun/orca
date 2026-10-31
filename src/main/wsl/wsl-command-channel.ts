@@ -5,7 +5,7 @@ import type { RemoteCommandChannel } from '../managed-server/install/remote-inst
 /** How long a closed channel's guest gets to exit on stdin EOF before wsl.exe is killed. */
 export const WSL_CHANNEL_CLOSE_GRACE_MS = 2_000
 
-// wsl.exe children inside their close grace; quit kills them so none outlives Orca.
+// wsl.exe children inside their close grace; quit kills them so none outlives OCC.
 const closingChildren = new Set<PipedChildProcess>()
 
 /** App quit: no grace left, so a guest still running after close must not keep wsl.exe up. */

@@ -257,7 +257,7 @@ function SetupScriptPromptCard(): React.JSX.Element | null {
               onOpenSettings: () => openLocalCommandSettings(importedRepoId, importedHostId),
               description: translate(
                 'auto.components.sidebar.SetupScriptPromptCard.a49196d538',
-                'Runs when Orca creates a new worktree.'
+                'Runs when OCC creates a new worktree.'
               )
             })
           }

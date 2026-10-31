@@ -26,7 +26,7 @@ export type OrchestrationCompatibilityEvidence = {
   paneKey?: string
   launchToken?: string
   host?: OrchestrationCompatibilityHostStamp
-  /** Injected Orca session identity is authoritative when present; dispatch resolves it and validates any declared handle against it. */
+  /** Injected OCC session identity is authoritative when present; dispatch resolves it and validates any declared handle against it. */
   agentSessionId?: string
 }
 

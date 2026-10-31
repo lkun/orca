@@ -330,7 +330,7 @@ describe('a create that reserves its tab', () => {
   })
 })
 
-describe('a chat tab over records a newer Orca wrote', () => {
+describe('a chat tab over records a newer OCC wrote', () => {
   it("opens a closed chat's tab from history, whose chat does not load", async () => {
     await createChat(HOST_TEST_SESSION)
     await host.close(HOST_TEST_SESSION, 'user-close')

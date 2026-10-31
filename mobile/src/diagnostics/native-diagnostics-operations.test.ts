@@ -45,7 +45,7 @@ describe('native connection diagnostic reports', () => {
     const device = createNativeDiagnosticsOperations(host, createContext(), '1.4.197')
     const { report } = await device.report()
     expect(report).toContain('State: connected')
-    expect(report).toContain('Host Orca version: 1.4.197')
+    expect(report).toContain('Host OCC version: 1.4.197')
   })
 
   it('omits a captured version when hydration crosses a reconnect', async () => {
@@ -63,7 +63,7 @@ describe('native connection diagnostic reports', () => {
     finishHydration()
     const { report } = await pendingReport
     expect(report).toContain('State: connected')
-    expect(report).toContain('Host Orca version: unknown')
+    expect(report).toContain('Host OCC version: unknown')
     expect(report).not.toContain('1.4.197')
   })
 
@@ -82,7 +82,7 @@ describe('native connection diagnostic reports', () => {
     finishHydration()
     const { report } = await pendingReport
     expect(report).toContain('State: connected')
-    expect(report).toContain('Host Orca version: unknown')
+    expect(report).toContain('Host OCC version: unknown')
     expect(report).not.toContain('1.4.197')
   })
 
@@ -91,7 +91,7 @@ describe('native connection diagnostic reports', () => {
     context.setConnection('disconnected', 1_000)
     const device = createNativeDiagnosticsOperations(host, context, '1.4.197')
     const { report } = await device.report()
-    expect(report).toContain('Host Orca version: unknown (not currently connected)')
+    expect(report).toContain('Host OCC version: unknown (not currently connected)')
     expect(report).not.toContain('1.4.197')
   })
 })

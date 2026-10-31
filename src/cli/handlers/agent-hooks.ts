@@ -119,7 +119,7 @@ async function updateRunningRuntime(client: RuntimeClient, enabled: boolean): Pr
     if (status.legacyPidRunning) {
       throw new RuntimeClientError(
         'runtime_error',
-        'Orca is running but unavailable. Retry when it responds, or stop Orca before changing agent hooks offline.'
+        'OCC is running but unavailable. Retry when it responds, or stop OCC before changing agent hooks offline.'
       )
     }
     return false

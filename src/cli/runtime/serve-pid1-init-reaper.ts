@@ -28,7 +28,7 @@ export type ServeInitReaperDeps = {
 export type ServeInitReaperOutcome = 'not-pid1' | 'reexec' | 'unavailable'
 
 const NO_REAPER_WARNING =
-  '[serve] Orca is PID 1 and cannot reap orphaned processes, so they stay zombies. Run it under an init (docker run --init, tini, or bash).'
+  '[serve] OCC is PID 1 and cannot reap orphaned processes, so they stay zombies. Run it under an init (docker run --init, tini, or bash).'
 
 const EVAL_FLAGS = new Set(['-e', '--eval', '-p', '--print'])
 

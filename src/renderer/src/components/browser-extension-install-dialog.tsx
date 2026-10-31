@@ -69,10 +69,10 @@ function promptDescription(request: BrowserExtensionInstallPromptRequest): strin
         'It runs in tabs that use the {{profile}} profile.',
         { profile: request.profileLabel }
       )
-    : translate('browserExtensions.install.description', 'It runs in Orca browser tabs.')
+    : translate('browserExtensions.install.description', 'It runs in OCC browser tabs.')
 }
 
-/** Orca's confirmation for store installs and store-page removals; main waits on the answer. */
+/** OCC's confirmation for store installs and store-page removals; main waits on the answer. */
 export function BrowserExtensionInstallDialog(): React.JSX.Element {
   const [requests, setRequests] = useState<BrowserExtensionInstallPromptRequest[]>([])
   const [respondingRequestId, setRespondingRequestId] = useState<string | null>(null)

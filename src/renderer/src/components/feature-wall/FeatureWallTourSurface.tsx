@@ -57,7 +57,7 @@ export function FeatureWallTourSurface({
   doneLabel = translate('auto.components.feature.wall.FeatureWallTourSurface.done', 'Done'),
   footerText = translate(
     'auto.components.feature.wall.FeatureWallTourSurface.reopenHint',
-    'Reopen any time from Help > Explore Orca.'
+    'Reopen any time from Help > Explore OCC.'
   ),
   enableKeyboardShortcut = true,
   compactRail = false,

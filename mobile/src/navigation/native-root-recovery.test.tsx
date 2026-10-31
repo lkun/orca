@@ -7,7 +7,7 @@ const startup = vi.hoisted(() => ({
   fail: true,
   replace: vi.fn(),
   openNotification: vi.fn(),
-  readLink: vi.fn(async () => 'orca://pair?code=cold-code'),
+  readLink: vi.fn(async () => 'occ://pair?code=cold-code'),
   readNotification: vi.fn(() => ({
     actionIdentifier: 'default',
     notification: {

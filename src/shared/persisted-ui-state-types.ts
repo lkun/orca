@@ -152,7 +152,7 @@ export type PersistedUIState = {
   releaseChannelOverride?: ReleaseChannel | null
   pendingUpdateNudgeId?: string | null
   dismissedUpdateNudgeId?: string | null
-  /** Whether Orca already tried triggering the macOS notification permission dialog; prevents re-firing every launch. */
+  /** Whether OCC already tried triggering the macOS notification permission dialog; prevents re-firing every launch. */
   notificationPermissionRequested?: boolean
   /** Once the "your sessions won't be interrupted" reassurance card is seen, never show it again. */
   updateReassuranceSeen?: boolean
@@ -170,7 +170,7 @@ export type PersistedUIState = {
   setupGuideBrowserMilestoneLegacyComplete?: boolean
   /** User-dismissed browser import toolbar hint; import stays available from Settings > Browser and the overflow menu. */
   browserImportHintHidden?: boolean
-  /** Why: Windows-only. Set once on first hide to tray so the "Orca is still running" notice shows only once. */
+  /** Why: Windows-only. Set once on first hide to tray so the "OCC is still running" notice shows only once. */
   trayMinimizeNoticeShown?: boolean
   /** Set by the OSC 52 default-on migration when it overrode a persisted `false`; the renderer shows one notice and clears it. */
   osc52ClipboardDefaultOnNoticePending?: boolean
@@ -229,7 +229,7 @@ export type PersistedUIState = {
   starNagAppVersion?: string | null
   /** Next agents-since-baseline threshold that fires the star-nag; starts at 35, doubles per dismissal without starring. */
   starNagNextThreshold?: number
-  /** Once the user has starred Orca (any entry point), permanently suppress the nag. */
+  /** Once the user has starred OCC (any entry point), permanently suppress the nag. */
   starNagCompleted?: boolean
   /** Timestamp until which nonterminal dismissals suppress threshold prompts (force-show bypasses for dev/testing). */
   starNagDeferredUntil?: number | null

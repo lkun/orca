@@ -39,7 +39,7 @@ async function focusPane(page: Page, leafId: string): Promise<void> {
 }
 
 test.describe('layout compat: released desktop and CLI on the current server', () => {
-  test.skip(packagedExecutableMissing, `${PACKAGED_EXECUTABLE_ENV} must point at a released Orca`)
+  test.skip(packagedExecutableMissing, `${PACKAGED_EXECUTABLE_ENV} must point at a released OCC`)
 
   test('old-desktop-on-new-server: split, close pane, server restart', async ({
     testRepoPath

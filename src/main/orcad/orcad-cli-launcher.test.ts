@@ -55,7 +55,7 @@ describe('orcad profile CLI launcher', () => {
       }
       const args = ['orchestration', 'send', 'a body\nwith "quotes" and $HOME']
       const launchers =
-        process.platform === 'linux' ? [launcher, join(dirname(launcher), 'orca-ide')] : [launcher]
+        process.platform === 'linux' ? [launcher, join(dirname(launcher), 'occ-ide')] : [launcher]
       for (const program of launchers) {
         const result = await runProcess({
           program,
@@ -75,7 +75,7 @@ describe('orcad profile CLI launcher', () => {
   )
 
   it.skipIf(process.platform === 'win32')(
-    "passes a person's own Orca settings through, adding only the profile",
+    "passes a person's own OCC settings through, adding only the profile",
     async () => {
       const path = join(roots.install, ...ORCAD_CLI_ENTRY_FILENAME.split('/'))
       await mkdir(dirname(path), { recursive: true })
@@ -139,7 +139,7 @@ describe('orcad profile CLI launcher', () => {
       await writeCli()
       await prepareOrcadCliLauncher()
       const binDir = join(roots.profile, 'cli', 'bin')
-      const script = await readFile(join(binDir, 'orca-ide'), 'utf8')
+      const script = await readFile(join(binDir, 'occ-ide'), 'utf8')
       expect(script).toContain(roots.install)
       expect(script).toBe(await readFile(join(binDir, 'orca'), 'utf8'))
     })

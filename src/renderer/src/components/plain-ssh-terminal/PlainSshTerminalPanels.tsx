@@ -16,7 +16,7 @@ import { PlainSshTerminalView, type PlainSshTerminalPhase } from './PlainSshTerm
 export function plainSshUnmanagedNotice(): string {
   return translate(
     'auto.components.plainSshTerminal.unmanaged',
-    'Plain SSH — unmanaged. Not an Orca workspace: agents and tabs here aren’t tracked, and this terminal isn’t restored. Closing it ends the SSH session.'
+    'Plain SSH — unmanaged. Not an OCC workspace: agents and tabs here aren’t tracked, and this terminal isn’t restored. Closing it ends the SSH session.'
   )
 }
 
@@ -63,7 +63,7 @@ function HeaderIconButton({
   )
 }
 
-/** A non-modal window over Orca; minimized windows wait in a strip at the bottom right. */
+/** A non-modal window over OCC; minimized windows wait in a strip at the bottom right. */
 function PlainSshTerminalCard({ panel }: { panel: PlainSshPanel }): React.JSX.Element {
   const [phase, setPhase] = useState<PlainSshTerminalPhase>({ kind: 'opening' })
   const message = phaseText(phase)

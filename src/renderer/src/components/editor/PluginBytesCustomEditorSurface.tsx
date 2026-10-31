@@ -52,7 +52,7 @@ function SurfaceMessage({
 }
 
 /**
- * A bytes editor: Orca pages the file from the host that owns it (local, SSH or a paired runtime),
+ * A bytes editor: OCC pages the file from the host that owns it (local, SSH or a paired runtime),
  * caps its size, and hands the frame only the bytes, never a path. Its edits replace the whole
  * document and save through the tab's save pipeline.
  */
@@ -150,7 +150,7 @@ export default function PluginBytesCustomEditorSurface({
       <SurfaceMessage>
         {translate(
           'auto.components.editor.PluginBytesCustomEditorSurface.unsupported',
-          "{{value0}} can't read this file from where it is stored. Update the Orca server that hosts it, or switch to Source.",
+          "{{value0}} can't read this file from where it is stored. Update the OCC server that hosts it, or switch to Source.",
           { value0: editor.title }
         )}
       </SurfaceMessage>

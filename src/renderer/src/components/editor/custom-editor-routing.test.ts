@@ -125,7 +125,7 @@ describe('custom editor routing', () => {
     expect(model({ editors, choice: 'acme.alt/alt' }).activeCustomEditor?.key).toBe('acme.alt/alt')
   })
 
-  it('never opens an Orca-core file type by default but still offers the editor', () => {
+  it('never opens an OCC-core file type by default but still offers the editor', () => {
     const editors = (filePath: string) =>
       customEditorsForFile(
         filePath,

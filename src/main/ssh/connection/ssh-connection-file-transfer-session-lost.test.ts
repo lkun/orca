@@ -53,7 +53,7 @@ describe('an SFTP transfer whose SSH connection dies', () => {
     expect(transferSignal?.aborted).toBe(true)
   })
 
-  it('keeps a cancel a cancel when the session closes because Orca ended it', async () => {
+  it('keeps a cancel a cancel when the session closes because OCC ended it', async () => {
     const sftp = fakeSession()
     const cancel = new AbortController()
     const upload = uploadSshDirectory(hostWith(sftp, cancel.signal), '/local/r', '/root/r')

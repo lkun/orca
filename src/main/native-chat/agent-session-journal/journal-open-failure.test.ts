@@ -198,16 +198,16 @@ describe('createJournalOpenReadRefusals', () => {
       return error instanceof Error && error.cause instanceof Error ? error.cause.message : ''
     })
     expect(causes).toEqual([
-      expect.stringContaining("newer Orca's row at sequence 7"),
+      expect.stringContaining("newer OCC's row at sequence 7"),
       expect.stringContaining('damaged at sequence 3: sequence-gap')
     ])
   })
 
-  it("logs a load refused as a newer Orca's chat, or as damage, once per session until it opens", () => {
+  it("logs a load refused as a newer OCC's chat, or as damage, once per session until it opens", () => {
     const log = recordingStructuredAgentSessionLogger()
     const refusals = createJournalOpenReadRefusals(log.logger)
     const newer = journalOpenRefusalError(
-      new AgentSessionJournalError('journal_read_only', 'a newer Orca wrote session-1')
+      new AgentSessionJournalError('journal_read_only', 'a newer OCC wrote session-1')
     )
     for (let attempt = 0; attempt < 3; attempt += 1) {
       expect(refusals.refusal('session-1', newer)).toBe(newer)
@@ -229,14 +229,14 @@ describe('createJournalOpenReadRefusals', () => {
   })
 })
 
-describe('a journal a newer Orca wrote', () => {
+describe('a journal a newer OCC wrote', () => {
   const readOnly = () =>
     new AgentSessionJournalError('journal_read_only', 'the journal uses a newer schema')
 
   it('refuses a write with its own reason, and the words released clients print', () => {
     expect(JSON.parse(JSON.stringify(journalOpenRefusal(readOnly())))).toEqual({
       code: 'agent_session_journal_unreadable',
-      message: 'Chats were saved by a newer Orca. Update Orca to keep using them.',
+      message: 'Chats were saved by a newer OCC. Update OCC to keep using them.',
       details: { reason: 'journalWrittenByNewerOrca' }
     })
     expect(journalOpenRefusalError(readOnly()).refusal).toMatchObject({

@@ -197,8 +197,8 @@ describe('MobileNativeChatPermission', () => {
     expect(actions.findAllByProps({ children: 'Approve plan' })).toHaveLength(1)
   })
 
-  describe("a subject of a kind this build cannot draw: a newer Orca's", () => {
-    const NEEDS_NEWER_ORCA = 'This request needs a newer version of Orca.'
+  describe("a subject of a kind this build cannot draw: a newer OCC's", () => {
+    const NEEDS_NEWER_ORCA = 'This request needs a newer version of OCC.'
 
     async function renderNewer(detail: string | undefined) {
       const onRespond = vi.fn(async () => true)

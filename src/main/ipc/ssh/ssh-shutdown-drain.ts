@@ -69,7 +69,7 @@ function sshShutdownTasks(): SshShutdownTask[] {
       promise: Promise.all([portForwardManager?.closeAll(), shutdownOrcadManagedTunnels()])
     },
     {
-      // Plain SSH terminals have no restoration owner and must end with Orca.
+      // Plain SSH terminals have no restoration owner and must end with OCC.
       targetId: '*plain-ssh',
       promise: closeAllPlainSshTerminals()
     }

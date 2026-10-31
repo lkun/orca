@@ -80,7 +80,7 @@ function queueBrowserWaits(): BrowserWait[] {
   return waits
 }
 
-describe('Orca cloud sign-in progress', () => {
+describe('OCC cloud sign-in progress', () => {
   beforeEach(() => {
     userDataPath = mkdtempSync(join(tmpdir(), 'orca-cloud-sign-in-progress-'))
     beginOrcaCloudPkceFlowMock.mockReset()

@@ -18,7 +18,7 @@ export type NativeChatLinkActions = {
   closeLinkActions: (dismissed?: LinkActionRequest) => void
 }
 
-/** Match terminal destination popovers: files open in Orca/default app, HTTP(S) links in a browser. */
+/** Match terminal destination popovers: files open in OCC/default app, HTTP(S) links in a browser. */
 export function useNativeChatLinkActions(
   context: NativeChatFileLinkContext | null,
   rootRef: RefObject<HTMLElement | null>,

@@ -1,14 +1,14 @@
 ---
 name: orca-chat-visuals
-description: Show a chart, diagram, table, report or mockup inline in this Orca chat as an HTML
+description: Show a chart, diagram, table, report or mockup inline in this OCC chat as an HTML
   page. Use when a visual would help the user understand your answer. Only available when the
   ORCA_CHAT_SCRATCH_DIR environment variable is set.
 user-invocable: false
 ---
 
-# Inline visuals in an Orca chat
+# Inline visuals in an OCC chat
 
-Orca can show an HTML page inside your reply. Use one whenever a visual would make the answer
+OCC can show an HTML page inside your reply. Use one whenever a visual would make the answer
 clearer.
 
 ## Writing the page
@@ -22,9 +22,9 @@ clearer.
 - Inline your styles, scripts and data. Libraries and fonts may load only from cdn.jsdelivr.net,
   unpkg.com, cdnjs.cloudflare.com, esm.sh, fonts.googleapis.com and fonts.gstatic.com. The page
   can't make network requests; use inline SVG or `data:` URLs for images.
-- Don't size anything to the viewport height (`100vh`); Orca fits the frame to your content.
-- Use Orca's theme variables for surfaces, text, and controls; pair hover `--accent` with
-  `--accent-foreground`. Scope fixed-palette CSS to its mockup. Orca updates tokens and
+- Don't size anything to the viewport height (`100vh`); OCC fits the frame to your content.
+- Use OCC's theme variables for surfaces, text, and controls; pair hover `--accent` with
+  `--accent-foreground`. Scope fixed-palette CSS to its mockup. OCC updates tokens and
   `color-scheme` live. Charts use `--chart-1` to `--chart-5`.
 
 ## Showing it

@@ -1,21 +1,21 @@
 ---
-title: Orca CLI reference
-description: Commands, selectors, and agent-friendly patterns for driving Orca from a shell.
+title: OCC CLI reference
+description: Commands, selectors, and agent-friendly patterns for driving OCC from a shell.
 ---
 
 import { Callout } from '@/components/docs/prose'
 
-The `orca` CLI talks to a running Orca runtime. Use it when a shell script or agent needs to inspect worktrees, launch terminals, open files, automate the built-in browser, or report progress back into Orca.
+The `orca` CLI talks to a running OCC runtime. Use it when a shell script or agent needs to inspect worktrees, launch terminals, open files, automate the built-in browser, or report progress back into OCC.
 
 ## Verify the runtime
 
-Register the CLI under [Settings → General → Orca CLI](/docs/settings), then check that it can reach Orca.
+Register the CLI under [Settings → General → OCC CLI](/docs/settings), then check that it can reach OCC.
 
-<Callout title="On Linux the command is orca-ide">
-  GNOME Orca — the screen reader that ships with most GNOME desktops — already owns `/usr/bin/orca`,
-  so Orca's Linux CLI installs as `orca-ide`. Do not check for it with `command -v orca`: that
-  succeeds on a GNOME desktop and resolves to the screen reader, not to Orca. This page writes
-  `orca` throughout — read it as `orca-ide` on Linux. See [Install → Linux](/docs/install#linux).
+<Callout title="On Linux the command is occ-ide">
+  GNOME OCC — the screen reader that ships with most GNOME desktops — already owns `/usr/bin/occ`,
+  so OCC's Linux CLI installs as `occ-ide`. Do not check for it with `command -v orca`: that
+  succeeds on a GNOME desktop and resolves to the screen reader, not to OCC. This page writes
+  `orca` throughout — read it as `occ-ide` on Linux. See [Install → Linux](/docs/install#linux).
 </Callout>
 
 On macOS and Windows:
@@ -28,11 +28,11 @@ orca status --json
 On Linux:
 
 ```bash
-command -v orca-ide
-orca-ide status --json
+command -v occ-ide
+occ-ide status --json
 ```
 
-If Orca is not already running:
+If OCC is not already running:
 
 ```bash
 orca open --json
@@ -53,17 +53,17 @@ orca worktree show --worktree branch:feature-name --json
 orca worktree show --worktree issue:123 --json
 ```
 
-`active` and `current` resolve to the enclosing Orca-managed worktree from the shell's current directory or terminal context. Use explicit selectors in scripts that may run outside the target worktree. For remote runtimes, prefer full server-side selectors such as `id:<repoId>::<absolute-worktree-path>` or `path:<absolute-server-path>` because the local shell's current directory may not exist on the runtime host.
+`active` and `current` resolve to the enclosing OCC-managed worktree from the shell's current directory or terminal context. Use explicit selectors in scripts that may run outside the target worktree. For remote runtimes, prefer full server-side selectors such as `id:<repoId>::<absolute-worktree-path>` or `path:<absolute-server-path>` because the local shell's current directory may not exist on the runtime host.
 
 ## Choose a host
 
-List every machine the current Orca host can target and the selector for each one:
+List every machine the current OCC host can target and the selector for each one:
 
 ```bash
 orca host list --json
 ```
 
-The result includes this machine, its registered [SSH targets](/docs/ssh), and paired [Remote Orca Servers](/docs/remote-servers). Use `--host local` for this machine, `--host ssh:<target-id>` for an SSH target, and `--environment <server-name>` for a paired server. SSH rows include the detected remote platform (`linux`, `darwin`, or `win32`) after the target connects; older or disconnected targets report `platform unknown`. They also include `connected` and, when known, the SSH lifecycle `connectionStatus`. If you put a machine name on the wrong selector, Orca reports the matching machine and the flag to use instead of returning an empty result.
+The result includes this machine, its registered [SSH targets](/docs/ssh), and paired [Remote OCC Servers](/docs/remote-servers). Use `--host local` for this machine, `--host ssh:<target-id>` for an SSH target, and `--environment <server-name>` for a paired server. SSH rows include the detected remote platform (`linux`, `darwin`, or `win32`) after the target connects; older or disconnected targets report `platform unknown`. They also include `connected` and, when known, the SSH lifecycle `connectionStatus`. If you put a machine name on the wrong selector, OCC reports the matching machine and the flag to use instead of returning an empty result.
 
 `--host` also takes the bare name shown in the `name` column, on either axis — `--host trader-local` reaches the same machine as `--host ssh:ssh-1783599077486-fyasux`. Names resolve only when they are unique: a name held by two SSH targets, by two paired servers, or by one of each is refused, and the error hands back the id form for each candidate — `--host ssh:<target-id>` for an SSH target and `--host runtime:<environment-id>` for a paired server. Use those to settle it, since `--environment <server-name>` cannot separate two servers sharing a name.
 
@@ -75,7 +75,7 @@ orca status --json
 orca serve --port 6768 --pairing-address 100.64.1.20 --json
 ```
 
-`orca serve` starts a runtime server in the foreground without opening the desktop window. Use it for [Remote Orca Servers](/docs/remote-servers) or headless environments, and stop it with `Ctrl-C`.
+`orca serve` starts a runtime server in the foreground without opening the desktop window. Use it for [Remote OCC Servers](/docs/remote-servers) or headless environments, and stop it with `Ctrl-C`.
 
 ## Repos
 
@@ -103,11 +103,11 @@ orca worktree set --worktree active --workspace-status in-review --unread --json
 orca worktree rm --worktree id:<worktreeId> --force --json
 ```
 
-When `worktree create` runs from inside an Orca-managed worktree, Orca records the new worktree as a child when it can infer the relationship. Pass `--parent-worktree active` to be explicit, or `--no-parent` when the new work is independent.
+When `worktree create` runs from inside an OCC-managed worktree, OCC records the new worktree as a child when it can infer the relationship. Pass `--parent-worktree active` to be explicit, or `--no-parent` when the new work is independent.
 
-Pass `--branch DAT-111-fix-login` to name the Git branch yourself instead of applying the configured branch prefix. `--name` still sets the workspace name and `--base-branch` the starting ref. If that branch already exists and cannot be reused, or the workspace path is already taken, Orca appends a numeric suffix to both, as it does in the new-workspace composer, so `--name task --branch exact` can produce branch `exact-2` even when `exact` is free.
+Pass `--branch DAT-111-fix-login` to name the Git branch yourself instead of applying the configured branch prefix. `--name` still sets the workspace name and `--base-branch` the starting ref. If that branch already exists and cannot be reused, or the workspace path is already taken, OCC appends a numeric suffix to both, as it does in the new-workspace composer, so `--name task --branch exact` can produce branch `exact-2` even when `exact` is free.
 
-`worktree set --unread` puts the unread dot on the workspace in the sidebar, the same one Orca shows when an agent finishes; `--read` clears it.
+`worktree set --unread` puts the unread dot on the workspace in the sidebar, the same one OCC shows when an agent finishes; `--read` clears it.
 
 Agent startup flags:
 
@@ -143,7 +143,7 @@ orca ports --worktree branch:feature/login --json
 orca ports --all
 ```
 
-`ports` lists the listening ports Orca tied to a workspace, from the host the workspace runs on. It defaults to the workspace that contains the current directory. Each row has `port`, `pid`, `processName`, `connectHost`, `protocol`, how Orca matched it (`owner.confidence`: `cwd` or `command`), and `advertisedUrl` when the dev server printed one in an Orca terminal. `--all` lists every listener on that host. Native folder workspaces need `--all`, because Orca does not tie ports to them. If `unavailableReason` is set, the scan could not run on that host; SSH workspaces opened directly from the desktop report this for now, while a workspace on a managed Orca server is scanned on that server.
+`ports` lists the listening ports OCC tied to a workspace, from the host the workspace runs on. It defaults to the workspace that contains the current directory. Each row has `port`, `pid`, `processName`, `connectHost`, `protocol`, how OCC matched it (`owner.confidence`: `cwd` or `command`), and `advertisedUrl` when the dev server printed one in an OCC terminal. `--all` lists every listener on that host. Native folder workspaces need `--all`, because OCC does not tie ports to them. If `unavailableReason` is set, the scan could not run on that host; SSH workspaces opened directly from the desktop report this for now, while a workspace on a managed OCC server is scanned on that server.
 
 ## References
 
@@ -202,11 +202,11 @@ close returns a failing `unverifiable` result rather than claiming the processes
 `terminal stop` remains only for compatibility with older tooling.
 
 <Callout title="Terminal handles">
-  Terminal handles are runtime-scoped. If Orca restarts or a command reports a stale terminal
+  Terminal handles are runtime-scoped. If OCC restarts or a command reports a stale terminal
   handle, run `orca terminal list --json` and reacquire the handle.
 </Callout>
 
-`terminal list` reports each terminal's `executionHostId` when Orca can verify it, plus a result-level `hostScope` with covered and omitted host IDs. Treat a missing host identity or scope as **unverifiable**, not local. A missing terminal is evidence that it exited only when its execution host is listed in `hostScope.hostIds`.
+`terminal list` reports each terminal's `executionHostId` when OCC can verify it, plus a result-level `hostScope` with covered and omitted host IDs. Treat a missing host identity or scope as **unverifiable**, not local. A missing terminal is evidence that it exited only when its execution host is listed in `hostScope.hostIds`.
 
 By default, `terminal read` returns the accumulated output stream with terminal escapes stripped. Programs that redraw lines can therefore appear as stacked fragments. Use `--screen` when you need the currently rendered frame; the response's `source` identifies `stream`, `screen`, or `screen-unavailable`. Screen reads have no history to page, so `--screen` and `--cursor` are mutually exclusive.
 
@@ -225,7 +225,7 @@ Paths are relative to the selected worktree. `--line` and `--column` are 1-based
 
 ## Built-in browser
 
-Browser commands control Orca's embedded browser tab for the selected worktree. They do not control Chrome, Safari, or the Orca desktop UI.
+Browser commands control OCC's embedded browser tab for the selected worktree. They do not control Chrome, Safari, or the OCC desktop UI.
 
 Use a snapshot -> act -> snapshot loop:
 
@@ -240,7 +240,7 @@ orca screenshot --worktree active --json
 
 Refs such as `@e3` come from `snapshot`. Re-snapshot after navigation, tab switches, clicks that change the page, and any stale-ref error.
 
-`snapshot --interactive` lists only controls and links, `--delta` returns only what changed since the last `--delta` snapshot, and `--selector <css>` or `--depth <n>` narrow the tree. `screenshot` and `full-screenshot` save the image where the CLI runs and print its path; `screenshot` is in CSS pixels in Orca's desktop browser.
+`snapshot --interactive` lists only controls and links, `--delta` returns only what changed since the last `--delta` snapshot, and `--selector <css>` or `--depth <n>` narrow the tree. `screenshot` and `full-screenshot` save the image where the CLI runs and print its path; `screenshot` is in CSS pixels in OCC's desktop browser.
 
 Tab and capture commands:
 
@@ -255,7 +255,7 @@ orca full-screenshot --worktree active --json
 orca pdf --worktree active --json
 ```
 
-Use `orca exec --command "<agent-browser command>" --json` only for browser actions that do not have a typed Orca command yet.
+Use `orca exec --command "<agent-browser command>" --json` only for browser actions that do not have a typed OCC command yet.
 
 Browser device emulation:
 
@@ -280,7 +280,7 @@ See [Computer use](/docs/cli/computer-use) for the full workflow and permission 
 
 ## Mobile emulator
 
-The mobile emulator commands control iOS Simulator devices through Orca's worktree-scoped bridge. Use them instead of raw `serve-sim` or `simctl` when an agent is operating from inside Orca, so lifecycle and active-device state stay attached to the current worktree.
+The mobile emulator commands control iOS Simulator devices through OCC's worktree-scoped bridge. Use them instead of raw `serve-sim` or `simctl` when an agent is operating from inside OCC, so lifecycle and active-device state stay attached to the current worktree.
 
 ```bash
 orca emulator list --worktree active --json
@@ -346,7 +346,7 @@ orca linear attach --current --url https://example.com/repro --title "Repro" --j
 orca linear create --title "Flaky login test" --team ENG --priority high --json
 ```
 
-Run `orca linear --help` or `orca skills get orca-linear` for the version-matched list. Pass an explicit issue id (e.g. `ENG-123`) when a script may run outside an Orca-linked worktree.
+Run `orca linear --help` or `orca skills get orca-linear` for the version-matched list. Pass an explicit issue id (e.g. `ENG-123`) when a script may run outside an OCC-linked worktree.
 
 ## Skills (local, no runtime required)
 
@@ -363,11 +363,11 @@ orca skills install --all --dry-run
 orca skills update --all
 ```
 
-`install` / `update` run Orca's own skill installer on the machine that runs them, the same planner the app's **Update skills** uses. They do not contact the Orca runtime or need `npx`. See [Orca skills](/docs/cli/skills#keep-skills-up-to-date).
+`install` / `update` run OCC's own skill installer on the machine that runs them, the same planner the app's **Update skills** uses. They do not contact the OCC runtime or need `npx`. See [OCC skills](/docs/cli/skills#keep-skills-up-to-date).
 
 ## Account (host-local runtime)
 
-On a headless host running Orca (`orca serve` or the desktop app), add managed Claude/Codex accounts when the remote client cannot use **Add account** (remote runtime scope disables that button):
+On a headless host running OCC (`orca serve` or the desktop app), add managed Claude/Codex accounts when the remote client cannot use **Add account** (remote runtime scope disables that button):
 
 ```bash
 orca account list
@@ -379,7 +379,7 @@ orca account add --agent codex
 
 ## Artifacts
 
-Publish HTML or Markdown through the signed-in Orca account. Viewing a public link does not require sign-in; create/list/update/delete do. **Publishing is off by default** — a human must enable **Settings → Artifacts → Allow publishing public artifact links** on the device. There is no CLI flag that grants the gate. `list`, `unshare`, and `delete` stay available so you can audit or revoke links after turning publishing off.
+Publish HTML or Markdown through the signed-in OCC account. Viewing a public link does not require sign-in; create/list/update/delete do. **Publishing is off by default** — a human must enable **Settings → Artifacts → Allow publishing public artifact links** on the device. There is no CLI flag that grants the gate. `list`, `unshare`, and `delete` stay available so you can audit or revoke links after turning publishing off.
 
 ```bash
 orca artifacts share ./report.html --json
@@ -392,11 +392,11 @@ orca artifacts delete <id> --json
 ```
 
 - Accepted files: `.html`, `.htm`, `.md`, `.markdown`.
-- `share` stores the edit token in the active Orca profile and does not print it. `update` / `unshare` resolve by the same local path and profile that originally shared the file.
+- `share` stores the edit token in the active OCC profile and does not print it. `update` / `unshare` resolve by the same local path and profile that originally shared the file.
 - `list` is paged (`nextCursor` → `--cursor`). `delete` takes the artifact id from `list` and does not need the original file.
 - Relative HTML assets are not uploaded — share self-contained HTML or absolute asset URLs.
 - Denied publish/update fails with `artifact_sharing_disabled`; fix Settings instead of retrying.
-- Headless Orca servers have no Orca cloud sign-in, so artifact and skill-sharing commands there fail with `sharing_unavailable_on_host`; share from the desktop app.
+- Headless OCC servers have no OCC cloud sign-in, so artifact and skill-sharing commands there fail with `sharing_unavailable_on_host`; share from the desktop app.
 - Desktop: open a local HTML or Markdown file and use **Share as artifact**, or manage links from the sidebar **Artifacts** page.
 
 ## Automations, environments, and hooks
@@ -412,7 +412,7 @@ orca automations run <automationId> --json
 Remote runtime environments:
 
 ```bash
-orca environment add --name work-laptop --pairing-code "orca://pair?code=..." --json
+orca environment add --name work-laptop --pairing-code "occ://pair?code=..." --json
 orca environment list --json
 orca environment rm --environment <selector> --json
 ```

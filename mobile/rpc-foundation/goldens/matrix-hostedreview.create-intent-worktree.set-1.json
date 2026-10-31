@@ -295,7 +295,7 @@
           }
         },
         "url": "https://review.test/5",
-        "warning": "Pull Request created, but Orca could not refresh it yet."
+        "warning": "Pull Request created, but OCC could not refresh it yet."
       }
     },
     "324be6bef431": {
@@ -1138,7 +1138,7 @@
           }
         },
         "url": "https://review.test/5",
-        "warning": "Pull Request created, but Orca could not refresh it yet."
+        "warning": "Pull Request created, but OCC could not refresh it yet."
       }
     },
     "c9569b29c1f2": {

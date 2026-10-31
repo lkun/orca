@@ -80,7 +80,7 @@ function registerExtensionPreload(sess: Electron.Session): void {
     return
   }
   // Why frame only: a service-worker preload crashes the renderer during GC (electron#52310).
-  // Workers load Orca's API shim through the background wrapper instead.
+  // Workers load OCC's API shim through the background wrapper instead.
   sess.registerPreloadScript({ id: PRELOAD_ID, type: 'frame', filePath })
   preloadedSessions.add(sess)
 }
@@ -143,7 +143,7 @@ export function attachBrowserExtensionsToProfileSession(
   stateByProfileId.set(profile.id, { profile, session: sess, loading, loads })
 }
 
-/** Unloads a profile session's extensions and Orca's wiring; its saved extension data stays. */
+/** Unloads a profile session's extensions and OCC's wiring; its saved extension data stays. */
 async function unloadProfileSession(state: ProfileSessionState): Promise<void> {
   forgetBrowserExtensionLoadFailures({ profileId: state.profile.id })
   await Promise.all([state.loading.catch(() => {}), state.loads.close()])
@@ -245,7 +245,7 @@ export async function loadBrowserExtensionIntoProfile(
 }
 
 /**
- * Developer "Load unpacked": loads Orca's copy of the folder, whose key gives it `extensionId`.
+ * Developer "Load unpacked": loads OCC's copy of the folder, whose key gives it `extensionId`.
  * `refresh` copies the folder again, so pass it only when no profile can be running the copy.
  */
 export async function loadBrowserExtensionFolderIntoProfile(

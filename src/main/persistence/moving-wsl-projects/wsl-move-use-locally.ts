@@ -2,7 +2,7 @@
  * The escape hatch for a moved project (no reverse mover, owner decision 2): drop the committed
  * move so the retained source rows, untouched since the move, are listed here again. Nothing is
  * copied back from the WSL host; the host keeps its own copy until the user removes it there.
- * The repository files never moved, so code is never at stake, only Orca's own state.
+ * The repository files never moved, so code is never at stake, only OCC's own state.
  */
 import {
   WSL_MOVE_CUTOVER_PHASES,

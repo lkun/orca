@@ -64,7 +64,7 @@ describe('orchestration request-show', () => {
 
     await expect(runRequestShow()).rejects.toMatchObject({
       code: 'incompatible_runtime',
-      message: expect.stringContaining('Update Orca on the server')
+      message: expect.stringContaining('Update OCC on the server')
     })
   })
 })

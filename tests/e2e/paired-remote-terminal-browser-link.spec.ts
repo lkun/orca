@@ -239,7 +239,7 @@ test('opens a paired-runtime terminal link on its owning host', async ({
     await expect(
       actionPopover.getByRole('button').filter({ hasText: 'System Browser' })
     ).toBeVisible()
-    const orcaBrowserAction = actionPopover.getByRole('button').filter({ hasText: 'Orca Browser' })
+    const orcaBrowserAction = actionPopover.getByRole('button').filter({ hasText: 'OCC Browser' })
     await expect(orcaBrowserAction).toBeVisible()
     await orcaBrowserAction.click()
 

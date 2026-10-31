@@ -57,7 +57,7 @@ describe('Windows drive dirs on a WSL guest PATH', () => {
     expect(isWslGuestProcess({}, 'linux', () => true)).toBe(true)
   })
 
-  it('filters only for an orcad Orca launched as a WSL host', () => {
+  it('filters only for an orcad OCC launched as a WSL host', () => {
     const guest = { WSL_DISTRO_NAME: 'Ubuntu' }
     expect(isWslHostOrcadProcess(guest, 'linux', () => true)).toBe(false)
     expect(isWslHostOrcadProcess({ ...guest, [ORCAD_WSL_HOST_ENV]: '1' }, 'linux')).toBe(true)

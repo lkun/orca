@@ -20,14 +20,14 @@ const AGENT_HOME_ENTRIES = [
 ]
 // Guard Claude file/temp prefixes beside .claude directory, not only inside it.
 const AGENT_HOME_FILE_PREFIXES = ['.claude.json']
-// Capture live Orca/agent roots from terminal env before clearing inherited values.
+// Capture live OCC/agent roots from terminal env before clearing inherited values.
 const INHERITED_STATE_ENV = [
   'ORCA_USER_DATA_PATH',
   'CODEX_HOME',
   'ORCA_CODEX_HOME',
   'CLAUDE_CONFIG_DIR'
 ]
-// Why: an Orca terminal points this at the live app's CLI, which a test's child shell would run.
+// Why: an OCC terminal points this at the live app's CLI, which a test's child shell would run.
 const INHERITED_LIVE_CLI_ENV = ['ORCA_CODEX_LAUNCH_PREFLIGHT']
 // Real-agent opt-in suites intentionally use their own home and explicit switch.
 const REAL_AGENT_SUITE_SWITCHES = [

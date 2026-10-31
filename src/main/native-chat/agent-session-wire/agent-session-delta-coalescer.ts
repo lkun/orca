@@ -6,7 +6,7 @@ export const AGENT_SESSION_DELTA_COALESCE_MS = 60
 /** Bound accumulated legal deltas independently of input record admission. */
 export const AGENT_SESSION_STREAMED_TEXT_MAX_BYTES = 16 * 1024 * 1024
 export const AGENT_SESSION_STREAMED_TEXT_TOTAL_MAX_BYTES = 32 * 1024 * 1024
-export const AGENT_SESSION_STREAMED_TEXT_TRUNCATION_MARKER = '\n[Orca: streamed output truncated]'
+export const AGENT_SESSION_STREAMED_TEXT_TRUNCATION_MARKER = '\n[OCC: streamed output truncated]'
 export const AGENT_SESSION_MAX_STREAMS = 256
 
 export type AgentSessionDeltaSnapshot = {

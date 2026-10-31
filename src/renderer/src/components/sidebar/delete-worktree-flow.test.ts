@@ -720,7 +720,7 @@ describe('delete worktree flow', () => {
   })
 
   // #34677: a connected SSH target does not make this app's main able to delete there.
-  it('offers only Remove from Orca for a workspace on a connected SSH target', () => {
+  it('offers only Remove from OCC for a workspace on a connected SSH target', () => {
     mocks.state.settings = { skipDeleteWorktreeConfirm: true }
     setWorktrees([{ id: 'repo-1::/srv/wt', displayName: 'wt', hostId: 'ssh:builder' }])
     mocks.state.repos = [{ id: 'repo-1', displayName: 'remote', connectionId: 'builder' }]

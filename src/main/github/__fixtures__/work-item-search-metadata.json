@@ -154,7 +154,7 @@
   {
     "graphql": {
       "number": 19919,
-      "title": "[Bug]: v1.4.199 Windows NSIS installer reports success but never installs Orca.exe (partial install)",
+      "title": "[Bug]: v1.4.199 Windows NSIS installer reports success but never installs OCC.exe (partial install)",
       "state": "OPEN",
       "url": "https://github.com/stablyai/orca/issues/19919",
       "updatedAt": "2026-09-10T20:08:25Z",
@@ -179,7 +179,7 @@
     },
     "rest": {
       "number": 19919,
-      "title": "[Bug]: v1.4.199 Windows NSIS installer reports success but never installs Orca.exe (partial install)",
+      "title": "[Bug]: v1.4.199 Windows NSIS installer reports success but never installs OCC.exe (partial install)",
       "state": "open",
       "html_url": "https://github.com/stablyai/orca/issues/19919",
       "updated_at": "2026-09-10T20:08:25Z",

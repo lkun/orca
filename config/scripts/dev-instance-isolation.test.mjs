@@ -16,7 +16,7 @@ afterEach(() => {
 })
 
 function checkout(kind) {
-  const root = mkdtempSync(path.join(tmpdir(), 'orca-dev-isolation-'))
+  const root = mkdtempSync(path.join(tmpdir(), 'occ-dev-isolation-'))
   roots.push(root)
   if (kind === 'linked') {
     writeFileSync(path.join(root, '.git'), 'gitdir: /repo/.git/worktrees/feature\n')
@@ -29,17 +29,17 @@ function checkout(kind) {
 const env = { HOME: '/home/dev', XDG_CONFIG_HOME: '/home/dev/.config' }
 
 describe('resolveDevProfile', () => {
-  it('isolates linked worktrees from each other and keeps orca-dev for the main checkout', () => {
+  it('isolates linked worktrees from each other and keeps occ-dev for the main checkout', () => {
     const first = resolveDevProfile({ repoRoot: checkout('linked'), env, platform: 'linux' })
     const second = resolveDevProfile({ repoRoot: checkout('linked'), env, platform: 'linux' })
     const main = resolveDevProfile({ repoRoot: checkout('main'), env, platform: 'linux' })
 
     expect(first.kind).toBe('worktree')
-    expect(path.dirname(first.userDataPath)).toBe(path.join('/home/dev/.config', 'orca-dev-wt'))
+    expect(path.dirname(first.userDataPath)).toBe(path.join('/home/dev/.config', 'occ-dev-wt'))
     expect(first.userDataPath).not.toBe(second.userDataPath)
     expect(main).toEqual({
       kind: 'shared',
-      userDataPath: path.join('/home/dev/.config', 'orca-dev')
+      userDataPath: path.join('/home/dev/.config', 'occ-dev')
     })
   })
 

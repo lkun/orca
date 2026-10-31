@@ -175,7 +175,7 @@ jobs:
       # Build required out/mobile-web from mobile’s React Native/Expo install.
       - uses: ./.github/actions/install-mobile-dependencies
 
-      # Require cert before expensive build; signing enables installation over existing Orca.
+      # Require cert before expensive build; signing enables installation over existing OCC.
       - name: Verify macOS signing environment
         run: node config/scripts/verify-macos-release-env.mjs
         env:
@@ -266,12 +266,12 @@ jobs:
           Built from [\`stablyai/orca@$short_sha\`](https://github.com/stablyai/orca/commit/$SHA).
 
           **Unvetted.** No tests ran. The macOS build is signed and notarized like a
-          release, so it installs through Orca's in-app updater and opens from a manual
+          release, so it installs through OCC's in-app updater and opens from a manual
           download without a Gatekeeper prompt — but nothing here has been reviewed.
 
           **Windows builds are unsigned.** They install and update normally once you
           are on one, but a signed Stable or RC build cannot install one through the
-          in-app updater — download \`orca-windows-setup.exe\` below and run it once
+          in-app updater — download \`occ-windows-setup.exe\` below and run it once
           (SmartScreen will warn about an unknown publisher). Every later switch,
           including back to Stable, works in-app from there."
           echo "tag=$TAG" >>"$GITHUB_OUTPUT"

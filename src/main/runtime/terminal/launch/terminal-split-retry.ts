@@ -64,7 +64,7 @@ export function splitPanePendingError(tabId: string, leafId: string): TerminalSp
 
 export function splitRetryUnknownError(tabId: string, leafId: string): TerminalSplitOutcomeError {
   return new TerminalSplitOutcomeError(
-    `This Orca host has no record of split ${leafId} from this terminal; it was not split again.`,
+    `This OCC host has no record of split ${leafId} from this terminal; it was not split again.`,
     { splitId: leafId, tabId, splitMayStillComplete: false, nextSteps: [LIST_BEFORE_SPLITTING] }
   )
 }

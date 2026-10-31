@@ -60,7 +60,7 @@ export class AcpStructuredTurns {
     return this.active !== null
   }
 
-  /** Interactive requests require an active Orca prompt with no Stop or steer cancellation. */
+  /** Interactive requests require an active OCC prompt with no Stop or steer cancellation. */
   get acceptsRequests(): boolean {
     return (
       this.stopAt === null &&

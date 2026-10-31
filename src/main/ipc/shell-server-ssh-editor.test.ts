@@ -53,7 +53,7 @@ function spawnedChild(): { once: unknown; off: unknown; unref: unknown } {
   return child
 }
 
-describe('Open in VS Code for a workspace on a server Orca reaches through an SSH host', () => {
+describe('Open in VS Code for a workspace on a server OCC reaches through an SSH host', () => {
   const sshAccessServer = {
     id: 'env-1',
     sshAccess: {

@@ -155,7 +155,7 @@ describe('authority-owned automation run completion', () => {
     })
 
     expect(readRun(store, automation.id, run.id).error).toBe(
-      'Orca stopped watching this run before it reported completion.'
+      'OCC stopped watching this run before it reported completion.'
     )
     expect(logged.mock.calls.flat().map(String).join(' ')).toContain('terminal_exited')
     logged.mockRestore()
@@ -200,7 +200,7 @@ describe('authority-owned automation run completion', () => {
     expect(readRun(store, automation.id, dispatching.id).error).toContain('agent started')
     expect(readRun(store, automation.id, pendingManual.id)).toMatchObject({
       status: 'dispatch_failed',
-      error: 'Orca stopped before this manual run could launch.'
+      error: 'OCC stopped before this manual run could launch.'
     })
     expect(readRun(store, automation.id, pendingScheduled.id).status).toBe('pending')
     service.stop()

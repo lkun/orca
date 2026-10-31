@@ -32,7 +32,7 @@ describe('the Expo build cache provider', () => {
   const request = { platform: 'ios', fingerprintHash: 'abc', runOptions: {}, projectRoot: '/p' }
 
   it('only stores when native-client regenerated the native project for this fingerprint', async () => {
-    const app = fakeAppBundle('Orca.app')
+    const app = fakeAppBundle('OCC.app')
     await nativeBuildCache.uploadBuildCache({ ...request, buildPath: app })
     expect(await nativeBuildCache.resolveBuildCache(request)).toBeNull()
 
@@ -43,14 +43,14 @@ describe('the Expo build cache provider', () => {
 
     vi.stubEnv(nativeBuildCache.CACHE_MODE_ENV, '')
     const cached = await nativeBuildCache.resolveBuildCache(request)
-    expect(cached).toBe(path.join(cacheDir, 'ios-abc-Debug', 'Orca.app'))
-    expect(fs.readFileSync(path.join(cached!, 'Info.plist'), 'utf8')).toBe('Orca.app')
+    expect(cached).toBe(path.join(cacheDir, 'ios-abc-Debug', 'OCC.app'))
+    expect(fs.readFileSync(path.join(cached!, 'Info.plist'), 'utf8')).toBe('OCC.app')
   })
 
   it('keys by variant, so a Release build never satisfies a Debug lookup', async () => {
     vi.stubEnv(nativeBuildCache.CACHE_MODE_ENV, 'store')
     const release = { ...request, runOptions: { configuration: 'Release' } }
-    await nativeBuildCache.uploadBuildCache({ ...release, buildPath: fakeAppBundle('Orca.app') })
+    await nativeBuildCache.uploadBuildCache({ ...release, buildPath: fakeAppBundle('OCC.app') })
     vi.stubEnv(nativeBuildCache.CACHE_MODE_ENV, '')
     expect(await nativeBuildCache.resolveBuildCache(request)).toBeNull()
     expect(await nativeBuildCache.resolveBuildCache(release)).not.toBeNull()

@@ -3,7 +3,7 @@
 // can be measured from the phone's vantage without building and instrumenting the mobile app.
 //
 //   pair:       node relay-phone-connect-bench.mjs pair [state.json] [--pairing-url-file=<path>]
-//               Reads the orca://pair link from stdin, or from a 0600 file, so the live invite
+//               Reads the occ://pair link from stdin, or from a 0600 file, so the live invite
 //               token never lands in shell history or the process argument list. Dials the invite,
 //               runs E2EE, pairing.provisionRelay + pairing.getEndpoints, and persists the resume
 //               credential bundle to state.json (mode 0600, never commit it).
@@ -197,8 +197,8 @@ export function dialRelay({
 
 /** Parses the pairing link. Every failure here is operator input, so say which part was wrong. */
 export function decodeOffer(pairingUrl) {
-  if (typeof pairingUrl !== 'string' || !pairingUrl.startsWith('orca://pair')) {
-    throw new Error('pairing link must look like orca://pair?code=<base64url>')
+  if (typeof pairingUrl !== 'string' || !pairingUrl.startsWith('occ://pair')) {
+    throw new Error('pairing link must look like occ://pair?code=<base64url>')
   }
   const marker = pairingUrl.indexOf('code=')
   if (marker === -1) {
@@ -505,7 +505,7 @@ async function foreground(statePath, opts) {
 const USAGE = [
   `every command dials a real desktop over the production relay, so prefix it with ${LIVE_ENV_VAR}=1:`,
   '  pair [state.json] [--pairing-url-file=<path>]',
-  '      reads the orca://pair link from stdin unless --pairing-url-file names a 0600 file, so',
+  '      reads the occ://pair link from stdin unless --pairing-url-file names a 0600 file, so',
   '      the live invite token never enters shell history or the process argument list',
   '  run [state.json] [runs] [--resolve] [--gap=ms]',
   '  foreground [state.json] [--hold=ms] [--resolve] [--force-redial]'
@@ -515,7 +515,7 @@ function requireStatePath(value) {
   if (value === undefined) {
     return DEFAULT_STATE_PATH
   }
-  if (value.startsWith('orca://')) {
+  if (value.startsWith('occ://')) {
     refuse(
       `the pairing link must not appear in the command line: pipe it on stdin or pass --pairing-url-file=<path>.\n${USAGE}`
     )
@@ -543,7 +543,7 @@ async function readPairingUrl(options) {
   if (!raw) {
     refuse(
       file
-        ? `${file} is empty; it must hold the orca://pair link.\n${USAGE}`
+        ? `${file} is empty; it must hold the occ://pair link.\n${USAGE}`
         : `no pairing link on stdin. pipe it in, or pass --pairing-url-file=<path>.\n${USAGE}`
     )
   }

@@ -4,7 +4,7 @@ type ApiObject = Record<string, unknown>
 type ExtensionCallable = (...args: unknown[]) => unknown
 
 /**
- * Chrome APIs whose answer in Orca is fixed: no enterprise policy, incognito, omnibox or font
+ * Chrome APIs whose answer in OCC is fixed: no enterprise policy, incognito, omnibox or font
  * settings. Extensions touch them at startup, so each gets Chrome's shape and an empty or no-op
  * result here, with no round trip to main. Existing members win, except storage.managed, whose
  * Electron version fails ("not available") where Chrome answers {} without a policy.
@@ -123,7 +123,7 @@ export function installBrowserExtensionInertApis(context: BrowserExtensionInertA
     return
   }
   if (context === 'page') {
-    // Why []: Orca cannot hand one extension page another's window; Chrome has none in workers.
+    // Why []: OCC cannot hand one extension page another's window; Chrome has none in workers.
     install('extension', { getViews: () => [] })
   }
   install('runtime', { onPerformanceWarning: inertEvent() })

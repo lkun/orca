@@ -10,7 +10,7 @@ const USAGE = `Usage: pnpm dev:fresh [--keep] [--seed-from[=<profile dir>]] [-- 
 
   --keep                 keep the temporary profile after exit
   --seed-from[=<dir>]    start from a slim copy of a profile (projects, workspaces, settings,
-                         SSH targets, account session); default: orca-dev, else the installed app
+                         SSH targets, account session); default: occ-dev, else the installed app
   ORCA_FRESH_PROFILE_DIR=<dir>   use (and keep) a fixed profile directory`
 
 const TEMP_PREFIX = 'orca-fresh-profile-'

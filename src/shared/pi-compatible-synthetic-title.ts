@@ -9,7 +9,7 @@ const PI_COMPATIBLE_SYNTHETIC_TITLE_RE =
 const LEGACY_PI_COMPATIBLE_TITLE_RE = /^\s*(?:[\u2800-\u28ff]\s+)?\u03C0(?:\s*[-:]|\s)\s*.*$/u
 // State follows the brand (π ! label, OMP > label); accept owner-rewritten brands only in exact profile casing.
 // Require a delimited separator so ordinary pi prose and omp-harness do not become state titles.
-// A leading spinner needs Orca's ` - ` working frame, so Claude tasks like `⠂ OMP: fix` stay Claude's.
+// A leading spinner needs OCC's ` - ` working frame, so Claude tasks like `⠂ OMP: fix` stay Claude's.
 const PI_COMPATIBLE_SEPARATOR_RE =
   /^\s*(?:[\u2800-\u28ff]\s+(?=\S+\s+-(?:\s|$)))?(\u03C0|Pi|OMP)(?::|\s+([!>:\-\u2800-\u28ff]))(?=\s|$)/u
 

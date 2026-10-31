@@ -97,7 +97,7 @@ export function renderMobileEmulatorSettingsSection(
       title={translate('auto.components.settings.Settings.f75daf1002', 'Mobile Emulator')}
       description={translate(
         'auto.components.settings.Settings.01f9d36292',
-        'Configure mobile emulator support for Orca and coding agents.'
+        'Configure mobile emulator support for OCC and coding agents.'
       )}
       searchEntries={navigation.getSectionSearchEntries('mobile-emulator')}
     >

@@ -4,7 +4,7 @@ import type {
   BrowserExtensionWebStoreInstallResult
 } from '../../shared/browser-extension-webstore'
 
-/** window.api.browser members behind "Add from Chrome Web Store" and Orca's install prompt. */
+/** window.api.browser members behind "Add from Chrome Web Store" and OCC's install prompt. */
 export type BrowserExtensionWebStoreApi = {
   /** A store link or extension id; resolves after the user answers the prompt and the install ends. */
   extensionsInstallFromWebStore: (args: {

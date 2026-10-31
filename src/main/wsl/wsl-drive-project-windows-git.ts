@@ -1,6 +1,6 @@
 /**
  * Converts a WSL-runtime project on a Windows drive (`C:\…`) to Windows Git, keeping its terminals
- * and agents in WSL. Paths, worktree ids, chats and live terminals are untouched; only where Orca
+ * and agents in WSL. Paths, worktree ids, chats and live terminals are untouched; only where OCC
  * runs Git changes. Refused when Windows Git couldn't safely own the repo's worktrees.
  */
 import { win32 } from 'node:path'

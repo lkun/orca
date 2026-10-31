@@ -76,23 +76,23 @@ export function installedElectronCandidates(
   const joinPath = platform === 'win32' ? win32.join : posix.join
   if (platform === 'darwin') {
     return [
-      '/Applications/Orca.app/Contents/MacOS/Orca',
-      joinPath(homePath, 'Applications', 'Orca.app', 'Contents', 'MacOS', 'Orca')
+      '/Applications/OCC.app/Contents/MacOS/OCC',
+      joinPath(homePath, 'Applications', 'OCC.app', 'Contents', 'MacOS', 'OCC')
     ]
   }
   if (platform === 'win32') {
     return [
       ...(environment.LOCALAPPDATA
-        ? [joinPath(environment.LOCALAPPDATA, 'Programs', 'Orca', 'Orca.exe')]
+        ? [joinPath(environment.LOCALAPPDATA, 'Programs', 'OCC', 'OCC.exe')]
         : []),
-      ...(environment.ProgramFiles ? [joinPath(environment.ProgramFiles, 'Orca', 'Orca.exe')] : [])
+      ...(environment.ProgramFiles ? [joinPath(environment.ProgramFiles, 'OCC', 'OCC.exe')] : [])
     ]
   }
   return [
-    joinPath(homePath, '.local', 'bin', 'orca-ide'),
-    '/usr/local/bin/orca-ide',
-    '/usr/bin/orca-ide',
-    '/opt/Orca/orca-ide'
+    joinPath(homePath, '.local', 'bin', 'occ-ide'),
+    '/usr/local/bin/occ-ide',
+    '/usr/bin/occ-ide',
+    '/opt/OCC/occ-ide'
   ]
 }
 

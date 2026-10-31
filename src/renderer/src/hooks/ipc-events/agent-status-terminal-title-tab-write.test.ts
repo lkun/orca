@@ -63,7 +63,7 @@ describe('hook-driven tab title writes', () => {
     expect(resolved.tabTitle).toBe('Codex - action required')
   })
 
-  // Unmounted panes kept old titles, causing the former pane-slot guard to skip clearing Orca’s stale action-required tab title.
+  // Unmounted panes kept old titles, causing the former pane-slot guard to skip clearing OCC’s stale action-required tab title.
   it('rewrites a stale action-required tab title once the agent reports done', () => {
     const store = storeWithDivergedTitleSlots({
       tabTitle: 'Codex - action required',

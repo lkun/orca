@@ -65,14 +65,14 @@ afterEach(() => {
 
 describe('openPluginInstallLink', () => {
   it('routes a valid link to Settings → Plugins and holds it for the catalog', () => {
-    openPluginInstallLink('orca://plugins/acme.dusk')
+    openPluginInstallLink('occ://plugins/acme.dusk')
     expect(storeState.openSettingsTarget).toHaveBeenCalledWith({ pane: 'plugins', repoId: null })
     expect(storeState.openSettingsPage).toHaveBeenCalled()
     expect(usePluginPreviewRequestStore.getState().link?.pluginKey).toBe('acme.dusk')
   })
 
   it('shows only an error toast for a malformed link', () => {
-    openPluginInstallLink('orca://plugins/../evil')
+    openPluginInstallLink('occ://plugins/../evil')
     expect(toastError).toHaveBeenCalledTimes(1)
     expect(storeState.openSettingsPage).not.toHaveBeenCalled()
     expect(usePluginPreviewRequestStore.getState().link).toBeNull()
@@ -81,7 +81,7 @@ describe('openPluginInstallLink', () => {
 
 describe('usePluginInstallLink', () => {
   it('keeps the link while plugins are off, then opens the page once the catalog loads', async () => {
-    openPluginInstallLink('orca://plugins/acme.dusk')
+    openPluginInstallLink('occ://plugins/acme.dusk')
     // Plugins off: the catalog isn't mounted, so the link waits.
     expect(usePluginPreviewRequestStore.getState().link).not.toBeNull()
     await render([OFFICIAL], true)
@@ -94,7 +94,7 @@ describe('usePluginInstallLink', () => {
 
   it('opens directly when the linked catalog is already added under another spelling', async () => {
     request(
-      `orca://plugins/acme.dusk?catalog=${encodeURIComponent('git@github.com:acme/catalog.git')}`
+      `occ://plugins/acme.dusk?catalog=${encodeURIComponent('git@github.com:acme/catalog.git')}`
     )
     await render([OFFICIAL, source('https://github.com/acme/catalog')])
     expect(open).toHaveBeenCalledWith('acme.dusk')
@@ -102,7 +102,7 @@ describe('usePluginInstallLink', () => {
   })
 
   it('asks before adding an unknown catalog and fetches nothing until confirmed', async () => {
-    request('orca://plugins/acme.dusk?catalog=community')
+    request('occ://plugins/acme.dusk?catalog=community')
     await render([OFFICIAL])
     expect(open).not.toHaveBeenCalled()
     expect(addMarketplace).not.toHaveBeenCalled()
@@ -122,7 +122,7 @@ describe('usePluginInstallLink', () => {
   })
 
   it('cancelling the catalog prompt adds and opens nothing', async () => {
-    request(`orca://plugins/acme.dusk?catalog=${encodeURIComponent('https://gitlab.com/a/b.git')}`)
+    request(`occ://plugins/acme.dusk?catalog=${encodeURIComponent('https://gitlab.com/a/b.git')}`)
     await render([OFFICIAL])
     act(() => hook!.cancelCatalog())
     await render([OFFICIAL])

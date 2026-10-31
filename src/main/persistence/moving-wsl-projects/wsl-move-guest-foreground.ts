@@ -41,7 +41,7 @@ const TAGGED = 'ORCA_PROCESS_TABLE_TAGGED'
 const END = 'ORCA_PROCESS_TABLE_END'
 
 /**
- * Every process's /proc/<pid>/stat in one `cat`, then the pane key, argc and cwd of the Orca pane
+ * Every process's /proc/<pid>/stat in one `cat`, then the pane key, argc and cwd of the OCC pane
  * processes one `grep` over every environ finds. Untagged processes stay in the table, so a job
  * started without the key (`env -i`) still keeps its pane busy; the per-process work follows the
  * pane processes, not the distro's process count. POSIX sh and BusyBox tools only.

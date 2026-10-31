@@ -157,7 +157,7 @@ export const SSH_HOST_SERVER_LEGACY_RELAY_BRIDGE_TERMINAL_VALUES = [
   '10_plus'
 ] as const
 
-/** Hosts still running terminals an older Orca's relay holds, and each one's exit. */
+/** Hosts still running terminals an older OCC's relay holds, and each one's exit. */
 export const sshHostServerLegacyRelayBridgeSchema = z
   .object({
     // `active`: at most once per target per UTC day while it bridges terminals.

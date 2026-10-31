@@ -20,7 +20,7 @@ function snowflake(value: string | undefined, flag: string): string {
 }
 
 // Dogfood seeding, as for Slack: the bot and allowed servers come from the service's settings,
-// and which Orca account each Discord user is from here.
+// and which OCC account each Discord user is from here.
 export async function runDiscordOperator(
   argv: string[],
   deps: { database: CloudDatabase; now: () => number }

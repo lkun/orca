@@ -97,7 +97,7 @@ export function rankWorktreeStatus(
   if (flags.hasRetainedFailed) {
     return 'failed'
   }
-  // Why: an end Orca cannot prove is not a finish, and unlike a user's Stop it is news.
+  // Why: an end OCC cannot prove is not a finish, and unlike a user's Stop it is news.
   if (flags.hasUnconfirmed) {
     return 'unconfirmed'
   }

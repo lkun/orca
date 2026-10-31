@@ -21,7 +21,7 @@ export const JOURNAL_DISPATCH_REASON_LIMITS: JournalPayloadLimits = { inlineHead
 
 /** Inline markers prevent plain-string blocks from presenting clipped content as complete. */
 export function journalTruncationMarker(byteLength: number, digest: string): string {
-  return `\n[Orca: output truncated — ${byteLength} bytes total, digest ${digest.slice(0, 12)}]`
+  return `\n[OCC: output truncated — ${byteLength} bytes total, digest ${digest.slice(0, 12)}]`
 }
 
 export function digestPayload(payload: string): string {

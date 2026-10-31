@@ -13,7 +13,7 @@ export type BuildPtyHostEnvOptions = {
   userDataPath: string
   selectedCodexHomePath: string | null
   skipCodexHomeEnv?: boolean
-  /** Real-home routing strips only inherited Orca-owned Codex overrides, preserving user CODEX_HOME. */
+  /** Real-home routing strips only inherited OCC-owned Codex overrides, preserving user CODEX_HOME. */
   stripInheritedOrcaCodexHome?: boolean
   /** Explicit launch command selects Pi/OMP extension targets; never infer agent identity from directories on disk. */
   launchCommand?: string
@@ -30,7 +30,7 @@ export type BuildPtyHostEnvOptions = {
   /** Per-agent opt-out; disabled agents must not receive managed extensions. */
   disabledTuiAgents?: Iterable<unknown> | null
   networkProxySettings?: NetworkProxySettings
-  /** Headless paired runtimes hand browser launches to the client-hosted Orca browser. */
+  /** Headless paired runtimes hand browser launches to the client-hosted OCC browser. */
   routeBrowserOpensToClient?: boolean
   /** Keep indexed Git config off the sparse daemon wire; the daemon appends guard entries after merging its inherited env. */
   deferGitConfigGuardToDaemon?: boolean

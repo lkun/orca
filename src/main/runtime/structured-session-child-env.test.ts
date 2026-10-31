@@ -106,7 +106,7 @@ describe('sealStructuredSessionChild identity', () => {
     }
   )
 
-  it('replaces an id inherited from an Orca launched inside another session', () => {
+  it('replaces an id inherited from an OCC launched inside another session', () => {
     installFakeAppEnvironment({ isPackaged: () => false, getPath: () => USER_DATA })
     const env = sealedChildEnv(SESSION_ID, {
       ORCA_AGENT_SESSION_ID: 'a0b1c2d3-0000-4000-8000-00000000abcd',
@@ -156,7 +156,7 @@ describe('sealStructuredSessionChild identity', () => {
     })
 
     it('on packaged Linux, through the bare-orca shim, named by absolute path', () => {
-      // Bare orca on Linux is GNOME's screen reader; this app installs as orca-ide (#7904).
+      // Bare orca on Linux is GNOME's screen reader; this app installs as occ-ide (#7904).
       pinPlatform('linux')
       installFakeAppEnvironment({ isPackaged: () => true, getPath: () => USER_DATA })
       const env = sealedChildEnv(SESSION_ID, { PATH: '/usr/bin:/bin' })
@@ -178,7 +178,7 @@ describe('sealStructuredSessionChild identity', () => {
       const env = sealedChildEnv(SESSION_ID, { Path: 'C:\\Windows' })
       expect(env.Path).toBe(`${join(RESOURCES, 'bin')};C:\\Windows`)
       expect(env.PATH).toBeUndefined()
-      // The native launcher: `orca.cmd` refuses message bodies cmd.exe would mangle.
+      // The native launcher: `occ.cmd` refuses message bodies cmd.exe would mangle.
       expect(env.ORCA_CLI_COMMAND).toBe(join(RESOURCES, 'bin', 'orca.exe'))
       expect(env.ORCA_CLI_BIN_DIR).toBeUndefined()
     })
@@ -188,7 +188,7 @@ describe('sealStructuredSessionChild identity', () => {
       installFakeAppEnvironment({ isPackaged: () => false, getPath: () => USER_DATA })
       const env = sealedChildEnv(SESSION_ID, { PATH: '/usr/bin' })
       expect(env.PATH).toBe(`${join(USER_DATA, 'cli', 'bin')}:/usr/bin`)
-      expect(env.ORCA_CLI_COMMAND).toBe(join(USER_DATA, 'cli', 'bin', 'orca-dev'))
+      expect(env.ORCA_CLI_COMMAND).toBe(join(USER_DATA, 'cli', 'bin', 'occ-dev'))
     })
   })
 
@@ -200,7 +200,7 @@ describe('sealStructuredSessionChild identity', () => {
     vi.spyOn(console, 'warn').mockImplementation(() => {})
     const env = sealedChildEnv(SESSION_ID, {
       PATH: '/usr/bin',
-      ORCA_CLI_COMMAND: '/Applications/Other Orca.app/Contents/Resources/bin/orca',
+      ORCA_CLI_COMMAND: '/Applications/Other OCC.app/Contents/Resources/bin/occ',
       ORCA_USER_DATA_PATH: '/data/other-orca'
     })
     expect(env).not.toHaveProperty('ORCA_CLI_COMMAND')
@@ -220,7 +220,7 @@ describe('sealStructuredSessionChild identity', () => {
   })
 
   it('never names the WSL-scoped launcher, because a structured worker cannot run in WSL', () => {
-    // WSL exports orca-ide for PTYs; structured WSL sessions cannot become workers, so Linux needs the bare-orca shim.
+    // WSL exports occ-ide for PTYs; structured WSL sessions cannot become workers, so Linux needs the bare-orca shim.
     expect(
       structuredWorkerHostScope({
         executionHostId: 'local',
@@ -232,6 +232,6 @@ describe('sealStructuredSessionChild identity', () => {
     pinPlatform('linux')
     installFakeAppEnvironment({ isPackaged: () => true, getPath: () => USER_DATA })
     registerWorker()
-    expect(sealedChildEnv(SESSION_ID, { PATH: '/usr/bin' }).ORCA_CLI_COMMAND).not.toBe('orca-ide')
+    expect(sealedChildEnv(SESSION_ID, { PATH: '/usr/bin' }).ORCA_CLI_COMMAND).not.toBe('occ-ide')
   })
 })

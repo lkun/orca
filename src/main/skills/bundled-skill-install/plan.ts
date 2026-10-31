@@ -29,7 +29,7 @@ export type BundledSkillPlanInput = BundledSkillTargetRequest & {
   names?: readonly string[]
   /** Target paths the user chose to Replace; `all` is `--force`, every replaceable one. */
   force?: readonly string[] | 'all'
-  /** Update existing locations only; never spread the skill to another agent. Skip skills with no Orca copy. */
+  /** Update existing locations only; never spread the skill to another agent. Skip skills with no OCC copy. */
   installedOnly?: boolean
   /** `<userData>/skill-installs`, where cloud installs keep receipts and journals. */
   stateDirectory: string

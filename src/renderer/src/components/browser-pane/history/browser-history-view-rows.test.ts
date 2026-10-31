@@ -15,18 +15,18 @@ const at = (day: number, hour: number): number => new Date(2026, 9, day, hour).g
 describe('browser history view rows', () => {
   it('matches every word in the title or address, in any order', () => {
     const history = [
-      entry('https://github.com/stablyai/orca', 'Orca repo', at(20, 9)),
-      entry('https://en.wikipedia.org/wiki/Orca', 'Orca - Wikipedia', at(21, 9))
+      entry('https://github.com/stablyai/orca', 'OCC repo', at(20, 9)),
+      entry('https://en.wikipedia.org/wiki/OCC', 'OCC - Wikipedia', at(21, 9))
     ]
     expect(listBrowserHistoryRows(history, [], 'orca github').map((r) => r.title)).toEqual([
-      'Orca repo'
+      'OCC repo'
     ])
     expect(listBrowserHistoryRows(history, [], ' GITHUB   ORCA ').map((r) => r.title)).toEqual([
-      'Orca repo'
+      'OCC repo'
     ])
     expect(listBrowserHistoryRows(history, [], '').map((r) => r.title)).toEqual([
-      'Orca - Wikipedia',
-      'Orca repo'
+      'OCC - Wikipedia',
+      'OCC repo'
     ])
   })
 

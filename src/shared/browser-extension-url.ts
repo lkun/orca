@@ -44,8 +44,8 @@ export type BrowserExtensionRequestedUrl =
   | { kind: 'web'; url: string }
 
 /**
- * Every URL an extension asks Orca to open goes through here. Relative URLs resolve against the
- * caller's own origin (Chrome semantics); everything else must pass Orca's typed-URL rules.
+ * Every URL an extension asks OCC to open goes through here. Relative URLs resolve against the
+ * caller's own origin (Chrome semantics); everything else must pass OCC's typed-URL rules.
  */
 export function resolveBrowserExtensionRequestedUrl(
   rawUrl: string | undefined,
@@ -64,7 +64,7 @@ export function resolveBrowserExtensionRequestedUrl(
     const extensionUrl = parseChromeExtensionUrl(absolute.toString())
     return extensionUrl ? { kind: 'extension', ...extensionUrl } : null
   }
-  // Why: file: is a user-initiated preview scheme in Orca; extensions never get to open local files.
+  // Why: file: is a user-initiated preview scheme in OCC; extensions never get to open local files.
   if (absolute.protocol !== 'http:' && absolute.protocol !== 'https:') {
     return null
   }

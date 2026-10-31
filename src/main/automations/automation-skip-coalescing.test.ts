@@ -36,7 +36,7 @@ const makeRepo = (): Repo => ({
 
 const SETUP_GONE = 'Project is not set up on the selected automation host anymore.'
 
-const NO_WINDOW = 'No Orca window was available to launch the automation.'
+const NO_WINDOW = 'No OCC window was available to launch the automation.'
 
 /** Inject persisted drift because creation derives a valid run context. */
 async function seedUnresolvableAutomation(): Promise<{ store: Store; automation: Automation }> {

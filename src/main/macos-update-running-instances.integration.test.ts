@@ -24,8 +24,8 @@ it.runIf(process.platform === 'darwin')(
   'matches ShipIt with registered sibling apps, excluding same-executable workers and other bundle copies',
   async () => {
     const root = mkdtempSync(path.join(tmpdir(), 'orca-update-instances-'))
-    const bundle = path.join(root, 'Orca Test.app')
-    const executable = path.join(bundle, 'Contents', 'MacOS', 'Orca Test')
+    const bundle = path.join(root, 'OCC Test.app')
+    const executable = path.join(bundle, 'Contents', 'MacOS', 'OCC Test')
     mkdirSync(path.dirname(executable), { recursive: true })
     const sourcePath = path.join(root, 'application.m')
     writeFileSync(sourcePath, APPLICATION_SOURCE)
@@ -33,7 +33,7 @@ it.runIf(process.platform === 'darwin')(
       path.join(bundle, 'Contents', 'Info.plist'),
       `<?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict>
         <key>CFBundleIdentifier</key><string>com.stablyai.${path.basename(root)}</string>
-        <key>CFBundleExecutable</key><string>Orca Test</string>
+        <key>CFBundleExecutable</key><string>OCC Test</string>
         <key>CFBundlePackageType</key><string>APPL</string>
       </dict></plist>`
     )
@@ -46,13 +46,13 @@ it.runIf(process.platform === 'darwin')(
         timeoutMs: 15_000
       })
       expect(compilation.code, compilation.stderr).toBe(0)
-      const otherBundle = path.join(root, 'Other Orca.app')
+      const otherBundle = path.join(root, 'Other OCC.app')
       cpSync(bundle, otherBundle, { recursive: true })
       for (const [program, args] of [
         [executable, []],
         [executable, []],
         [executable, ['--worker']],
-        [path.join(otherBundle, 'Contents', 'MacOS', 'Orca Test'), []]
+        [path.join(otherBundle, 'Contents', 'MacOS', 'OCC Test'), []]
       ] satisfies [string, string[]][]) {
         const child = spawnProcess({
           program,
@@ -70,7 +70,7 @@ it.runIf(process.platform === 'darwin')(
           expect(await getMacUpdateRunningInstances(executable, self.pid)).toEqual([sibling.pid])
           expect(
             await getMacUpdateRunningInstances(
-              path.join(otherBundle, 'Contents', 'MacOS', 'Orca Test'),
+              path.join(otherBundle, 'Contents', 'MacOS', 'OCC Test'),
               0
             )
           ).toEqual([otherCopy.pid])

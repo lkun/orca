@@ -553,7 +553,7 @@ describe('resolvePrimaryAction Create PR intent', () => {
       kind: 'create_pr',
       label: 'Create MR',
       title:
-        'Create MR failed: Orca could not confirm whether this branch already has a merge request. Retry once the GitLab lookup succeeds.',
+        'Create MR failed: OCC could not confirm whether this branch already has a merge request. Retry once the GitLab lookup succeeds.',
       disabled: true
     })
   })

@@ -39,7 +39,7 @@ function hasServiceWorker(extension: Electron.Extension): boolean {
   return typeof background === 'object' && background !== null && 'service_worker' in background
 }
 
-/** Electron fires neither runtime.onInstalled nor onStartup; Orca raises them after each load. */
+/** Electron fires neither runtime.onInstalled nor onStartup; OCC raises them after each load. */
 export function fireRuntimeLifecycleEvents(
   sess: Electron.Session,
   profileId: string,

@@ -20,7 +20,7 @@ export type PluginFileTypeSuggestion = {
  * user-added marketplace never produces an unsolicited suggestion. Nothing when
  * suggestions are off or dismissed for the type, or when any installed plugin (even a disabled
  * one) already handles it, so a user never gets pointed at what they already have. With the
- * `editor` purpose, for a file Orca already opens as text, only a custom editor counts.
+ * `editor` purpose, for a file OCC already opens as text, only a custom editor counts.
  */
 export function findPluginFileTypeSuggestion(input: {
   fileType: string

@@ -81,7 +81,7 @@ export function createWslMoveUndoPorts(
   return {
     stopHostCopies: async (move) => {
       // A host the user removed ran its terminals down with it, unless its Remove kept the server
-      // running for another Orca (R39): then its copies may still run, and nothing here reaches them.
+      // running for another OCC (R39): then its copies may still run, and nothing here reaches them.
       if (!listEnvironments(userDataPath).some((env) => env.id === move.destinationEnvironmentId)) {
         return wasWslHostKeptForPeers(userDataPath, move.destinationEnvironmentId)
           ? 'unreachable'
@@ -152,7 +152,7 @@ export function createWslMoveUndoPorts(
     stopHostAutomations: async (move) => {
       // Inside a try: a throw here would otherwise escape past undo's spawn fence.
       try {
-        // A removed host took its automations with it, unless another Orca keeps its server (R39).
+        // A removed host took its automations with it, unless another OCC keeps its server (R39).
         if (
           !listEnvironments(userDataPath).some((env) => env.id === move.destinationEnvironmentId)
         ) {

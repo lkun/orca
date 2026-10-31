@@ -22,7 +22,7 @@ const issue: JiraIssue = {
   siteId: 'site-a',
   description: '',
   labels: [],
-  project: { id: 'p', key: 'ORCA', name: 'Orca' },
+  project: { id: 'p', key: 'ORCA', name: 'OCC' },
   issueType: { id: 'task', name: 'Task' },
   status: { id: 'open', name: 'Open', categoryKey: 'new', categoryName: 'To Do' },
   updatedAt: '2026-01-01T00:00:00Z',

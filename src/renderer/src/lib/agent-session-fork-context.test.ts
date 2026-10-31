@@ -25,7 +25,7 @@ describe('agent session fork context', () => {
 
     // Copy Context must return raw transcript without fork instructions a paste target could execute.
     expect(transcript).toBe('User: ship it\nAssistant: done')
-    expect(transcript).not.toContain('fork of an existing Orca agent session')
+    expect(transcript).not.toContain('fork of an existing OCC agent session')
     expect(transcript).not.toContain('wait for my next instruction')
   })
 

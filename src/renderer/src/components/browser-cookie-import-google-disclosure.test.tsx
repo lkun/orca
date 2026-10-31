@@ -9,7 +9,7 @@ import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const DISCLOSURE_TITLE = "Google logins aren't imported"
-const DISCLOSURE_DESCRIPTION = 'Sign in to Google directly in Orca.'
+const DISCLOSURE_DESCRIPTION = 'Sign in to Google directly in OCC.'
 
 vi.mock('@/components/ui/dropdown-menu', () => dropdownMenuStubs())
 vi.mock('../ui/dropdown-menu', () => dropdownMenuStubs())

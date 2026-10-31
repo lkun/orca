@@ -81,7 +81,7 @@ const savedByNewerOrca = (db: Database.Database) => {
 
 it.each([
   ['damaged', damaged, 'journalCorrupt'],
-  ['saved by a newer Orca', savedByNewerOrca, 'journalWrittenByNewerOrca']
+  ['saved by a newer OCC', savedByNewerOrca, 'journalWrittenByNewerOrca']
 ] as const)(
   'lists a restored chat that could not be opened (%s), and its read and send are refused with why',
   async (_why, edit, reason) => {

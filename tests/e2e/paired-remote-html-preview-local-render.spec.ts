@@ -587,7 +587,7 @@ test('renders a paired HTML doc as a document browser tab while the host gains n
           {
             timeout: 60_000,
             intervals: [2_000],
-            message: 'a confirmed preview link never opened an Orca browser tab'
+            message: 'a confirmed preview link never opened an OCC browser tab'
           }
         )
         .toMatchObject({

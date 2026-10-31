@@ -1,5 +1,5 @@
-//! Orca's native Windows agent hook, registered as `orca-agent-hook.exe <agent>`: answers
-//! `{}`, then posts the hook payload to Orca's loopback listener and waits for the reply,
+//! OCC's native Windows agent hook, registered as `orca-agent-hook.exe <agent>`: answers
+//! `{}`, then posts the hook payload to OCC's loopback listener and waits for the reply,
 //! so status events arrive in the order the agent emitted them.
 //!
 //! Why native: the `.cmd` form costs a cmd.exe start (plus the user's AutoRun) and
@@ -42,7 +42,7 @@ fn main() {
     // Why first: Claude-compatible permission hooks fail closed on empty stdout (#14818).
     let _ = stdout.write_all(b"{}\r\n");
     let _ = stdout.flush();
-    // Why no stdin for an unknown agent: a newer Orca may register one this copy predates.
+    // Why no stdin for an unknown agent: a newer OCC may register one this copy predates.
     if let Some(agent) = env::args_os().nth(1).and_then(|arg| agent(arg.to_str()?)) {
         run(&agent);
     }
@@ -51,12 +51,12 @@ fn main() {
 }
 
 fn run(agent: &Agent) {
-    // Why: refresh the listener coordinates for terminals that survived an Orca restart.
+    // Why: refresh the listener coordinates for terminals that survived an OCC restart.
     let endpoint = read_endpoint_file();
     let coordinate = |key: &str| endpoint_value(&endpoint, key).unwrap_or_else(|| var(key));
     let port = coordinate("ORCA_AGENT_HOOK_PORT");
     let token = coordinate("ORCA_AGENT_HOOK_TOKEN");
-    // Why (#11549): without Orca's env the hook ran outside an Orca pane, where the caller
+    // Why (#11549): without OCC's env the hook ran outside an OCC pane, where the caller
     // may abandon stdin; exit before reading it.
     if port.is_empty() || token.is_empty() || var("ORCA_PANE_KEY").is_empty() {
         return;
@@ -126,7 +126,7 @@ fn post(source: &str, port: &str, token: &str, form: &[(&str, String)], payload:
     let mut request = format!(
         "POST /hook/{source} HTTP/1.1\r\nHost: 127.0.0.1:{port}\r\n\
          Content-Type: application/x-www-form-urlencoded\r\n\
-         X-Orca-Agent-Hook-Token: {token}\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+         X-OCC-Agent-Hook-Token: {token}\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
         body.len()
     )
     .into_bytes();

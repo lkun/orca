@@ -69,7 +69,7 @@ describe('TerminalHost PTY owner backend', () => {
     return subprocess
   }
 
-  // Without a reported theme, the session answers using Orca’s default colors.
+  // Without a reported theme, the session answers using OCC’s default colors.
   const query = '\x1b]10;?\x07'
   const reply = '\x1b]10;rgb:ffff/ffff/ffff\x1b\\'
   // ConPTY echoes a reply with its ESC bytes stripped; wsl.exe's echo shape is unverified.

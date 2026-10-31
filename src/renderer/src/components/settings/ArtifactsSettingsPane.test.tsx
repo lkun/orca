@@ -58,7 +58,7 @@ describe('ArtifactsSettingsPane', () => {
       />
     )
 
-    expect(screen.queryByRole('button', { name: 'Sign in to Orca' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Sign in to OCC' })).not.toBeInTheDocument()
   })
 
   it('offers sign in for a local profile', async () => {
@@ -67,7 +67,7 @@ describe('ArtifactsSettingsPane', () => {
     render(<ArtifactsSettingsPane settings={getDefaultSettings('/tmp')} updateSettings={vi.fn()} />)
 
     expect(screen.getByText('Sign in to share artifacts')).toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: 'Sign in to Orca' }))
+    await user.click(screen.getByRole('button', { name: 'Sign in to OCC' }))
     expect(mocks.connect).toHaveBeenCalledOnce()
   })
 
@@ -83,7 +83,7 @@ describe('ArtifactsSettingsPane', () => {
     render(<ArtifactsSettingsPane settings={getDefaultSettings('/tmp')} updateSettings={vi.fn()} />)
 
     expect(mocks.fetchAuthStatus).toHaveBeenCalledOnce()
-    expect(screen.getByRole('button', { name: 'Sign in to Orca' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Sign in to OCC' })).toBeDisabled()
   })
 
   it('controls only sidebar visibility and always allows opening Artifacts', async () => {
@@ -184,7 +184,7 @@ describe('ArtifactsSettingsPane', () => {
     render(<ArtifactsSettingsPane settings={getDefaultSettings('/tmp')} updateSettings={vi.fn()} />)
 
     expect(
-      screen.getByText(/Open Settings → Artifacts in the Orca desktop app on the host device/)
+      screen.getByText(/Open Settings → Artifacts in the OCC desktop app on the host device/)
     ).toBeInTheDocument()
   })
 })

@@ -25,8 +25,8 @@ import {
 } from './structured-agent-session-runtime'
 import { createStructuredAgentSessionLogger } from '../native-chat/agent-session-wire/structured-agent-session-logger'
 
-/** The error a real CLI's exit reaches the adapter as: Orca's message, the stderr as a log detail. */
-/** A Claude Code with every version-gated flag and control Orca uses. */
+/** The error a real CLI's exit reaches the adapter as: OCC's message, the stderr as a log detail. */
+/** A Claude Code with every version-gated flag and control OCC uses. */
 const CURRENT_CLAUDE_CODE_VERSION = '2.1.284'
 
 export function scriptedClaudeExitError(diagnostic: string): Error {

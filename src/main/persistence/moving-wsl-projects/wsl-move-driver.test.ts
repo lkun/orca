@@ -252,7 +252,7 @@ describe('moveProjectsToWslHost', () => {
       reported = fromWindow
       return {
         buffers: new Map(),
-        problems: ['saved terminal history Orca could not fully read for tab t1'],
+        problems: ['saved terminal history OCC could not fully read for tab t1'],
         dispose
       }
     }
@@ -261,7 +261,7 @@ describe('moveProjectsToWslHost', () => {
     expect(result).toMatchObject({
       outcome: 'refused',
       code: 'wsl_move_export_incomplete',
-      reasons: ['saved terminal history Orca could not fully read for tab t1']
+      reasons: ['saved terminal history OCC could not fully read for tab t1']
     })
     expect(journal()).toEqual([])
     expect(dispose).toHaveBeenCalledTimes(1)
@@ -274,13 +274,13 @@ describe('moveProjectsToWslHost', () => {
     const dispose = vi.fn()
     world.deps.sleptScrollback = async () => ({
       buffers: new Map(),
-      problems: ['saved terminal history Orca could not fully read for the tab "build"'],
+      problems: ['saved terminal history OCC could not fully read for the tab "build"'],
       dispose
     })
     expect(await previewWslMove(world.deps, request)).toMatchObject({
       outcome: 'refused',
       code: 'wsl_move_export_incomplete',
-      reasons: ['saved terminal history Orca could not fully read for the tab "build"']
+      reasons: ['saved terminal history OCC could not fully read for the tab "build"']
     })
     expect(dispose).toHaveBeenCalledTimes(1)
     expect(journal()).toEqual([])

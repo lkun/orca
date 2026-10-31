@@ -99,7 +99,7 @@ export async function confirmAndClearGoogleCookies(
       ),
       description: translate(
         'browser.googleCookieClear.confirmDescription',
-        "You'll be signed out of Google in Orca's browser for this profile. Other sites stay signed in."
+        "You'll be signed out of Google in OCC's browser for this profile. Other sites stay signed in."
       ),
       confirmLabel: translate('browser.googleCookieClear.clear', 'Clear'),
       cancelLabel: translate('browser.googleCookieClear.cancel', 'Cancel'),

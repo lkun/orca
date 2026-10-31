@@ -110,7 +110,7 @@ describe('ChromeWebStoreInstallFlow.begin', () => {
         ...details,
         manifest: JSON.stringify({ name: 'x', version: '1', manifest_version: 3, theme: {} })
       },
-      { value: 'unsupported_extension_type', error: 'Orca can install extensions only' }
+      { value: 'unsupported_extension_type', error: 'OCC can install extensions only' }
     ]
   ])('refuses bad input without prompting', async (input, reply) => {
     const { flow, frame, deps } = setup()

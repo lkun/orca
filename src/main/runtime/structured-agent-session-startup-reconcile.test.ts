@@ -49,7 +49,7 @@ afterEach(async () => {
   await rm(root, { recursive: true, force: true })
 })
 
-/** A profile with one chat whose last owner is gone; `newer` stamps it as a newer Orca's. */
+/** A profile with one chat whose last owner is gone; `newer` stamps it as a newer OCC's. */
 async function seedChat(options: { newer?: boolean } = {}) {
   const record = agentSessionRecordFixture()
   await seedTestAgentSessionRecordStore(root, { records: [record] })
@@ -84,7 +84,7 @@ function startupRuntime(log = recordingStructuredAgentSessionLogger()) {
   return runtime
 }
 
-it('finishes startup over records a newer Orca wrote, reads them, and writes nothing', async () => {
+it('finishes startup over records a newer OCC wrote, reads them, and writes nothing', async () => {
   const { path, sessionId } = await seedChat({ newer: true })
   const bytes = await readFile(path)
   const log = recordingStructuredAgentSessionLogger()
@@ -120,7 +120,7 @@ it('finishes startup when the reconcile cannot write, and reports it', async () 
   expect(getStructuredAgentSessionHost()?.sessionAgent(sessionId)).toBe('claude')
 })
 
-it('closes a chat tab over records a newer Orca wrote, reporting the index it cannot write', async () => {
+it('closes a chat tab over records a newer OCC wrote, reporting the index it cannot write', async () => {
   const { sessionId } = await seedChat({ newer: true })
   const log = recordingStructuredAgentSessionLogger()
   const runtime = startupRuntime(log)

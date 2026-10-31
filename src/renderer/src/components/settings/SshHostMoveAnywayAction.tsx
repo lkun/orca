@@ -83,7 +83,7 @@ export function SshHostMoveAnywayDialog({
               <p>
                 {translate(
                   'auto.components.settings.moveAnyway.description',
-                  'Orca sets itself up on {{host}} without the saved items below. They stay on this computer and don’t appear on {{host}}. Unsaved edits are kept, never deleted.',
+                  'OCC sets itself up on {{host}} without the saved items below. They stay on this computer and don’t appear on {{host}}. Unsaved edits are kept, never deleted.',
                   { host: target.label }
                 )}
               </p>

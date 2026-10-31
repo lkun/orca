@@ -164,7 +164,7 @@ export function useSourceControlGitHistory({
       return
     }
     // Only the user's own act may start a stopped WSL distro: opening Commits, or switching to this
-    // workspace (once per switch). A remount, restore or Orca's own re-show stays background (E9).
+    // workspace (once per switch). A remount, restore or OCC's own re-show stays background (E9).
     const userAct =
       userExpanded ||
       (activeWorktreeId !== null && takeRecentWorkspaceSwitchWake(activeWorktreeId, 'git-history'))

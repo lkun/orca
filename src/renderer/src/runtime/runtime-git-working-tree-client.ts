@@ -57,7 +57,7 @@ export async function resolveRuntimeGitConflict(
       throw new Error(
         translate(
           'auto.runtime.runtimeGitWorkingTreeClient.resolveConflictNeedsNewerHost',
-          'Resolving conflicts needs a newer Orca on this host. Update Orca on that host.'
+          'Resolving conflicts needs a newer OCC on this host. Update OCC on that host.'
         )
       )
     }

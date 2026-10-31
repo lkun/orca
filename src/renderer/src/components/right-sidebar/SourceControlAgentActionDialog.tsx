@@ -38,7 +38,7 @@ export type SourceControlAgentActionDialogProps = {
   promptDelivery?: 'auto-submit' | 'draft' | 'submit-after-ready'
   launchPlatform?: NodeJS.Platform
   launchSource: LaunchSource
-  /** Set only for paused-operation recovery, which must not start over Orca's own running Git work. */
+  /** Set only for paused-operation recovery, which must not start over OCC's own running Git work. */
   recoveryContext?: RuntimeGitContext | null
   savedAgentId?: TuiAgent | null
   onSaveAgentDefault?: (

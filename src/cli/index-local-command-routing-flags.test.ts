@@ -237,7 +237,7 @@ describe('runtime-selector flags on locally pinned CLI commands', () => {
 
   it('reports an unreachable runtime as an error instead of inventing a name', async () => {
     const { RuntimeClientError } = await import('./runtime/types.js')
-    callMock.mockRejectedValue(new RuntimeClientError('runtime_unavailable', 'Orca is not running'))
+    callMock.mockRejectedValue(new RuntimeClientError('runtime_unavailable', 'OCC is not running'))
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 
     await main(['host', 'name', '--json'], '/tmp/repo')
@@ -282,9 +282,9 @@ describe('runtime-selector flags on locally pinned CLI commands', () => {
     pairRuntimeEnvironment(listEnvironmentsMock, 'env-m4air', 'm4air')
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 
-    await main(['host', 'list', '--pairing-code', 'orca://pair?code=x', '--json'], '/tmp/repo')
+    await main(['host', 'list', '--pairing-code', 'occ://pair?code=x', '--json'], '/tmp/repo')
     await main(
-      ['environment', 'list', '--pairing-code', 'orca://pair?code=x', '--json'],
+      ['environment', 'list', '--pairing-code', 'occ://pair?code=x', '--json'],
       '/tmp/repo'
     )
 

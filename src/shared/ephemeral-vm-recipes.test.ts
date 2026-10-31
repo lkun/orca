@@ -224,7 +224,7 @@ describe('parseEphemeralVmRecipeResult', () => {
       )
     ).toEqual({
       ok: false,
-      error: 'Recipe result pairingCode is not a valid Orca pairing code.',
+      error: 'Recipe result pairingCode is not a valid OCC pairing code.',
       errorCode: 'recipeResultPairingCodeInvalid'
     })
   })
@@ -308,7 +308,7 @@ describe('parseEphemeralVmRecipeResult', () => {
       })
     ).toEqual({
       schemaVersion: 1,
-      pairingCode: 'orca://pair?code=[redacted]',
+      pairingCode: 'occ://pair?code=[redacted]',
       projectRoot: '/workspace/repo',
       userData: {
         providerResourceId: 'sandbox-123',

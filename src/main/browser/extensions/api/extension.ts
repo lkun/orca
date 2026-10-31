@@ -4,7 +4,7 @@ import {
   registerBrowserExtensionNamespace
 } from '../browser-extension-namespace-registry'
 
-/** Electron's chrome.extension lacks these; Orca loads extensions without file or incognito access. */
+/** Electron's chrome.extension lacks these; OCC loads extensions without file or incognito access. */
 export function registerExtensionNamespace(): void {
   registerBrowserExtensionNamespace('extension', {
     methods: {

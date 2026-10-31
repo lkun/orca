@@ -186,7 +186,7 @@ describe('agent hooks CLI handler', () => {
       if (source !== 'profile-json') {
         expect(existsSync(join(userDataPath, 'orca-profile-index.json'))).toBe(false)
       }
-      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('bundled Orca CLI'))
+      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('bundled OCC CLI'))
     }
   )
 

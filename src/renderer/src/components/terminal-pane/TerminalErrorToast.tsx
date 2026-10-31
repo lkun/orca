@@ -125,7 +125,7 @@ export function isPaneOwnerRecoveryError(error: string): boolean {
 function humanizeUnreattachableSession(error: string): string {
   const explanation = translate(
     'auto.components.terminal.pane.TerminalErrorToast.sessionUnavailable',
-    "Orca couldn't reattach to this pane's terminal session on the host. Open a new terminal to continue."
+    "OCC couldn't reattach to this pane's terminal session on the host. Open a new terminal to continue."
   )
   // Why a replacer: a translation containing `$&` or `$1` would otherwise be read as a substitution.
   return UNREATTACHABLE_SESSIONS.reduce(
@@ -165,18 +165,18 @@ export function humanizeTerminalError(error: string, agentId?: string | null): s
     const explanation = isPaneOwnerUnverifiedError(humanized)
       ? translate(
           'auto.components.terminal.pane.TerminalErrorToast.42b283ecfc',
-          "Orca couldn't safely reconnect this terminal because the host couldn't verify its saved session. Orca left the saved session unchanged. Click Retry to try reconnecting now. If it still cannot reconnect, open a new terminal."
+          "OCC couldn't safely reconnect this terminal because the host couldn't verify its saved session. OCC left the saved session unchanged. Click Retry to try reconnecting now. If it still cannot reconnect, open a new terminal."
         )
       : translate(
           'auto.components.terminal.pane.TerminalErrorToast.ownerUnknown',
-          "Orca couldn't verify this terminal's owner."
+          "OCC couldn't verify this terminal's owner."
         )
     humanized = humanized.replaceAll(PANE_OWNER_UNVERIFIED_MARKER, () => explanation)
   }
   humanized = humanized.replaceAll(PANE_OWNER_CHANGED_MARKER, () =>
     translate(
       'auto.components.terminal.pane.TerminalErrorToast.ownerUnknown',
-      "Orca couldn't verify this terminal's owner."
+      "OCC couldn't verify this terminal's owner."
     )
   )
   humanized = humanized.replace(SOURCE_RESTORE_REQUIRED.replaceAll, () =>
@@ -188,7 +188,7 @@ export function humanizeTerminalError(error: string, agentId?: string | null): s
   humanized = humanized.replace(OWNER_HOST_MISMATCH.replaceAll, () =>
     translate(
       'auto.components.terminal.pane.TerminalErrorToast.ownerHostMismatch',
-      "This terminal's saved session belongs to another host connection, so Orca can't reattach it here. Open a new terminal to continue."
+      "This terminal's saved session belongs to another host connection, so OCC can't reattach it here. Open a new terminal to continue."
     )
   )
   if (humanized.includes(REMOTE_TERMINAL_CLOSED_MARKER)) {

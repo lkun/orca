@@ -393,7 +393,7 @@ describe('ACP structured session adapter: turns', () => {
     ['no choice', {}],
     ['an effort choice', { effort: 'low' }]
   ])(
-    'runs a message with %s on the model the agent moved to before Orca wrote one',
+    'runs a message with %s on the model the agent moved to before OCC wrote one',
     async (_name, executionOptions: { effort?: string }) => {
       // As OpenCode 2: session/new answers before its catalog loads, then reports the configured model.
       const rig = await openAcpAdapterRig()

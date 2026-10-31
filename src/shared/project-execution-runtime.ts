@@ -1,7 +1,7 @@
 import { parseWslUncPath } from './wsl-paths'
 
 /**
- * `git: 'windows-host'` keeps terminals and agents in WSL but runs Orca's own Git on Windows: for a
+ * `git: 'windows-host'` keeps terminals and agents in WSL but runs OCC's own Git on Windows: for a
  * project on a Windows drive, WSL Git is ~300x slower and misses Windows-side edits.
  */
 export type ProjectGitRuntime = 'windows-host'

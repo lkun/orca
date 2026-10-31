@@ -59,7 +59,7 @@ describe('mobile in-place queued Edit', () => {
   })
 
   it('opens full canonical task input and publishes a changed Save as user-authored raw input', async () => {
-    const prefix = 'You are working inside Orca, a multi-agent IDE.\n=== TASK ===\n'
+    const prefix = 'You are working inside OCC, a multi-agent IDE.\n=== TASK ===\n'
     const message = queuedDraft({
       messageId: 'task',
       body: {

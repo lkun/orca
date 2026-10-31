@@ -13,7 +13,7 @@ export type SlackAppCredentials = {
 export const appSecretAad = (secret: 'client' | 'signing', appId: string) =>
   `slack-${secret}-secret\0${appId}`
 
-// One row per Slack app Orca serves: a company's own copy, or one registered by an operator. Its
+// One row per Slack app OCC serves: a company's own copy, or one registered by an operator. Its
 // signing secret verifies the requests Slack sends to that app's own URLs.
 export class SlackApps {
   constructor(private readonly tokenKey: Buffer) {}

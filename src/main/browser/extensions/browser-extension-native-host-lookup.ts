@@ -109,7 +109,7 @@ export type NativeHostResolution =
 /**
  * Finds the host the extension may start. Unlike Chrome, which reads a single location per level,
  * a broken, stale or forbidding manifest in one browser's folder falls through to the next: apps
- * write one per browser they know and Orca reads several. Forbidden wins over not found.
+ * write one per browser they know and OCC reads several. Forbidden wins over not found.
  */
 export async function resolveNativeMessagingHost(
   name: string,

@@ -140,11 +140,11 @@ const LAYOUTS: Layout[] = [
       ['shared', 'leave', 'edited'],
       ['claude', 'leave', 'shared-not-current']
     ],
-    text: "No change · 1 skipped: Skill edited outside Orca; The shared copy isn't Orca's",
+    text: "No change · 1 skipped: Skill edited outside OCC; The shared copy isn't OCC's",
     badge: null
   },
   {
-    name: 'agent folder is a link out of Orca’s folders',
+    name: 'agent folder is a link out of OCC’s folders',
     arrange: async (home) => {
       await npxShared(home)
       await writeCopy(join(home.root, 'elsewhere', NAME), OLD_TEXT)
@@ -161,7 +161,7 @@ const LAYOUTS: Layout[] = [
     untouched: (home) => [join(home.root, 'elsewhere', NAME)]
   },
   {
-    name: 'agent folder is a broken link Orca did not make',
+    name: 'agent folder is a broken link OCC did not make',
     arrange: async (home) => {
       await writeNpxLock(home)
       await writeCopy(home.shared, OLD_TEXT)
@@ -197,7 +197,7 @@ const LAYOUTS: Layout[] = [
       ['shared', 'leave', 'unwritable'],
       ['claude', 'leave', 'shared-not-current']
     ],
-    text: "No change · 1 skipped: Orca can't write to this folder; The shared copy isn't Orca's"
+    text: "No change · 1 skipped: OCC can't write to this folder; The shared copy isn't OCC's"
   },
   {
     name: 'npx shared copy with Claude and Cursor detected',
@@ -232,7 +232,7 @@ const LAYOUTS: Layout[] = [
       ['shared', 'leave', 'other'],
       ['claude', 'leave', 'shared-not-current']
     ],
-    text: "No change · 1 skipped: A different skill uses this name; The shared copy isn't Orca's"
+    text: "No change · 1 skipped: A different skill uses this name; The shared copy isn't OCC's"
   },
   {
     name: 'host that cannot link gets a copy',
@@ -269,7 +269,7 @@ const LAYOUTS: Layout[] = [
       ['shared', 'leave', 'edited'],
       ['claude', 'leave', 'shared-not-current']
     ],
-    text: "No change · 1 skipped: Skill edited outside Orca; The shared copy isn't Orca's"
+    text: "No change · 1 skipped: Skill edited outside OCC; The shared copy isn't OCC's"
   },
   {
     name: '~/.claude/skills is a link to ~/.agents/skills (one target)',

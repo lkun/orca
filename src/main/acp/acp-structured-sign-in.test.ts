@@ -97,7 +97,7 @@ it('ends a running turn signed out when the connection closes for sign-in', asyn
   expect(rejected && 'reason' in rejected ? rejected.reason : '').not.toContain(internal)
 })
 
-it('starts signed out without Orca words when the connection closes for sign-in', async () => {
+it('starts signed out without OCC words when the connection closes for sign-in', async () => {
   const rig = await openAcpAdapterRig({ script: (agent) => agent.on('session/new', () => {}) })
   const starting = rig.acquire()
   await rig.frame('session/new')
@@ -105,7 +105,7 @@ it('starts signed out without Orca words when the connection closes for sign-in'
   AcpSessionRuntime.prototype.close.call(rig.child(), new AcpSignInPromptError(internal))
   await starting
   const error = rig.openFailure()
-  // Preserve Orca's prompt error when session setup retypes authentication failures.
+  // Preserve OCC's prompt error when session setup retypes authentication failures.
   expect(error).toMatchObject({ reason: 'notSignedIn' })
   expect(providerDiagnosticOf(error)).toBeUndefined()
 })

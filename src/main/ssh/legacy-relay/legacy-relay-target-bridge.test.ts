@@ -530,7 +530,7 @@ describe('one target’s legacy relay bridge', () => {
     expect(subject.livePaneCount()).toBe(0)
   })
 
-  it('never serves an unfenced legacy pane again after its tab closed and Orca restarted', async () => {
+  it('never serves an unfenced legacy pane again after its tab closed and OCC restarted', async () => {
     await expect(stops.stop(PTY, null)).resolves.toEqual({ status: 'unverifiable' })
     stops = paneStops()
     const subject = bridge()

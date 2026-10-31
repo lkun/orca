@@ -43,7 +43,7 @@ function isAlive(pid: number): boolean {
   }
 }
 
-/** Electron main is Orca's real shape: it keeps std handles inheritable (kEnableStdioInheritance),
+/** Electron main is OCC's real shape: it keeps std handles inheritable (kEnableStdioInheritance),
  * where plain Node clears them itself at startup. */
 async function runChild(host: 'electron' | 'node', mode: 'clear' | 'keep', holderMs: number) {
   const electron: unknown = createRequire(import.meta.url)('electron')
@@ -93,7 +93,7 @@ describeOnWindows('clearing std handle inheritance', () => {
   }, 60_000)
 
   // A regression pins the pipe for the 60 s holder; fail on the assertion, not the 5 s default.
-  it('plain Node already clears its own std handles, so it is no model for Orca', async () => {
+  it('plain Node already clears its own std handles, so it is no model for OCC', async () => {
     const run = await runChild('node', 'keep', 60_000)
 
     expect(run.code, run.output).toBe(0)

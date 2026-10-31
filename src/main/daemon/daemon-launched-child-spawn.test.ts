@@ -59,7 +59,7 @@ describe('daemon launch scope ownership', () => {
 
 describe('daemon launch through the AppImage file', () => {
   const appImage = {
-    appImagePath: '/apps/Orca.AppImage',
+    appImagePath: '/apps/OCC.AppImage',
     entryPathInAppDir: 'resources/app.asar.unpacked/out/main/daemon-entry.js',
     appPathInAppDir: 'resources/app.asar',
     appVersion: '1.0.0'
@@ -70,7 +70,7 @@ describe('daemon launch through the AppImage file', () => {
     expect(fork).not.toHaveBeenCalled()
     const { program, args } = spawn.mock.calls[0][0]
     expect(program).toBe('systemd-run')
-    const exec = args.indexOf('/apps/Orca.AppImage')
+    const exec = args.indexOf('/apps/OCC.AppImage')
     expect(args.slice(exec + 1, exec + 2)).toEqual(['-e'])
     expect(args.slice(-2)).toEqual(['--fresh-daemon-scope', '--no-sandbox'])
   })
@@ -80,7 +80,7 @@ describe('daemon launch through the AppImage file', () => {
     expect(fork).not.toHaveBeenCalled()
     expect(spawn).toHaveBeenCalledWith(
       expect.objectContaining({
-        program: '/apps/Orca.AppImage',
+        program: '/apps/OCC.AppImage',
         args: expect.not.arrayContaining(['--fresh-daemon-scope']),
         stdio: ['ignore', 'ignore', 'pipe', 'ipc']
       })
@@ -91,7 +91,7 @@ describe('daemon launch through the AppImage file', () => {
     spawnDaemonChildProcess({ ...options, appImage }, false)
     const { args } = spawn.mock.calls[0][0]
     expect(args[args.indexOf('--entry-path') + 1]).toBe(
-      '/apps/Orca.AppImage/resources/app.asar.unpacked/out/main/daemon-entry.js'
+      '/apps/OCC.AppImage/resources/app.asar.unpacked/out/main/daemon-entry.js'
     )
   })
 
@@ -107,7 +107,7 @@ describe('daemon launch on the extracted AppImage copy', () => {
     generationRoot: '/cache/ns/gen',
     nodePath: '/cache/ns/gen/resources/node-runtime/bin/node',
     entryPath: '/cache/ns/gen/resources/app.asar.unpacked/out/main/daemon-entry.js',
-    identityPath: '/apps/Orca.AppImage/resources/app.asar.unpacked/out/main/daemon-entry.js'
+    identityPath: '/apps/OCC.AppImage/resources/app.asar.unpacked/out/main/daemon-entry.js'
   }
 
   it.each([false, true])('runs the bundled Node on the copy (scoped=%s)', (scoped) => {

@@ -171,7 +171,7 @@ describe('a failed delete Git no longer registers, over desktop IPC', () => {
     vi.mocked(worktreeCheckoutExists).mockResolvedValue(true)
   })
 
-  it('removes the push-target remote Orca added when Delete fails partway', async () => {
+  it('removes the push-target remote OCC added when Delete fails partway', async () => {
     const [main] = mockKnownFeatureWorktree()
     const pushTarget = {
       remoteName: 'pr-contributor-orca',
@@ -190,7 +190,7 @@ describe('a failed delete Git no longer registers, over desktop IPC', () => {
       listWorktreesMock.mockResolvedValue([main])
       throw new Error(GIT_ERROR)
     })
-    // Orca's follow-up delete of the folder Git left also fails, so the row stays listed.
+    // OCC's follow-up delete of the folder Git left also fails, so the row stays listed.
     vi.mocked(removeLocalWorktreePath).mockRejectedValueOnce(new Error(FOLLOW_UP_DELETE_ERROR))
 
     await expect(remove({ worktreeId: featureId })).rejects.toThrow(FOLLOW_UP_DELETE_ERROR)

@@ -55,7 +55,7 @@ export async function scanRuntimeAiVaultSessions(args: {
     }
     return runtimeScanIssueResult(
       args.hostInfo,
-      error instanceof Error ? error.message : 'Remote Orca server is unavailable.'
+      error instanceof Error ? error.message : 'Remote OCC server is unavailable.'
     )
   }
 }

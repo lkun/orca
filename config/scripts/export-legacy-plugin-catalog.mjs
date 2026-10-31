@@ -1,4 +1,4 @@
-// Writes the frozen orca-marketplace.json that Orca builds before catalog format 2 read, from
+// Writes the frozen orca-marketplace.json that OCC builds before catalog format 2 read, from
 // orca-catalog.json. Why generated: those builds reject any key they do not know, so the file
 // carries only the original fields and authors should never edit it by hand.
 // Usage: node export-legacy-plugin-catalog.mjs [orca-catalog.json] [orca-marketplace.json]

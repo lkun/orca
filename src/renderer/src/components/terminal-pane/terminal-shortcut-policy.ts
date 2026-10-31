@@ -70,7 +70,7 @@ export type TerminalShortcutAction =
   | { type: 'trackNativeOptionDeadKey' }
   | { type: 'switchInputSource' }
 
-/** Resolve platform-aware Orca shortcuts and byte fallbacks before xterm encoding. */
+/** Resolve platform-aware OCC shortcuts and byte fallbacks before xterm encoding. */
 export function resolveTerminalShortcutAction(
   event: TerminalShortcutEvent,
   isMac: boolean,

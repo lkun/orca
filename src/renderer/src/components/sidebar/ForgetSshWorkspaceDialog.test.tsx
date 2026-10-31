@@ -108,7 +108,7 @@ describe('ForgetSshWorkspaceDialog', () => {
   it('forgets a saved host’s workspace on its SSH host without a remote delete', async () => {
     render(<ForgetSshWorkspaceDialog />)
 
-    fireEvent.click(screen.getByText('Remove from Orca'))
+    fireEvent.click(screen.getByText('Remove from OCC'))
 
     await waitFor(() => expect(mocks.state.closeModal).toHaveBeenCalled())
     expect(mocks.state.removeWorktree).toHaveBeenCalledTimes(1)

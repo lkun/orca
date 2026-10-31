@@ -92,7 +92,7 @@ async function observeChatProgram(
   return chatProgram.installable?.() ? 'installable' : 'missing'
 }
 
-/** True when a chat start would fail until Orca installs the agent's chat program on this host. */
+/** True when a chat start would fail until OCC installs the agent's chat program on this host. */
 export async function structuredAgentChatProgramNeedsInstall(
   agent: string,
   runtime: HealthRuntime

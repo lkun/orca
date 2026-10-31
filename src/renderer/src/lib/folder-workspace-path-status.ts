@@ -63,7 +63,7 @@ export function getFolderWorkspacePathStatusDescription(
   if (!isHandledPathStatusReason(status.reason)) {
     return translate(
       'auto.lib.folderWorkspacePathStatus.description.unrecognized',
-      'Orca cannot use {{path}}, and this version does not recognize the reason. Update Orca to see the details.',
+      'OCC cannot use {{path}}, and this version does not recognize the reason. Update OCC to see the details.',
       { path: status.path }
     )
   }
@@ -71,7 +71,7 @@ export function getFolderWorkspacePathStatusDescription(
     case 'missing':
       return translate(
         'auto.lib.folderWorkspacePathStatus.description.missing',
-        'Orca cannot find {{path}}. Remove and re-import this folder workspace.',
+        'OCC cannot find {{path}}. Remove and re-import this folder workspace.',
         { path: status.path }
       )
     case 'not-directory':
@@ -83,13 +83,13 @@ export function getFolderWorkspacePathStatusDescription(
     case 'ambiguous-connection':
       return translate(
         'auto.lib.folderWorkspacePathStatus.description.ambiguousConnection',
-        'Orca cannot tell which SSH connection owns this folder scope.'
+        'OCC cannot tell which SSH connection owns this folder scope.'
       )
     case undefined:
     case 'unavailable':
       return translate(
         'auto.lib.folderWorkspacePathStatus.description.unavailable',
-        'Orca cannot verify this folder right now. Check the runtime or SSH connection and try again.'
+        'OCC cannot verify this folder right now. Check the runtime or SSH connection and try again.'
       )
   }
 }
@@ -121,7 +121,7 @@ export function getFolderWorkspacePathErrorCopy(message: string): {
         ),
         description: translate(
           'auto.lib.folderWorkspacePathStatus.createError.description.missing',
-          'Orca cannot find {{path}}. Remove and re-import the folder.',
+          'OCC cannot find {{path}}. Remove and re-import the folder.',
           { path }
         )
       }
@@ -145,7 +145,7 @@ export function getFolderWorkspacePathErrorCopy(message: string): {
         ),
         description: translate(
           'auto.lib.folderWorkspacePathStatus.createError.description.ambiguousConnection',
-          'Orca cannot tell which SSH connection owns this folder scope.'
+          'OCC cannot tell which SSH connection owns this folder scope.'
         )
       }
     default:
@@ -156,7 +156,7 @@ export function getFolderWorkspacePathErrorCopy(message: string): {
         ),
         description: translate(
           'auto.lib.folderWorkspacePathStatus.createError.description.unavailable',
-          'Orca cannot verify this folder right now. Check the runtime or SSH connection and try again.'
+          'OCC cannot verify this folder right now. Check the runtime or SSH connection and try again.'
         )
       }
   }

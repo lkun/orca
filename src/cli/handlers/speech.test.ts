@@ -37,7 +37,7 @@ describe('orca speech openai-key against an older server', () => {
     }
     await expect(callOpenAiKeyMethod(client, 'speech.openAiKey.status')).rejects.toMatchObject({
       code: 'incompatible_runtime',
-      message: expect.stringContaining('Update Orca on the server')
+      message: expect.stringContaining('Update OCC on the server')
     })
   })
 })

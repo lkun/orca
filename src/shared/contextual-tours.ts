@@ -121,7 +121,7 @@ export const CONTEXTUAL_TOURS = [
       {
         id: 'browser-logins',
         title: 'Stay logged in',
-        body: 'Bring your existing logins into Orca to stay signed in immediately.',
+        body: 'Bring your existing logins into OCC to stay signed in immediately.',
         // Prefer visible Import; use overflow after the hint is dismissed.
         targetSelector:
           '[data-contextual-tour-target="browser-import-hint"], [data-contextual-tour-target="browser-import-cookies-control"]',
@@ -217,7 +217,7 @@ export const CONTEXTUAL_TOURS = [
       {
         id: 'workspace-creation-project',
         title: 'Pick a project',
-        body: 'Orca isolates each task in its own worktree, branched off your base.',
+        body: 'OCC isolates each task in its own worktree, branched off your base.',
         targetSelector: '[data-contextual-tour-target="workspace-creation-project"]',
         requiredForStart: true
       },

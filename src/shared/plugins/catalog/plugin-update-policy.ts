@@ -24,7 +24,7 @@ export function normalizePluginUpdatePolicySettings(
     return {}
   }
   const value = input.pluginUpdatePolicy
-  // Why manual: a policy from a newer Orca is likely stricter, so never widen it to auto.
+  // Why manual: a policy from a newer OCC is likely stricter, so never widen it to auto.
   return { pluginUpdatePolicy: value === undefined || value === 'auto' ? 'auto' : 'manual' }
 }
 

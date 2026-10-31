@@ -42,7 +42,7 @@ The catalog lives at `src/renderer/src/i18n/locales/zh-Hant.json` and is maintai
 
 - Quote UI text with 「」, and use 『』 for nested quotes. Do not use “”.
 - Put a half-width space between CJK text and Latin letters or digits.
-- Keep product, provider, model and CLI names in their original form (Orca, Claude Code, Codex, GitHub, Git, SSH, WSL).
+- Keep product, provider, model and CLI names in their original form (OCC, Claude Code, Codex, GitHub, Git, SSH, WSL).
 - Keep `{{placeholders}}`, markup, commands, paths and shortcuts exactly as they appear in English.
 
 ## Verification

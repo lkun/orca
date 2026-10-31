@@ -6,12 +6,12 @@ const AUTO_GRANTED_BROWSER_PERMISSIONS = new Set([
   'persistent-storage',
   // Chromium still requires user activation for pointer lock.
   'pointerLock',
-  // Match Orca's unpartitioned third-party cookie policy; request and check must agree.
+  // Match OCC's unpartitioned third-party cookie policy; request and check must agree.
   // This also grants unpartitioned localStorage/IndexedDB handles, unlike ambient globals.
   // Revisit if partitioning becomes configurable: Electron does not persist a STORAGE_ACCESS grant.
   'storage-access'
 ])
-// Top-level storage access requires Related Website Sets, which Orca does not supply.
+// Top-level storage access requires Related Website Sets, which OCC does not supply.
 
 export function isAutoGrantedBrowserSessionPermission(permission: string): boolean {
   return AUTO_GRANTED_BROWSER_PERMISSIONS.has(permission)

@@ -65,7 +65,7 @@ describe('failed worker starts and the circuit breaker', () => {
     }
     expect(refusal).toMatchObject({
       code: 'task_not_startable',
-      message: `Task ${taskId} failed 3 times, so Orca will not retry it again (last error: ${BLOCKED}). Report the failure to the user instead of retrying.`,
+      message: `Task ${taskId} failed 3 times, so OCC will not retry it again (last error: ${BLOCKED}). Report the failure to the user instead of retrying.`,
       data: { taskId, status: 'failed', retryOf: third, failureCount: 3 }
     })
     expect(refusal).toMatchObject({

@@ -59,7 +59,7 @@ describe('shouldBypassXtermKeyboardEvent — macOS', () => {
     ).toBe(false)
   })
 
-  it('does NOT bubble other Cmd chords — Orca window handlers intercept them before xterm', () => {
+  it('does NOT bubble other Cmd chords — OCC window handlers intercept them before xterm', () => {
     // Other Cmd shortcuts are consumed before xterm by keyboard-handlers.ts, including select-all under Kitty.
     const cases = [
       event({ key: 'a', code: 'KeyA', metaKey: true }),
@@ -192,7 +192,7 @@ describe('isAppOwnedCopyChord', () => {
     expect(isAppOwnedCopyChord(cmdC, kittyApp)).toBe(true)
   })
 
-  it('keeps Orca copy for a selection, a plain shell, other chords, and other platforms', () => {
+  it('keeps OCC copy for a selection, a plain shell, other chords, and other platforms', () => {
     expect(isAppOwnedCopyChord(cmdC, { ...kittyApp, hasSelection: true })).toBe(false)
     expect(isAppOwnedCopyChord(cmdC, { ...kittyApp, kittyKeyboardFlags: 0 })).toBe(false)
     expect(isAppOwnedCopyChord(cmdC, { ...kittyApp, kittyKeyboardFlags: undefined })).toBe(false)

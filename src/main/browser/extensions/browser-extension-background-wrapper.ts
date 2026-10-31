@@ -8,7 +8,7 @@ import {
 type Manifest = Record<string, unknown>
 
 export type BrowserExtensionBackgroundWrapper = {
-  /** The manifest Orca loads: background points at the wrapper, connect-src allows the API. */
+  /** The manifest OCC loads: background points at the wrapper, connect-src allows the API. */
   manifest: Manifest
   /** Relative to the extension root. */
   wrapperPath: string
@@ -23,7 +23,7 @@ function asRecord(value: unknown): Manifest | null {
 
 const API_SOURCES = ["'self'", `${BROWSER_EXTENSION_API_SCHEME}:`]
 
-/** Lets the worker reach Orca's API (and read its token) under a policy that limits connect-src. */
+/** Lets the worker reach OCC's API (and read its token) under a policy that limits connect-src. */
 export function withBrowserExtensionApiConnectSource(policy: string): string {
   const directives = policy
     .split(';')
@@ -58,7 +58,7 @@ export function withBrowserExtensionApiConnectSource(policy: string): string {
 }
 
 /**
- * Points the extension's background worker at an Orca wrapper that loads Orca's API shim first,
+ * Points the extension's background worker at an OCC wrapper that loads OCC's API shim first,
  * then the extension's own script, untouched. Returns null when there is no worker to wrap.
  * Why beside the original: relative importScripts in a classic worker resolve against the
  * worker's own URL, so the wrapper must live in the same folder.
@@ -67,7 +67,7 @@ export function buildBrowserExtensionBackgroundWrapper(
   manifest: Manifest
 ): BrowserExtensionBackgroundWrapper | null {
   if (manifest.manifest_version !== 3) {
-    throw new Error('Orca supports Manifest V3 extensions only')
+    throw new Error('OCC supports Manifest V3 extensions only')
   }
   const background = asRecord(manifest.background)
   const worker = background?.service_worker
@@ -107,6 +107,6 @@ export function buildBrowserExtensionBackgroundWrapper(
         : {})
     },
     wrapperPath,
-    wrapperSource: `// Written by Orca: its chrome.* additions, then this extension's own worker.\n${load}`
+    wrapperSource: `// Written by OCC: its chrome.* additions, then this extension's own worker.\n${load}`
   }
 }

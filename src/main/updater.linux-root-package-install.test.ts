@@ -36,7 +36,7 @@ const packageSha512 = Buffer.alloc(64).toString('base64')
 
 function downloadedEvent(packageType: LinuxRootPackageType): Record<string, unknown> {
   const fileName =
-    packageType === 'deb' ? 'orca-ide_1.0.61_amd64.deb' : 'orca-ide-1.0.61.x86_64.rpm'
+    packageType === 'deb' ? 'occ-ide_1.0.61_amd64.deb' : 'occ-ide-1.0.61.x86_64.rpm'
   return {
     version: '1.0.61',
     downloadedFile: join(tmpdir(), 'orca-updater', 'pending', fileName),
@@ -113,7 +113,7 @@ describe('updater Linux root packages', () => {
 
       expect(lastStatus(send)).toEqual({
         state: 'error',
-        message: 'Quit Orca before running the system package install command.',
+        message: 'Quit OCC before running the system package install command.',
         messageCode: 'linuxPackageManualInstall',
         recovery: {
           kind: 'linux-package-install',
@@ -155,7 +155,7 @@ describe('updater Linux root packages', () => {
       updater,
       {
         version: '1.0.61',
-        downloadedFile: join(tmpdir(), 'Orca-1.0.61.AppImage'),
+        downloadedFile: join(tmpdir(), 'OCC-1.0.61.AppImage'),
         files: []
       },
       true
@@ -223,13 +223,13 @@ describe('updater Linux root packages', () => {
 
     await reachDownloaded(updater, {
       version: '1.0.61',
-      downloadedFile: join(tmpdir(), 'orca-updater', 'pending', 'orca-ide_1.0.61_amd64.deb'),
-      files: [{ url: 'orca-ide_1.0.61_amd64.deb', sha512: packageSha512 }]
+      downloadedFile: join(tmpdir(), 'orca-updater', 'pending', 'occ-ide_1.0.61_amd64.deb'),
+      files: [{ url: 'occ-ide_1.0.61_amd64.deb', sha512: packageSha512 }]
     })
     expect(lastStatus(send)).toEqual({
       state: 'error',
       message:
-        'Orca could not verify the installed Linux package format, so it will not install this update automatically. Download the update from the official release page and install it manually.',
+        'OCC could not verify the installed Linux package format, so it will not install this update automatically. Download the update from the official release page and install it manually.',
       messageCode: 'linuxPackageMarkerUnusable',
       version: '1.0.61',
       retryable: false

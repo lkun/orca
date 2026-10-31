@@ -133,7 +133,7 @@ describe('installWindowsCtrlAltChordRepair', () => {
 })
 
 // Use xterm’s negotiated encoders without adding our own; pin emitted bytes for both protocol tiers.
-describe('rescued chords are encoded by xterm, not Orca', () => {
+describe('rescued chords are encoded by xterm, not OCC', () => {
   function keyDownChord(overrides: Record<string, unknown>): Record<string, unknown> {
     return { ...chord(), repeat: false, ...overrides }
   }

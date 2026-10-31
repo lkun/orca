@@ -20,11 +20,11 @@ const field = (key: string): string => `json_extract(record, '$.${key}')`
 const whenValid = (predicate: string): string =>
   `CASE WHEN json_valid(record) THEN ${predicate} ELSE 0 END`
 
-// Held: Orca was still supervising the process when tracking stopped, not a verdict about now.
+// Held: OCC was still supervising the process when tracking stopped, not a verdict about now.
 const HELD_WORKER_ROW_SQL = whenValid(`(kind IN ('worker', 'remote_worker')
   AND ${field('state')} IN (${sqlList(POTENTIALLY_LIVE_REMOTE_ATTACHMENT_STATES)}))
   OR (kind = 'federated_worker' AND ${field('dispatchStatus')} IN ('pending', 'dispatched'))`)
-// A settled worker keeps its agent open in a terminal Orca still owns.
+// A settled worker keeps its agent open in a terminal OCC still owns.
 const HELD_TERMINAL_ROW_SQL = `kind = 'terminal' AND ${whenValid(
   `COALESCE(${field('ownershipState')}, '') NOT IN ('user_owned', 'released')`
 )}`

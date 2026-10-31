@@ -13,49 +13,49 @@ describe('classifyDaemonSpawnerPath', () => {
 
   it('classifies the installed app, the ShipIt staging area, and everything else', () => {
     expect(
-      classifyDaemonSpawnerPath('/Applications/Orca.app/Contents/MacOS/Orca', alwaysExists, null)
+      classifyDaemonSpawnerPath('/Applications/OCC.app/Contents/MacOS/OCC', alwaysExists, null)
     ).toBe('applications')
     expect(
       classifyDaemonSpawnerPath(
-        '/private/Applications/Orca.app/Contents/MacOS/Orca',
+        '/private/Applications/OCC.app/Contents/MacOS/OCC',
         alwaysExists,
         null
       )
     ).toBe('applications')
     expect(
       classifyDaemonSpawnerPath(
-        '/Users/a/Library/Caches/com.stablyai.orca.ShipIt/update.abc/Orca.app/Contents/MacOS/Orca',
+        '/Users/a/Library/Caches/com.lkun.occ.ShipIt/update.abc/OCC.app/Contents/MacOS/OCC',
         alwaysExists,
         null
       )
     ).toBe('updater-cache')
     expect(
       classifyDaemonSpawnerPath(
-        '/Users/a/Applications/Orca.app/Contents/MacOS/Orca',
+        '/Users/a/Applications/OCC.app/Contents/MacOS/OCC',
         alwaysExists,
         null
       )
     ).toBe('other')
     expect(
-      classifyDaemonSpawnerPath('/tmp/OrcaA.app/Contents/MacOS/Orca', alwaysExists, null)
+      classifyDaemonSpawnerPath('/tmp/OrcaA.app/Contents/MacOS/OCC', alwaysExists, null)
     ).toBe('other')
   })
 
   it('reports a deleted spawner as missing and an unrecorded one as unknown', () => {
     expect(
-      classifyDaemonSpawnerPath('/Applications/Orca.app/Contents/MacOS/Orca', () => false, null)
+      classifyDaemonSpawnerPath('/Applications/OCC.app/Contents/MacOS/OCC', () => false, null)
     ).toBe('missing')
     expect(classifyDaemonSpawnerPath(null, alwaysExists, null)).toBe('unknown')
   })
 
-  it("classifies Orca's private stable copy from the recorded spawner path", () => {
-    const prefix = '/Users/alice/Library/Application Support/Orca/daemon-host/macos/terminal-host-'
-    const copy = `${prefix}0f3c/app.noindex/Orca Terminal Host.app/Contents/MacOS/orca-terminal-host`
+  it("classifies OCC's private stable copy from the recorded spawner path", () => {
+    const prefix = '/Users/alice/Library/Application Support/OCC/daemon-host/macos/terminal-host-'
+    const copy = `${prefix}0f3c/app.noindex/OCC Terminal Host.app/Contents/MacOS/orca-terminal-host`
     expect(classifyDaemonSpawnerPath(copy, alwaysExists, prefix)).toBe('stable-copy')
     expect(classifyDaemonSpawnerPath(copy, () => false, prefix)).toBe('missing')
     expect(classifyDaemonSpawnerPath(copy, alwaysExists, null)).toBe('other')
     expect(
-      classifyDaemonSpawnerPath('/Applications/Orca.app/Contents/MacOS/Orca', alwaysExists, prefix)
+      classifyDaemonSpawnerPath('/Applications/OCC.app/Contents/MacOS/OCC', alwaysExists, prefix)
     ).toBe('applications')
   })
 })
@@ -106,7 +106,7 @@ describe('daemon_adopted / daemon_pty_cwd_denied schemas', () => {
 
   it('rejects leaked paths, versions, counts, and unknown enum values', () => {
     for (const leak of [
-      { spawner_exec_path: '/Users/alice/Library/Caches/ShipIt/Orca.app' },
+      { spawner_exec_path: '/Users/alice/Library/Caches/ShipIt/OCC.app' },
       { app_version: '1.4.187' },
       { live_session_count: 3 },
       { cwd: '/Users/alice/Documents' }

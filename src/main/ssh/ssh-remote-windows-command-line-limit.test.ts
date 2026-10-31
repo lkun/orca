@@ -75,7 +75,7 @@ describe('Windows remote command line limit', () => {
       return String.fromCharCode(97 + (seed % 26))
     }).join('')
     expect(() => powerShellCommand(`Write-Output '${incompressible}'`)).toThrow(
-      /Orca budgets 8000 for a line sshd hands to cmd\.exe/u
+      /OCC budgets 8000 for a line sshd hands to cmd\.exe/u
     )
   })
 })
@@ -99,7 +99,7 @@ describe('Windows file command budget headroom', () => {
     ).join('\\')
 
     expect(() => makeWindowsWriteFileCommand(`C:\\${incompressible}\\f.bin`)).toThrow(
-      /Orca budgets 8000/
+      /OCC budgets 8000/
     )
   })
 })

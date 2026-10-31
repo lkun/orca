@@ -45,7 +45,7 @@ export type OrcadManagedIdleExitPorts = {
   hasStagedMigration: () => boolean
   /** Enabled schedules or unsettled runs would be lost on exit. */
   automationsBusy: () => boolean
-  /** Exit would shut down the emulators Orca started for a workspace. */
+  /** Exit would shut down the emulators OCC started for a workspace. */
   emulatorsBusy: () => Promise<boolean>
   activationFenceExists: (root: string) => Promise<boolean>
 }

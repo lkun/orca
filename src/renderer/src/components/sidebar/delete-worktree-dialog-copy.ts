@@ -37,22 +37,22 @@ function getBatchDeleteDescription(count: number, scope: DeleteRemovalScope): st
   if (scope === 'folder') {
     return translate(
       'auto.components.sidebar.DeleteWorktreeDialog.removeBatchFolder',
-      'Remove <target>{{count}} workspaces</target> from Orca. Project folders on disk will not be deleted.',
+      'Remove <target>{{count}} workspaces</target> from OCC. Project folders on disk will not be deleted.',
       {
         count,
         defaultValue_one:
-          'Remove <target>{{count}} workspace</target> from Orca. Project folders on disk will not be deleted.'
+          'Remove <target>{{count}} workspace</target> from OCC. Project folders on disk will not be deleted.'
       }
     )
   }
   if (scope === 'mixed') {
     return translate(
       'auto.components.sidebar.DeleteWorktreeDialog.removeBatchMixed',
-      'Remove <target>{{count}} workspaces</target> from Orca. Git worktrees will also be removed from git and disk; folder workspaces will only remove the Orca workspace entry.',
+      'Remove <target>{{count}} workspaces</target> from OCC. Git worktrees will also be removed from git and disk; folder workspaces will only remove the OCC workspace entry.',
       {
         count,
         defaultValue_one:
-          'Remove <target>{{count}} workspace</target> from Orca. Git worktrees will also be removed from git and disk; folder workspaces will only remove the Orca workspace entry.'
+          'Remove <target>{{count}} workspace</target> from OCC. Git worktrees will also be removed from git and disk; folder workspaces will only remove the OCC workspace entry.'
       }
     )
   }
@@ -89,7 +89,7 @@ export function getDeleteWorktreeDialogCopy(args: {
       : args.isFolderWorkspaceDelete
         ? translate(
             'auto.components.sidebar.DeleteWorktreeDialog.removeSingleFolder',
-            'Remove <target/> from Orca. The project folder on disk will not be deleted.'
+            'Remove <target/> from OCC. The project folder on disk will not be deleted.'
           )
         : translate(
             'auto.components.sidebar.DeleteWorktreeDialog.removeSingleGit',
@@ -117,22 +117,22 @@ export function getDeleteWorktreeLineageDialogDescription(args: {
   if (scope === 'folder') {
     return translate(
       'auto.components.sidebar.DeleteWorktreeDialog.removeWithChildrenFolder',
-      'Remove <target/> and <descendants>{{count}} child workspaces</descendants> from Orca. Project folders on disk will not be deleted.',
+      'Remove <target/> and <descendants>{{count}} child workspaces</descendants> from OCC. Project folders on disk will not be deleted.',
       {
         count,
         defaultValue_one:
-          'Remove <target/> and <descendants>{{count}} child workspace</descendants> from Orca. Project folders on disk will not be deleted.'
+          'Remove <target/> and <descendants>{{count}} child workspace</descendants> from OCC. Project folders on disk will not be deleted.'
       }
     )
   }
   if (scope === 'mixed') {
     return translate(
       'auto.components.sidebar.DeleteWorktreeDialog.removeWithChildrenMixed',
-      'Remove <target/> and <descendants>{{count}} child workspaces</descendants> from Orca. Git worktrees will also be removed from git and disk; folder workspaces will only remove the Orca workspace entry.',
+      'Remove <target/> and <descendants>{{count}} child workspaces</descendants> from OCC. Git worktrees will also be removed from git and disk; folder workspaces will only remove the OCC workspace entry.',
       {
         count,
         defaultValue_one:
-          'Remove <target/> and <descendants>{{count}} child workspace</descendants> from Orca. Git worktrees will also be removed from git and disk; folder workspaces will only remove the Orca workspace entry.'
+          'Remove <target/> and <descendants>{{count}} child workspace</descendants> from OCC. Git worktrees will also be removed from git and disk; folder workspaces will only remove the OCC workspace entry.'
       }
     )
   }

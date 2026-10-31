@@ -1,12 +1,12 @@
 {
-  "name": "orca",
+  "name": "occ",
   "version": "1.4.214",
   "description": "Next-gen IDE for parallel agentic development",
   "homepage": "https://github.com/stablyai/orca",
   "author": "stablyai",
   "bin": {
-    "orca": "./out/cli/index.js",
-    "orca-dev": "./config/scripts/orca-dev.mjs"
+    "occ": "./out/cli/index.js",
+    "occ-dev": "./config/scripts/occ-dev.mjs"
   },
   "main": "./out/main/index.js",
   "scripts": {
@@ -139,7 +139,7 @@
     "audit:localization": "node config/scripts/audit-localization-coverage.mjs",
     "build:cli": "pnpm run build:packages && node config/scripts/build-cli.mjs && pnpm run prepare:cli-output",
     "prepare:cli-output": "node config/scripts/verify-cli-bin.mjs --fix-executable --fix-package-json && node config/scripts/install-dev-cli.mjs",
-    "test:linux-cli-contract": "node config/scripts/run-linux-cli-launch-contract-docker.mjs --appimage dist/orca-linux.AppImage",
+    "test:linux-cli-contract": "node config/scripts/run-linux-cli-launch-contract-docker.mjs --appimage dist/occ-linux.AppImage",
     "test:repro:skills-cli-runtime": "pnpm run build:cli && pnpm run build:electron-vite && pnpm run verify:built-skills-cli",
     "build:electron-vite": "pnpm run build:packages && node config/scripts/run-electron-vite-build.mjs",
     "build:electron-vite:parallel": "pnpm run build:packages && node config/scripts/run-electron-vite-targets-in-parallel.mjs",

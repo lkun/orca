@@ -100,7 +100,7 @@ beforeEach(() => {
   hostApp.version = '9.9.9'
   installHostApp()
   setProcessProp('platform', 'win32')
-  setProcessProp('execPath', join(installDir, 'Orca.exe'))
+  setProcessProp('execPath', join(installDir, 'OCC.exe'))
   setProcessProp('resourcesPath', join(installDir, 'resources'))
 })
 
@@ -126,16 +126,16 @@ describe('buildDaemonHostManifest', () => {
     const appDir = 'C:\\app'
     const ops = buildDaemonHostManifest({
       appDir,
-      execPath: 'C:\\app\\Orca.exe',
+      execPath: 'C:\\app\\OCC.exe',
       resourcesPath: 'C:\\app\\resources',
       entrySourcePath: 'C:\\app\\resources\\app.asar.unpacked\\out\\main\\daemon-entry.js',
       entryRelPath: 'resources/app.asar.unpacked/out/main/daemon-entry.js',
       windowsProcessTreeDir: 'C:\\app\\resources\\node_modules\\@vscode\\windows-process-tree'
     })
     const byDest = new Map(ops.map((op) => [op.destRel, op]))
-    expect(byDest.get('Orca.exe')?.kind).toBe('file')
-    const exeOp = ops.find((op) => op.sourcePath === 'C:\\app\\Orca.exe')
-    expect(exeOp?.destRel).toBe('Orca.exe')
+    expect(byDest.get('OCC.exe')?.kind).toBe('file')
+    const exeOp = ops.find((op) => op.sourcePath === 'C:\\app\\OCC.exe')
+    expect(exeOp?.destRel).toBe('OCC.exe')
     // Missing this package forces a PowerShell scan per snapshot (#16905).
     expect(byDest.get('resources/node_modules/@vscode/windows-process-tree')?.kind).toBe('dir')
     expect(byDest.has('icudtl.dat')).toBe(true)
@@ -157,7 +157,7 @@ describe('materializeRelocatedDaemonHost', () => {
     const result = materializeRelocatedDaemonHost()
     expect(result).not.toBeNull()
     const dest = relocatedHostRoot()
-    expect(result?.execPath).toBe(join(dest, 'Orca.exe'))
+    expect(result?.execPath).toBe(join(dest, 'OCC.exe'))
     expect(result?.entryPath).toBe(
       join(dest, 'resources', 'app.asar.unpacked', 'out', 'main', 'daemon-entry.js')
     )
@@ -211,19 +211,19 @@ describe('materializeRelocatedDaemonHost', () => {
 
   it('copies the exe verbatim: same file name and same bytes as the install-dir exe', () => {
     const result = materializeRelocatedDaemonHost()
-    const sourceExe = join(installDir, 'Orca.exe')
+    const sourceExe = join(installDir, 'OCC.exe')
     expect(basename(result!.execPath)).toBe(basename(sourceExe))
     expect(readFileSync(result!.execPath)).toEqual(readFileSync(sourceExe))
   })
 
   it('tracks a differently-named app exe rather than pinning an image name of its own', () => {
-    renameSync(join(installDir, 'Orca.exe'), join(installDir, 'Orca Nightly.exe'))
-    setProcessProp('execPath', join(installDir, 'Orca Nightly.exe'))
+    renameSync(join(installDir, 'OCC.exe'), join(installDir, 'OCC Nightly.exe'))
+    setProcessProp('execPath', join(installDir, 'OCC Nightly.exe'))
     const result = materializeRelocatedDaemonHost()
     const dest = relocatedHostRoot()
-    expect(result?.execPath).toBe(join(dest, 'Orca Nightly.exe'))
+    expect(result?.execPath).toBe(join(dest, 'OCC Nightly.exe'))
     expect(existsSync(join(dest, 'orca-terminal-daemon.exe'))).toBe(false)
-    expect(getRelocatedDaemonHost()?.execPath).toBe(join(dest, 'Orca Nightly.exe'))
+    expect(getRelocatedDaemonHost()?.execPath).toBe(join(dest, 'OCC Nightly.exe'))
   })
 
   it.each([
@@ -291,7 +291,7 @@ describe('materializeRelocatedDaemonHost', () => {
     const sentinel = join(dest, 'sentinel.txt')
     writeFileSync(sentinel, 'keep')
     const result = materializeRelocatedDaemonHost()
-    expect(result?.execPath).toBe(join(dest, 'Orca.exe'))
+    expect(result?.execPath).toBe(join(dest, 'OCC.exe'))
     expect(existsSync(sentinel)).toBe(true)
   })
 

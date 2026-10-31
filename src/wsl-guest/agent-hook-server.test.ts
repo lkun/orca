@@ -53,9 +53,9 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token,
-          'X-Orca-Agent-Hook-Meta-Encoding': 'base64',
-          'X-Orca-Agent-Hook-Meta': Buffer.from(
+          'X-OCC-Agent-Hook-Token': token,
+          'X-OCC-Agent-Hook-Meta-Encoding': 'base64',
+          'X-OCC-Agent-Hook-Meta': Buffer.from(
             [PANE_KEY, 'tab-1', '', 'wt-1', 'remote', '1'].join('\x1f')
           ).toString('base64')
         },
@@ -71,7 +71,7 @@ describe('RelayAgentHookServer', () => {
       expect(envelope.payload.state).toBe('working')
       expect(envelope.payload.prompt).toBe('hi')
       expect(envelope.claudeRunningNonAgentTask).toBe(false)
-      // Why: the relay forwards body env/version so Orca's warn-once
+      // Why: the relay forwards body env/version so OCC's warn-once
       // protocol diagnostics and remote-location marker survive the wire.
       expect(envelope.env).toBe('remote')
       expect(envelope.version).toBe('1')
@@ -188,7 +188,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -225,7 +225,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -254,7 +254,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -274,7 +274,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -289,7 +289,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -317,7 +317,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': 'wrong'
+          'X-OCC-Agent-Hook-Token': 'wrong'
         },
         body: '{}'
       })
@@ -338,7 +338,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({ value: 'x'.repeat(HOOK_REQUEST_MAX_BYTES + 1) })
       })
@@ -359,7 +359,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -394,7 +394,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -450,7 +450,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -478,7 +478,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: 'tab-1:0',
@@ -537,7 +537,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -551,7 +551,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -594,7 +594,7 @@ describe('RelayAgentHookServer', () => {
       const post = (payload: Record<string, unknown>) =>
         fetch(`http://127.0.0.1:${port}/hook/claude`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+          headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
           body: JSON.stringify({
             paneKey: PANE_KEY,
             tabId: 'tab-1',
@@ -643,7 +643,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -657,7 +657,7 @@ describe('RelayAgentHookServer', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': token
+          'X-OCC-Agent-Hook-Token': token
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -698,7 +698,7 @@ describe('RelayAgentHookServer', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': token
+            'X-OCC-Agent-Hook-Token': token
           },
           body: JSON.stringify({
             paneKey,
@@ -752,7 +752,7 @@ describe('RelayAgentHookServer', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': token
+            'X-OCC-Agent-Hook-Token': token
           },
           body: JSON.stringify({
             paneKey: PANE_KEY,
@@ -801,7 +801,7 @@ describe('RelayAgentHookServer', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': token
+            'X-OCC-Agent-Hook-Token': token
           },
           body: JSON.stringify({
             paneKey: PANE_KEY,

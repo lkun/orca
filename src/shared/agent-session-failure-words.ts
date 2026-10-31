@@ -312,7 +312,7 @@ export function agentSessionFailureWords(
   if (context.surface === 'row') {
     return { text: branded(agentSessionFailureSentence(fact, 'row', context)), failure: fact }
   }
-  // The rejection overload admits only these; a caller that got past the types is Orca's bug.
+  // The rejection overload admits only these; a caller that got past the types is OCC's bug.
   if (!isSubmissionRejectionFact(fact)) {
     throw new Error(`agent session failure kind ${fact.kind} cannot reject a message`)
   }

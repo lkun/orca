@@ -102,13 +102,13 @@ export function useTaskPageLinearInOrcaEffects(model: TaskPageLinearListEffectsM
                   loaded === 0
                     ? translate(
                         'auto.components.TaskPage.linearHasWorktreeLoadFailed',
-                        'Unable to load Linear issues linked to an Orca workspace.'
+                        'Unable to load Linear issues linked to an OCC workspace.'
                       )
                     : loaded === results?.length
                       ? null
                       : translate(
                           'auto.components.TaskPage.linearHasWorktreePartialLoadFailed',
-                          'Some Linear issues linked to an Orca workspace could not be loaded. Refresh to try again.'
+                          'Some Linear issues linked to an OCC workspace could not be loaded. Refresh to try again.'
                         )
               }
             : {}),

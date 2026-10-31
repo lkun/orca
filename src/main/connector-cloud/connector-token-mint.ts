@@ -1,4 +1,4 @@
-// Connector tokens for the desktop's signed-in Orca account, fetched the way relay tokens are.
+// Connector tokens for the desktop's signed-in OCC account, fetched the way relay tokens are.
 import { z } from 'zod'
 import type { OrcaCloudAuthConfig } from '../orca-profiles/profile-cloud-auth-config'
 import { OrcaCloudRequestError } from '../orca-profiles/profile-cloud-client'
@@ -57,7 +57,7 @@ export function desktopConnectorTokenMint(
             },
             ConnectorTokenResponse
           )
-          // Refreshes the Orca session once, as every desktop cloud call does.
+          // Refreshes the OCC session once, as every desktop cloud call does.
           if (!answer.ok && (answer.status === 401 || answer.status === 403)) {
             throw new OrcaCloudRequestError(answer.status, answer.error ?? undefined)
           }

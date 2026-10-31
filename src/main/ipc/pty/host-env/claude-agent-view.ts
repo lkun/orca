@@ -13,7 +13,7 @@ export function applyClaudeAgentViewEnv(
     const paths = env.CLAUDE_CODE_PLUGIN_DIRS ?? process.env.CLAUDE_CODE_PLUGIN_DIRS
     if (paths?.split(delimiter).includes(previous)) {
       const remaining = paths.split(delimiter).filter((path) => path !== previous)
-      // An empty override is needed only to strip an inherited Orca path merged later by a daemon.
+      // An empty override is needed only to strip an inherited OCC path merged later by a daemon.
       env.CLAUDE_CODE_PLUGIN_DIRS = remaining.join(delimiter)
     }
   }

@@ -133,7 +133,7 @@ describe('host launch settings form', () => {
       await screen.findByText(
         supported
           ? 'Terminals and chats follow the agent’s own permission settings.'
-          : 'Orca adds no permission flag in terminals; chats use Settings → Chat.'
+          : 'OCC adds no permission flag in terminals; chats use Settings → Chat.'
       )
       expect(transport.own).toHaveBeenCalledWith({ environmentId: 'ssh-host', pairingRevision: 17 })
     }

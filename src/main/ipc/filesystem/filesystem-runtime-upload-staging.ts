@@ -27,7 +27,7 @@ export function stagedRuntimeUploadByteLength(source: StagedExternalImportSource
 }
 
 /** @param totalBytesBefore Earlier staged bytes in this drop; the ceiling spans all sources.
- * @param options.nameExtensionlessImages Append a sniffed image suffix only in Orca-owned destinations. */
+ * @param options.nameExtensionlessImages Append a sniffed image suffix only in OCC-owned destinations. */
 export async function stageOneSourceForRuntimeUpload(
   sourcePath: string,
   totalBytesBefore = 0,

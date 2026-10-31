@@ -69,7 +69,7 @@ describe('RuntimeFileCommands', () => {
     const { commands } = createRuntimeFileCommands()
 
     await expect(commands.renameFileExplorerPath('id:wt-1', 'old.ts', 'new.ts')).rejects.toThrow(
-      'newer Orca client'
+      'newer OCC client'
     )
 
     expect(renameMock).not.toHaveBeenCalled()
@@ -81,7 +81,7 @@ describe('RuntimeFileCommands', () => {
 
     await expect(
       commands.renameFileExplorerPath('id:wt-1', 'old.ts', 'new.ts', 0, 'ssh-1')
-    ).rejects.toThrow('newer Orca client')
+    ).rejects.toThrow('newer OCC client')
 
     expect(renameMock).not.toHaveBeenCalled()
   })

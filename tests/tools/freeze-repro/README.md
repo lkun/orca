@@ -9,7 +9,7 @@ Two harnesses for bulk-open / reconnect freeze repros on large paired remotes:
 
 ## Prerequisites
 
-1. **Desktop Orca running** (`orca status --json`).
+1. **Desktop OCC running** (`orca status --json`).
 2. A **large paired remote** (many worktrees / agent terminals). Lab fleets often have ~60 worktrees and 100+ terminals.
 3. Repo checkout with these scripts.
 
@@ -186,10 +186,10 @@ Generation-aware **latest-wins single-flight** for exclusive host focus:
 ## Safety
 
 - Both harnesses default to `ORCA_FREEZE_CREATE=0`. A positive value creates persistent, high-output remote terminals; use it only on an isolated target you can clean up.
-- `restart-proxy` does **not** kill Orca; it runs `orca open` + refresh RPCs only.
-- Manual capture if UI fully freezes: `sample Orca 5 -file ~/Desktop/orca-freeze-sample.txt`
+- `restart-proxy` does **not** kill OCC; it runs `orca open` + refresh RPCs only.
+- Manual capture if UI fully freezes: `sample OCC 5 -file ~/Desktop/orca-freeze-sample.txt`
 
-The scripts honor `ORCA_CLI_COMMAND`, then use `orca-dev` in a dev runtime, `orca-ide` on Linux, and `orca` elsewhere.
+The scripts honor `ORCA_CLI_COMMAND`, then use `occ-dev` in a dev runtime, `occ-ide` on Linux, and `orca` elsewhere.
 
 PowerShell equivalent for the first example:
 

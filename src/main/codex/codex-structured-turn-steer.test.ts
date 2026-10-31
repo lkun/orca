@@ -121,7 +121,7 @@ describe('a Codex send while a turn runs', () => {
     expect(connection.calls.at(-1)?.params).toMatchObject({ clientUserMessageId: 'client-1' })
   })
 
-  it('steers once more when Codex refuses because a turn Orca just heard of is running', async () => {
+  it('steers once more when Codex refuses because a turn OCC just heard of is running', async () => {
     let steers = 0
     const { connection, settlements, send, methods, endTurn } = await rig({
       'turn/steer': () => {

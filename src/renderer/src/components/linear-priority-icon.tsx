@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { translate } from '@/i18n/i18n'
 import { getLinearPriorityLabel } from '@/components/task-page/task-page-localized-options'
 
-// Use Linear’s brand priority fills instead of generic Orca state colors.
+// Use Linear’s brand priority fills instead of generic OCC state colors.
 const LINEAR_PRIORITY_URGENT_FILL = 'lch(66 80 48)'
 const LINEAR_PRIORITY_BAR_FILL = 'lch(39.576 1.25 282)'
 

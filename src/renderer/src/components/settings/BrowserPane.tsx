@@ -152,7 +152,7 @@ export function BrowserPane({
               ? translate('auto.components.settings.BrowserPane.86b7c83fee', 'This computer')
               : translate(
                   'auto.components.settings.BrowserPane.c0f85056d9',
-                  'Browser profiles on this Orca server.'
+                  'Browser profiles on this OCC server.'
                 )
         })),
     // oxlint-disable-next-line react-hooks/exhaustive-deps -- translate() reads the UI language implicitly.

@@ -128,7 +128,7 @@ it.each([
   expect(url).toBe('https://example.test/slack')
   expect(request.method).toBe('POST')
   const payload = JSON.parse(request.body)
-  expect(payload.text).toContain(`Orca dependency review for ${options.target}`)
+  expect(payload.text).toContain(`OCC dependency review for ${options.target}`)
   expect(payload.text).toContain('JavaScript: review suggested · Rust: passed')
   expect(payload.text).toContain('https://github.com/stablyai/orca/actions/runs/123')
   expect(payload.mrkdwn).toBe(false)

@@ -113,7 +113,7 @@ describe('exact automation chat turn', () => {
     expect(chatAutomationRunObservation(missingRoot, 'prompt', 'Claude')).toBeNull()
     expect(roots).not.toHaveBeenCalled()
   })
-  it('matches the Orca opener alias and snapshots only the accepted root turn', () => {
+  it('matches the OCC opener alias and snapshots only the accepted root turn', () => {
     const view = snapshot([
       turn('own', agentJournalSubmissionKey('prompt')),
       answer('a', 'own', 'Automation output'),

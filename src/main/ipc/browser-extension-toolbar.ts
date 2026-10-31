@@ -32,7 +32,7 @@ const CHANNELS = [
   'browserExtensions:pageIcon'
 ] as const
 
-/** The browser toolbar's extension buttons; only the trusted Orca renderer may drive them. */
+/** The browser toolbar's extension buttons; only the trusted OCC renderer may drive them. */
 export function registerBrowserExtensionToolbarHandlers(): void {
   for (const channel of CHANNELS) {
     ipcMain.removeHandler(channel)

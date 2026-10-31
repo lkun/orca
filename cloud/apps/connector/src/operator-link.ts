@@ -26,7 +26,7 @@ export function required(value: string | undefined, flag: string): string {
   return value
 }
 
-// Operator seeding (no sign-in in v1): which Orca account a source's user is, with their
+// Operator seeding (no sign-in in v1): which OCC account a source's user is, with their
 // machine-choice defaults. `checkId` rejects anything that isn't one of the source's ids.
 export async function linkIdentity(
   database: CloudDatabase,

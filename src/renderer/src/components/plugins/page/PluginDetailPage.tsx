@@ -42,7 +42,7 @@ type PluginDetailPageProps = {
 function sourceLabel(entry: PluginListEntry): string {
   const source = entry.installed?.source
   if (entry.installed?.bundled || source?.kind === 'bundled') {
-    return translate('auto.components.settings.PluginDetailPage.bundled', 'Bundled with Orca')
+    return translate('auto.components.settings.PluginDetailPage.bundled', 'Bundled with OCC')
   }
   if (source?.kind === 'local-path') {
     return translate('auto.components.settings.PluginDetailPage.localFolder', 'Local folder')
@@ -115,7 +115,7 @@ export function PluginDetailPage({
         title={translate('auto.components.settings.PluginStatus.blocked', 'Blocked')}
         body={translate(
           'auto.components.settings.PluginSettingsRow.killListMessage',
-          "Orca's safety list disabled this plugin: {{value0}}",
+          "OCC's safety list disabled this plugin: {{value0}}",
           { value0: plugin.blockedByKillList.reason }
         )}
       />
@@ -148,7 +148,7 @@ export function PluginDetailPage({
         tone="destructive"
         title={translate(
           'auto.components.settings.PluginDetailPage.invalidTitle',
-          'Orca can’t load this plugin'
+          'OCC can’t load this plugin'
         )}
         body={typeof controls.description === 'string' ? controls.description : ''}
       />
@@ -160,7 +160,7 @@ export function PluginDetailPage({
         title={translate('auto.components.settings.PluginStatus.blocked', 'Blocked')}
         body={translate(
           'auto.components.settings.PluginMarketplaceListingRow.blocked',
-          "Blocked by Orca's safety list: {{value0}}",
+          "Blocked by OCC's safety list: {{value0}}",
           { value0: listing.blockedByKillList.reason }
         )}
       />
@@ -190,14 +190,14 @@ export function PluginDetailPage({
         tone="warning"
         title={translate(
           'auto.components.settings.PluginDetailPage.needsOrcaTitle',
-          'Needs Orca {{value0}} or later',
+          'Needs OCC {{value0}} or later',
           {
             value0: entry.minimumOrca ?? ''
           }
         )}
         body={translate(
           'auto.components.settings.PluginDetailPage.needsOrcaBody',
-          'You have Orca {{value0}}.',
+          'You have OCC {{value0}}.',
           {
             value0: orcaVersion ?? ''
           }

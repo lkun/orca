@@ -16,7 +16,7 @@ const ROOT = '/orca/shell-wrappers/abc'
 const DATA_DIR = `${ROOT}/fish-xdg-data`
 
 describe('getFishXdgDataDirsLaunchEnv', () => {
-  it('adds the XDG default after Orca when the variable is unset', () => {
+  it('adds the XDG default after OCC when the variable is unset', () => {
     const expected = `${DATA_DIR}:/usr/local/share:/usr/share`
     expect(getFishXdgDataDirsLaunchEnv(ROOT, undefined)).toEqual({
       XDG_DATA_DIRS: expected,
@@ -139,7 +139,7 @@ describe.skipIf(!fish.available)('fish vendor snippet in a real fish', () => {
 
   // Distro vendor snippets such as snapd may change XDG_DATA_DIRS themselves.
   it.each([['/opt/a:/opt/b/'], ['/opt/a:'], [undefined]] as const)(
-    'leaves fish exactly as it starts without Orca when XDG_DATA_DIRS is %s',
+    'leaves fish exactly as it starts without OCC when XDG_DATA_DIRS is %s',
     (inherited) => {
       const base: Record<string, string> =
         inherited === undefined ? {} : { XDG_DATA_DIRS: inherited }

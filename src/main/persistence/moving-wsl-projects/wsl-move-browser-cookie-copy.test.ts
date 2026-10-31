@@ -434,7 +434,7 @@ describe('WSL move browser-cookies store', () => {
       expect(notCarried).toBe('no-stable-partition')
     })
 
-    it('says nothing while no Orca profile is active to resolve the partition', () => {
+    it('says nothing while no OCC profile is active to resolve the partition', () => {
       expect(ensure([wslHost('unlinked'), wslHost('unlinked')], null).notCarried).toBeUndefined()
     })
   })

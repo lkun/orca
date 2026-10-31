@@ -170,7 +170,7 @@ function isBranchConfigSeparator(code: number): boolean {
   return code === 32 || (code >= 9 && code <= 13)
 }
 
-// Deferred materialization may omit store flags; read the repo-local Orca-created marker too.
+// Deferred materialization may omit store flags; read the repo-local OCC-created marker too.
 async function remoteHasOrcaProvenance(
   execGit: GitRemoteExec,
   repoPath: string,

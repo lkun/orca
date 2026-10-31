@@ -11,7 +11,7 @@ export const NATIVE_CHAT_IMAGE_LABEL_ENGLISH: NativeChatImageLabelCopy = {
   imageCount: (count) => `${count} images`
 }
 
-/** Use friendly UI labels for Orca clipboard-image temp filenames. */
+/** Use friendly UI labels for OCC clipboard-image temp filenames. */
 export function isNativeChatPastedImagePath(path: string): boolean {
   const base = path.split(/[\\/]/).findLast(Boolean) ?? path
   return /^orca-paste-.+\.png$/i.test(base)

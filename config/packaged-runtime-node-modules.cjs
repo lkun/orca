@@ -501,7 +501,7 @@ function prunePackagedParcelWatcher(resourcesDir, electronPlatformName, electron
   }
 }
 
-// Declarations are compile-only; dependency maps embed unused sources (megabytes for Linear). Orca main maps ship separately.
+// Declarations are compile-only; dependency maps embed unused sources (megabytes for Linear). OCC main maps ship separately.
 function isPrunableTypeOrSourceMapArtifact(filename) {
   return TYPE_DECLARATION_ARTIFACT_RE.test(filename) || JS_SOURCE_MAP_ARTIFACT_RE.test(filename)
 }

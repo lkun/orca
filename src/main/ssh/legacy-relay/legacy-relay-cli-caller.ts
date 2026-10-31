@@ -17,7 +17,7 @@ import type { LegacyRelayLivePane } from './legacy-relay-bridge-leases'
 const MAX_IDENTITY_LENGTH = 512
 
 export const LEGACY_RELAY_CLI_UNVERIFIED =
-  "Orca could not confirm this terminal is one of this host's supervised Orca terminals, so its " +
+  "OCC could not confirm this terminal is one of this host's supervised OCC terminals, so its " +
   'orca command was refused. Run it in a new terminal on this host.'
 
 export type LegacyRelayCliCaller = {
@@ -158,7 +158,7 @@ function principalHostTargetId(hostScope: string): string | undefined {
 
 function outside(subject: string): Error {
   return new Error(
-    `A terminal started by an older version of Orca can reach only its own orchestration, and ${subject} is outside it.`
+    `A terminal started by an older version of OCC can reach only its own orchestration, and ${subject} is outside it.`
   )
 }
 

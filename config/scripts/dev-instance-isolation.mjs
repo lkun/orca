@@ -3,21 +3,21 @@ import { existsSync, lstatSync, mkdirSync, readFileSync, writeFileSync } from 'n
 import net from 'node:net'
 import path from 'node:path'
 
-export const SHARED_DEV_PROFILE_DIR_NAME = 'orca-dev'
-// Why the "orca-dev" prefix: CLI/orchestration dev-mode checks match "orca-dev" in ORCA_USER_DATA_PATH.
+export const SHARED_DEV_PROFILE_DIR_NAME = 'occ-dev'
+// Why the "occ-dev" prefix: CLI/orchestration dev-mode checks match "occ-dev" in ORCA_USER_DATA_PATH.
 // Why short: runtime sockets live in userData and macOS caps socket paths at 104 bytes.
-export const WORKTREE_DEV_PROFILES_DIR_NAME = 'orca-dev-wt'
-export const WORKTREE_PROFILE_MARKER_FILE = 'orca-dev-worktree.json'
+export const WORKTREE_DEV_PROFILES_DIR_NAME = 'occ-dev-wt'
+export const WORKTREE_PROFILE_MARKER_FILE = 'occ-dev-worktree.json'
 export const WORKTREE_PROFILE_NAME_PATTERN = /^[\da-f]{10}$/
 export const DEV_PROFILE_MODES = ['shared', 'worktree']
 
-// Why these ranges: clear of Vite's 5173+ (common in projects opened inside dev Orca),
-// Chrome's 9222, and Orca's production ports (pairing WebSocket 6768).
+// Why these ranges: clear of Vite's 5173+ (common in projects opened inside dev OCC),
+// Chrome's 9222, and OCC's production ports (pairing WebSocket 6768).
 export const RENDERER_PORT_RANGE = { base: 15200, spread: 200 }
 export const CDP_PORT_RANGE = { base: 9333, spread: 200 }
 const PORT_SWEEP = 64
 
-// Values the runner derives per worktree; a dev Orca exports them to every terminal it spawns.
+// Values the runner derives per worktree; a dev OCC exports them to every terminal it spawns.
 const RUNNER_DERIVED_ENV_KEYS = [
   'ORCA_DEV_REPO_ROOT',
   'ORCA_DEV_INSTANCE_KEY',
@@ -102,7 +102,7 @@ export function resolveDevProfile({
       `ORCA_DEV_PROFILE must be one of ${DEV_PROFILE_MODES.join(', ')} (got ${JSON.stringify(requested)})`
     )
   }
-  // Why the main checkout keeps orca-dev: it is the long-lived profile developers already use.
+  // Why the main checkout keeps occ-dev: it is the long-lived profile developers already use.
   const kind = requested ?? (isLinkedWorktree(repoRoot) ? 'worktree' : 'shared')
   return kind === 'shared'
     ? { kind, userDataPath: getSharedDevUserDataPath(env, platform) }
@@ -220,7 +220,7 @@ async function resolveEnvOrPickedPort(env, envName, seedKey, range) {
       return port
     }
     console.error(
-      `[orca-dev] Ignoring invalid ${envName}=${JSON.stringify(raw)}; falling back to probe.`
+      `[occ-dev] Ignoring invalid ${envName}=${JSON.stringify(raw)}; falling back to probe.`
     )
   }
   return pickInstancePort(seedKey, range)
@@ -262,7 +262,7 @@ export async function resolveDevInstancePorts({ forwardedArgs, instanceKey, env 
       forwardedExtras = [`--remote-debugging-port=${cdpPort}`]
     } else {
       console.error(
-        '[orca-dev] No free debug port found in sweep; starting without --remote-debugging-port.'
+        '[occ-dev] No free debug port found in sweep; starting without --remote-debugging-port.'
       )
     }
   }
@@ -294,9 +294,9 @@ export function announceDevInstance({ repoRoot, profile, cdpPort, rendererPort }
     runnerPid: process.pid
   }
   if (cdpPort !== null) {
-    console.error(`[orca-dev] Remote debugging on ${instance.cdpUrl}`)
+    console.error(`[occ-dev] Remote debugging on ${instance.cdpUrl}`)
   }
-  console.error(`[orca-dev] Profile (${profile.kind}): ${profile.userDataPath}`)
+  console.error(`[occ-dev] Profile (${profile.kind}): ${profile.userDataPath}`)
   writeDevInstanceRecord(repoRoot, instance)
   // Why stdout: agents grep `ORCA_DEV_INSTANCE ` to find the profile and CDP endpoint.
   console.log(`ORCA_DEV_INSTANCE ${JSON.stringify(instance)}`)

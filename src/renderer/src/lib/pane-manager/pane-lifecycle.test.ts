@@ -128,7 +128,7 @@ describe('buildDefaultTerminalOptions', () => {
   })
 
   it('advertises kitty keyboard protocol so CLIs enable enhanced key reporting', () => {
-    // Orca sends CSI-u for enhanced chords off Windows; advertise KKP so handshake-gated CLIs accept them, including inside tmux.
+    // OCC sends CSI-u for enhanced chords off Windows; advertise KKP so handshake-gated CLIs accept them, including inside tmux.
     expect(buildDefaultTerminalOptions().vtExtensions?.kittyKeyboard).toBe(true)
   })
 

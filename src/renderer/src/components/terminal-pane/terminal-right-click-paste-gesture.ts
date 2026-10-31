@@ -5,7 +5,7 @@ type RightClickPasteMouseEvent = {
   stopPropagation: () => void
 }
 
-/** Consume Orca-owned right-click paste before mouse-aware TUIs can paste again (#25192); Ctrl+right-click retains the menu path and xterm report. */
+/** Consume OCC-owned right-click paste before mouse-aware TUIs can paste again (#25192); Ctrl+right-click retains the menu path and xterm report. */
 export function isTerminalRightClickPasteGesture(
   event: Pick<RightClickPasteMouseEvent, 'button' | 'ctrlKey'>,
   rightClickToPaste: boolean

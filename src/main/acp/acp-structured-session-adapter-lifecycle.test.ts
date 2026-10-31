@@ -256,7 +256,7 @@ describe('ACP connection loss', () => {
     })
   })
 
-  it('keeps a crash a crash when a stop Orca asks for lands before its unproven exit', async () => {
+  it('keeps a crash a crash when a stop OCC asks for lands before its unproven exit', async () => {
     const rig = await openAcpAdapterRig()
     await rig.acquire()
     const child = rig.child()
@@ -304,7 +304,7 @@ describe('ACP connection loss', () => {
     expect(rig.child().closes).toBe(1)
   })
 
-  it('ends the turn as failed on an answer Orca cannot read, and sends the next message', async () => {
+  it('ends the turn as failed on an answer OCC cannot read, and sends the next message', async () => {
     const rig = await openAcpAdapterRig()
     await rig.acquire()
     await sendHello(rig, 'garbled')
@@ -515,7 +515,7 @@ describe('ACP startup that never answers', () => {
 })
 
 describe('ACP session release', () => {
-  it('stops nothing for a chat it never started, as one an earlier Orca left', async () => {
+  it('stops nothing for a chat it never started, as one an earlier OCC left', async () => {
     const rig = await openAcpAdapterRig()
     await expect(rig.adapter.releaseAcquisition({ sessionId: SESSION })).resolves.toBe(true)
     expect(rig.spawned).toEqual([])

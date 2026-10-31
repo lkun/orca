@@ -82,7 +82,7 @@ const opencode: OpenCodeUsageSession = {
   locationModelBreakdown: []
 }
 
-describe('Orca token projections', () => {
+describe('OCC token projections', () => {
   it('counts Claude cache writes once including the 1-hour subset and excludes outside usage', () => {
     expect(claudeTokenSessions([claude])).toEqual([
       {

@@ -1,9 +1,9 @@
 ---
 name: orca-per-workspace-env
 description: >-
-  Set up, review, debug, or validate an Orca per-workspace environment recipe: the
+  Set up, review, debug, or validate an OCC per-workspace environment recipe: the
   on-demand, disposable runtime (cloud sandbox, VM, SSH host, or local container)
-  Orca creates fresh for each workspace. Use to stand up a new recipe end to end,
+  OCC creates fresh for each workspace. Use to stand up a new recipe end to end,
   fix an `environmentRecipes` entry in `orca.yaml`, scaffold provider lifecycle
   scripts, or resolve an `orca vm recipe doctor` failure. Use `orca-cli` for
   ordinary worktree and workspace creation with no recipe involved.
@@ -22,7 +22,7 @@ login state, scaffold and edit files under `scripts/orca-vm/`, and run `ORCA vm 
 without `--provision`. Get an explicit OK before each paid step: the base snapshot, the auth
 snapshot, and `--provision`. One OK covers the whole `--provision` fix-and-rerun loop. Stop for
 the interactive agent login, which you cannot drive; the user runs it and tells you when it is
-done. Never create an Orca workspace except for the step-10 test the user asked for. Do not create
+done. Never create an OCC workspace except for the step-10 test the user asked for. Do not create
 Git commits unless asked. Never choose a plan or region, invent a scope, project, or billing id, or
 write a credential into a script, `userData`, the state file, or a commit.
 
@@ -31,12 +31,12 @@ created by a failed step.
 
 ## The branch that shapes everything
 
-In **Orca-server** mode `create` runs `orca serve` in the environment and emits a `pairingCode`. In
-**SSH** mode `create` runs no server and emits a `connection.type:"ssh"` block Orca dials into.
+In **OCC-server** mode `create` runs `orca serve` in the environment and emits a `pairingCode`. In
+**SSH** mode `create` runs no server and emits a `connection.type:"ssh"` block OCC dials into.
 Settle this first; it changes the `create` output and half the templates.
 
-Keep Orca's checkout behavior unchanged by default: omit `checkoutMode`, emit schema version 1, and
-let Orca create a linked worktree. Use `checkoutMode: provisioned-root` only when the user
+Keep OCC's checkout behavior unchanged by default: omit `checkoutMode`, emit schema version 1, and
+let OCC create a linked worktree. Use `checkoutMode: provisioned-root` only when the user
 explicitly wants one ephemeral machine to clone the finished workspace itself. That mode requires
 direct SSH, an ordinary non-bare and non-sparse primary checkout at `projectRoot`, and schema
 version 2.
@@ -52,7 +52,7 @@ snapshot (step 5), and `create` boots from the authenticated snapshot they produ
    instead of rebuilding.
 2. **Interview the user up front.** Gather these choices and confirm them back before scaffolding
    anything. Do not pick for them and do not guess.
-   - **Connection mode:** an Orca server or SSH, as above. Settle it first.
+   - **Connection mode:** an OCC server or SSH, as above. Settle it first.
    - **Checkout ownership:** do not ask by default. Only when the user requires the environment to
      create the exact final checkout, confirm `provisioned-root` and direct SSH; otherwise omit it.
    - **Provider:** Vercel Sandbox, Fly, Modal, an existing SSH host, and so on. For a non-obvious
@@ -60,7 +60,7 @@ snapshot (step 5), and `create` boots from the authenticated snapshot they produ
      SDK docs, or `<cli> --help`, before scaffolding: you need its exact create, exec, snapshot, and
      remove verbs. If a provider advertises `ssh`, check whether it exposes a real dialable SSH
      target (host, port, user, key or proxy command) or only a provider-mediated interactive shell.
-     Orca's SSH mode needs the former.
+     OCC's SSH mode needs the former.
    - **Coding-agent CLI and account:** which agent runs in the environment (`codex`, `claude`, and
      so on) and that the user has an account for it. It is logged in during step 6.
    - **Git auth:** the token source for cloning a private repo (`GH_TOKEN`, `GITHUB_TOKEN`, or
@@ -107,7 +107,7 @@ Provisioning and building often takes 20 to 30 minutes.
 - Clone with the git token via `GIT_ASKPASS` (section 5).
 - Trap errors and remove the half-built environment, so a crash does not leave a paid resource
   running.
-- **Never snapshot a machine on which the Orca runtime has already run.** The first `orca serve`
+- **Never snapshot a machine on which the OCC runtime has already run.** The first `orca serve`
   creates the runtime's user-data directory, and everything in it is baked into the image and shared
   by every environment booted from it: the pairing keypair and device-token registry
   (`orca-devices.json`, `orca-e2ee-keypair.json`), `agent-session-authority.key`, and the build
@@ -116,10 +116,10 @@ Provisioning and building often takes 20 to 30 minutes.
   the resolved user-data directory first:
   `orca_user_data_path="${ORCA_USER_DATA_PATH:-${XDG_CONFIG_HOME:-$HOME/.config}/orca}"`.
   Resolve symlinks and inspect that path before deleting it: it must be an absolute directory
-  dedicated to Orca runtime data, never `/`, the home directory, or an ancestor of home. Refuse
+  dedicated to OCC runtime data, never `/`, the home directory, or an ancestor of home. Refuse
   empty or relative paths. Remove only that verified directory, not an unchecked environment value.
-  That matches Orca's Linux precedence for custom and default paths; deleting a named file list
-  drifts as Orca adds state.
+  That matches OCC's Linux precedence for custom and default paths; deleting a named file list
+  drifts as OCC adds state.
 - Snapshot the stopped environment, parse the snapshot id, and write it plus scope, project, port,
   and repo into state.
 
@@ -250,7 +250,7 @@ set -euo pipefail
 # 1. boot from snapshotId with a published port; capture the public URL → pairing address
 #    (an externally reachable wss:// URL); trap: remove the environment on error
 # 2. remote exec: ensure repo at desired commit; rebuild only if commit changed (cache marker)
-# 3. Orca-server mode only: remote exec starting orca serve and reading the recipe JSON it writes
+# 3. OCC-server mode only: remote exec starting orca serve and reading the recipe JSON it writes
 # 4. print one recipe-result JSON object to stdout
 ```
 
@@ -259,7 +259,7 @@ set -euo pipefail
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-payload="$(cat)"                       # Orca passes lifecycle JSON on stdin
+payload="$(cat)"                       # OCC passes lifecycle JSON on stdin
 resource_id="$(node -e 'const d=JSON.parse(process.argv[1]); process.stdout.write(d.recipeResult?.userData?.resourceId ?? "")' "$payload")"
 [ -n "$resource_id" ] || { echo "No resource id in lifecycle payload" >&2; exit 1; }
 # suspend: provider suspend "$resource_id"
@@ -290,7 +290,7 @@ environmentRecipes:
 fresh recipe JSON because the pairing may have changed. `destroy` may be omitted only with
 `destroy: none`. The legacy keys `command` and `cleanup` still map to `create` and `destroy`.
 
-The base result, which is what Orca-server mode prints:
+The base result, which is what OCC-server mode prints:
 
 ```json
 {
@@ -315,7 +315,7 @@ Three named deltas change that shape:
 
 ### The `orca serve` invocation
 
-Inside the environment, in Orca-server mode, run exactly this. These flags are verified; do not
+Inside the environment, in OCC-server mode, run exactly this. These flags are verified; do not
 improvise them.
 
 ```bash
@@ -326,8 +326,8 @@ orca serve \
   --recipe-json
 ```
 
-In an environment built from source, run it as `pnpm exec orca-dev serve …` from the repo root;
-`orca-dev` is the in-repo entrypoint. Plain `orca serve …` is the same command when the built CLI is
+In an environment built from source, run it as `pnpm exec occ-dev serve …` from the repo root;
+`occ-dev` is the in-repo entrypoint. Plain `orca serve …` is the same command when the built CLI is
 on that machine's PATH, and the flags and output are identical either way. There is no `--host` flag,
 and `--project-root` must be an absolute directory on the remote.
 

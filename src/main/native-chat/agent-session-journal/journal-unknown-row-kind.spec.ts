@@ -212,7 +212,7 @@ export function registerJournalUnknownRowKindTests(): void {
   })
 
   describe("a journal holding a newer build's row kind", () => {
-    it("fails the load as a newer Orca's chat, keeps every row, and reads whole once the kind is known", async () => {
+    it("fails the load as a newer OCC's chat, keeps every row, and reads whole once the kind is known", async () => {
       const first = await open()
       for (const ordinal of [0, 1, 2, 3]) {
         await first.appendItem(item(ordinal), { kind: 'status', text: `item ${ordinal}` }, SCOPE)
@@ -235,7 +235,7 @@ export function registerJournalUnknownRowKindTests(): void {
       expect(upgraded.cursor().sequence).toBe(6)
     })
 
-    it("fails the load as a newer Orca's chat with nothing deleted when the row names another sequence than its key", async () => {
+    it("fails the load as a newer OCC's chat with nothing deleted when the row names another sequence than its key", async () => {
       const epoch = await journalWithOneItem()
       await rewriteClosed((put) => put(3, JSON.stringify(newerRow(epoch, 9))))
       await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)

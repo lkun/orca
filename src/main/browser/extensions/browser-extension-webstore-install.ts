@@ -112,11 +112,11 @@ export async function stageWebStoreExtension(crx: VerifiedCrx): Promise<StagedWe
       entries.filter((entry) => entry !== manifestEntry),
       directory
     )
-    // Why here: once Orca's own files are written, a package file at their paths can't be told apart.
+    // Why here: once OCC's own files are written, a package file at their paths can't be told apart.
     await refuseOrcaFileCollisions(directory, manifest)
     const manifestText = JSON.stringify(manifest, null, 2)
     await writeFile(join(directory, 'manifest.json'), manifestText)
-    // Why written here: the manifest Orca later loads is always the one this prompt shows.
+    // Why written here: the manifest OCC later loads is always the one this prompt shows.
     await writeFile(join(directory, BROWSER_EXTENSION_ORIGINAL_MANIFEST_FILE), manifestText)
     return {
       extensionId: crx.extensionId,

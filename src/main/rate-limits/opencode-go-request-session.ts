@@ -87,7 +87,7 @@ export async function createOpenCodeRequestSession(
 ): Promise<Session> {
   const openCodeSession = requirePartitionSession(OPENCODE_SESSION_PARTITION, 'OpenCode Go')
   await clearOpenCodeSessionCookies(openCodeSession)
-  // The isolated cookie jar must still honor Orca, environment, and system proxies.
+  // The isolated cookie jar must still honor OCC, environment, and system proxies.
   await ensureProxyForOpenCodeSession(openCodeSession, networkProxySettings)
   try {
     // Sequential writes ensure cleanup cannot race an in-flight cookie write after a rejection.

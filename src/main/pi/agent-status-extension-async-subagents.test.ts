@@ -426,7 +426,7 @@ describe('Pi child rows', () => {
       fetchImpl: async () => {
         attempts += 1
         if (attempts === 2) {
-          throw new Error('Orca restarting')
+          throw new Error('OCC restarting')
         }
         return { ok: true }
       }

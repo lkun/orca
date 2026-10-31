@@ -94,7 +94,7 @@ describe('createWslWatcher', () => {
       program: 'wsl.exe',
       args: ['-d', 'Ubuntu', '--exec', 'sh', '-s', '--', '/home/me/repo'],
       stdio: 'pipe',
-      // Explicit cwd survives deletion of Orca's inherited worktree (#16463).
+      // Explicit cwd survives deletion of OCC's inherited worktree (#16463).
       cwd: expect.any(String)
     })
   })

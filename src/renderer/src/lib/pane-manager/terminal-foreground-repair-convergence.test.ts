@@ -285,7 +285,7 @@ describe('foreground repaint convergence', () => {
   })
 
   it('widens the repair to the cursor rows on both sides of the write', () => {
-    // A controlled span proves Orca adds cursor rows; xterm’s own tracker already includes them and would mask missing repair.
+    // A controlled span proves OCC adds cursor rows; xterm’s own tracker already includes them and would mask missing repair.
     const requests: SpanRequest[] = []
     let fire: (event: { start: number; end: number } | undefined) => void = () => {}
     const active = { type: 'normal', cursorY: 2, baseY: 0, viewportY: 0 }

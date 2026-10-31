@@ -79,7 +79,7 @@ describe.skipIf(process.platform === 'win32')(
   'worktree-scoped HISTFILE survives zsh startup',
   () => {
     itWithZsh(
-      'wraps a plain pane once Orca injected a worktree HISTFILE',
+      'wraps a plain pane once OCC injected a worktree HISTFILE',
       withHome(USER_FILES, async (home) => {
         const { features, launch } = launchPane(home, join(home, 'zsh_history'))
 
@@ -125,7 +125,7 @@ describe.skipIf(process.platform === 'win32')(
     )
 
     itWithZsh(
-      'never leaves history inside Orca’s own wrapper directory',
+      'never leaves history inside OCC’s own wrapper directory',
       withHome(USER_FILES, async (home) => {
         const { env, launch } = launchPane(home, join(home, 'orca-history', 'zsh_history'))
 
@@ -153,7 +153,7 @@ describe.skipIf(process.platform === 'win32')(
     )
 
     itWithZsh(
-      'leaves HISTFILE exactly as an unwrapped zsh would when Orca injects nothing',
+      'leaves HISTFILE exactly as an unwrapped zsh would when OCC injects nothing',
       withHome(USER_FILES, async (home) => {
         // Defaults vary by host; compare with its unwrapped shell rather than a hardcoded HISTFILE.
         const overlayEnv = { ORCA_CODEX_HOME: join(home, 'codex') }
@@ -215,7 +215,7 @@ describe.skipIf(process.platform === 'win32')('the deferred hook delivers every 
   )
 
   itWithZsh(
-    'restores Orca’s overlay values after the user’s config overwrites them',
+    'restores OCC’s overlay values after the user’s config overwrites them',
     withHome(
       {
         ...USER_FILES,

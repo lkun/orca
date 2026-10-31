@@ -314,7 +314,7 @@ function settingsFor(launch: LaunchCase): Partial<GlobalSettings> {
   }
 }
 
-/** Every pane, hook, caller, handle, visuals and auth key a parent Orca pane could hand down. */
+/** Every pane, hook, caller, handle, visuals and auth key a parent OCC pane could hand down. */
 function inheritedEnvironment(): Record<string, string> {
   const env: Record<string, string> = {
     PATH: `${join(root, 'bin')}:/usr/bin:/bin`,

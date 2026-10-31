@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { ORCAD_MIGRATION_BLOB_KIND_CONTRACTS } from '../../../shared/orcad-migration/orcad-migration-blob-transfer'
 import { hashWorktreeId } from '../../terminal-history-id'
 
-// fish history lives outside Orca's store and cannot migrate.
+// fish history lives outside OCC's store and cannot migrate.
 export const ORCAD_MIGRATION_SHELL_HISTORY_SHELLS = ['zsh', 'bash'] as const
 
 export type OrcadMigrationShellHistoryShell = (typeof ORCAD_MIGRATION_SHELL_HISTORY_SHELLS)[number]

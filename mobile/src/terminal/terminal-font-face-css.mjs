@@ -19,7 +19,7 @@ function terminalFontFaceCss(family, url, unicodeRange) {
 /** @param {string} url */
 export function terminalNerdFontCss(url) {
   return terminalFontFaceCss(
-    'Orca Nerd Font Symbols',
+    'OCC Nerd Font Symbols',
     url,
     'U+E000-F8FF,U+F0000-FFFFD,U+100000-10FFFD'
   )
@@ -28,5 +28,5 @@ export function terminalNerdFontCss(url) {
 // Noto Sans Symbols 2 subset: Android ships no font with ⏴⏵⏶⏷ (Claude Code's ⏵⏵ mode marker).
 /** @param {string} url */
 export function terminalSymbolsFontCss(url) {
-  return terminalFontFaceCss('Orca Terminal Symbols', url, 'U+23F4-23F7')
+  return terminalFontFaceCss('OCC Terminal Symbols', url, 'U+23F4-23F7')
 }

@@ -67,7 +67,7 @@ test('stops long-running cleanup and keeps it retryable', async ({ electronApp, 
     )
     execFileSync('git', ['init'], { cwd: repoPath })
     execFileSync('git', ['config', 'user.email', 'e2e@test.local'], { cwd: repoPath })
-    execFileSync('git', ['config', 'user.name', 'Orca E2E'], { cwd: repoPath })
+    execFileSync('git', ['config', 'user.name', 'OCC E2E'], { cwd: repoPath })
     writeFileSync(path.join(repoPath, 'README.md'), 'cleanup stop fixture\n')
     execFileSync('git', ['add', '.'], { cwd: repoPath })
     execFileSync('git', ['commit', '-m', 'seed'], { cwd: repoPath })

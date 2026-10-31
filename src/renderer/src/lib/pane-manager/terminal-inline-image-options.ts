@@ -8,7 +8,7 @@ const IMAGE_STORAGE_LIMIT_MB = 32
 
 export function buildInlineImageAddonOptions(): IImageAddonOptions {
   return {
-    // Orca already answers CSI 14t/16t via its pixel-size responder.
+    // OCC already answers CSI 14t/16t via its pixel-size responder.
     enableSizeReports: false,
     storageLimit: IMAGE_STORAGE_LIMIT_MB,
     pixelLimit: (IMAGE_STORAGE_LIMIT_MB * 1000000) / 4,

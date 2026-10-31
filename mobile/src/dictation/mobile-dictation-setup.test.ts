@@ -155,7 +155,7 @@ describe('rpc wrappers', () => {
     ])
 
     await expect(fetchDictationSetup(client)).rejects.toThrow(
-      'Update the paired desktop Orca app to use mobile voice settings.'
+      'Update the paired desktop OCC app to use mobile voice settings.'
     )
   })
 
@@ -168,7 +168,7 @@ describe('rpc wrappers', () => {
     ])
 
     await expect(fetchDictationSetup(client)).rejects.toThrow(
-      'Update the paired desktop Orca app to use mobile voice settings.'
+      'Update the paired desktop OCC app to use mobile voice settings.'
     )
   })
 
@@ -181,13 +181,13 @@ describe('rpc wrappers', () => {
     ])
 
     await expect(fetchDictationSetup(client)).rejects.toThrow(
-      'Update Orca on this server to use voice dictation.'
+      'Update OCC on this server to use voice dictation.'
     )
   })
 
   it('recognizes an old server refusing a dictation start', () => {
     expect(dictationFailureMessage('speech_unavailable: this host has no speech services')).toBe(
-      'Update Orca on this server to use voice dictation.'
+      'Update OCC on this server to use voice dictation.'
     )
     expect(dictationFailureMessage('voice_dictation_disabled')).toBe('voice_dictation_disabled')
   })

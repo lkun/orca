@@ -92,7 +92,7 @@ describe('CdpWsProxy agent input focus guard', () => {
     await proxy.stop()
   })
 
-  it('forwards presses on pages outside an Orca window without a guard', async () => {
+  it('forwards presses on pages outside an OCC window without a guard', async () => {
     const mock = createMockWebContents()
     const guardFocus = vi.fn(async () => () => {})
     const proxy = new CdpWsProxy(mockAsWebContents(mock), () => () => {}, guardFocus)

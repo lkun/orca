@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary = 'Keeps app content clear of the iPadOS window controls'
   s.description = s.summary
   s.license = { :type => 'MIT' }
-  s.author = 'Orca'
+  s.author = 'OCC'
   s.homepage = 'https://onorca.dev'
   s.source = { :git => 'https://github.com/stablyai/orca.git' }
   s.platforms = { :ios => '15.1' }

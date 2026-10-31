@@ -59,7 +59,7 @@ export type OrcadDeployOptions = {
   /** Best-effort reopen when incumbent keeps serving; admission also expires server-side. */
   releaseIncumbentAdmission: () => Promise<void>
   force?: OrcadUpdateForce
-  /** The Orca app version activating, recorded so an older client never downgrades the host. */
+  /** The OCC app version activating, recorded so an older client never downgrades the host. */
   appVersion?: string
   /** Reapply version policy under lock because peer activation/stop may land during upload. */
   admitRecord?: (record: OrcadActivationRecord, candidateVersion: string) => string | null

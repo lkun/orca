@@ -19,7 +19,7 @@ export function CodexSharedSettingsNoticeCard(): React.JSX.Element | null {
             <CardTitle id="codex-shared-settings-notice-heading">
               {translate(
                 'terminal.codexSharedSettingsNotice.title',
-                'Codex in Orca now uses ~/.codex'
+                'Codex in OCC now uses ~/.codex'
               )}
             </CardTitle>
           </div>
@@ -37,7 +37,7 @@ export function CodexSharedSettingsNoticeCard(): React.JSX.Element | null {
         <CardDescription>
           {translate(
             'terminal.codexSharedSettingsNotice.description',
-            'Codex may ask again to trust folders or approve commands. Re-add any MCP servers you added only in Orca.'
+            'Codex may ask again to trust folders or approve commands. Re-add any MCP servers you added only in OCC.'
           )}
         </CardDescription>
       </CardContent>

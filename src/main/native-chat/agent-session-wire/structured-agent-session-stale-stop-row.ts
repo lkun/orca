@@ -33,7 +33,7 @@ export function staleStopRow(
 } | null {
   const cuts = items.map(cutBy)
   const evidence = input.deathEvidence
-  // Death diagnostics stay in logs; show only provider stop and associated Orca shutdown cause.
+  // Death diagnostics stay in logs; show only provider stop and associated OCC shutdown cause.
   if (evidence && cuts.some((cut) => cut?.by === 'death')) {
     return {
       kind: 'item',

@@ -8,7 +8,7 @@ import type { MobileWorkspaceRepo } from './new-worktree-modal-types'
 import { useNewWorkspaceSetupScript } from './use-new-workspace-setup-script'
 
 type SetupScript = ReturnType<typeof useNewWorkspaceSetupScript>
-const repo: MobileWorkspaceRepo = { id: 'repo', displayName: 'Orca', path: '/orca' }
+const repo: MobileWorkspaceRepo = { id: 'repo', displayName: 'OCC', path: '/orca' }
 const hooks: RpcResponse = {
   id: 'hooks',
   ok: true,

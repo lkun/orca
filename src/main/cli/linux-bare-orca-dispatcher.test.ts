@@ -66,7 +66,7 @@ async function makeFixture(): Promise<{ homePath: string; resourcesPath: string 
   created.push(root)
   const resourcesPath = join(root, 'resources')
   await mkdir(join(resourcesPath, 'bin'), { recursive: true })
-  await writeFile(join(resourcesPath, 'bin', 'orca-ide'), '#!/usr/bin/env bash\n', 'utf8')
+  await writeFile(join(resourcesPath, 'bin', 'occ-ide'), '#!/usr/bin/env bash\n', 'utf8')
   return { homePath: join(root, 'home'), resourcesPath }
 }
 
@@ -117,7 +117,7 @@ describe('installLinuxBareOrcaDispatcher', () => {
   it('skips (does not clobber) a user-owned orca already at ~/.local/bin', async () => {
     const { homePath, resourcesPath } = await makeFixture()
     const dispatcherPath = join(homePath, '.local', 'bin', 'orca')
-    const appImagePath = join(homePath, 'Orca.AppImage')
+    const appImagePath = join(homePath, 'OCC.AppImage')
     await mkdir(join(homePath, '.local', 'bin'), { recursive: true })
     await writeFile(dispatcherPath, '#!/bin/sh\necho my own orca\n', 'utf8')
     await writeFile(appImagePath, '#!/usr/bin/env bash\n', 'utf8')
@@ -138,7 +138,7 @@ describe('installLinuxBareOrcaDispatcher', () => {
 
   it('preserves a foreign dispatcher created while AppImage extraction is in flight', async () => {
     const { homePath, resourcesPath } = await makeFixture()
-    const appImagePath = join(homePath, 'Orca.AppImage')
+    const appImagePath = join(homePath, 'OCC.AppImage')
     const cacheRootPath = join(homePath, 'cache')
     const dispatcherPath = join(homePath, '.local', 'bin', 'orca')
     await mkdir(homePath, { recursive: true })
@@ -177,7 +177,7 @@ describe('installLinuxBareOrcaDispatcher', () => {
 
   it('prunes old owner generations without touching a sibling namespace', async () => {
     const { homePath, resourcesPath } = await makeFixture()
-    const appImagePath = join(homePath, 'Orca.AppImage')
+    const appImagePath = join(homePath, 'OCC.AppImage')
     const cacheRootPath = join(homePath, 'cache', 'unused', '..')
     await mkdir(homePath, { recursive: true })
     await writeFile(appImagePath, '#!/usr/bin/env bash\n', { mode: 0o755 })
@@ -230,5 +230,5 @@ describe('installLinuxBareOrcaDispatcher', () => {
 async function writePayload(cwd: string): Promise<void> {
   const launcherDirectory = join(cwd, 'squashfs-root', 'resources', 'bin')
   await mkdir(launcherDirectory, { recursive: true })
-  await writeFile(join(launcherDirectory, 'orca-ide'), '#!/usr/bin/env bash\n', { mode: 0o755 })
+  await writeFile(join(launcherDirectory, 'occ-ide'), '#!/usr/bin/env bash\n', { mode: 0o755 })
 }

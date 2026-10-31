@@ -108,7 +108,7 @@ export function WorkspaceDetailsSheet(props: { row: Worktree; onOpenLink: (url: 
 
 function originLabel(origin: WorkspaceOrigin, t: Translate): string {
   if (origin.kind === 'cli') {
-    return t('hostScreen.workspaceDetailsSheet.createdFromCli', 'Created from Orca CLI')
+    return t('hostScreen.workspaceDetailsSheet.createdFromCli', 'Created from OCC CLI')
   }
   return origin.name
     ? t(

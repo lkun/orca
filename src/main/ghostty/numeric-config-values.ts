@@ -8,7 +8,7 @@ export const parseStrictInt = (v: string): number | null => {
   return Number.isFinite(num) ? num : null
 }
 
-// Average paired padding values to preserve total padding with Orca's symmetric per-axis setting.
+// Average paired padding values to preserve total padding with OCC's symmetric per-axis setting.
 export const parsePaddingValue = (v: string): number | null => {
   const parts = v.split(',')
   if (parts.length > 2) {

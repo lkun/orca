@@ -239,12 +239,12 @@ jobs:
 
           **Unlanded and unvetted.** This is somebody's branch, not main. No tests
           ran. The macOS build is signed and notarized like a release, so it installs
-          through Orca's in-app updater and opens without a Gatekeeper prompt — but the
+          through OCC's in-app updater and opens without a Gatekeeper prompt — but the
           branch may never merge, and this build is deleted after $ADHOC_RETAIN_DAYS days.
 
           **Windows builds are unsigned.** They install and update normally once you
           are on one, but a signed Stable or RC build cannot install one through the
-          in-app updater — download \`orca-windows-setup.exe\` below and run it once
+          in-app updater — download \`occ-windows-setup.exe\` below and run it once
           (SmartScreen will warn about an unknown publisher). Every later switch,
           including back to Stable, works in-app from there."
           echo "tag=$TAG" >>"$GITHUB_OUTPUT"
@@ -429,8 +429,8 @@ jobs:
           set -euo pipefail
           app_dir=dist/mac
           if [[ "$MAC_ARCH" == arm64 ]]; then app_dir=dist/mac-arm64; fi
-          codesign --verify --deep --strict "$app_dir/Orca.app"
-          xcrun stapler validate "$app_dir/Orca.app"
+          codesign --verify --deep --strict "$app_dir/OCC.app"
+          xcrun stapler validate "$app_dir/OCC.app"
 
       - name: Verify this architecture's updater files
         env:

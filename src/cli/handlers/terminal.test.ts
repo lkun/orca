@@ -282,7 +282,7 @@ describe('terminal close CLI', () => {
       printHelp(COMMAND_SPECS, ['terminal', verb])
 
       const help = String(log.mock.calls[0]?.[0])
-      expect(help).toMatch(/--environment <selector> .*paired Orca server/)
+      expect(help).toMatch(/--environment <selector> .*paired OCC server/)
       expect(help).toMatch(/--pairing-code <code> .*orca:\/\/pair/)
       log.mockRestore()
     }

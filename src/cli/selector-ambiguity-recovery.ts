@@ -9,13 +9,13 @@ const EXACT_FORMS = {
   repo: {
     forms:
       'id:<repo-id> or path:<absolute-path>; if two hosts share that id or path, use --project <id> --host <host> where the command takes them',
-    list: 'orca repo list --json',
+    list: 'occ repo list --json',
     noun: 'project'
   },
   worktree: {
     forms:
       'identity:<identity.key> (host-qualified), or id:<repo-id>::<absolute-path> when only one host has that checkout',
-    list: 'orca worktree list --json',
+    list: 'occ worktree list --json',
     noun: 'workspace'
   }
 } as const

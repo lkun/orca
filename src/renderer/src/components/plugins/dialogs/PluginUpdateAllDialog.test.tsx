@@ -348,7 +348,7 @@ describe('PluginUpdateAllDialog', () => {
     expect(container.querySelector('[data-plugin-update="b"]')?.textContent).toContain('Updated')
   })
 
-  it('lists an update that needs a newer Orca without offering it', async () => {
+  it('lists an update that needs a newer OCC without offering it', async () => {
     installApi({
       previewMarketplaceUpdate: vi.fn(({ pluginKey }: { pluginKey: string }) =>
         Promise.resolve(preview(pluginKey, [], pluginKey === 'a' ? '>=9.0.0' : '>=1.0.0'))
@@ -359,7 +359,7 @@ describe('PluginUpdateAllDialog', () => {
       orcaVersion: '1.4.0'
     })
 
-    expect(container.textContent).toContain('Needs Orca 9.0.0 or later')
+    expect(container.textContent).toContain('Needs OCC 9.0.0 or later')
     const checkbox = container.querySelector<HTMLButtonElement>('#plugin-update-a')
     expect(checkbox?.disabled).toBe(true)
     expect(checkbox?.getAttribute('aria-checked')).toBe('false')

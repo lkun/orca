@@ -11,7 +11,7 @@ export const CONNECTOR_SOURCE_NAMES: Record<ConnectorSource, string> = {
   github: 'GitHub',
   linear: 'Linear',
   discord: 'Discord',
-  dev: 'Orca'
+  dev: 'OCC'
 }
 
 /** Terminal agents a connector may start; see `CONNECTOR_AGENTS` for why only these. */

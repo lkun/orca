@@ -6,7 +6,7 @@ import { keybindingMatchesAction } from '../../../../../shared/keybindings'
 import { browserChromeShortcutOwnsEvent } from '../describe-page/browser-overlay-shortcut-target'
 import type { BrowserChromeShortcutScope } from '../describe-page/browser-page-types'
 
-/** Cmd+Y (Ctrl+H on Linux/Windows) opens the history view, from the page or from Orca's chrome. */
+/** Cmd+Y (Ctrl+H on Linux/Windows) opens the history view, from the page or from OCC's chrome. */
 export function useBrowserHistoryShortcut({
   browserTabId,
   workspaceId,

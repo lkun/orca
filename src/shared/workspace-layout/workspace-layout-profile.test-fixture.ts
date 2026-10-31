@@ -240,7 +240,7 @@ export function relaySshSession(targetId: string): WorkspaceSessionState {
   }
 }
 
-/** A remote Orca server's partition (`runtime:<env>`), mirrored by the desktop. */
+/** A remote OCC server's partition (`runtime:<env>`), mirrored by the desktop. */
 export function serverRuntimeSession(environmentId: string): WorkspaceSessionState {
   return addWorkspace(
     emptySession(),

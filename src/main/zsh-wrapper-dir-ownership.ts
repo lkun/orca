@@ -1,4 +1,4 @@
-/** Accept real startup-file directories; reject Orca wrappers by their marker or legacy path shape. */
+/** Accept real startup-file directories; reject OCC wrappers by their marker or legacy path shape. */
 import { existsSync } from 'node:fs'
 import { ZSH_WRAPPER_DIR_MARKER_FILE } from './shell-templates'
 

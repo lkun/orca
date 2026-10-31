@@ -24,10 +24,10 @@ describe('DeclaredDesktopClients', () => {
     clients.declare('c-stable', 'd0', 'stable')
     clients.declare('c-dev-1', 'd0', 'dev')
     clients.declare('c-dev-2', 'd0', 'dev')
-    const getDevice = devices([{ name: 'Orca' }])
+    const getDevice = devices([{ name: 'OCC' }])
     expect(
       clients.peers({ connectionId: 'c-other', clientInstanceId: 'stable' }, getDevice)
-    ).toEqual({ peers: [{ name: 'Orca' }] })
+    ).toEqual({ peers: [{ name: 'OCC' }] })
     // Without an id, the caller's own declared socket still identifies it.
     expect(clients.peers({ connectionId: 'c-stable' }, getDevice).peers).toHaveLength(1)
     clients.forget('c-dev-1')
@@ -43,23 +43,23 @@ describe('DeclaredDesktopClients', () => {
     clients.declare('c', 'd2', 'three')
     clients.declare('d', 'gone', 'four')
     const getDevice = devices([
-      { name: 'Orca\n‮Dev⁦' },
+      { name: 'OCC\n‮Dev⁦' },
       { name: 'CLI 10/28/2026' },
       { name: 'Phone', scope: 'mobile' }
     ])
     expect(clients.peers({ connectionId: 'me', clientInstanceId: 'me' }, getDevice)).toEqual({
-      peers: [{ name: 'OrcaDev' }, { name: 'another Orca' }]
+      peers: [{ name: 'OrcaDev' }, { name: 'another OCC' }]
     })
   })
 
-  it('keeps the Orca of a closed control socket for a reconnect grace, then drops it', () => {
+  it('keeps the OCC of a closed control socket for a reconnect grace, then drops it', () => {
     let now = 1_000
     const clients = new DeclaredDesktopClients(() => now)
-    const getDevice = devices([{ name: 'Orca Dev' }])
+    const getDevice = devices([{ name: 'OCC Dev' }])
     clients.declare('dev-socket', 'd0', 'dev')
     clients.forget('dev-socket')
     expect(clients.peers({ connectionId: 'me', clientInstanceId: 'me' }, getDevice).peers).toEqual([
-      { name: 'Orca Dev' }
+      { name: 'OCC Dev' }
     ])
     // A re-declare on a new socket takes over; closing it starts a fresh grace.
     now += DECLARED_CLIENT_RECONNECT_GRACE_MS - 1
@@ -75,10 +75,10 @@ describe('DeclaredDesktopClients', () => {
     )
   })
 
-  it('starts the grace only when an Orca’s last declared socket closes', () => {
+  it('starts the grace only when an OCC’s last declared socket closes', () => {
     let now = 1_000
     const clients = new DeclaredDesktopClients(() => now)
-    const getDevice = devices([{ name: 'Orca Dev' }])
+    const getDevice = devices([{ name: 'OCC Dev' }])
     const peers = () =>
       clients.peers({ connectionId: 'me', clientInstanceId: 'me' }, getDevice).peers
     clients.declare('a', 'd0', 'dev')

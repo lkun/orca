@@ -38,7 +38,7 @@ function createSpawnRefusingWindow(platform: NodeJS.Platform = 'darwin') {
   const spawn = { refused: true }
   const webContents = {
     id: 143,
-    getURL: vi.fn(() => 'file:///opt/orca/renderer/index.html'),
+    getURL: vi.fn(() => 'file:///opt/occ/renderer/index.html'),
     isDestroyed: vi.fn(() => false),
     on: vi.fn((event: string, handler: (...args: any[]) => void) => {
       handlers[event] = handler
@@ -59,7 +59,7 @@ function createSpawnRefusingWindow(platform: NodeJS.Platform = 'darwin') {
       withPlatform(platform, () => handlers['render-process-gone']?.({}, LAUNCH_FAILED))
     )
     return Promise.reject(
-      new Error("ERR_FAILED (-2) loading 'file:///opt/orca/renderer/index.html'")
+      new Error("ERR_FAILED (-2) loading 'file:///opt/occ/renderer/index.html'")
     )
   })
   browserWindowMock.mockImplementation(function () {

@@ -1,7 +1,7 @@
 /// <reference types="chrome" />
 import { matchesExtensionMatchPattern } from './browser-extension-match-pattern'
 
-/** Query keys Orca answers; the preload strips them before Electron's native query runs. */
+/** Query keys OCC answers; the preload strips them before Electron's native query runs. */
 export type OrcaTabQuery = {
   active?: boolean
   highlighted?: boolean
@@ -72,7 +72,7 @@ export function matchesOrcaTabQuery(
   if (query.discarded !== undefined && tab.discarded !== query.discarded) {
     return false
   }
-  // Orca has no pinned, frozen or grouped tabs.
+  // OCC has no pinned, frozen or grouped tabs.
   if (query.pinned === true || query.frozen === true) {
     return false
   }

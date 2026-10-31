@@ -50,7 +50,7 @@ describe('parsePluginMarketplaceIndex', () => {
         owner: 'samples',
         plugins: []
       })
-    ).toThrow('orca-catalog.json uses catalog format 3; update Orca to browse this catalog')
+    ).toThrow('orca-catalog.json uses catalog format 3; update OCC to browse this catalog')
   })
 
   it('keeps release entries out of the frozen v1 file', () => {

@@ -41,7 +41,7 @@ def main():
         ("identical", "café Ω", None),
         ("supplementary-selection", mixed, None),
         ("append", mixed, None),
-        ("latin-layout", "Orca ASCII", None),
+        ("latin-layout", "OCC ASCII", None),
         ("busy", mixed, "another keyboard operation is active"),
     ]
     replacement = trial_contract.TASKS["replace_submit"]

@@ -161,7 +161,7 @@ jobs:
               ? `PR #${context.payload.pull_request.number}`
               : process.env.RELEASE_REF || context.ref
             const runUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
-            const text = `Orca dependency review for ${target}\n${checks.join(' · ')}\nReports and logs: ${runUrl}`
+            const text = `OCC dependency review for ${target}\n${checks.join(' · ')}\nReports and logs: ${runUrl}`
             let response
             try {
               response = await fetch(process.env.SLACK_WEBHOOK_URL, {

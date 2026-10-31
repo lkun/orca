@@ -140,7 +140,7 @@ export const createWorkItemFetchActions = (
           ...(options?.noCache ? { noCache: true } : {}),
           ...(options?.wakeWslDistro ? { wakeWslDistro: true } : {})
         })
-        // Why: stamp repoId at the fetch boundary so downstream consumers can rely on it — main doesn't know Orca's Repo.id.
+        // Why: stamp repoId at the fetch boundary so downstream consumers can rely on it — main doesn't know OCC's Repo.id.
         const repoHostId = getGitHubWorkItemRowHostId(
           requestState,
           repoId,

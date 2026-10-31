@@ -1,4 +1,4 @@
-// A load that drops an unreadable row (e.g. one a newer Orca wrote) quarantines the file at the
+// A load that drops an unreadable row (e.g. one a newer OCC wrote) quarantines the file at the
 // first save; that missing file is this process's own doing and must not revoke the valid rows.
 import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'

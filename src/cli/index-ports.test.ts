@@ -353,7 +353,7 @@ describe('orca ports', () => {
     expect(output()).toBe('Port scan unavailable: Could not scan the SSH host.\nhost=ssh:box')
   })
 
-  it('asks for an Orca update when the runtime predates the host-scoped scan', async () => {
+  it('asks for an OCC update when the runtime predates the host-scoped scan', async () => {
     callMock.mockRejectedValueOnce(
       new RuntimeClientError('method_not_found', 'Unknown method: workspacePorts.scanHost')
     )
@@ -362,7 +362,7 @@ describe('orca ports', () => {
 
     await main(['ports', '--worktree', 'id:repo::/tmp/repo/feature', '--all'], '/tmp')
 
-    expect(output()).toContain('cannot list workspace ports yet. Update Orca')
+    expect(output()).toContain('cannot list workspace ports yet. Update OCC')
     expect(process.exitCode).toBe(1)
     process.exitCode = priorExitCode
   })

@@ -32,7 +32,7 @@ test('OMP completion retry clears the rendered working indicator', async ({
     }
     const forwarded = await fetch(`http://127.0.0.1:${endpoint.port}/hook/omp`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': endpoint.token },
+      headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': endpoint.token },
       body
     })
     response.writeHead(forwarded.status).end()

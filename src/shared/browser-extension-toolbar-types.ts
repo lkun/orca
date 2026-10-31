@@ -24,7 +24,7 @@ export type BrowserExtensionToolbarState = {
   actions: BrowserExtensionToolbarAction[]
 }
 
-/** A toolbar button's rect in the Orca window, in CSS pixels. */
+/** A toolbar button's rect in the OCC window, in CSS pixels. */
 export type BrowserExtensionAnchorRect = {
   x: number
   y: number

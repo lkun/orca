@@ -170,7 +170,7 @@ describe('JcodeHookService', () => {
     expect(service.install().state).toBe('installed')
   })
 
-  it('does not mistake a user command mentioning the managed script in a comment for Orca ownership', () => {
+  it('does not mistake a user command mentioning the managed script in a comment for OCC ownership', () => {
     const configPath = getJcodeConfigPath()
     mkdirSync(dirname(configPath), { recursive: true })
     writeFileSync(

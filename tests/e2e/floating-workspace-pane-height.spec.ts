@@ -44,7 +44,7 @@ type E2EWindow = typeof window & {
 
 async function seedFloatingSimulatorTabs(page: Page): Promise<E2EUnifiedTab[]> {
   const tabs = await page.evaluate((worktreeId) => {
-    // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: `__store` is the dev/e2e store handle Orca injects on window; the cast only names it.
+    // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: `__store` is the dev/e2e store handle OCC injects on window; the cast only names it.
     const store = (window as E2EWindow).__store
     if (!store) {
       throw new Error('Store unavailable')
@@ -115,7 +115,7 @@ test('floating panel group bodies and panes own real pixels, single group and sp
   // Move Tab to Split → Right (the context-menu path dispatches this same store action).
   const moved = await orcaPage.evaluate(
     ({ tabId, groupId }) => {
-      // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: `__store` is the dev/e2e store handle Orca injects on window; the cast only names it.
+      // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: `__store` is the dev/e2e store handle OCC injects on window; the cast only names it.
       const store = (window as E2EWindow).__store
       if (!store) {
         throw new Error('Store unavailable')

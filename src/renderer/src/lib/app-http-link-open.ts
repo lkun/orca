@@ -29,7 +29,7 @@ function isEscapeModifierClick(event: AppHttpLinkClick | undefined): boolean {
   )
 }
 
-/** Opens a web link from Orca's own UI per the link setting, in the given or active workspace. */
+/** Opens a web link from OCC's own UI per the link setting, in the given or active workspace. */
 export function openAppHttpLink(url: string, options: OpenAppHttpLinkOptions = {}): void {
   // Like the system-browser bridge, ignore anything that is not a web link.
   if (!/^https?:\/\//i.test(url)) {

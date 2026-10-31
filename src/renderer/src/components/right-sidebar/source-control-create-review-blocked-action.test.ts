@@ -100,7 +100,7 @@ describe('source-control-create-review-blocked-action', () => {
         })
       )
     ).toBe(
-      'Create MR failed: Orca could not confirm whether this branch already has a merge request. Retry once the GitLab lookup succeeds.'
+      'Create MR failed: OCC could not confirm whether this branch already has a merge request. Retry once the GitLab lookup succeeds.'
     )
   })
 

@@ -150,14 +150,14 @@ describe('renderer i18n lazy locale loading', () => {
         resourceLanguage: pluginLanguageResourceId(id),
         pluginKey: 'samples.portuguese',
         locale: 'pt-BR',
-        catalog: { menu: { file: 'Arquivo Orca' } },
+        catalog: { menu: { file: 'Arquivo OCC' } },
         coverage: 100
       }
     ])
 
     await i18n.changeLanguage(await loadRendererUiLanguage(id))
     expect(i18n.language).toBe(pluginLanguageResourceId(id))
-    expect(i18n.t('menu.file', { defaultValue: 'File' })).toBe('Arquivo Orca')
+    expect(i18n.t('menu.file', { defaultValue: 'File' })).toBe('Arquivo OCC')
 
     setRendererPluginLanguagePacks([])
     await i18n.changeLanguage(await loadRendererUiLanguage(id))

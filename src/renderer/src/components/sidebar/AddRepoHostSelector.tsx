@@ -113,7 +113,7 @@ export function AddRepoHostSelector({
                 <Popover open={addHostOpen} onOpenChange={setAddHostOpen}>
                   <PopoverTrigger asChild>
                     <CommandItem
-                      value="Add remote host SSH host Orca server"
+                      value="Add remote host SSH host OCC server"
                       onSelect={() => setAddHostOpen(true)}
                       className="items-start gap-2 px-3 py-2 text-xs text-muted-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
                     >
@@ -131,11 +131,11 @@ export function AddRepoHostSelector({
                           {onAddWslHost
                             ? translate(
                                 'auto.components.sidebar.AddRepoHostSelector.addRemoteHostDetailWithWsl',
-                                'SSH host, Orca server, or WSL distro'
+                                'SSH host, OCC server, or WSL distro'
                               )
                             : translate(
                                 'auto.components.sidebar.AddRepoHostSelector.addRemoteHostDetail',
-                                'SSH host or Orca server'
+                                'SSH host or OCC server'
                               )}
                         </span>
                       </span>
@@ -186,7 +186,7 @@ export function AddRepoHostSelector({
                         <span className="mt-0.5 text-[11px] text-muted-foreground">
                           {translate(
                             'auto.components.sidebar.AddRepoHostSelector.addRemoteServerDetail',
-                            'Pair with Orca running on another computer.'
+                            'Pair with OCC running on another computer.'
                           )}
                         </span>
                       </button>
@@ -215,7 +215,7 @@ export function AddRepoHostSelector({
                         <span className="mt-0.5 text-[11px] text-muted-foreground">
                           {translate(
                             'auto.components.sidebar.AddRepoHostSelector.addWslHostDetail',
-                            'Run an Orca server inside a WSL 2 distro. Experimental.'
+                            'Run an OCC server inside a WSL 2 distro. Experimental.'
                           )}
                         </span>
                       </button>

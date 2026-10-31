@@ -88,7 +88,7 @@ describe('legacy shared Codex config compatibility', () => {
     expect(readFileSync(join(sharedRuntimeHome, 'auth.json'), 'utf-8')).toBe(staleSharedAuth)
   })
 
-  it('keeps an Orca-added MCP server while settings and trust still refresh', () => {
+  it('keeps an OCC-added MCP server while settings and trust still refresh', () => {
     const baselinePath = join(sharedRuntimeHome, '.orca-config-settings-baseline.json')
     const baseline = JSON.stringify({ version: 3, settings: {}, mcpServers: [] })
     writeFileSync(baselinePath, baseline)

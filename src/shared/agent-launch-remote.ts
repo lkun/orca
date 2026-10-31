@@ -6,7 +6,7 @@ import {
 } from './execution-host'
 import { isWslUncPath } from './wsl-paths'
 
-/** SSH relays and Orca servers put plain `orca` on PATH; the Linux `orca-ide` rename is for local desktops and WSL. */
+/** SSH relays and OCC servers put plain `orca` on PATH; the Linux `occ-ide` rename is for local desktops and WSL. */
 export function launchHostIsRemote(
   hostKind: ParsedExecutionHost['kind'],
   workspacePath: string | null | undefined

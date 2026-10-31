@@ -19,7 +19,7 @@ export type SaveClipboardImageAsTempFileArgs = {
   runtimeEnvironmentId?: string | null
   /** With `runtimeEnvironmentId`: store the image as an attachment of this structured chat. */
   agentSessionAttachment?: AgentSessionAttachmentClipboardTarget
-  /** A native-chat composer paste: kept in Orca's paste folder so its draft can bring it back. */
+  /** A native-chat composer paste: kept in OCC's paste folder so its draft can bring it back. */
   forNativeChatDraft?: boolean
   /** With forNativeChatDraft, sends claim local structured-chat pastes from the chat attachment store. */
   forStructuredChat?: boolean

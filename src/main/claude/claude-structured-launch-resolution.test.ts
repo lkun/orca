@@ -193,14 +193,14 @@ describe('claude structured launch resolution', () => {
     expect(launch.options.sessionId).toBeUndefined()
   })
 
-  it('names the child by the Orca session id, over any id the configured overlay carries', async () => {
+  it('names the child by the OCC session id, over any id the configured overlay carries', async () => {
     const launch = await resolverFor(record(), () => ({
       ORCA_AGENT_SESSION_ID: 'a0b1c2d3-0000-4000-8000-00000000abcd'
     }))({ identity: IDENTITY })
 
     expect(launch.env).toMatchObject({
       ORCA_AGENT_SESSION_ID: SESSION_ID,
-      ORCA_CLI_COMMAND: expect.stringMatching(/^[^:;]*[\\/]cli[\\/]bin[\\/]orca-dev$/)
+      ORCA_CLI_COMMAND: expect.stringMatching(/^[^:;]*[\\/]cli[\\/]bin[\\/]occ-dev$/)
     })
     expect(launch.env?.ORCA_AGENT_SESSION_ID).not.toBe(launch.providerSessionId)
   })
@@ -427,7 +427,7 @@ describe('claude structured launch resolution', () => {
     ])
   })
 
-  it('builds on the supplied inherited env instead of Orca process env', async () => {
+  it('builds on the supplied inherited env instead of OCC process env', async () => {
     const launch = await createClaudeStructuredLaunchResolver({
       resolveLaunchArgs: () => [],
       store: { getRecord: () => record(), pinLaunchDirectory: vi.fn() },
@@ -603,7 +603,7 @@ describe('readable Claude thinking', () => {
       expect(asked).toMatchObject({ command, cwd: '/repos/workspace-1' })
       const segments = (env: Record<string, string> | undefined) =>
         (env?.PATH ?? env?.Path ?? '').split(delimiter)
-      // Orca's CLI directory is the only PATH difference between probe and launch.
+      // OCC's CLI directory is the only PATH difference between probe and launch.
       const orcaCliDir = launch.env?.ORCA_CLI_COMMAND ? dirname(launch.env.ORCA_CLI_COMMAND) : null
       expect(segments(launch.env).filter((dir) => dir !== orcaCliDir)).toEqual(segments(asked?.env))
       expect(segments(asked?.env)[0] === binDir).toBe(sibling)
@@ -644,7 +644,7 @@ describe('readable Claude thinking', () => {
     }
   )
 
-  it('keeps saved Arguments beside readable thinking, with the display left to Orca', async () => {
+  it('keeps saved Arguments beside readable thinking, with the display left to OCC', async () => {
     const launch = await launchWith(
       {
         check: async (flag) => (flag === CLAUDE_THINKING_DISPLAY_FLAG ? 'supported' : 'unsupported')

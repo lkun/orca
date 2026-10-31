@@ -169,9 +169,9 @@ export function useMobileBrowserStream(args: MobileBrowserStreamArgs) {
       setBusy(false)
       if (!binaryScreencastGranted) {
         // Check app-local limitation before desktop reply; desktop updates cannot change phone build.
-        setError('Update the Orca app to stream browser tabs here.')
+        setError('Update the OCC app to stream browser tabs here.')
       } else if (screencastSupported === false) {
-        setError('Update desktop Orca to stream browser tabs on mobile.')
+        setError('Update desktop OCC to stream browser tabs on mobile.')
       } else if (screencastSupported === null) {
         setError('Checking desktop browser streaming support.')
       } else if (!tab.browserPageId) {

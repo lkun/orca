@@ -57,7 +57,7 @@ describe('SSH config host picker search', () => {
     expect(last.hasMore).toBe(false)
   })
 
-  it('marks an alias the import skips as a route duplicate In Orca and leaves it out of Add all', () => {
+  it('marks an alias the import skips as a route duplicate In OCC and leaves it out of Add all', () => {
     const result = searchSshConfigHosts(
       [{ host: 'aimp' }, { host: 'fresh' }],
       [{ configHost: '172.16.203.131', label: 'AI Box' }],
@@ -93,7 +93,7 @@ describe('SSH config host picker search', () => {
     expect(result.hosts[0]).toMatchObject({ alias: 'prod', alreadyInOrca: true })
   })
 
-  it('marks a case-only alias variant as already in Orca', () => {
+  it('marks a case-only alias variant as already in OCC', () => {
     const result = searchSshConfigHosts([{ host: 'prod' }], [{ configHost: 'Prod', label: 'Prod' }])
 
     expect(result).toMatchObject({ totalHostCount: 1, newHostCount: 0 })
@@ -113,7 +113,7 @@ describe('SSH config host picker search', () => {
     expect(result.hosts.find((host) => host.alias === 'active')?.previouslyRemoved).toBeUndefined()
   })
 
-  it('does not mark a host as previously removed when it is already in Orca', () => {
+  it('does not mark a host as previously removed when it is already in OCC', () => {
     const result = searchSshConfigHosts(
       [{ host: 'prod' }],
       [{ configHost: 'prod', label: 'Production' }],

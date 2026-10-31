@@ -4,7 +4,7 @@ import { renderServeService, systemdQuote, type ServeServiceInput } from './serv
 const base: ServeServiceInput = {
   platform: 'darwin',
   homeDir: '/Users/me',
-  command: '/usr/local/bin/orca',
+  command: '/usr/local/bin/occ',
   userDataPath: '/Users/me/Library/Application Support/orca',
   defaultUserDataPath: '/Users/me/Library/Application Support/orca',
   path: '/usr/local/bin:/usr/bin:/bin'
@@ -13,8 +13,8 @@ const base: ServeServiceInput = {
 describe('renderServeService', () => {
   it('writes a LaunchAgent that supervises, never pairs, and stops after a give-up', () => {
     const spec = renderServeService({ ...base, port: '6768' })
-    expect(spec.name).toBe('com.stablyai.orca.serve')
-    expect(spec.unitPath).toBe('/Users/me/Library/LaunchAgents/com.stablyai.orca.serve.plist')
+    expect(spec.name).toBe('com.lkun.occ.serve')
+    expect(spec.unitPath).toBe('/Users/me/Library/LaunchAgents/com.lkun.occ.serve.plist')
     expect(spec.content).toContain('<string>--supervise</string>')
     expect(spec.content).toContain('<string>--no-pairing</string>')
     expect(spec.content).toContain('<string>6768</string>')
@@ -34,7 +34,7 @@ describe('renderServeService', () => {
       ...base,
       platform: 'linux',
       homeDir: '/home/me',
-      command: '/home/me/My Apps/orca-ide',
+      command: '/home/me/My Apps/occ-ide',
       userDataPath: '/home/me/.config/orca',
       defaultUserDataPath: '/home/me/.config/orca',
       pairingAddress: '100.64.0.1'
@@ -43,7 +43,7 @@ describe('renderServeService', () => {
     expect(spec.content).toContain('StartLimitBurst=5')
     expect(spec.content).toContain('TimeoutStopSec=90')
     expect(spec.content).toContain(
-      'ExecStart="/home/me/My Apps/orca-ide" serve --supervise --no-pairing --pairing-address 100.64.0.1'
+      'ExecStart="/home/me/My Apps/occ-ide" serve --supervise --no-pairing --pairing-address 100.64.0.1'
     )
   })
 

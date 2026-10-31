@@ -24,7 +24,7 @@ export function wslDriveUncConversionMessages(
       return [
         translate(
           'wslDriveUnc.pauseFailed',
-          'Orca could not pause this project’s terminals, so nothing changed.'
+          'OCC could not pause this project’s terminals, so nothing changed.'
         )
       ]
   }
@@ -35,7 +35,7 @@ function blockerMessage(blocker: WslDriveUncConversionBlocker, drivePath: string
     case 'conversion-pending':
       return translate(
         'wslDriveUnc.blocker.pending',
-        'Orca is already converting a project. It finishes when Orca restarts.'
+        'OCC is already converting a project. It finishes when OCC restarts.'
       )
     case 'windows-git-missing':
     case 'wsl-authored-worktrees':
@@ -44,7 +44,7 @@ function blockerMessage(blocker: WslDriveUncConversionBlocker, drivePath: string
       if (blocker.cause === 'differing-saved-data') {
         return translate(
           'wslDriveUnc.blocker.differingState',
-          'Orca saved different details for this folder under both its WSL path and {{drivePath}}, so nothing changed.',
+          'OCC saved different details for this folder under both its WSL path and {{drivePath}}, so nothing changed.',
           { drivePath }
         )
       }
@@ -56,14 +56,14 @@ function blockerMessage(blocker: WslDriveUncConversionBlocker, drivePath: string
       }
       return translate(
         'wslDriveUnc.blocker.state',
-        'Orca found saved state for this project it can’t convert safely, so nothing changed.'
+        'OCC found saved state for this project it can’t convert safely, so nothing changed.'
       )
     case 'not-convertible':
       switch (blocker.reason) {
         case 'duplicate-windows-project':
           return translate(
             'wslDriveUnc.blocker.duplicate',
-            '{{drivePath}} is already a project in Orca.',
+            '{{drivePath}} is already a project in OCC.',
             { drivePath }
           )
         case 'mixed-locations':
@@ -80,7 +80,7 @@ function blockerMessage(blocker: WslDriveUncConversionBlocker, drivePath: string
         case 'overlaps-refused-project':
           return translate(
             'wslDriveUnc.blocker.overlap',
-            'This project shares folders with a project Orca can’t convert, so they would split.'
+            'This project shares folders with a project OCC can’t convert, so they would split.'
           )
         case 'not-local':
         case 'not-in-scope':

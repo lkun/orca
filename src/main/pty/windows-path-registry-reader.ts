@@ -46,7 +46,7 @@ function readRegistryPath(
   }
 }
 
-/** Null when the native addon cannot load (an Orca server slot does not ship it). */
+/** Null when the native addon cannot load (an OCC server slot does not ship it). */
 export function readWindowsPathRegistry(): WindowsPathRegistryRead[] | null {
   let registry: WindowsNativeRegistryModule
   try {

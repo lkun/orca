@@ -57,7 +57,7 @@ describe('orca serve restore resume', () => {
     runtimeClientConstructorMock.mockClear()
   })
 
-  it('asks the local Orca to resume and never starts a server', async () => {
+  it('asks the local OCC to resume and never starts a server', async () => {
     process.env.ORCA_ENVIRONMENT = 'paired-env'
     callMock.mockResolvedValue({
       id: 'rpc',

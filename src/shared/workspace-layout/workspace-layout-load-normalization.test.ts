@@ -269,7 +269,7 @@ describe('Loader precedence for stored data that disagrees with itself, and its 
   })
 
   it('saves a moved editor tab an older build left naming its old workspace under its own', () => {
-    // Before #29930 a tab Orca moved to its file's workspace kept the source's worktree id.
+    // Before #29930 a tab OCC moved to its file's workspace kept the source's worktree id.
     const stored = localDesktopSession()
     const ownedId = `editor:${encodeURIComponent(GIT_KEY)}:local:${encodeURIComponent('/Users/dev/orca/src/app.ts')}`
     const entry = stored.unifiedTabs![GIT_KEY]!.find((tab) => tab.contentType === 'editor')!

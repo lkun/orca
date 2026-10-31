@@ -288,7 +288,7 @@ describe('rebuild-native-deps patched node-pty rebuild', () => {
   )
 
   it.skipIf(process.platform !== 'win32')(
-    'rebuilds a loadable ConPTY native that lacks Orca job ownership',
+    'rebuilds a loadable ConPTY native that lacks OCC job ownership',
     () => {
       const projectDir = mkTempProject()
 
@@ -432,7 +432,7 @@ describe('rebuild-native-deps patched node-pty rebuild', () => {
 
         expect(result.status, result.stderr).toBe(0)
         expect(result.stdout).toContain('Rebuilding failed native modules: node-pty')
-        expect(result.stdout).toContain("expected build/Release so Orca's node-pty patch is active")
+        expect(result.stdout).toContain("expected build/Release so OCC's node-pty patch is active")
 
         const rebuildCall = JSON.parse(readFileSync(rebuildLogPath, 'utf8').trim())
         expect(rebuildCall.onlyModules).toEqual(['node-pty'])

@@ -211,7 +211,7 @@ export function keybindingIsActiveInContext(
   if (options.context !== 'terminal') {
     return true
   }
-  // Why: Orca-first keeps app shortcuts inside terminals; terminal-first is the escape hatch for shells and TUIs.
+  // Why: OCC-first keeps app shortcuts inside terminals; terminal-first is the escape hatch for shells and TUIs.
   if (normalizeTerminalShortcutPolicy(options.terminalShortcutPolicy) === 'orca-first') {
     return true
   }

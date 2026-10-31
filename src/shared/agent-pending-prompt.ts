@@ -26,7 +26,7 @@ export type PendingPrompt =
       header?: string
       options: PendingPromptOption[]
     }
-  /** The agent is waiting on something only Orca's own views can answer. */
+  /** The agent is waiting on something only OCC's own views can answer. */
   | { kind: 'unsupported'; promptId: string }
 
 type PromptRow = Pick<
@@ -39,7 +39,7 @@ export function readAgentPromptAnswers(
   row: PromptRow,
   agent: string,
   promptId: string,
-  /** Whether this agent's status hooks and answer keys are known; without them only Orca can answer. */
+  /** Whether this agent's status hooks and answer keys are known; without them only OCC can answer. */
   answerable: boolean
 ): { prompt: PendingPrompt; keysByOption: ReadonlyMap<string, string> } | null {
   if (hookRowAgentPhase(row) !== 'needs-you') {
@@ -86,7 +86,7 @@ export function readAgentPromptAnswers(
       resolveNativeChatTranscriptAgent(agent) === 'codex'
         ? buildCodexAskAnswerKeys(ask, selections)
         : buildAskAnswerKeys(ask, selections)
-    // A pick that takes more than one keystroke needs the paced writer only Orca's views run.
+    // A pick that takes more than one keystroke needs the paced writer only OCC's views run.
     const only = groups.length === 1 ? groups[0] : undefined
     if (!only || !('raw' in only)) {
       return []

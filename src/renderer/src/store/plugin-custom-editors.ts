@@ -29,7 +29,7 @@ export function collectActivePluginCustomEditors(
     )
 }
 
-/** Editors that open this file, `default` priority first. A plugin never opens an Orca-core file
+/** Editors that open this file, `default` priority first. A plugin never opens an OCC-core file
  *  type by default, so there its editors are only offered. Ties go by plugin key, not list order. */
 export function customEditorsForFile(
   filePath: string,

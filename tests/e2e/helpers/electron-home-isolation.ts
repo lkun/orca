@@ -11,7 +11,7 @@ const RESTRICTED_ENV_KEYS = new Set([
   'ORCA_CODEX_HOME',
   'ZCODE_DATA_BASE_DIR',
   'ZCODE_PERSONAL_PROVIDER_CONFIG_FILE',
-  // Why: Orca's spawn hook writes Claude folder trust into the config this names.
+  // Why: OCC's spawn hook writes Claude folder trust into the config this names.
   'CLAUDE_CONFIG_DIR',
   'ORCA_E2E_USER_DATA_DIR',
   'ORCA_E2E_HOME_DIR',

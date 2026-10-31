@@ -3,7 +3,7 @@ import { deriveMostConstrainedWindow } from './rate-limit-bucket-summary'
 
 /** Parse command.data from agy print envelopes (verified 1.2.11); response text rounds fractions and loses ids/disabled flags. */
 
-// agy names windows; Orca maps them to minutes.
+// agy names windows; OCC maps them to minutes.
 const WEEKLY_WINDOW_MINUTES = 10_080
 const SESSION_WINDOW_MINUTES = 300
 

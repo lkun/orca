@@ -25,7 +25,7 @@ export const ConnectorPendingPromptSchema = z.discriminatedUnion('kind', [
     header: z.string().min(1).optional(),
     options: z.array(PromptOptionSchema)
   }),
-  // Only Orca's own views can answer it.
+  // Only OCC's own views can answer it.
   z.object({ kind: z.literal('unsupported'), promptId: OpaqueIdSchema })
 ])
 

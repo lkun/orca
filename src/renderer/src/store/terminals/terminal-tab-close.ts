@@ -256,7 +256,7 @@ export function createTerminalTabCloseActions(
         }
       }
       // Why only a user close: it is the explicit abandon. Other closes keep the drafts until their
-      // workspace is removed in Orca; drafts have no budget that retires them.
+      // workspace is removed in OCC; drafts have no budget that retires them.
       if (closeReason === 'user') {
         deleteNativeChatComposerDraftsForTab(tabId)
         dropNativeChatPendingAttachmentsForTab(tabId)

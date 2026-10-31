@@ -2,7 +2,7 @@ import { providerDiagnostic, type ProviderDiagnostic } from '../../../shared/age
 
 /** Codex answered the call and refused it, rather than timing out or exiting. */
 export class CodexAppServerRequestError extends Error {
-  /** Codex's own `error.message`, kept apart from the Orca text around it. */
+  /** Codex's own `error.message`, kept apart from the OCC text around it. */
   readonly providerDiagnostic?: ProviderDiagnostic
 
   constructor(

@@ -36,7 +36,7 @@ export function spawnSystemSshPortForward(
     )
   }
   const args = buildSystemSshPortForwardArgs(target, localPort, remoteHost, remotePort, options)
-  // No Orca credential prompts are wired here; forward authentication belongs to OpenSSH.
+  // No OCC credential prompts are wired here; forward authentication belongs to OpenSSH.
   return spawnProcess({
     program: sshPath,
     args,

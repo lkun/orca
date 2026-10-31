@@ -198,7 +198,7 @@ describe('buildDurableDaemonScopeCommand', () => {
   it('wraps the daemon command in systemd-run --user --scope with a collected unit', () => {
     const result = buildDurableDaemonScopeCommand(
       '/usr/bin/node',
-      ['/opt/orca/daemon-entry.js', '--socket', '/tmp/x.sock'],
+      ['/opt/occ/daemon-entry.js', '--socket', '/tmp/x.sock'],
       'nonce-1',
       { PATH: '/usr/bin' },
       null
@@ -213,7 +213,7 @@ describe('buildDurableDaemonScopeCommand', () => {
       '--quiet',
       '--',
       '/usr/bin/node',
-      '/opt/orca/daemon-entry.js',
+      '/opt/occ/daemon-entry.js',
       '--socket',
       '/tmp/x.sock'
     ])

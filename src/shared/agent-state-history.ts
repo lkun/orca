@@ -10,7 +10,7 @@ export type AgentStateHistoryEntry = {
   /** The switching write's updatedAt orders/identifies this entry; startedAt may move backwards when an answered ask returns to its turn end. */
   observedAt?: number
   /** True when this `done` was a cancellation (agent hook like Claude `is_interrupt`,
-   *  or Orca's guarded fallback). Always falsy for non-`done` states so retention logic can preserve it. */
+   *  or OCC's guarded fallback). Always falsy for non-`done` states so retention logic can preserve it. */
   interrupted?: boolean
   /** The main agent's own status when this state was left, copied with `interrupted` by
    *  `agentVerdictFields`; read the verdict through `agentMainAgentVerdict`. */

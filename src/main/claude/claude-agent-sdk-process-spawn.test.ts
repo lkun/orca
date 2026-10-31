@@ -35,7 +35,7 @@ function sdkOptions(overrides: Partial<SdkSpawnOptions> = {}): SdkSpawnOptions {
 }
 
 describe('claude agent SDK process spawn', () => {
-  it('routes the SDK spawn through Orca and retains the pid the lease adjudicates on', () => {
+  it('routes the SDK spawn through OCC and retains the pid the lease adjudicates on', () => {
     const process = fakeSpawn()
     const spawn = createClaudeCodeProcessSpawn(process.spawnImpl, 'win32')
 
@@ -83,7 +83,7 @@ describe('claude agent SDK process spawn', () => {
       const supervisorSpec = JSON.parse(
         Buffer.from(String(spec.env?.ORCA_PROVIDER_SUPERVISOR_SPEC), 'base64').toString()
       )
-      // Orca exit must trigger Claude's close ladder, including descendant cleanup.
+      // OCC exit must trigger Claude's close ladder, including descendant cleanup.
       expect(vi.mocked(createProviderSpawnSpec)).toHaveBeenLastCalledWith(
         expect.anything(),
         expect.anything(),
@@ -141,7 +141,7 @@ describe('claude agent SDK process spawn', () => {
     }
   )
 
-  it('keeps the child out of the SDK abort path so exit proof stays Orca-owned', () => {
+  it('keeps the child out of the SDK abort path so exit proof stays OCC-owned', () => {
     const process = fakeSpawn()
     const controller = new AbortController()
     createClaudeCodeProcessSpawn(process.spawnImpl).spawn(sdkOptions({ signal: controller.signal }))

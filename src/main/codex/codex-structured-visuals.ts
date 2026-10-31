@@ -22,7 +22,7 @@ function isSkillRootsUnsupported(error: unknown): boolean {
   )
 }
 
-/** extraRoots replaces the entire process list, so include every Orca root. */
+/** extraRoots replaces the entire process list, so include every OCC root. */
 function orcaSkillRoots(visuals: NativeChatVisualsLaunch): string[] {
   return [visuals.skill.skillsRoot]
 }

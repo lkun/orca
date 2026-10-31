@@ -118,7 +118,7 @@ describe('ClaudeUsageStore', () => {
     expect(store.getScanState().enabled).toBe(false)
   })
 
-  it('reports no data for Orca scope when only non-Orca usage exists', async () => {
+  it('reports no data for OCC scope when only non-OCC usage exists', async () => {
     const store = createStoreWithState({
       sessions: [
         {

@@ -35,7 +35,7 @@ export async function requestWorktreeRemoval(
           if (!parsed.success) {
             throw new RuntimeClientError(
               'invalid_runtime_response',
-              'The Orca host returned an invalid status response.'
+              'The OCC host returned an invalid status response.'
             )
           }
           if (
@@ -44,7 +44,7 @@ export async function requestWorktreeRemoval(
             return deleteBranch === undefined ? legacy : { ...legacy, deleteBranch }
           }
           console.error(
-            'warning: This Orca host is older and uses its existing branch policy. Keep-by-default and --delete-branch do not apply.'
+            'warning: This OCC host is older and uses its existing branch policy. Keep-by-default and --delete-branch do not apply.'
           )
           return legacy
         },
@@ -58,7 +58,7 @@ export async function requestWorktreeRemoval(
     if (dispatched && error instanceof RuntimeClientError && error.code === 'runtime_timeout') {
       throw new RuntimeClientError(
         'worktree_removal_in_progress',
-        `Stopped waiting, but Orca may still be deleting the checkout. Check \`orca worktree show --worktree ${request.worktree}\` before retrying.`
+        `Stopped waiting, but OCC may still be deleting the checkout. Check \`occ worktree show --worktree ${request.worktree}\` before retrying.`
       )
     }
     throw error

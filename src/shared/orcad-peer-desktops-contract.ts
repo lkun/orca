@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-// Why: a WSL host's server is one per Linux login, so other Orca desktops may share it.
+// Why: a WSL host's server is one per Linux login, so other OCC desktops may share it.
 export const ORCAD_PEER_DESKTOPS_METHOD = 'host.peerDesktops'
 // A desktop names its installation on its long-lived control socket, so peers tell installations apart.
 export const ORCAD_DECLARE_CLIENT_METHOD = 'host.declareClient'

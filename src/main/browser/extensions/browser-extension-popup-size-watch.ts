@@ -2,7 +2,7 @@ import { BROWSER_EXTENSION_POPUP_MAX } from './browser-extension-popup-geometry'
 
 type Size = { width: number; height: number }
 
-// Why its own world: the popup page never sees Orca's observers or the state they keep.
+// Why its own world: the popup page never sees OCC's observers or the state they keep.
 const POPUP_SIZE_WORLD_ID = 1_999
 
 /**

@@ -21,7 +21,7 @@ const published = (): string => toasterVar(NOTIFICATION_CARD_STACK_HEIGHT_VAR)
 const clearance = (): string => toasterVar(NOTIFICATION_CARD_COMPOSER_CLEARANCE_VAR)
 
 type Box = { left: number; right: number; top: number; bottom: number }
-// happy-dom's viewport is 1024 x 768; the cards' column is x 648-1008 as at 1024 px in Orca.
+// happy-dom's viewport is 1024 x 768; the cards' column is x 648-1008 as at 1024 px in OCC.
 const CARD_COLUMN: Box = { left: 648, right: 1008, top: 0, bottom: 0 }
 const rects = new Map<string, Box>()
 

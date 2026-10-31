@@ -69,7 +69,7 @@ describe.skipIf(!isLinux || !e2eOptIn)('computer-use Linux e2e (gedit)', () => {
   test('click and type-text insert into the focused document through AT-SPI', async () => {
     await focusGeditDocument()
 
-    const marker = ` orca-linux-type-${Date.now()}-élan-🚀`
+    const marker = ` occ-linux-type-${Date.now()}-élan-🚀`
     const typed = parseJsonOutput<{ result: ComputerActionResult }>(
       (
         await runOrcaCli([
@@ -92,7 +92,7 @@ describe.skipIf(!isLinux || !e2eOptIn)('computer-use Linux e2e (gedit)', () => {
   test('paste-text mutates the test-owned document', async () => {
     await focusGeditDocument()
 
-    const marker = `orca-linux-paste-${Date.now()}-café-🚀`
+    const marker = `occ-linux-paste-${Date.now()}-café-🚀`
     const action = parseJsonOutput<{ result: ComputerActionResult }>(
       (
         await runOrcaCli([

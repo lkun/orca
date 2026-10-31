@@ -8,7 +8,7 @@ import { FILE_REPLACE_WITH_UPLOAD_RUNTIME_CAPABILITY } from './file-bytes-write'
 // Why: older runtimes strip mutation owner fields, so clients must fence writes before RPC.
 export const FILE_MUTATION_OWNERSHIP_RUNTIME_CAPABILITY = 'files.mutation-ownership.v1' as const
 export const FILE_MUTATION_OWNERSHIP_UPDATE_REQUIRED_MESSAGE =
-  'Remote file changes require a newer Orca server. Update the HUB and try again.'
+  'Remote file changes require a newer OCC server. Update the HUB and try again.'
 
 // Why: older hosts drop `offset`/`limit` and answer with the whole folder.
 export const FILE_READ_DIR_PAGED_RUNTIME_CAPABILITY = 'files.readDir.paged.v1' as const

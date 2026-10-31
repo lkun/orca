@@ -106,7 +106,7 @@ const NEWER_APPROVAL: AgentJournalItemBody = JSON.parse(
   })
 )
 
-it("settles a newer Orca's pending approval as it was, and the chat takes its next message", async () => {
+it("settles a newer OCC's pending approval as it was, and the chat takes its next message", async () => {
   await attach()
   emit(7, NEWER_APPROVAL)
   const host = await relaunch()
@@ -123,7 +123,7 @@ it("settles a newer Orca's pending approval as it was, and the chat takes its ne
 })
 
 // A newer background approval can block queues forever; a direct send starts the turn that cancels it.
-it("takes a send past a newer Orca's live approval, and the next turn's card cancel settles it", async () => {
+it("takes a send past a newer OCC's live approval, and the next turn's card cancel settles it", async () => {
   // Model providers whose card Cancel requires the live turn’s Stop path.
   const dismissPrompt = vi.fn(async ({ commit }: { commit: () => Promise<void> }) => commit())
   Object.assign(hostTestState().host.deps.adapter, {

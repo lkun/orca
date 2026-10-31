@@ -12,7 +12,7 @@ const TOOLS = [
   {
     name: 'list_fixtures',
     description:
-      'List Orca renderer component fixtures (*.fixture.tsx). Ids look like "sidebar/DeleteWorktreeDirtyChangeHint:dirty".',
+      'List OCC renderer component fixtures (*.fixture.tsx). Ids look like "sidebar/DeleteWorktreeDirtyChangeHint:dirty".',
     inputSchema: {
       type: 'object',
       properties: {

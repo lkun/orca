@@ -151,7 +151,7 @@ export async function launchAgentInWebHostTab(args: {
       toast.error(
         translate(
           'agentLaunch.terminalPromptFailed',
-          'Orca opened a terminal for {{value0}}, but could not pass it your prompt. Send the prompt in that terminal.',
+          'OCC opened a terminal for {{value0}}, but could not pass it your prompt. Send the prompt in that terminal.',
           { value0: structuredAgentLabel(agent) }
         )
       )

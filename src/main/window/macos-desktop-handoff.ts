@@ -79,7 +79,7 @@ export function desktopHandoffArguments(pending: {
   const shareId = pending.skillShareDeepLinks.consume()
   const pluginLink = pending.pluginInstallLinks.consume()
   return [
-    ...(shareId ? [`orca://skills/share/${shareId}`] : []),
+    ...(shareId ? [`occ://skills/share/${shareId}`] : []),
     ...(pluginLink ? [pluginLink] : []),
     ...pending.osOpenedDocuments.consume()
   ]

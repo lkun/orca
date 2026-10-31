@@ -3,7 +3,7 @@ import { aiVaultSessionDeleteBlockedReason } from './ai-vault-session-deletabili
 
 // Without a loaded catalog, translate() returns English; pin copy and gate ordering together.
 const NON_LOCAL = 'Only sessions on this device can be deleted.'
-const SYNTHETIC = "This session can't be deleted from Orca."
+const SYNTHETIC = "This session can't be deleted from OCC."
 const HOST = { label: 'Build box', deleteSupported: null }
 
 const localGeminiSession = {
@@ -83,7 +83,7 @@ describe('aiVaultSessionDeleteBlockedReason', () => {
         },
         HOST
       )
-    ).toBe("OpenCode sessions can't be deleted from Orca.")
+    ).toBe("OpenCode sessions can't be deleted from OCC.")
   })
 
   it('gives a multi-cause agent (antigravity) the same single sentence', () => {
@@ -96,7 +96,7 @@ describe('aiVaultSessionDeleteBlockedReason', () => {
         },
         HOST
       )
-    ).toBe("Antigravity sessions can't be deleted from Orca.")
+    ).toBe("Antigravity sessions can't be deleted from OCC.")
   })
 
   it('prioritizes the host gate over the unsupported-agent reason', () => {

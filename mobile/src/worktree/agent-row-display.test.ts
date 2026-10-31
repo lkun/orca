@@ -137,16 +137,16 @@ describe('agentDisplayLabel', () => {
     })
     expect(agentDisplayLabel(stopping, 0)).toBe('Stopping…')
     expect(agentDotState(stopping, 0)).toBe('working')
-    expect(agentDisplayLabel({ ...stopping, conversationName: 'Orca PR rebase' }, 0)).toBe(
-      'Stopping… · Orca PR rebase'
+    expect(agentDisplayLabel({ ...stopping, conversationName: 'OCC PR rebase' }, 0)).toBe(
+      'Stopping… · OCC PR rebase'
     )
   })
 
   it('leads with the host-sent conversation name, like the desktop row', () => {
-    const named = row({ state: 'done', conversationName: 'Orca PR rebase', prompt: 'rebase it' })
-    expect(agentDisplayLabel(named, 0)).toBe('Orca PR rebase')
+    const named = row({ state: 'done', conversationName: 'OCC PR rebase', prompt: 'rebase it' })
+    expect(agentDisplayLabel(named, 0)).toBe('OCC PR rebase')
     expect(agentDisplayLabel({ ...named, lastAssistantMessage: 'PR is closed' }, 0)).toBe(
-      'Orca PR rebase · PR is closed'
+      'OCC PR rebase · PR is closed'
     )
   })
 

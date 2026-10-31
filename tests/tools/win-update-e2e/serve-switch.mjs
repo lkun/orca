@@ -1,9 +1,9 @@
 // Packaged-Windows D7: a terminal the installed desktop app opened (its daemon forked from the
-// relocated %LOCALAPPDATA%\Orca\daemon-host) survives `orca serve` taking the same profile on
+// relocated %LOCALAPPDATA%\OCC\daemon-host) survives `orca serve` taking the same profile on
 // orcad, and the desktop reattaches it afterwards. Also proves the desktop still writes its
 // settings once orcad has applied its data-root ACL. Windows-only; run on a disposable runner.
 //
-//   node tests/tools/win-update-e2e/serve-switch.mjs --installer dist/orca-windows-setup.exe \
+//   node tests/tools/win-update-e2e/serve-switch.mjs --installer dist/occ-windows-setup.exe \
 //     --template out/orcad-template
 
 import { execFileSync, spawn } from 'node:child_process'
@@ -147,7 +147,7 @@ async function run(ctx) {
   ctx.daemonPid = before.pid
   check(
     'desktop daemon runs from the relocated daemon-host',
-    /\\Orca\\daemon-host(?:-profiles)?\\/i.test(before.commandLine),
+    /\\OCC\\daemon-host(?:-profiles)?\\/i.test(before.commandLine),
     before.commandLine.slice(0, 160)
   )
   await closeApp(ctx.session.app, 45_000, { allowForceKill: false })

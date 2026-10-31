@@ -53,7 +53,7 @@ function fakeClient(respond: (attempt: number, options?: CallOptions) => unknown
 function unavailable(options?: CallOptions): RuntimeClientError {
   return new RuntimeClientError(
     'runtime_unavailable',
-    'Could not connect to the running Orca app.',
+    'Could not connect to the running OCC app.',
     {
       orchestrationRequestId: options?.orchestrationRequestId,
       originalCommand: ['orca', 'orchestration', 'send', '--type', 'worker_done']

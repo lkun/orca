@@ -1,8 +1,8 @@
-// Read-only Windows registry value enumeration for Orca.
+// Read-only Windows registry value enumeration for OCC.
 //
 // Vendored from windows-native-registry@3.2.2 (MIT, Eugene Pankov), reduced to the one
-// entry point Orca calls. The upstream write surface (setValue/createKey/deleteKey) is
-// deliberately absent: Orca only ever reads, and shipping RegDeleteTreeW in the app is
+// entry point OCC calls. The upstream write surface (setValue/createKey/deleteKey) is
+// deliberately absent: OCC only ever reads, and shipping RegDeleteTreeW in the app is
 // capability we have no use for.
 //
 // Two upstream defects are fixed here rather than carried over:

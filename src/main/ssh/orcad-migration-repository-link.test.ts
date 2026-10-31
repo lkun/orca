@@ -144,7 +144,7 @@ beforeEach(() => {
           }
         })
       }
-      // The running server of another Orca version, adopted as it is.
+      // The running server of another OCC version, adopted as it is.
       return { outcome: 'already-current', environment: {}, activeVersion: '1.0.0' }
     }
   )

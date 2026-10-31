@@ -13,7 +13,7 @@ const eventSchema = z.object({
     .optional()
 })
 
-/** `errorCode` marks Orca's own parse failures; an uncoded `error` is the agent's text. */
+/** `errorCode` marks OCC's own parse failures; an uncoded `error` is the agent's text. */
 export type GenerationOutputParse =
   | { ok: true; text: string }
   | { ok: false; error: string; errorCode?: string }

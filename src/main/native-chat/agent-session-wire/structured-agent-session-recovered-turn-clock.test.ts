@@ -182,7 +182,7 @@ describe('a turn recovery settled after its host went away', () => {
         settleDeadGeneration(journal, { state: 'interrupted', completedAt: EXIT_OBSERVED })
     ],
     [
-      'quitting Orca',
+      'quitting OCC',
       (journal: AgentSessionJournal) =>
         journal.appendItem(
           { provider: 'codex', threadId: THREAD, turnId: 'turn-1', ordinal: 9 },

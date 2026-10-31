@@ -57,7 +57,7 @@ describe('Discord connector', () => {
     const created = routes.filter((route) => route.path === `/channels/${MENTION}/messages`)
     expect(created).toHaveLength(2)
     expect(created[1]?.body).toMatchObject({
-      content: 'Waiting for your Orca on build-box…',
+      content: 'Waiting for your OCC on build-box…',
       allowed_mentions: { parse: [] }
     })
     expect(
@@ -82,18 +82,18 @@ describe('Discord connector', () => {
     ).toEqual([
       [
         `/channels/${CHANNEL}/messages`,
-        'Your Discord account isn’t linked to Orca yet. Ask an admin to link you.',
+        'Your Discord account isn’t linked to OCC yet. Ask an admin to link you.',
         { message_id: MENTION, fail_if_not_exists: false }
       ],
       [
         `/channels/${CHANNEL}/messages`,
-        'Update Orca and turn on connectors, then send again.',
+        'Update OCC and turn on connectors, then send again.',
         { message_id: '1300000000000000101', fail_if_not_exists: false }
       ]
     ])
   })
 
-  it('ignores servers off the allowlist and messages outside Orca’s threads', async () => {
+  it('ignores servers off the allowlist and messages outside OCC’s threads', async () => {
     const harness = await createDiscordHarness()
     await harness.message({ messageId: MENTION, text: 'fix it', mentioned: true, guildId: '1' })
     await harness.message({ messageId: '1300000000000000101', text: 'chatter' })
@@ -293,7 +293,7 @@ describe('Discord connector', () => {
     await harness.message({ messageId: MENTION, text: 'fix it', mentioned: true })
     await harness.drain()
     expect(harness.fake.take().map((route) => route.body?.content)).toEqual([
-      'Orca for Discord is paused.'
+      'OCC for Discord is paused.'
     ])
   })
 })

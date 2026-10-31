@@ -22,8 +22,8 @@ export function getTerminalFileOpenHint(showActions = true): string {
 export function getTerminalOrcaFileOpenHint(showActions = true): string {
   const prefix = showActions ? 'Click for actions or ' : ''
   return isMacPlatform()
-    ? `${prefix}⌘+click to open in Orca`
-    : `${prefix}Ctrl+click to open in Orca`
+    ? `${prefix}⌘+click to open in OCC`
+    : `${prefix}Ctrl+click to open in OCC`
 }
 
 // Why: Shift+modifier on a local HTML file always takes the other link-routing destination.
@@ -44,7 +44,7 @@ export type TerminalUrlOpenHintOptions = {
   showActions?: boolean
 }
 
-// Why: remote owners advertise Orca only when their existing browser route is eligible.
+// Why: remote owners advertise OCC only when their existing browser route is eligible.
 export function terminalUrlOpenHintOptionsFor(
   settings:
     | {
@@ -72,8 +72,8 @@ export function getTerminalUrlOpenHint(options: TerminalUrlOpenHintOptions = {})
   const prefix = terminalLinkActionHintPrefix(options.showActions !== false)
   if (invertsToOrca) {
     return isMacPlatform()
-      ? `${prefix}⌘+click to open, or ⇧⌘+click to open in Orca`
-      : `${prefix}Ctrl+click to open, or Shift+Ctrl+click to open in Orca`
+      ? `${prefix}⌘+click to open, or ⇧⌘+click to open in OCC`
+      : `${prefix}Ctrl+click to open, or Shift+Ctrl+click to open in OCC`
   }
   return isMacPlatform()
     ? `${prefix}⌘+click to open, or ⇧⌘+click for system browser`
@@ -86,7 +86,7 @@ export function getTerminalUrlSystemBrowserHint(): string {
 
 // Invert the hint too when plain click already opens the system browser.
 export function getTerminalUrlOrcaBrowserHint(): string {
-  return isMacPlatform() ? '⇧⌘+click to open in Orca' : 'Shift+Ctrl+click to open in Orca'
+  return isMacPlatform() ? '⇧⌘+click to open in OCC' : 'Shift+Ctrl+click to open in OCC'
 }
 
 export function getTerminalWorktreePathOpenHint(

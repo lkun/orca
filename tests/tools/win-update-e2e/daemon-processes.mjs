@@ -1,4 +1,4 @@
-// Identify run-as-node daemons by daemon-entry.js/--socket/--token, never Orca.exe image name.
+// Identify run-as-node daemons by daemon-entry.js/--socket/--token, never OCC.exe image name.
 // Versioned PID files carry startedAtMs/entryPath/appVersion for cold-restore versus same-process survival evidence.
 
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
@@ -8,11 +8,11 @@ import { runCommandSync } from './powershell-runner.mjs'
 
 const DAEMON_ENTRY_MARKER = 'daemon-entry.js'
 
-/** Default packaged userData root on Windows: %APPDATA%\Orca. */
+/** Default packaged userData root on Windows: %APPDATA%\OCC. */
 export function defaultUserDataDir() {
   const appData =
     process.env.APPDATA ?? path.join(process.env.USERPROFILE ?? '', 'AppData', 'Roaming')
-  return path.join(appData, 'Orca')
+  return path.join(appData, 'OCC')
 }
 
 // Scan command-line daemon markers; scope to this harness’s userData/token/socket substring to exclude unrelated profiles.

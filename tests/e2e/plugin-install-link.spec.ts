@@ -1,5 +1,5 @@
 /**
- * Invariant: an `orca://plugins/...` link opens the plugin's page in Settings, waiting while
+ * Invariant: an `occ://plugins/...` link opens the plugin's page in Settings, waiting while
  * plugins are off until they are turned back on, and never installs. A malformed link only toasts, and an unknown
  * catalog asks first. The link is delivered through main's open-url handler; no protocol is
  * registered on the machine running the test.
@@ -49,10 +49,10 @@ test('an install link opens the plugin page and never installs', async ({}, test
       window.__store?.setState({ settings })
     })
 
-    await openLink(app, 'orca://plugins/stablyai..bad')
+    await openLink(app, 'occ://plugins/stablyai..bad')
     await expect(page.getByText('That plugin link isn’t valid.')).toBeVisible({ timeout: 15_000 })
 
-    await openLink(app, `orca://plugins/${GLEAM_PLUGIN_KEY}?catalog=official`)
+    await openLink(app, `occ://plugins/${GLEAM_PLUGIN_KEY}?catalog=official`)
     await expect(page.getByText('Plugins are off')).toBeVisible({ timeout: 15_000 })
     // Off comes only from a saved choice now; turning it back on lands on the waiting link's page.
     await page.evaluate(async () => {
@@ -67,7 +67,7 @@ test('an install link opens the plugin page and never installs', async ({}, test
     await expect(page.getByRole('dialog')).toHaveCount(0)
 
     const catalogUrl = encodeURIComponent('https://github.com/acme/orca-catalog.git')
-    await openLink(app, `orca://plugins/acme.dusk?catalog=${catalogUrl}`)
+    await openLink(app, `occ://plugins/acme.dusk?catalog=${catalogUrl}`)
     const prompt = page.getByRole('dialog', { name: 'Add catalog github.com/acme?' })
     await expect(prompt).toBeVisible({ timeout: 15_000 })
     await prompt.getByRole('button', { name: 'Cancel' }).click()

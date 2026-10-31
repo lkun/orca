@@ -56,7 +56,7 @@ afterEach(() => {
 })
 
 describe('resolveTerminalTabActivityStatus', () => {
-  // Stale hook identity must suppress Orca’s own permission title instead of reviving it as current needs-input evidence.
+  // Stale hook identity must suppress OCC’s own permission title instead of reviving it as current needs-input evidence.
   it('does not paint a stale self-authored action-required title as a live question', () => {
     const done = entry(FIRST_LEAF_ID, 'done', {
       updatedAt: NOW - AGENT_STATUS_STALE_AFTER_MS - 1,

@@ -16,7 +16,7 @@ const {
   existsSyncMock: vi.fn(() => true),
   readFileSyncMock: vi.fn(),
   getVersionMock: vi.fn(() => '1.4.191'),
-  getPathMock: vi.fn((_name: string) => '/Users/alice/Library/Application Support/Orca'),
+  getPathMock: vi.fn((_name: string) => '/Users/alice/Library/Application Support/OCC'),
   codeIdentityMock: vi.fn(async () => 'parked')
 }))
 vi.mock('../telemetry/client', () => ({ track: trackMock }))
@@ -74,7 +74,7 @@ const stalePidRecord: ParsedDaemonPid = {
   linuxStartTicks: null,
   bootId: null,
   spawnerExecPath:
-    '/Users/alice/Library/Caches/com.stablyai.orca.ShipIt/u/Orca.app/Contents/MacOS/Orca',
+    '/Users/alice/Library/Caches/com.lkun.occ.ShipIt/u/OCC.app/Contents/MacOS/OCC',
   cgroupUnit: null
 }
 const origin = {
@@ -114,10 +114,10 @@ describe('classifyDaemonAdoptionOrigin', () => {
   })
 
   it('reports a daemon started from the private stable copy', async () => {
-    const copies = '/Users/alice/Library/Application Support/Orca/daemon-host/macos'
+    const copies = '/Users/alice/Library/Application Support/OCC/daemon-host/macos'
     const stableCopy = {
       ...stalePidRecord,
-      spawnerExecPath: `${copies}/terminal-host-0f3c/app.noindex/Orca Terminal Host.app/Contents/MacOS/orca-terminal-host`
+      spawnerExecPath: `${copies}/terminal-host-0f3c/app.noindex/OCC Terminal Host.app/Contents/MacOS/orca-terminal-host`
     }
     expect(await classifyDaemonAdoptionOrigin(stableCopy)).toMatchObject({
       spawner_path_class: 'stable-copy'
@@ -202,7 +202,7 @@ describe('trackDaemonPtyCwdVerdict', () => {
       JSON.stringify({
         ...stalePidRecord,
         appVersion: '1.4.191',
-        spawnerExecPath: '/Applications/Orca.app/Contents/MacOS/Orca'
+        spawnerExecPath: '/Applications/OCC.app/Contents/MacOS/OCC'
       })
     )
     await trackDaemonPtyCwdVerdict('daemon_pty_cwd_denied', DENIED_CWD, PID_PATH)

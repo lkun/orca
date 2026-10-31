@@ -43,7 +43,7 @@ export async function readEnabledHostCapabilities(
       enabled.add('skill-publishing')
     }
   } catch {
-    // Orca not running, sandboxed, or an older host; the publish commands still enforce the real gate.
+    // OCC not running, sandboxed, or an older host; the publish commands still enforce the real gate.
   }
   return enabled
 }

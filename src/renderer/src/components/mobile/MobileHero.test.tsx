@@ -186,7 +186,7 @@ describe('HeroFlow height', () => {
     expect(notice).toHaveTextContent('Use LAN')
     expect(screen.getByText('No pairing code available')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Generate code' })).not.toBeInTheDocument()
-    expect(screen.getByText('Orca Relay is in beta.')).toBeInTheDocument()
+    expect(screen.getByText('OCC Relay is in beta.')).toBeInTheDocument()
   })
 
   it('explains an empty QR frame when no code has been generated yet', () => {
@@ -222,11 +222,11 @@ describe('HeroFlow height', () => {
       relayMintFailure: {
         code: 'relay_provider_unavailable',
         stage: 'provider_missing',
-        message: 'Orca Relay is not available on this desktop'
+        message: 'OCC Relay is not available on this desktop'
       }
     })
     expect(screen.getByRole('alert')).toHaveTextContent(
-      'Orca Relay isn’t available on this desktop'
+      'OCC Relay isn’t available on this desktop'
     )
     expect(screen.getByRole('button', { name: 'Retry Relay' })).toBeEnabled()
     expect(screen.getByRole('button', { name: 'Use LAN' })).toBeEnabled()
@@ -240,7 +240,7 @@ describe('HeroFlow height', () => {
         message: 'Relay pairing invite request failed'
       }
     })
-    expect(screen.getByRole('alert')).toHaveTextContent('Sign in again to use Orca Relay')
+    expect(screen.getByRole('alert')).toHaveTextContent('Sign in again to use OCC Relay')
     expect(screen.queryByRole('button', { name: 'Retry Relay' })).toBeNull()
     cleanup()
     renderFlow(1, {
@@ -250,7 +250,7 @@ describe('HeroFlow height', () => {
         message: 'Relay pairing invite request failed'
       }
     })
-    expect(screen.getByRole('alert')).toHaveTextContent('isn’t included with this Orca account')
+    expect(screen.getByRole('alert')).toHaveTextContent('isn’t included with this OCC account')
     expect(screen.queryByRole('button', { name: 'Retry Relay' })).toBeNull()
   })
 
@@ -271,7 +271,7 @@ describe('HeroFlow height', () => {
   it('shows an encoder error while keeping the copy fallback enabled', () => {
     renderFlow(1, {
       pairingQrError: true,
-      pairingUrl: 'orca://pair?code=copy-fallback'
+      pairingUrl: 'occ://pair?code=copy-fallback'
     })
 
     expect(screen.getByRole('alert')).toHaveTextContent('couldn’t be rendered as a QR code')
@@ -315,7 +315,7 @@ describe('HeroFlow height', () => {
       <MobileHeroPairingStep
         {...props}
         pairQrDataUrl="data:image/png;base64,qr"
-        pairingUrl="orca://pair#ready"
+        pairingUrl="occ://pair#ready"
         relayMintFailure={null}
       />
     )
@@ -357,7 +357,7 @@ describe('HeroFlow height', () => {
       <MobileHeroPairingStep
         {...props}
         pairQrDataUrl="data:image/png;base64,qr"
-        pairingUrl="orca://pair#ready"
+        pairingUrl="occ://pair#ready"
         pairLoading={false}
       />
     )
@@ -368,7 +368,7 @@ describe('HeroFlow height', () => {
   it('places the machine-name field slot ahead of the pairing code', () => {
     const props: React.ComponentProps<typeof MobileHeroPairingStep> = {
       pairQrDataUrl: 'data:image/png;base64,AAAA',
-      pairingUrl: 'orca://pair?code=abc',
+      pairingUrl: 'occ://pair?code=abc',
       pairingQrError: false,
       relayMintFailure: null,
       onUseLan: vi.fn(),
@@ -401,7 +401,7 @@ describe('HeroFlow height', () => {
     expect(field).toHaveClass('mp-pairing-machine')
   })
 
-  it('demotes the network address picker to a disclosure on Orca Relay', async () => {
+  it('demotes the network address picker to a disclosure on OCC Relay', async () => {
     const props: React.ComponentProps<typeof MobileHeroPairingStep> = {
       pairQrDataUrl: null,
       pairingUrl: null,
@@ -444,7 +444,7 @@ describe('HeroFlow height', () => {
     expect(screen.getByRole('button', { name: 'Refresh network interfaces' })).toBeVisible()
   })
 
-  it('keeps a custom address visible on Orca Relay', () => {
+  it('keeps a custom address visible on OCC Relay', () => {
     const address = 'host.example:6768'
     const props: React.ComponentProps<typeof MobileHeroPairingStep> = {
       pairQrDataUrl: null,

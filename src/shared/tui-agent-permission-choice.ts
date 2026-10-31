@@ -51,12 +51,12 @@ const ARGS_BY_CHOICE: Record<AgentChatPermissionMode, Partial<Record<TuiAgent, s
   'full-access': YOLO_TUI_AGENT_ARGS
 }
 
-/** The flag text Orca adds for this choice; empty for `own` or a choice the agent lacks. */
+/** The flag text OCC adds for this choice; empty for `own` or a choice the agent lacks. */
 export function agentPermissionArgs(agent: TuiAgent, choice: AgentPermissionChoice): string {
   return choice === 'own' ? '' : (ARGS_BY_CHOICE[choice][agent] ?? '')
 }
 
-/** The environment Orca adds for this choice (Goose's bypass is an env var). */
+/** The environment OCC adds for this choice (Goose's bypass is an env var). */
 export function agentPermissionEnv(
   agent: TuiAgent,
   choice: AgentPermissionChoice

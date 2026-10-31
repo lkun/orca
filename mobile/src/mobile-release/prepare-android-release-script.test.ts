@@ -57,7 +57,7 @@ describe('prepare Android release script', () => {
       env: scenarioEnv(configPath, outputPath, { MOBILE_ANDROID_PUBLISH_RELEASE: 'true' })
     })
 
-    expect(output).toContain('Prepared Orca Mobile Android 0.0.22 (4)')
+    expect(output).toContain('Prepared OCC Mobile Android 0.0.22 (4)')
     expect(output).toContain('Release tag: mobile-android-v0.0.22')
     expect(readFileSync(outputPath, 'utf8')).toBe(
       'version=0.0.22\nandroid_version_code=4\ntag=mobile-android-v0.0.22\npublish_release=true\n'

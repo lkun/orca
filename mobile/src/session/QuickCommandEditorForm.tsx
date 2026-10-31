@@ -169,7 +169,7 @@ export function QuickCommandEditorForm({
               {promptSize.olderHostCap
                 ? t(
                     'session.quickCommandEditorForm.olderHostPromptTooLong',
-                    'Too long for this host. Update Orca on the host to save longer prompts.'
+                    'Too long for this host. Update OCC on the host to save longer prompts.'
                   )
                 : t('session.quickCommandEditorForm.promptTooLong', 'Too long to save.')}
             </Text>

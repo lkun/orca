@@ -219,7 +219,7 @@ describe('repairing damaged profile-state sections', () => {
       const before = readFileSync(profile.databaseFile)
       expect(startupFailure(profile).repairableSections).toBeUndefined()
       expect(() => rollback(profile, { kind: 'repair' })).toThrow(
-        "Orca can't repair this profile one section at a time"
+        "OCC can't repair this profile one section at a time"
       )
       expect(readFileSync(profile.databaseFile)).toEqual(before)
     }

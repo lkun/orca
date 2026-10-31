@@ -10,7 +10,7 @@ vi.mock('os', async () => {
 })
 
 import { GrokHookService } from './hook-service'
-// Hookless Orca-owned remnants must not masquerade as deliberate user opt-outs and block reinstall.
+// Hookless OCC-owned remnants must not masquerade as deliberate user opt-outs and block reinstall.
 const SCHEMA = 'https://grok.example/hooks.schema.json'
 
 describe('Grok hook removal leaves no remnant that blocks reinstall', () => {

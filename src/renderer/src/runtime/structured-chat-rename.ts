@@ -100,7 +100,7 @@ async function submitRename(
 
 /**
  * Uploads a tab rename this window saved before names lived on the host. The host takes it only
- * while the chat still has Orca's own name, so a later rename from any window wins; either way the
+ * while the chat still has OCC's own name, so a later rename from any window wins; either way the
  * host's name is the chat's name from then on and the tab stops carrying its own.
  */
 export async function uploadLegacyStructuredChatRename(

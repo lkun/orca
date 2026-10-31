@@ -264,7 +264,7 @@ shim="$profile/linux-orca-cli-shim/orca"
 grep -q '^expected_runtime_identity=' "$shim"
 grep -q '^expected_launcher_identity=' "$shim"
 bundled_cli=$(sed -n "s/^launcher='\([^']*\)'$/\1/p" "$shim")
-[[ "$bundled_cli" == */resources/bin/orca-ide && -x "$bundled_cli" ]]
+[[ "$bundled_cli" == */resources/bin/occ-ide && -x "$bundled_cli" ]]
 [[ "$bundled_cli" != "$XDG_CACHE_HOME/"* ]]
 runtime_root=$(dirname "$(dirname "$(dirname "$bundled_cli")")")
 # Window/updater readiness runs in parallel with RPC startup and metadata publication.
@@ -293,7 +293,7 @@ if [[ "$runtime_ready" != true ]]; then
   exit 1
 fi
 identity_alive "$launcher_pid" "$launcher_start_ticks"
-[[ $(readlink -f "/proc/$runtime_pid/exe") == "$runtime_root/orca-ide" ]]
+[[ $(readlink -f "/proc/$runtime_pid/exe") == "$runtime_root/occ-ide" ]]
 parent_pid_namespace=$(readlink /proc/self/ns/pid)
 namespace_command=(unshare --pid --fork --kill-child --mount-proc)
 if ! timeout --kill-after=5s 10s "${namespace_command[@]}" true 2> "$state_dir/pidns-setup.stderr"; then

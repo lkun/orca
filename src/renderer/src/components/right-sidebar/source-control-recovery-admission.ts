@@ -12,7 +12,7 @@ export function sourceControlRecoveryScopeKey(context: RuntimeGitContext): strin
   ])
 }
 
-/** Blocks only on Orca Git work the host reports; the agent's prompt covers Git started elsewhere. */
+/** Blocks only on OCC Git work the host reports; the agent's prompt covers Git started elsewhere. */
 export async function admitSourceControlRecovery(
   context: RuntimeGitContext,
   signal?: AbortSignal

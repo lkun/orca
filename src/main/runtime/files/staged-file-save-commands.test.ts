@@ -66,6 +66,6 @@ describe('a staged save through the runtime', () => {
     ).rejects.toThrow(/not served|SSH/i)
     await expect(
       commands().begin('conn-1', { worktree: 'id:wt-1', relativePath: 'a.txt', totalBytes: 1 })
-    ).rejects.toThrow('newer Orca client')
+    ).rejects.toThrow('newer OCC client')
   })
 })

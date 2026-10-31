@@ -59,7 +59,7 @@ function catalog(url: string, images?: Record<string, unknown>): PluginMarketpla
 
 const cover = png(1600, 1000)
 const manifest = {
-  name: 'Orca Midnight',
+  name: 'OCC Midnight',
   cover: { path: 'images/cover.png', alt: 'Midnight on the editor' },
   screenshots: [{ path: 'images/missing.png', alt: 'Gone' }]
 }

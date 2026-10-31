@@ -37,7 +37,7 @@ import {
 import { waitForPtyShellEcho } from './terminal-pty-readiness'
 import { parkHiddenTabBehindDecoy } from './helpers/terminal-hidden-parking'
 
-const POINTER_COMMAND = 'orca-dev orchestration check'
+const POINTER_COMMAND = 'occ-dev orchestration check'
 
 // Allow microtask/liveness deferral and the delayed Enter submission.
 const DELIVERY_TIMEOUT_MS = 20_000
@@ -478,7 +478,7 @@ test.describe('orchestration push-on-idle mail delivery', () => {
     ])
   })
 
-  // STA-11980: an unacked batch (left by an older Orca) defers the nudge for newer mail instead of dropping it.
+  // STA-11980: an unacked batch (left by an older OCC) defers the nudge for newer mail instead of dropping it.
   // e0cb9a68d2b: agents queue mid-turn input, so a turn starting in the Enter delay no longer withholds Enter.
   test('points newer mail once behind an unacked Delivery, and submits it when a turn starts in the Enter delay', async ({
     orcaPage,

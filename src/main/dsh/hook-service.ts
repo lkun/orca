@@ -66,7 +66,7 @@ function getManagedScript(target: 'local' | 'posix' = 'local'): string {
     ...buildPosixScrubSafeEnvRestoreLines(),
     ...buildPosixHookPayloadCapture(),
     ...buildPosixHookSpoolLines('dsh'),
-    // Refresh endpoint credentials for PTYs that outlive an Orca restart.
+    // Refresh endpoint credentials for PTYs that outlive an OCC restart.
     'if [ -n "$ORCA_AGENT_HOOK_ENDPOINT" ] && [ -r "$ORCA_AGENT_HOOK_ENDPOINT" ]; then',
     '  . "$ORCA_AGENT_HOOK_ENDPOINT" 2>/dev/null || :',
     'fi',
@@ -106,7 +106,7 @@ function writePatchText(configPath: string, text: string): void {
 }
 
 const FLOW_STYLE_DETAIL =
-  'The DSH home patch is a flow-style sequence ([…]); rewrite it as a block sequence (one `- ` entry per line) so Orca can add its hooks without breaking it'
+  'The DSH home patch is a flow-style sequence ([…]); rewrite it as a block sequence (one `- ` entry per line) so OCC can add its hooks without breaking it'
 
 function status(
   configPath: string,
@@ -124,7 +124,7 @@ function buildStatus(
   configPath: string
 ): AgentHookInstallStatus {
   if (managedText === null) {
-    return status(configPath, 'error', 'Could not read Orca managed hooks file')
+    return status(configPath, 'error', 'Could not read OCC managed hooks file')
   }
   // Check refusal first: an absent managed pointer would otherwise hide the actionable error.
   if (isDshPatchFileUnappendable(patchText)) {
@@ -137,7 +137,7 @@ function buildStatus(
       'not_installed',
       pointer === undefined
         ? null
-        : `The Orca patch block points at ${pointer}, not the Orca managed hooks file`
+        : `The OCC patch block points at ${pointer}, not the OCC managed hooks file`
     )
   }
   const present = readManagedDshHookEvents(

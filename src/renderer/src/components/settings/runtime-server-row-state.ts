@@ -107,7 +107,7 @@ function getRevokedDescription(name: string, repairRoute: RuntimePairingRepairRo
     // Managed SSH pairing normally happens automatically; reaching this error means it failed.
     return translate(
       'auto.components.settings.RuntimeEnvironmentsPane.managedAccessRevoked',
-      "{{value0}} no longer accepts this computer, and Orca couldn't pair with it again over SSH. Connect to try again.",
+      "{{value0}} no longer accepts this computer, and OCC couldn't pair with it again over SSH. Connect to try again.",
       { value0: name }
     )
   }

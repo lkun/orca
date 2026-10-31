@@ -397,7 +397,7 @@ async function dispatchCandidateSelectionKey(
 
 async function dispatchSogouEmptyCompositionUpdate(page: Page): Promise<void> {
   // Why: Sogou/fcitx emits empty compositionupdate data while its candidate
-  // popup is still open (#6765); Orca's tracker must not flip inactive on it.
+  // popup is still open (#6765); OCC's tracker must not flip inactive on it.
   await page.evaluate(() => {
     const active = document.activeElement
     if (!(active instanceof HTMLTextAreaElement)) {
@@ -587,8 +587,8 @@ test.describe('Chinese IME terminal chat input repro', () => {
 
     const ptyId = await waitForActivePanePtyId(orcaPage)
     const runId = randomUUID()
-    const scriptPath = path.join(testRepoPath, `.orca-windows-shift-ime-${runId}.cjs`)
-    const inputLogPath = path.join(testRepoPath, `.orca-windows-shift-ime-${runId}.jsonl`)
+    const scriptPath = path.join(testRepoPath, `.occ-windows-shift-ime-${runId}.cjs`)
+    const inputLogPath = path.join(testRepoPath, `.occ-windows-shift-ime-${runId}.jsonl`)
     writeFileSync(scriptPath, terminalImeHarnessScript(runId, inputLogPath))
     writeFileSync(inputLogPath, '')
     const session = await orcaPage.context().newCDPSession(orcaPage)

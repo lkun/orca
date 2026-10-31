@@ -64,7 +64,7 @@ export function lookupCodexHookAnswer(
     return Promise.resolve(
       readMemoizedCodexHookAnswer(codexPath, command, fingerprint) ?? {
         kind: 'pending',
-        failure: 'Orca has not asked Codex yet'
+        failure: 'OCC has not asked Codex yet'
       }
     )
   }
@@ -152,7 +152,7 @@ export const CODEX_ANSWER_AWAITED: CodexHookAnswer = {
 function codexNotFound(codexPath: string): CodexHookAnswer {
   return {
     kind: 'pending',
-    failure: `Orca could not find Codex at ${codexPath}`,
+    failure: `OCC could not find Codex at ${codexPath}`,
     codexMissing: true
   }
 }
@@ -162,7 +162,7 @@ export function resolveCodexHookAnswerForLaunch(waitMs: number): Promise<CodexHo
   return withTimeout<CodexHookAnswer | null>(resolveCodexHookAnswer(), waitMs, null)
 }
 
-/** Include all remembered versions to recognize Orca's earlier approvals. */
+/** Include all remembered versions to recognize OCC's earlier approvals. */
 export function readEveryKnownCodexHookHashes(): CodexHookHashes[] {
   return [
     ...[...answers.values()].flatMap(({ answer }) =>

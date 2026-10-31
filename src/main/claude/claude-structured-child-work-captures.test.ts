@@ -83,7 +83,7 @@ describe('Claude child work from captured frame orders', () => {
   })
 
   // Confirmed process exit supplies no child outcome without an accepted Stop.
-  it('leaves how they ended unknown when Orca ends the session, and keeps every record', async () => {
+  it('leaves how they ended unknown when OCC ends the session, and keeps every record', async () => {
     const run = await producer(hostWithParent())
     const [running] = until(MOVED_TO_BACKGROUND, 51_275)
     run.replay(running)

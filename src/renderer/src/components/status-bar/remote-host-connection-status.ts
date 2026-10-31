@@ -52,7 +52,7 @@ export function runtimeHostBlockedCopy(
         'auto.components.status.bar.RuntimeHostStatusRow.access_revoked_summary',
         'This server revoked access for this computer'
       ),
-      // Why: Orca pairs a managed server over SSH by itself; it reaches here only when that failed.
+      // Why: OCC pairs a managed server over SSH by itself; it reaches here only when that failed.
       explanation:
         repairRoute === 'access-link'
           ? translate(
@@ -62,7 +62,7 @@ export function runtimeHostBlockedCopy(
           : repairRoute === 'ssh'
             ? translate(
                 'auto.components.status.bar.RuntimeHostStatusRow.managed_access_revoked_explanation',
-                "Orca couldn't pair with it again over SSH. Connect to try again."
+                "OCC couldn't pair with it again over SSH. Connect to try again."
               )
             : translate(
                 'auto.components.status.bar.RuntimeHostStatusRow.connect_access_revoked_explanation',
@@ -77,11 +77,11 @@ export function runtimeHostBlockedCopy(
     ),
     summary: translate(
       'auto.components.status.bar.RuntimeHostStatusRow.update_required_summary',
-      'Orca versions are not compatible'
+      'OCC versions are not compatible'
     ),
     explanation: translate(
       'auto.components.status.bar.RuntimeHostStatusRow.update_required_explanation',
-      'Update Orca on this computer or on the server, then connect again.'
+      'Update OCC on this computer or on the server, then connect again.'
     ),
     ...(compatibility?.kind === 'blocked'
       ? { detail: describeRuntimeCompatBlock(compatibility) }

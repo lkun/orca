@@ -15,10 +15,10 @@ const DIAGNOSTIC = 'pkexec: no polkit authentication agent found'
 const INSTALL_COMMAND = 'sudo apt-get install -y /tmp/orca-updates/orca_1.4.200_amd64.deb'
 const PACKAGE_FILE_NAME = 'orca_1.4.200_amd64.deb'
 const SUMMARY =
-  'Orca downloaded the system package. Quit Orca before finishing the update from a terminal.'
+  'OCC downloaded the system package. Quit OCC before finishing the update from a terminal.'
 const COPIED_NOTE =
-  `Command copied. Quit Orca, run it in a system terminal to install ${PACKAGE_FILE_NAME}, ` +
-  'then reopen Orca.'
+  `Command copied. Quit OCC, run it in a system terminal to install ${PACKAGE_FILE_NAME}, ` +
+  'then reopen OCC.'
 const INSTRUCTIONS = {
   ok: true as const,
   command: INSTALL_COMMAND,
@@ -147,9 +147,9 @@ describe('LinuxPackageInstallRecoveryCard copy', () => {
     expect(screen.getByText('Manual Install Required')).toBeTruthy()
     expect(screen.getByText(SUMMARY)).toBeTruthy()
     expect(
-      screen.getByText(/a system terminal on the computer where Orca is installed/)
+      screen.getByText(/a system terminal on the computer where OCC is installed/)
     ).toBeTruthy()
-    expect(screen.getByText(/Copy the command, quit Orca/)).toBeTruthy()
+    expect(screen.getByText(/Copy the command, quit OCC/)).toBeTruthy()
 
     expect(button('Copy Install Command')).toBeTruthy()
     expect(button('Show Package')).toBeTruthy()
@@ -203,7 +203,7 @@ describe('LinuxPackageInstallRecoveryCard copy action', () => {
     expect(footnoteElement()?.className).toContain('text-destructive')
     // Only main can declare a command unavailable; other rejections must not promote a full redownload.
     expect(button('Copy Install Command').dataset.variant).toBe('default')
-    expect(screen.getByText(/Copy the command, quit Orca/)).toBeTruthy()
+    expect(screen.getByText(/Copy the command, quit OCC/)).toBeTruthy()
     expect(button('Download Manually')).toBeTruthy()
     expect(writeClipboardText).not.toHaveBeenCalled()
   })
@@ -251,7 +251,7 @@ describe('LinuxPackageInstallRecoveryCard copy action', () => {
     expect(copyButton.dataset.variant).toBe('default')
     expect(isAriaDisabled(copyButton)).toBe(false)
     expect(button('Show Package').dataset.variant).toBe('outline')
-    expect(screen.getByText(/Copy the command, quit Orca/)).toBeTruthy()
+    expect(screen.getByText(/Copy the command, quit OCC/)).toBeTruthy()
     expect(button('Download Manually')).toBeTruthy()
   })
 
@@ -435,11 +435,11 @@ describe('LinuxPackageInstallRecoveryCard details', () => {
     expect(screen.getByText('Details')).toBeTruthy()
     expect(screen.queryByText('Last error')).toBeNull()
     // The digest check proves a moment in time, not continued file integrity.
-    const detail = screen.getByText(/Orca checks the downloaded file against the release metadata/)
+    const detail = screen.getByText(/OCC checks the downloaded file against the release metadata/)
     expect(detail.textContent).not.toContain(DIAGNOSTIC)
     expect(detail.textContent).toContain('at the moment it builds this command')
     expect(detail.textContent).toContain(
-      'The system package itself is not signature-checked, and Orca cannot vouch for the file ' +
+      'The system package itself is not signature-checked, and OCC cannot vouch for the file ' +
         'after that point.'
     )
   })
@@ -518,7 +518,7 @@ describe('LinuxPackageInstallRecoveryCard without a usable command', () => {
     expect(screen.queryByRole('button', { name: 'Copy Install Command' })).toBeNull()
     expect(button('Show Package').dataset.variant).toBe('default')
     expect(footnoteText()).toBe(UPDATER_FAILURE_COPY.linuxPackageNoPackageManager)
-    expect(screen.getByText(/Quit Orca before finishing the update/)).toBeTruthy()
+    expect(screen.getByText(/Quit OCC before finishing the update/)).toBeTruthy()
 
     fireEvent.click(button('Download Manually'))
     expect(openUrl).toHaveBeenCalledWith(RELEASE_URL)

@@ -85,8 +85,8 @@ export function waitForRecipeJson(child: ChildProcessHandle): Promise<number> {
         new RuntimeClientError(
           'runtime_serve_failed',
           typeof code === 'number'
-            ? `Orca serve exited before printing valid recipe JSON with code ${code}.`
-            : `Orca serve exited before printing valid recipe JSON via ${signal}.`
+            ? `OCC serve exited before printing valid recipe JSON with code ${code}.`
+            : `OCC serve exited before printing valid recipe JSON via ${signal}.`
         )
       )
     }

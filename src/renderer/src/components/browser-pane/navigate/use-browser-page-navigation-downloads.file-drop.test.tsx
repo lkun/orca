@@ -10,7 +10,7 @@ import {
 const mocks = vi.hoisted(() => ({ notice: vi.fn(), target: vi.fn(), navigate: vi.fn() }))
 vi.mock('@/lib/workspace-file-browser-open-target', () => ({
   REMOTE_FILE_BROWSER_UNSUPPORTED_MESSAGE:
-    'Open in Orca Browser is only available for local files.',
+    'Open in OCC Browser is only available for local files.',
   getWorkspaceFileBrowserOpenTarget: mocks.target
 }))
 vi.mock('./navigate-browser-page-url', () => ({ navigateBrowserPageToUrl: mocks.navigate }))
@@ -72,7 +72,7 @@ describe('browser file drops preserve source ownership', () => {
       expect(mocks.target).not.toHaveBeenCalled()
       expect(mocks.navigate).not.toHaveBeenCalled()
       expect(mocks.notice).toHaveBeenCalledWith(
-        'Open in Orca Browser is only available for local files.'
+        'Open in OCC Browser is only available for local files.'
       )
     }
   )

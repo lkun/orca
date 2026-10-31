@@ -341,9 +341,9 @@ describe('media preview protocol', () => {
     })
 
     it('fails the mint, not the player, when the host cannot serve chunk reads', async () => {
-      vi.mocked(assertRemoteChunkReadsSupported).mockRejectedValue(new Error('update Orca'))
+      vi.mocked(assertRemoteChunkReadsSupported).mockRejectedValue(new Error('update OCC'))
       await expect(grantRemoteFilePreview(event, addr('out/clip.mp4'), store)).rejects.toThrow(
-        'update Orca'
+        'update OCC'
       )
     })
 

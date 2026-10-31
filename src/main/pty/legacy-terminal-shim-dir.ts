@@ -149,7 +149,7 @@ function pathEntrySpellings(dir: string, windows: boolean): string[] {
 // Keep .. lexical: collapsing through a symlink can erase a real PATH entry, and remote/WSL paths cannot be resolved locally.
 // Missed legacy spellings remain safe because tombstones exclude their directory by inode.
 export function isLegacyTerminalShimPathEntry(entry: string): boolean {
-  // Remote Windows env can reach any host; recognize both slash styles in Orca's fixed layout.
+  // Remote Windows env can reach any host; recognize both slash styles in OCC's fixed layout.
   const normalized = stripTrailingSeparators(entry.replaceAll('\\', '/'), true).toLowerCase()
   return (
     normalized.endsWith(`/${LEGACY_SHIM_ROOT_DIR}/posix`) ||

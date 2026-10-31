@@ -106,7 +106,7 @@ export function registerPtyConnectionForegroundAgentRoutingTests(): void {
       expect(mockStoreState.removeAgentStatus).not.toHaveBeenCalled()
     })
 
-    it('clears pre-hook launch config when an Orca-started command exits', async () => {
+    it('clears pre-hook launch config when an OCC-started command exits', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout'] })
       const { connectPanePty } = await import('./pty-connection')
       vi.mocked(window.api.pty.confirmForegroundProcess).mockResolvedValue('zsh')
@@ -247,7 +247,7 @@ export function registerPtyConnectionForegroundAgentRoutingTests(): void {
       expect(resolveMockPaneWindowsShiftEnterEncoding(mockStoreState, paneKey)).toBe('csi-u')
     })
 
-    it('confirms an Orca-launched Droid fresh spawn in a no-OSC shell (Git Bash)', async () => {
+    it('confirms an OCC-launched Droid fresh spawn in a no-OSC shell (Git Bash)', async () => {
       // No-OSC shells need fresh-spawn sampling to earn routing trust; otherwise Shift+Enter falls back to Esc+CR (#7620).
       vi.useFakeTimers()
       const { connectPanePty } = await import('./pty-connection')

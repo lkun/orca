@@ -19,7 +19,7 @@ function issue(overrides: Partial<JiraIssue> = {}): JiraIssue {
     siteId: 'site-acme',
     title: 'Add Jira to mobile',
     url: 'https://acme.atlassian.net/browse/ORCA-123',
-    project: { id: 'p1', key: 'ORCA', name: 'Orca' },
+    project: { id: 'p1', key: 'ORCA', name: 'OCC' },
     issueType: { id: 't1', name: 'Task' },
     status: { id: 's1', name: 'To Do', categoryKey: 'new', categoryName: 'To Do' },
     labels: [],

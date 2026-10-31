@@ -3,7 +3,7 @@ export const FILE_REPLACE_WITH_UPLOAD_RUNTIME_CAPABILITY = 'files.replace-with-u
 export const FILE_REPLACE_WITH_UPLOAD_METHOD = 'files.replaceWithUpload'
 
 export const FILE_BYTES_SAVE_UPDATE_REQUIRED_MESSAGE =
-  'Saving binary files here requires a newer Orca server. Update the Orca server and try again.'
+  'Saving binary files here requires a newer OCC server. Update the OCC server and try again.'
 
 /** Raw bytes per `files.writeBase64Chunk` call, so its base64 stays under the remote write cap. */
 export const FILE_BYTES_WRITE_CHUNK_BYTES = 384 * 1024

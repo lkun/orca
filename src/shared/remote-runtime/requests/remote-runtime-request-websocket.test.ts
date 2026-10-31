@@ -7,7 +7,7 @@ import { REMOTE_RUNTIME_MAX_WEBSOCKET_FRAME_BYTES } from '../remote-runtime-memo
 import { WebSocketServer } from 'ws'
 
 describe('openRemoteRuntimeWebSocket', () => {
-  it('detaches Orca callback listeners when cleaned up', () => {
+  it('detaches OCC callback listeners when cleaned up', () => {
     const keyPair = generateKeyPair()
     const opened = openRemoteRuntimeWebSocket(
       pairedRuntimeConnectionFromOffer({

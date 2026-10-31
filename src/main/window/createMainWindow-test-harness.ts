@@ -154,7 +154,7 @@ export function createRendererRecoveryWindowHarness(): RendererRecoveryWindowHar
   const windowHandlers: RendererRecoveryWindowHarness['windowHandlers'] = {}
   const webContents = {
     id: 143,
-    getURL: vi.fn(() => 'file:///opt/orca/renderer/index.html'),
+    getURL: vi.fn(() => 'file:///opt/occ/renderer/index.html'),
     isDestroyed: vi.fn(() => false),
     on: vi.fn((event: string, handler: (...args: unknown[]) => void) => {
       windowHandlers[event] = handler

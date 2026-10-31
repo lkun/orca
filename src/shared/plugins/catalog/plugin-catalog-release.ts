@@ -54,13 +54,13 @@ export const pluginCatalogReleaseSchema = z
     commit: z
       .string()
       .regex(/^[0-9a-f]{40}$/, 'must be a full lowercase SHA-1 commit')
-      .meta(pluginFieldDoc('Full SHA-1 commit Orca checks out for this release.', NEXT)),
+      .meta(pluginFieldDoc('Full SHA-1 commit OCC checks out for this release.', NEXT)),
     contentHash: z
       .string()
       .regex(/^[0-9a-f]{64}$/, 'must be a lowercase SHA-256 hex digest')
       .meta(
         pluginFieldDoc(
-          "SHA-256 of the plugin's installed files, as Orca computes it at install.",
+          "SHA-256 of the plugin's installed files, as OCC computes it at install.",
           NEXT
         )
       ),
@@ -72,7 +72,7 @@ export const pluginCatalogReleaseSchema = z
       .regex(/^\d+\.\d+\.\d+$/, 'must be an x.y.z version')
       .meta(
         pluginFieldDoc(
-          "The manifest's `engines.orca` without `>=`. Older Orca lists the plugin but will not install it.",
+          "The manifest's `engines.orca` without `>=`. Older OCC lists the plugin but will not install it.",
           NEXT,
           [NEXT]
         )
@@ -85,7 +85,7 @@ export const pluginCatalogReleaseSchema = z
       .optional()
       .meta({
         ...pluginFieldDoc(
-          'Optional; Orca derives it from `contributes` and `execution`. When present, every kind of contribution the release carries, matching its manifest exactly. `instructions` needs the `declarative` profile or higher, `panel` and `editor` need `sandboxed-ui`, and `worker` needs `trusted-worker`.',
+          'Optional; OCC derives it from `contributes` and `execution`. When present, every kind of contribution the release carries, matching its manifest exactly. `instructions` needs the `declarative` profile or higher, `panel` and `editor` need `sandboxed-ui`, and `worker` needs `trusted-worker`.',
           NEXT,
           [['syntax']]
         ),
@@ -95,7 +95,7 @@ export const pluginCatalogReleaseSchema = z
       .optional()
       .meta(
         pluginFieldDoc(
-          "The manifest's `name`, so Orca can suggest the plugin before downloading it.",
+          "The manifest's `name`, so OCC can suggest the plugin before downloading it.",
           NEXT,
           ['Gleam']
         )
@@ -142,7 +142,7 @@ export const pluginCatalogReleaseSchema = z
       .catch(undefined)
       .meta(
         pluginFieldDoc(
-          'What the release adds, as the listing shows it. Generate it with the catalog tooling; Orca refuses an install whose manifest says otherwise.',
+          'What the release adds, as the listing shows it. Generate it with the catalog tooling; OCC refuses an install whose manifest says otherwise.',
           NEXT
         )
       ),
@@ -153,7 +153,7 @@ export const pluginCatalogReleaseSchema = z
       .catch(undefined)
       .meta(
         pluginFieldDoc(
-          'Every capability the release asks for. Orca refuses an install whose manifest asks for different ones.',
+          'Every capability the release asks for. OCC refuses an install whose manifest asks for different ones.',
           NEXT,
           [['notifications:show']]
         )
@@ -167,7 +167,7 @@ export const pluginCatalogReleaseSchema = z
       .optional()
       .meta(
         pluginFieldDoc(
-          'Extensions, without the dot, that this release opens. Orca suggests the plugin when such a file has no viewer.',
+          'Extensions, without the dot, that this release opens. OCC suggests the plugin when such a file has no viewer.',
           NEXT,
           [['gleam']]
         )
@@ -181,7 +181,7 @@ export const pluginCatalogReleaseSchema = z
       .optional()
       .meta(
         pluginFieldDoc(
-          'The `fileTypes` this release opens in a custom editor. Orca suggests the plugin for such a file even when it already opens it as text.',
+          'The `fileTypes` this release opens in a custom editor. OCC suggests the plugin for such a file even when it already opens it as text.',
           NEXT,
           [['excalidraw']]
         )
@@ -201,7 +201,7 @@ export const pluginCatalogReleaseSchema = z
   })
   .meta({
     id: 'CatalogRelease',
-    description: 'The exact release the catalog vouches for. Orca refuses bytes that differ.'
+    description: 'The exact release the catalog vouches for. OCC refuses bytes that differ.'
   })
 
 export type PluginCatalogRelease = z.infer<typeof pluginCatalogReleaseSchema>
@@ -256,7 +256,7 @@ export function pluginCatalogReleaseError(input: {
     return 'execution profile does not match the catalog release'
   }
   if (manifest.engines.orca !== `>=${release.minimumOrca}`) {
-    return 'Orca compatibility does not match the catalog release'
+    return 'OCC compatibility does not match the catalog release'
   }
   if (
     release.types &&

@@ -55,7 +55,7 @@ function renderActions(connectEnvironment: () => Promise<boolean>, name = 'Studi
   )
   act(() => {
     view.result.current.setName(name)
-    view.result.current.setPairingCode('orca://pair#code')
+    view.result.current.setPairingCode('occ://pair#code')
   })
   return view
 }
@@ -124,7 +124,7 @@ it('says a WSL host it kept was not removed yet, instead of "Removed"', async ()
   })
   expect(toastSuccess).not.toHaveBeenCalled()
   expect(toastWarning).toHaveBeenCalledWith(
-    'Orca didn’t remove the host yet: 1 terminal kept running. Remove it again to retry, or connect it to keep it.',
+    'OCC didn’t remove the host yet: 1 terminal kept running. Remove it again to retry, or connect it to keep it.',
     { duration: Infinity }
   )
 })

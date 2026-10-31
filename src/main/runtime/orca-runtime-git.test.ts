@@ -117,7 +117,7 @@ describe('RuntimeGitCommands', () => {
     }
   })
 
-  // #10451: node_modules/ ignores directories, not Orca symlinks; runtime status must pass their paths explicitly.
+  // #10451: node_modules/ ignores directories, not OCC symlinks; runtime status must pass their paths explicitly.
   it('passes the repo shared link paths through local runtime status', async () => {
     mocks.getStatus.mockResolvedValue({ entries: [], conflictOperation: 'none' })
     const commands = new RuntimeGitCommands({

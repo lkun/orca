@@ -51,7 +51,7 @@ index 4977ad741065e26bbfd35bc50e7558a033b13340..2ee2c11eb830116aca1370d89bef1daa
      const queue = new IdleTaskQueue(this._logService);
      for (let i = 33; i < 126; i++) {
        queue.enqueue(() => {
-+        // Orca: a canvas outside the document ignores the page's font smoothing and rasterizes
++        // OCC: a canvas outside the document ignores the page's font smoothing and rasterizes
 +        // heavier glyphs that stay cached, so leave them to on-demand drawing until connected.
 +        if (!domContainer?.isConnected) {
 +          return;
@@ -66,7 +66,7 @@ index 4977ad741065e26bbfd35bc50e7558a033b13340..2ee2c11eb830116aca1370d89bef1daa
    private _pageLayoutVersion = 0;
    public get pageLayoutVersion(): number { return this._pageLayoutVersion; }
  
-+  // Orca diagnostics: read by terminal-render-desync-weight-probe.ts to tell a real
++  // OCC diagnostics: read by terminal-render-desync-weight-probe.ts to tell a real
 +  // bold-collapse from a repaint problem. Canvas silently keeps its previous font when an
 +  // assignment fails to parse, which rasterizes glyphs at a stale weight.
 +  public fontProbeMismatchCount = 0;
@@ -103,7 +103,7 @@ index 4977ad741065e26bbfd35bc50e7558a033b13340..2ee2c11eb830116aca1370d89bef1daa
    }
  
 +  /**
-+   * Orca diagnostic. Canvas ignores a font assignment it cannot parse and silently keeps the
++   * OCC diagnostic. Canvas ignores a font assignment it cannot parse and silently keeps the
 +   * previous value, so a bad family or weight rasterizes every glyph at a stale weight. Record
 +   * the mismatch rather than correcting it: the goal is to tell that failure apart from a
 +   * repaint bug when a terminal renders bold-collapsed.

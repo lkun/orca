@@ -68,7 +68,7 @@ describe('WSL holder release on uninstall', () => {
 
   it('runs from the uninstaller only, after the app and its daemon are gone', () => {
     const hooks = readFileSync(
-      new URL('../../../config/nsis/orca-installer-hooks.nsh', import.meta.url),
+      new URL('../../../config/nsis/occ-installer-hooks.nsh', import.meta.url),
       'utf8'
     )
     const unInstall = hooks.slice(hooks.indexOf('!macro customUnInstall'))
@@ -81,7 +81,7 @@ describe('WSL holder release on uninstall', () => {
       `nsExec::Exec '"$INSTDIR\\\${APP_EXECUTABLE_FILENAME}" ${WSL_HOLDER_UNINSTALL_FLAG}'`
     )
     expect(release).toBeGreaterThan(-1)
-    // Killed first, so no running Orca can respawn a holder behind the release.
+    // Killed first, so no running OCC can respawn a holder behind the release.
     expect(release).toBeGreaterThan(realUninstall.indexOf('orca-terminal-daemon.exe'))
     expect(hooks.split(WSL_HOLDER_UNINSTALL_FLAG)).toHaveLength(2)
   })
@@ -90,7 +90,7 @@ describe('WSL holder release on uninstall', () => {
     electron.userDataPath = mkdtempSync(join(tmpdir(), 'orca-uninstall-no-holders-'))
     electron.exit.mockClear()
     try {
-      expect(runWslHolderUninstallPreflight(['Orca.exe', WSL_HOLDER_UNINSTALL_FLAG])).toBe(true)
+      expect(runWslHolderUninstallPreflight(['OCC.exe', WSL_HOLDER_UNINSTALL_FLAG])).toBe(true)
       await vi.waitFor(() => expect(electron.exit).toHaveBeenCalledWith(0))
       expect(electron.BrowserWindow).not.toHaveBeenCalled()
       expect(electron.requestSingleInstanceLock).not.toHaveBeenCalled()
@@ -104,11 +104,11 @@ describe('WSL holder release on uninstall', () => {
     vi.useFakeTimers()
     electron.exit.mockClear()
     appData.ensure.mockImplementationOnce(() => {
-      throw new Error('Orca could not find the Windows roaming AppData folder')
+      throw new Error('OCC could not find the Windows roaming AppData folder')
     })
     try {
       vi.spyOn(console, 'warn').mockImplementation(() => {})
-      expect(runWslHolderUninstallPreflight(['Orca.exe', WSL_HOLDER_UNINSTALL_FLAG])).toBe(true)
+      expect(runWslHolderUninstallPreflight(['OCC.exe', WSL_HOLDER_UNINSTALL_FLAG])).toBe(true)
       expect(electron.exit).toHaveBeenCalledExactlyOnceWith(1)
       // The timer armed before setup is cleared, so it can't exit a second time.
       vi.runAllTimers()
@@ -120,7 +120,7 @@ describe('WSL holder release on uninstall', () => {
 
   it('launches from the uninstaller only for a userData that has holder records', () => {
     const hooks = readFileSync(
-      new URL('../../../config/nsis/orca-installer-hooks.nsh', import.meta.url),
+      new URL('../../../config/nsis/occ-installer-hooks.nsh', import.meta.url),
       'utf8'
     )
     const launch = hooks.indexOf(`--orca-uninstall-release-wsl-holders'`)

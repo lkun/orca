@@ -615,7 +615,7 @@ describe('OrcaRuntimeService', () => {
         '-C',
         clonePath,
         '-c',
-        'user.name=Orca Test',
+        'user.name=OCC Test',
         '-c',
         'user.email=test@orca.invalid',
         'commit',
@@ -653,7 +653,7 @@ describe('OrcaRuntimeService', () => {
     try {
       await expect(
         createRuntime().cloneRepo('https://github.com/me/orca.git', destination)
-      ).rejects.toThrow('"orca" is already an Orca project')
+      ).rejects.toThrow('"orca" is already an OCC project')
       expect(spawnSpy).not.toHaveBeenCalled()
     } finally {
       getReposSpy.mockRestore()

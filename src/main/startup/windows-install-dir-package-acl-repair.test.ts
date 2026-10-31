@@ -135,7 +135,7 @@ describe('repairWindowsInstallDirPackageAcl', () => {
       (
         await repair({
           userDataPath,
-          installDir: 'D:\\Program Files\\Orca',
+          installDir: 'D:\\Program Files\\OCC',
           grants: moved.grants
         })
       ).result

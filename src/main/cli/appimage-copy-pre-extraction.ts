@@ -22,7 +22,7 @@ export const APPIMAGE_COPY_DAEMON_WAIT_MS = 8_000
 const NICE_PROGRAM_PATHS = ['/usr/bin/nice', '/bin/nice'] as const
 // electron-updater keeps a custom AppImage name unless it carries a version (AppImageUpdater.doInstall).
 const VERSIONED_NAME = /\d+\.\d+\.\d+/
-const GENERATION_EXECUTABLE_NAME = 'orca-ide'
+const GENERATION_EXECUTABLE_NAME = 'occ-ide'
 
 export type AppImageCopyPreExtractionOptions = {
   /** The running AppImage; defaults to this process's validated one. */

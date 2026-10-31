@@ -13,7 +13,7 @@ const context = (arch) => ({
   arch,
   electronPlatformName: 'darwin',
   appOutDir: `dist/mac-${arch}`,
-  packager: { appInfo: { productFilename: 'Orca' } }
+  packager: { appInfo: { productFilename: 'OCC' } }
 })
 const signedConfig = () => ({
   forceCodeSigning: true,

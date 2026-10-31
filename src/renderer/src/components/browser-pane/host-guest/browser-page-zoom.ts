@@ -4,7 +4,7 @@ export type { BrowserPageZoomCommand } from '../../../../../shared/browser-page-
 
 export const ORCA_BROWSER_PAGE_ZOOM_EVENT = 'orca:browser-page-zoom'
 
-/** Zoom chords that land in Orca's own window while a browser pane holds focus. */
+/** Zoom chords that land in OCC's own window while a browser pane holds focus. */
 export function dispatchBrowserPageZoom(command: BrowserPageZoomCommand): void {
   window.dispatchEvent(new CustomEvent(ORCA_BROWSER_PAGE_ZOOM_EVENT, { detail: command }))
 }

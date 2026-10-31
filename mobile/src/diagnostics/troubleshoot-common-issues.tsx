@@ -44,7 +44,7 @@ export function troubleshootCommonIssues(
       steps: [
         t(
           'diagnostics.troubleshootCommonIssues.allowNotifications',
-          'Check that system settings allow Orca notifications and that Focus or Do Not Disturb is off.'
+          'Check that system settings allow OCC notifications and that Focus or Do Not Disturb is off.'
         ),
         t(
           'diagnostics.troubleshootCommonIssues.notificationNetwork',
@@ -85,11 +85,11 @@ export function troubleshootCommonIssues(
       steps: [
         t(
           'diagnostics.troubleshootCommonIssues.macosFirewall',
-          'macOS: System Settings → Network → Firewall — allow Orca.'
+          'macOS: System Settings → Network → Firewall — allow OCC.'
         ),
         t(
           'diagnostics.troubleshootCommonIssues.windowsFirewall',
-          'Windows: Defender Firewall → Allow app — enable Orca for Private networks.'
+          'Windows: Defender Firewall → Allow app — enable OCC for Private networks.'
         ),
         t('diagnostics.troubleshootCommonIssues.linuxFirewall', 'Linux: sudo ufw allow {{port}}', {
           port
@@ -107,11 +107,11 @@ export function troubleshootCommonIssues(
       steps: [
         t(
           'diagnostics.troubleshootCommonIssues.openDesktop',
-          'Orca must be open on your desktop to accept connections.'
+          'OCC must be open on your desktop to accept connections.'
         ),
         t(
           'diagnostics.troubleshootCommonIssues.restartDesktop',
-          'Try restarting Orca — the companion server starts on launch.'
+          'Try restarting OCC — the companion server starts on launch.'
         ),
         t(
           'diagnostics.troubleshootCommonIssues.pairAfterUpdate',

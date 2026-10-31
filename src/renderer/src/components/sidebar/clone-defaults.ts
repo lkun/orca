@@ -15,7 +15,7 @@ export function getDefaultCloneParent(workspaceDir: string): string {
     return workspaceDir
   }
 
-  // Place clones beside Orca’s default workspaces tree.
+  // Place clones beside OCC’s default workspaces tree.
   const parent = separatorIndex === -1 ? '' : trimmed.slice(0, separatorIndex)
   if (parent === '' && trimmed.startsWith('/')) {
     return '/'

@@ -238,7 +238,7 @@ export function requestBrowserExtensionPopup(
   }
   const browserPageId = browserManager.getTabIdForWebContentsId(tab.id)
   const mainWindow = getBrowserExtensionMainWindow()
-  // Why: only Orca's own tabs have a toolbar; a popout, like Chrome's popup windows, has none.
+  // Why: only OCC's own tabs have a toolbar; a popout, like Chrome's popup windows, has none.
   if (!browserPageId || !mainWindow) {
     return Promise.reject(new BrowserExtensionApiError('This window has no toolbar for the popup'))
   }

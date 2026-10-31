@@ -43,7 +43,7 @@ function registry(managedServer?: SshConnectionState['managedServer']) {
   })
 }
 
-describe('managed Orca server host merging', () => {
+describe('managed OCC server host merging', () => {
   it('keeps both ids resolvable and shows one row routed to the server', () => {
     const hosts = registry({ kind: 'managed', environmentId: 'omarchy-server' })
 

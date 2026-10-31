@@ -38,7 +38,7 @@ function tabInStrip(page: Page, tabId: string) {
   return page.locator(`[data-testid="sortable-tab"][data-tab-id="${tabId}"]`)
 }
 
-/** Every Claude process Orca started, as the stub recorded it. */
+/** Every Claude process OCC started, as the stub recorded it. */
 function readStubLaunches(launchLog: string): { pid: number; args: string[] }[] {
   if (!existsSync(launchLog)) {
     return []
@@ -148,7 +148,7 @@ test.describe('structured chat tabs', () => {
       .toBeTruthy()
     await expect(tabInStrip(page, opened!.id)).toBeVisible()
 
-    // Orca's own lookup, on its shell-hydrated PATH and isolated HOME, lands on the stub.
+    // OCC's own lookup, on its shell-hydrated PATH and isolated HOME, lands on the stub.
     const mainEnv = await electronApp.evaluate(() => ({
       pathEnv: process.env.PATH ?? null,
       homePath: process.env.HOME

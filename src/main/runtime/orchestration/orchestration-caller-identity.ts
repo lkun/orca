@@ -13,7 +13,7 @@ export type OrchestrationCoordinatorKey = Pick<
   'terminalHandle' | 'paneKey' | 'orcaSessionId'
 >
 
-/** A caller the dispatch entry resolved from the Orca session id in its injected environment. */
+/** A caller the dispatch entry resolved from the OCC session id in its injected environment. */
 export type OrchestrationSessionCaller = OrchestrationCallerIdentity &
   Readonly<{
     orcaSessionId: OrcaSessionId
@@ -23,7 +23,7 @@ export type OrchestrationSessionCaller = OrchestrationCallerIdentity &
     workspaceId: string
   }>
 
-/** A caller with neither a pane nor an Orca session id can never be bound to a Run. */
+/** A caller with neither a pane nor an OCC session id can never be bound to a Run. */
 export function hasRunBindingKey(caller: OrchestrationCoordinatorKey): boolean {
   return caller.paneKey !== null || caller.orcaSessionId !== null
 }
@@ -39,7 +39,7 @@ export function mailboxAddressOf(
   return party.orcaSessionId === null ? null : formatOrcaSessionAddress(party.orcaSessionId)
 }
 
-/** Who a Run's binding names now; an Orca session id an older binding left behind is not part of it. */
+/** Who a Run's binding names now; an OCC session id an older binding left behind is not part of it. */
 export function runCoordinatorKey(run: RunRow): OrchestrationCoordinatorKey {
   return {
     terminalHandle: run.coordinator_handle,

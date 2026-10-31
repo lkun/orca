@@ -271,7 +271,7 @@ describe('startRuntimeLocalWorktreeTerminals held startup terminal (E9)', () => 
     })
 
     expect(result.warning).toBe(
-      "Failed to create the startup terminal for /worktree: The WSL distro Ubuntu is stopped, so Orca didn't start this terminal. Start the distro, then try again."
+      "Failed to create the startup terminal for /worktree: The WSL distro Ubuntu is stopped, so OCC didn't start this terminal. Start the distro, then try again."
     )
     expect(result.warning).not.toContain('terminal_held_wsl_distro')
   })

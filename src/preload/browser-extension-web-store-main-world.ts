@@ -99,7 +99,7 @@ export function installChromeWebStoreApis(
               last(result.value)
             }
           }),
-        () => withLastError('Orca could not handle this request', () => last())
+        () => withLastError('OCC could not handle this request', () => last())
       )
       return undefined
     }

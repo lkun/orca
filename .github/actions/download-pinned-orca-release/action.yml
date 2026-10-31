@@ -1,4 +1,4 @@
-name: Download pinned Orca release
+name: Download pinned OCC release
 description: Downloads a released Linux .deb, checks its SHA-512, extracts it and points ORCA_CROSS_VERSION_PACKAGED_EXECUTABLE at its executable.
 
 inputs:
@@ -35,7 +35,7 @@ runs:
         assert base64.b64encode(digest.digest()).decode()==os.environ['ORCA_PINNED_SHA512']
         extracted=root/'extracted'
         subprocess.run(['dpkg-deb','-x',str(package),str(extracted)],check=True)
-        executable=extracted/'opt'/'Orca'/'orca-ide'
+        executable=extracted/'opt'/'OCC'/'occ-ide'
         assert executable.is_file() and os.access(executable,os.X_OK)
         with open(os.environ['GITHUB_ENV'],'a') as env: env.write('ORCA_CROSS_VERSION_PACKAGED_EXECUTABLE='+str(executable)+'\n')
         print('Verified old package:',executable)

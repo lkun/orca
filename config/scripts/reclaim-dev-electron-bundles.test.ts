@@ -19,7 +19,7 @@ afterEach(() => {
 })
 
 function makeWorktree(bundles: { name: string; marker: boolean }[]): string {
-  const worktree = mkdtempSync(path.join(tmpdir(), 'orca-dev-bundles-'))
+  const worktree = mkdtempSync(path.join(tmpdir(), 'occ-dev-bundles-'))
   roots.push(worktree)
   for (const bundle of bundles) {
     const dir = path.join(worktree, 'out', 'electron-dev', bundle.name)
@@ -45,7 +45,7 @@ describe('collectDevBundles', () => {
   })
 
   it('returns nothing for a worktree that has never run the dev app', () => {
-    const worktree = mkdtempSync(path.join(tmpdir(), 'orca-dev-bundles-'))
+    const worktree = mkdtempSync(path.join(tmpdir(), 'occ-dev-bundles-'))
     roots.push(worktree)
     expect(collectDevBundles(worktree)).toEqual([])
   })
@@ -122,7 +122,7 @@ describe('sweeping across worktrees', () => {
     const stale = selectStaleDevBundleDirs({
       bundles,
       currentDir: null,
-      processTable: `/usr/bin/foo ${live.dir}/Orca.app/Contents/MacOS/Electron`,
+      processTable: `/usr/bin/foo ${live.dir}/OCC.app/Contents/MacOS/Electron`,
       nowMs: Date.now()
     })
     expect(stale).toEqual([bundles.find((bundle) => bundle.dir.endsWith('idle'))!.dir])

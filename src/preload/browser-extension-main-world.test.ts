@@ -173,7 +173,7 @@ describe('installBrowserExtensionApis', () => {
     await expect(call(chrome, 'windows.get', 9)).rejects.toThrow('No window with id: 9.')
   })
 
-  it('runs the native query without Orca-owned keys and sends its result to main', async () => {
+  it('runs the native query without OCC-owned keys and sends its result to main', async () => {
     const { chrome, calls, nativeQuery } = installInFreshRealm([], () => ok([]))
     await call(chrome, 'tabs.query', { active: true, currentWindow: true, url: 'https://*/*' })
     expect(nativeQuery.mock.calls[0][0]).toEqual({ url: 'https://*/*' })
@@ -207,7 +207,7 @@ describe('installBrowserExtensionApis', () => {
     ])
   })
 
-  it('replaces the native runtime.onInstalled on chrome and browser so only Orca fires it', () => {
+  it('replaces the native runtime.onInstalled on chrome and browser so only OCC fires it', () => {
     const { chrome, browser, listens, emit, nativeOnInstalled } = installInFreshRealm([], () =>
       ok(null)
     )

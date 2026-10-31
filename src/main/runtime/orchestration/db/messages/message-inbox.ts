@@ -73,7 +73,7 @@ export function convertLifecycleMessageToRejection(
   }
 
   const originalBody = message.body ? `\n\nOriginal body:\n${message.body}` : ''
-  const body = `Orca rejected this ${message.type}: ${reason}${originalBody}`
+  const body = `OCC rejected this ${message.type}: ${reason}${originalBody}`
   const payload = addLifecycleRejectionMarker(message.payload, code, reason)
   // Keep rejected lifecycle signals auditable but non-actionable on read paths.
   this.db

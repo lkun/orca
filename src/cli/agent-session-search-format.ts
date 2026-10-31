@@ -68,7 +68,7 @@ function formatUnavailable(
     return 'Session search is off on this host.'
   }
   if (reason === 'unsupported-agent') {
-    return 'This host does not support history search for the selected agent. Update Orca on that host or select another agent.'
+    return 'This host does not support history search for the selected agent. Update OCC on that host or select another agent.'
   }
   // Only hand-built requests can select an unknown identity; the CLI scopes by path.
   if (reason === 'scope-unknown') {
@@ -79,7 +79,7 @@ function formatUnavailable(
   }
   return [
     'This host runs no session search service.',
-    'An Orca host older than session search answers the same way; update it and try again.'
+    'An OCC host older than session search answers the same way; update it and try again.'
   ].join('\n')
 }
 

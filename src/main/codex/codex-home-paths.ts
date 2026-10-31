@@ -53,7 +53,7 @@ export function getOrcaManagedCodexHomePath(): string {
   return managedHomePath
 }
 
-/** Config files an Orca-launched local Codex reads trust from, in the hook installer's lock order. */
+/** Config files an OCC-launched local Codex reads trust from, in the hook installer's lock order. */
 export function getLocalCodexTrustConfigFiles(
   agentHome: string,
   launchCodexHome?: string | null

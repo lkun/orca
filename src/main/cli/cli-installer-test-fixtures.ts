@@ -22,7 +22,7 @@ export async function createPackagedMacLauncher(
 ): Promise<string> {
   const resourcesPath = join(root, 'resources')
   await mkdir(join(resourcesPath, 'bin'), { recursive: true })
-  await writeFile(join(resourcesPath, 'bin', 'orca'), launcherContent, {
+  await writeFile(join(resourcesPath, 'bin', 'occ'), launcherContent, {
     encoding: 'utf8',
     mode: 0o755
   })

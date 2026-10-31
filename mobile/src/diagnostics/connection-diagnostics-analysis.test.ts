@@ -51,7 +51,7 @@ describe('diagnoseConnection', () => {
       })
     ).toEqual({
       likelyCause: 'The saved Tailscale endpoint did not answer before the connection timeout.',
-      nextStep: 'Relay recovery is in progress; keep Orca open while it retries.',
+      nextStep: 'Relay recovery is in progress; keep OCC open while it retries.',
       reportability: 'none'
     })
   })
@@ -72,7 +72,7 @@ describe('diagnoseConnection', () => {
       })
     ).toEqual({
       likelyCause: 'Relay stopped answering authenticated health checks.',
-      nextStep: 'Orca closed the stale session and started recovery.',
+      nextStep: 'OCC closed the stale session and started recovery.',
       reportability: 'orca-relay'
     })
   })
@@ -93,7 +93,7 @@ describe('diagnoseConnection', () => {
       })
     ).toEqual({
       likelyCause: 'The active Relay session closed unexpectedly.',
-      nextStep: 'Orca started Relay recovery; the event history includes the cell close reason.',
+      nextStep: 'OCC started Relay recovery; the event history includes the cell close reason.',
       reportability: 'orca-relay'
     })
   })
@@ -190,7 +190,7 @@ describe('diagnoseConnection', () => {
       })
     ).toEqual({
       likelyCause: 'The connected host stopped answering authenticated health checks.',
-      nextStep: 'Orca closed the stale session and started recovery.',
+      nextStep: 'OCC closed the stale session and started recovery.',
       reportability: 'none'
     })
   })
@@ -214,7 +214,7 @@ describe('diagnoseConnection', () => {
       })
     ).toEqual({
       likelyCause: 'Connection deadline delivery was delayed; the app may have been suspended.',
-      nextStep: 'Orca is re-dialing to check the connection. Keep the app open while it retries.',
+      nextStep: 'OCC is re-dialing to check the connection. Keep the app open while it retries.',
       reportability: 'none'
     })
   })

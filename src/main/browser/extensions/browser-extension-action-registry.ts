@@ -6,7 +6,7 @@ import {
 } from './browser-extension-action-state'
 
 /**
- * Orca owns chrome.action state: Electron's built-in action methods keep nothing main can read,
+ * OCC owns chrome.action state: Electron's built-in action methods keep nothing main can read,
  * so the action namespace overrides all of them and every toolbar reads from here.
  */
 const stateByProfileId = new Map<string, Map<string, BrowserExtensionActionState>>()

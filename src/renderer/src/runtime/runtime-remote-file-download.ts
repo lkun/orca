@@ -9,7 +9,7 @@ import type { getRemoteFileArgs } from './runtime-file-routing'
 
 const REMOTE_DOWNLOAD_CHUNK_BYTES = 384 * 1024
 const REMOTE_DOWNLOAD_UPDATE_REQUIRED_MESSAGE =
-  'Remote file download requires a newer Orca server. Update the headless server and try again.'
+  'Remote file download requires a newer OCC server. Update the headless server and try again.'
 
 export type RemoteFileDownloadArgs = NonNullable<ReturnType<typeof getRemoteFileArgs>>
 

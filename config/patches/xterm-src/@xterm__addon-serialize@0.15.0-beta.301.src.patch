@@ -184,7 +184,7 @@ index e1728feb219c362dfa2ecb602ff99f830d520757..265b9792403601c286bc341f9d046dcd
 +          // BEFORE any re-set. Upstream's independent per-flag diff could emit
 +          // "1;22" (bold set, then wiped by dim's clear — \x1b[2mA\x1b[22m\x1b[1mB
 +          // loses B's bold on round-trip) or a bare "22" that drops a still-set
-+          // bold/dim, garbling Orca's hidden-terminal snapshot restores.
++          // bold/dim, garbling OCC's hidden-terminal snapshot restores.
 +          const boldChanged = cell.isBold() !== oldCell.isBold();
 +          const dimChanged = cell.isDim() !== oldCell.isDim();
 +          if (boldChanged || dimChanged) {

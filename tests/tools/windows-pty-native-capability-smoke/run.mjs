@@ -10,7 +10,7 @@ const MAX_DIAGNOSTIC_CHARS = 8_000
 function executableArgument(argv) {
   const value = argv.find((arg) => arg.startsWith('--exe='))?.slice('--exe='.length)
   if (!value) {
-    throw new Error('usage: windows-pty-native-capability-smoke --exe=<packaged Orca.exe>')
+    throw new Error('usage: windows-pty-native-capability-smoke --exe=<packaged OCC.exe>')
   }
   return path.resolve(value)
 }

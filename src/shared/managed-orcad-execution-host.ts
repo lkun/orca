@@ -24,7 +24,7 @@ export type MergedExecutionHost = {
   mergedIntoHostId?: ExecutionHostId
 }
 
-/** The SSH target this environment is the managed Orca server for; null for any other server. */
+/** The SSH target this environment is the managed OCC server for; null for any other server. */
 export function getManagedOrcadSshTargetId(
   environment: ManagedOrcadEnvironmentSummary
 ): string | null {

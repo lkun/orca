@@ -186,7 +186,7 @@ describe.skipIf(skip)('orca serve on orcad', () => {
     })
     expect(result.code).toBe(78)
     expect(result.stdout).toBe('')
-    expect(result.stderr).toContain('The Orca desktop app')
+    expect(result.stderr).toContain('The OCC desktop app')
   }, 90_000)
 
   // Allow real orcad startup and HTTP round trips for the missing-web-client regression (#30120).

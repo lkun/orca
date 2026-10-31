@@ -443,7 +443,7 @@ describe('acquireOrcadInstanceLock', () => {
     expect(() => acquireOrcadInstanceLock(root, hooks({ processIsAlive: () => true }))).toThrow(
       expect.objectContaining({
         code: 'orcad_instance_lock_held',
-        message: expect.stringContaining('The Orca desktop app')
+        message: expect.stringContaining('The OCC desktop app')
       })
     )
     desktop.release()

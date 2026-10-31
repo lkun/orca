@@ -212,8 +212,8 @@ describe('SkillFreshnessUpdateDialog', () => {
   })
 
   it.each([
-    ['update-server', 'Update Orca on the server to update its Orca skills.'],
-    ['connect-host', 'Connect to this SSH host to check its Orca skills.']
+    ['update-server', 'Update OCC on the server to update its OCC skills.'],
+    ['connect-host', 'Connect to this SSH host to check its OCC skills.']
   ])('explains a %s host instead of offering Update', (reason, text) => {
     mocks.unsupported = reason
     render()
@@ -231,7 +231,7 @@ describe('SkillFreshnessUpdateDialog', () => {
     ])
     render()
 
-    expect(container.textContent).toContain('All installed Orca skills are up to date.')
+    expect(container.textContent).toContain('All installed OCC skills are up to date.')
     expect(button('Install for Claude Code').disabled).toBe(false)
   })
 
@@ -240,8 +240,8 @@ describe('SkillFreshnessUpdateDialog', () => {
     render()
 
     const row = container.querySelector('[data-skill-row="orca-cli"]')
-    expect(row?.textContent).toContain('Update skipped: Skill edited outside Orca')
-    expect(row?.textContent).toContain("Replace with Orca's copy (keeps a backup)")
+    expect(row?.textContent).toContain('Update skipped: Skill edited outside OCC')
+    expect(row?.textContent).toContain("Replace with OCC's copy (keeps a backup)")
   })
 
   it('re-plans with force when Replace is toggled and executes that plan', async () => {
@@ -260,7 +260,7 @@ describe('SkillFreshnessUpdateDialog', () => {
       await forced.promise
     })
     expect(container.querySelector('[data-skill-row="orca-cli"]')?.textContent).toBe(
-      "orca-cliReplaceReplace with Orca's copy (keeps a backup)"
+      "orca-cliReplaceReplace with OCC's copy (keeps a backup)"
     )
     skillsApi.bundledExecute.mockResolvedValueOnce(doneResult(forcedPlan()))
     click(button('Update 1 skill'))
@@ -300,13 +300,13 @@ describe('SkillFreshnessUpdateDialog', () => {
 
     expect(rowNames()).toEqual(['orchestration', 'orca-cli'])
     const row = container.querySelector('[data-skill-row="orca-cli"]')
-    expect(row?.textContent).toBe("orca-cliReplaceReplace with Orca's copy (keeps a backup)")
+    expect(row?.textContent).toBe("orca-cliReplaceReplace with OCC's copy (keeps a backup)")
     expect(replaceCheckbox().getAttribute('aria-checked')).toBe('true')
 
     click(replaceCheckbox())
     await flush()
     expect(rowNames()).toEqual(['orchestration', 'orca-cli'])
-    expect(row?.textContent).toContain('Update skipped: Skill edited outside Orca')
+    expect(row?.textContent).toContain('Update skipped: Skill edited outside OCC')
   })
 
   it('reports each skill with its left-alone copies after the run', async () => {
@@ -325,7 +325,7 @@ describe('SkillFreshnessUpdateDialog', () => {
     expect(container.textContent).toContain('Updated 1 skill · 1 skipped')
     const row = container.querySelector('[data-skill-row="orca-cli"]')?.textContent ?? ''
     expect(row).toContain('Updated')
-    expect(row).toContain('Update skipped: Skill edited outside Orca')
+    expect(row).toContain('Update skipped: Skill edited outside OCC')
     expect(mocks.notifyChanged).toHaveBeenCalled()
     expect(button('Done')).toBeTruthy()
   })
@@ -552,7 +552,7 @@ describe('SkillFreshnessUpdateDialog', () => {
     mocks.plan = planOf([sharedEntry('orca-cli', 'keep')])
     render()
 
-    expect(container.textContent).toContain('All installed Orca skills are up to date.')
+    expect(container.textContent).toContain('All installed OCC skills are up to date.')
     expect(
       [...container.querySelectorAll('button')].some((candidate) =>
         candidate.textContent?.startsWith('Update ')

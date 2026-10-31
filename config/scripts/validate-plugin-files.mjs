@@ -14,7 +14,7 @@ const { validatePluginFile, pluginManifestWarnings } = loadPluginSchemaModule(
 )
 const { parsePluginManifest } = loadPluginSchemaModule('manifest/plugin-manifest.ts')
 const { pluginCatalogReleaseEntry } = loadPluginSchemaModule('catalog/plugin-catalog-release.ts')
-// Why the install code itself: the printed contentHash must be what Orca computes at install.
+// Why the install code itself: the printed contentHash must be what OCC computes at install.
 const { materializePluginGitTree } = loadPluginSchemaModule(
   '../../main/plugins/installation/plugin-git-tree.ts'
 )
@@ -34,7 +34,7 @@ const { englishSourceLookup } = loadPluginSchemaModule(
   'languages/plugin-translation-string-policy.ts'
 )
 let englishSource = null
-// Why Orca's English: pack strings are capped relative to the text they translate.
+// Why OCC's English: pack strings are capped relative to the text they translate.
 function englishLookup() {
   englishSource ??= englishSourceLookup(
     JSON.parse(
@@ -116,13 +116,13 @@ async function catalogReleaseEntry(pluginDir) {
     rmSync(tree, { recursive: true, force: true })
   }
 }
-// Why a warning: Orca derives the publisher from the owner; older Orca refuses a declared one that differs.
+// Why a warning: OCC derives the publisher from the owner; older OCC refuses a declared one that differs.
 async function publisherOwnerWarning(pluginDir) {
   const remote = await git(pluginDir, ['remote', 'get-url', 'origin']).catch(() => '')
   const owner = parseGitRepositoryIdentity(remote)?.owner
   const { publisher } = JSON.parse(readFileSync(path.join(pluginDir, 'orca-plugin.json'), 'utf8'))
   return owner && typeof publisher === 'string' && owner.toLowerCase() !== publisher.toLowerCase()
-    ? `warning: Orca lists this plugin under the repository owner "${owner.toLowerCase()}", and older Orca refuses it because publisher is "${publisher}"; remove publisher or set it to "${owner.toLowerCase()}"`
+    ? `warning: OCC lists this plugin under the repository owner "${owner.toLowerCase()}", and older OCC refuses it because publisher is "${publisher}"; remove publisher or set it to "${owner.toLowerCase()}"`
     : null
 }
 

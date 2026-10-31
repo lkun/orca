@@ -47,8 +47,8 @@ describe('account RPC methods', () => {
       { provider: 'opencode', sourceDataHome: join(tmpdir(), 'login'), label: 'Work' },
       /only available/
     ],
-    ['accounts.beginClaudeSignIn', {}, /Sign in on the Orca execution host/],
-    ['accounts.finishClaudeSignIn', { accountId: 'a' }, /Sign in on the Orca execution host/]
+    ['accounts.beginClaudeSignIn', {}, /Sign in on the OCC execution host/],
+    ['accounts.finishClaudeSignIn', { accountId: 'a' }, /Sign in on the OCC execution host/]
   ] as const)('rejects paired-device calls to %s', async (methodName, params, refusal) => {
     const runtime = {
       addCodexAccountFromHome: vi.fn(),
@@ -344,7 +344,7 @@ it('rejects the retired Claude import even for a local socket, before touching i
   }
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: Rejection happens before the handler accesses its context.
   await expect(old.handler({ configDir: '/never-read' }, {} as never)).rejects.toThrow(
-    'Update the Orca CLI to add accounts'
+    'Update the OCC CLI to add accounts'
   )
 })
 
@@ -366,7 +366,7 @@ it('takes a host launch env from the owning desktop and refuses a phone', async 
   await setMethod.handler(params, { runtime, clientKind: 'runtime' })
   expect(set).toHaveBeenCalledWith(params)
   await expect(setMethod.handler(params, { runtime, clientKind: 'mobile' })).rejects.toThrow(
-    /Only the Orca desktop/
+    /Only the OCC desktop/
   )
   expect(set).toHaveBeenCalledOnce()
 })

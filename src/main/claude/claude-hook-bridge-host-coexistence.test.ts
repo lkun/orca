@@ -1,7 +1,7 @@
 /**
  * R42: during the move to WSL hosts, the WSL bridge (installing from Windows) and the distro's own
  * orcad (installing locally) both reconcile Claude's hooks in the distro's ~/.claude. Both write
- * the one shared entry, so in either order the file ends with exactly one Orca entry per event,
+ * the one shared entry, so in either order the file ends with exactly one OCC entry per event,
  * and the user's own hooks survive.
  */
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
@@ -47,7 +47,7 @@ describe('Claude hooks written by the WSL bridge and the WSL host in one home', 
   it.each([
     ['bridge then host', [byBridge, byHost]],
     ['host then bridge', [byHost, byBridge]]
-  ] as const)('%s: one Orca entry per event, the user hook kept', (_order, writers) => {
+  ] as const)('%s: one OCC entry per event, the user hook kept', (_order, writers) => {
     const start: HooksConfig = { hooks: { Stop: [userHook] } }
     const after = writers.reduce((config, write) => write(config), start)
 

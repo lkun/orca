@@ -55,7 +55,7 @@ describe('MimoCodeHookService buildPtyEnv', () => {
   })
 
   // MIMOCODE_HOME also moves auth.json, sessions and state (#9132); only add a config layer.
-  it('sets only MIMOCODE_CONFIG_DIR to a directory holding just the Orca plugin', () => {
+  it('sets only MIMOCODE_CONFIG_DIR to a directory holding just the OCC plugin', () => {
     const env = new MimoCodeHookService().buildPtyEnv('pty-1')
 
     const overlay = join(userDataDir, 'mimocode-hooks', 'config')
@@ -84,7 +84,7 @@ describe('MimoCodeHookService buildPtyEnv', () => {
   })
 
   it.skipIf(process.platform === 'win32')(
-    "never writes the Orca plugin through a user's linked plugins folder",
+    "never writes the OCC plugin through a user's linked plugins folder",
     () => {
       const linkedPlugins = mkdtempSync(join(tmpdir(), 'orca-mimocode-linked-plugins-'))
       writeFileSync(join(linkedPlugins, 'user-plugin.js'), 'export default () => {}')
@@ -103,7 +103,7 @@ describe('MimoCodeHookService buildPtyEnv', () => {
     }
   )
 
-  it('carries a login made under the old Orca MIMOCODE_HOME over once, owner-only', () => {
+  it('carries a login made under the old OCC MIMOCODE_HOME over once, owner-only', () => {
     const legacyData = join(userDataDir, 'mimocode-hooks', 'shared', 'data')
     mkdirSync(legacyData, { recursive: true })
     writeFileSync(join(legacyData, 'auth.json'), '{"legacy":true}')

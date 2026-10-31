@@ -33,7 +33,7 @@ const electron: { contextBridge: ContextBridge; ipcRenderer: IpcRenderer } = req
 const { contextBridge, ipcRenderer } = electron
 
 // Why frame-only: a service-worker preload crashes the renderer during GC (electron#52310);
-// workers get the same installer from Orca's worker shim. Pages stay on IPC because namespaces
+// workers get the same installer from OCC's worker shim. Pages stay on IPC because namespaces
 // need the calling frame (tabs.getCurrent, popout windows), which only IPC's senderFrame names.
 
 /** The frame's own location: one session preload runs in every page of the session. */
@@ -64,7 +64,7 @@ async function invoke(request: unknown): Promise<BrowserExtensionInvokeReply> {
     )
     return reply
   } catch {
-    return { ok: false, error: 'Orca could not handle this extension call' }
+    return { ok: false, error: 'OCC could not handle this extension call' }
   }
 }
 

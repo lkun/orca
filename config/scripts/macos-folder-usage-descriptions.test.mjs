@@ -17,11 +17,11 @@ it('uses the same three folder descriptions for the app and every packaged Elect
   const root = mkdtempSync(join(tmpdir(), 'orca-helper-privacy-'))
   try {
     const names = [
-      'Orca Dev Helper.app',
-      'Orca Dev Helper (GPU).app',
-      'Orca Dev Helper (Renderer).app',
-      'Orca Dev Helper (Plugin).app',
-      'Orca Computer.app'
+      'OCC Dev Helper.app',
+      'OCC Dev Helper (GPU).app',
+      'OCC Dev Helper (Renderer).app',
+      'OCC Dev Helper (Plugin).app',
+      'OCC Computer.app'
     ]
     for (const name of names) {
       const contents = join(root, 'Contents', 'Frameworks', name, 'Contents')
@@ -34,7 +34,7 @@ it('uses the same three folder descriptions for the app and every packaged Elect
     const run = vi.fn((_program, args) =>
       args.includes('json') ? readFileSync(args.at(-1), 'utf8') : ''
     )
-    applyMacHelperFolderUsageDescriptions(root, 'Orca Dev', run)
+    applyMacHelperFolderUsageDescriptions(root, 'OCC Dev', run)
     for (const name of names.slice(0, 4)) {
       expect(
         JSON.parse(

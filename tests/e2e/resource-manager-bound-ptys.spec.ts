@@ -39,7 +39,7 @@ for (const theme of ['light', 'dark'] as const) {
       await orcaPage.getByRole('tab', { name: /^PTYs/ }).click()
     }
     await openPtys()
-    await expect(orcaPage.getByText('3 Orca PTYs on this computer')).toBeVisible()
+    await expect(orcaPage.getByText('3 OCC PTYs on this computer')).toBeVisible()
     const body = orcaPage.locator('[data-resource-pty-body]')
     await orcaPage.screenshot({
       animations: 'disabled',
@@ -73,7 +73,7 @@ for (const theme of ['light', 'dark'] as const) {
     await body.getByRole('button', { name: `End ${first.title}`, exact: true }).click()
     await expect(orcaPage.getByRole('heading', { name: `End ${first.title}?` })).toBeVisible()
     await orcaPage.getByRole('button', { name: 'End terminal', exact: true }).click()
-    await expect(orcaPage.getByText('2 Orca PTYs on this computer')).toBeVisible()
+    await expect(orcaPage.getByText('2 OCC PTYs on this computer')).toBeVisible()
     await expect(
       body.getByRole('button', { name: `Open ${first.title}`, exact: true })
     ).toHaveCount(0)

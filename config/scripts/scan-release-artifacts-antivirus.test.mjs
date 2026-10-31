@@ -13,7 +13,7 @@ describe('antivirus detection report', () => {
   it('hashes an artifact with the same digest the issue reports quote', async () => {
     const directory = await mkdtemp(join(tmpdir(), 'orca-av-scan-'))
     try {
-      const artifact = join(directory, 'orca-windows-setup.exe')
+      const artifact = join(directory, 'occ-windows-setup.exe')
       await writeFile(artifact, 'orca', 'utf8')
       // Use lowercase hex SHA-256 to compare directly with reporter’s shasum output.
       expect(await hashFile(artifact)).toBe(
@@ -52,7 +52,7 @@ describe('antivirus detection report', () => {
 
   it('distinguishes an unscanned build from a clean one', () => {
     const unscanned = formatArtifactReport({
-      name: 'orca-windows-setup.exe',
+      name: 'occ-windows-setup.exe',
       sha256: 'a'.repeat(64),
       known: false,
       scanned: 0,
@@ -61,7 +61,7 @@ describe('antivirus detection report', () => {
     expect(unscanned).toContain('never been scanned')
 
     const clean = formatArtifactReport({
-      name: 'orca-windows-setup.exe',
+      name: 'occ-windows-setup.exe',
       sha256: 'a'.repeat(64),
       known: true,
       scanned: 70,

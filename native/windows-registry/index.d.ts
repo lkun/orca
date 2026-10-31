@@ -1,4 +1,4 @@
-/** Registry root handles. Orca reads HKCU and HKLM; the rest are here to keep the enum faithful. */
+/** Registry root handles. OCC reads HKCU and HKLM; the rest are here to keep the enum faithful. */
 export declare const HK: {
   readonly CR: 0x80000000
   readonly CU: 0x80000001

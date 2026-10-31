@@ -96,7 +96,7 @@ export async function validateAccumulatedStatusIpcIngress(
         (candidate) => !candidate.isDestroyed() && !candidate.webContents.isDestroyed()
       )
       if (!appWindow) {
-        throw new Error('Orca BrowserWindow is unavailable')
+        throw new Error('OCC BrowserWindow is unavailable')
       }
       const receivedAt = Date.now()
       return validationPanes.map((pane) => {
@@ -118,7 +118,7 @@ export async function validateAccumulatedStatusIpcIngress(
         (candidate) => !candidate.isDestroyed() && !candidate.webContents.isDestroyed()
       )
       if (!appWindow) {
-        throw new Error('Orca BrowserWindow is unavailable')
+        throw new Error('OCC BrowserWindow is unavailable')
       }
       const receipts: StatusReceipt[] = []
       for (const pane of validationPanes) {
@@ -183,7 +183,7 @@ export async function startAccumulatedStatusTraffic(
         (candidate) => !candidate.isDestroyed() && !candidate.webContents.isDestroyed()
       )
       if (!appWindow) {
-        throw new Error('Orca BrowserWindow is unavailable')
+        throw new Error('OCC BrowserWindow is unavailable')
       }
       const host: StatusTrafficHost = globalThis
       if (host.__orcaAccumulatedStatusTrafficController) {

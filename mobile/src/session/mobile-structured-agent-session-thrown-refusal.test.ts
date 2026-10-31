@@ -78,7 +78,7 @@ describe('a refusal the host threw', () => {
   })
 })
 
-describe('a write refused on a journal a newer Orca wrote', () => {
+describe('a write refused on a journal a newer OCC wrote', () => {
   const newerOrcaClient = (): RpcClient => {
     const sendRequest = async (): Promise<RpcResponse> => ({
       id: 'req-1',
@@ -87,7 +87,7 @@ describe('a write refused on a journal a newer Orca wrote', () => {
         ok: false,
         refusal: {
           code: 'agent_session_journal_unreadable',
-          message: 'Chats were saved by a newer Orca. Update Orca to keep using them.',
+          message: 'Chats were saved by a newer OCC. Update OCC to keep using them.',
           details: { reason: 'journalWrittenByNewerOrca' }
         }
       }
@@ -99,14 +99,14 @@ describe('a write refused on a journal a newer Orca wrote', () => {
     [
       'agentSession.send',
       { body: { kind: 'message', role: 'user', blocks: [{ type: 'text', text: 'hello' }] } },
-      'Chats were saved by a newer Orca. Your message was not sent. Update Orca to keep using them.'
+      'Chats were saved by a newer OCC. Your message was not sent. Update OCC to keep using them.'
     ],
     [
       'agentSession.cancel',
       { turnId: 'turn-1' },
-      "Chats were saved by a newer Orca. The agent wasn't stopped. Update Orca to keep using them."
+      "Chats were saved by a newer OCC. The agent wasn't stopped. Update OCC to keep using them."
     ]
-  ] as const)('says to update Orca for %s', async (method, fields, message) => {
+  ] as const)('says to update OCC for %s', async (method, fields, message) => {
     const result = await requestStructuredAgentSessionMutation({
       client: newerOrcaClient(),
       method,

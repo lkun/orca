@@ -29,7 +29,7 @@ test('Pi modal hooks show the existing waiting-for-input indicator', async ({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Orca-Agent-Hook-Token': endpoint.token
+        'X-OCC-Agent-Hook-Token': endpoint.token
       },
       body: JSON.stringify({
         paneKey,

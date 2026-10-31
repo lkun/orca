@@ -25,7 +25,7 @@ afterEach(async () => {
 async function makeFixture() {
   const root = await mkdtemp(join(tmpdir(), 'orca-appimage-pre-extract-'))
   created.push(root)
-  const appImagePath = join(root, 'apps', 'Orca.AppImage')
+  const appImagePath = join(root, 'apps', 'OCC.AppImage')
   await mkdir(join(root, 'apps'), { recursive: true })
   await writeFile(appImagePath, 'release 1.0.0', { mode: 0o755 })
   return { root, appImagePath, cacheRootPath: join(root, 'cache') }
@@ -34,7 +34,7 @@ async function makeFixture() {
 async function writePayload(cwd: string): Promise<void> {
   const launcherDir = join(cwd, 'squashfs-root', 'resources', 'bin')
   await mkdir(launcherDir, { recursive: true })
-  await writeFile(join(launcherDir, 'orca-ide'), '', { mode: 0o755 })
+  await writeFile(join(launcherDir, 'occ-ide'), '', { mode: 0o755 })
 }
 
 const acceptCache = async (): Promise<string | null> => null
@@ -65,7 +65,7 @@ describe('startAppImageCopyPreExtraction', () => {
     const copy = resolveAppImageExtractedRoot({ appImagePath, cacheRootPath })!
     const earlier = join(dirname(copy.rootPath), 'a'.repeat(24))
     await mkdir(join(earlier, 'resources', 'bin'), { recursive: true })
-    await writeFile(join(earlier, 'resources', 'bin', 'orca-ide'), '', { mode: 0o755 })
+    await writeFile(join(earlier, 'resources', 'bin', 'occ-ide'), '', { mode: 0o755 })
 
     const started = preExtraction.startAppImageCopyPreExtraction({
       appImagePath,
@@ -120,7 +120,7 @@ describe('startAppImageCopyPreExtraction', () => {
 describe('preExtractDownloadedAppImageUpdate', () => {
   it('unpacks the download into the copy its install will run from', async () => {
     const { root, appImagePath, cacheRootPath } = await makeFixture()
-    const downloadedFile = join(root, 'apps', '.pending-Orca.AppImage')
+    const downloadedFile = join(root, 'apps', '.pending-OCC.AppImage')
     await writeFile(downloadedFile, 'release 2.0.0', { mode: 0o755 })
 
     const staged = await preExtraction.preExtractDownloadedAppImageUpdate(
@@ -148,7 +148,7 @@ describe('preExtractDownloadedAppImageUpdate', () => {
 
   it('never runs a file that is not the updater download', async () => {
     const { root, appImagePath, cacheRootPath } = await makeFixture()
-    const planted = join(root, 'Orca-2.0.0.AppImage')
+    const planted = join(root, 'OCC-2.0.0.AppImage')
     await writeFile(planted, 'not an update', { mode: 0o755 })
     const runExtract = vi.fn()
 

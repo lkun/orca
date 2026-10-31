@@ -89,12 +89,12 @@ export async function loadKnownHostsEvidence(
   }
 }
 
-/** Key by HostKeyAlias or the dialed host after HostName resolution, never the Orca label; bastion loopback connections depend on the alias. */
+/** Key by HostKeyAlias or the dialed host after HostName resolution, never the OCC label; bastion loopback connections depend on the alias. */
 export function resolveKnownHostsLookupHost(
   resolved: SshResolvedConfig | null,
   dialedHost: string
 ): { host: string; isHostKeyAlias: boolean } {
-  // ssh -G can echo an unknown Orca label as hostname; dialedHost already has real HostName resolution and cannot hide existing trust.
+  // ssh -G can echo an unknown OCC label as hostname; dialedHost already has real HostName resolution and cannot hide existing trust.
   const alias = resolved?.hostKeyAlias
   // Alias lookups never append ports; a stale bracketed alias could otherwise block the real bare lookup.
   return alias ? { host: alias, isHostKeyAlias: true } : { host: dialedHost, isHostKeyAlias: false }

@@ -6,7 +6,7 @@ import { discordRoutes, type DiscordRestApi, type DiscordResult } from './discor
 // https://docs.discord.com/developers/topics/opcodes-and-status-codes#json-json-error-codes
 const UNKNOWN_CHANNEL = '10003'
 const THREAD_ALREADY_CREATED = '160004'
-const THREAD_NAME = 'Orca'
+const THREAD_NAME = 'OCC'
 
 const MessageBodySchema = z.object({
   content: z.string().min(1),
@@ -57,7 +57,7 @@ export class DiscordPostSender {
     }
     const create = () => api(discordRoutes.createMessage(channelId ?? post.threadId, message))
     const created = await create()
-    // A top-level mention's thread is made on Orca's first post in it.
+    // A top-level mention's thread is made on OCC's first post in it.
     if (
       channelId === undefined &&
       created.kind === 'failed' &&

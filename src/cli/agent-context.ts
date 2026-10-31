@@ -54,6 +54,6 @@ export function buildAgentContext(specs: CommandSpec[]): AgentContextSchema {
 export function formatAgentContextSummary(schema: AgentContextSchema): string {
   return [
     `${schema.commandCount} commands (schema v${schema.schemaVersion}).`,
-    'Run `orca agent-context --json` for the full machine-readable command schema.'
+    'Run `occ agent-context --json` for the full machine-readable command schema.'
   ].join('\n')
 }

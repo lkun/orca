@@ -34,7 +34,7 @@ function normalizeField(value: unknown, maxLength: number = AGENT_STATUS_MAX_FIE
   return normalizeSingleLinePreview(value, maxLength)
 }
 
-/** Normalize the agent prompt field, compacting Orca dispatch preambles. */
+/** Normalize the agent prompt field, compacting OCC dispatch preambles. */
 export function normalizePromptField(value: unknown): string {
   if (typeof value !== 'string') {
     return ''

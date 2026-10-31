@@ -14,7 +14,7 @@ afterEach(async () => {
 })
 
 describe('keybinding diagnostic text', () => {
-  it('translates a diagnostic and its nested Orca reason as whole sentences', async () => {
+  it('translates a diagnostic and its nested OCC reason as whole sentences', async () => {
     i18n.addResourceBundle('es', 'translation', es)
     await i18n.changeLanguage('es')
     const invalid = normalizeKeybinding('Shift+P')

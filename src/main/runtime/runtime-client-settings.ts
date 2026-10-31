@@ -39,7 +39,7 @@ import type {
   RuntimeHostDisplayLabelOverrides
 } from './runtime-client-settings-shape'
 
-/** Which Orca cloud services this host registered; headless hosts register none. */
+/** Which OCC cloud services this host registered; headless hosts register none. */
 export type RuntimeSharingServicePresence = {
   artifacts(): boolean
   skills(): boolean

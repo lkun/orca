@@ -13,7 +13,7 @@ export const WslDistroIdSchema = z
 
 const PortSchema = z.number().int().min(1).max(65_535)
 
-/** A managed orcad Orca deployed into a WSL distro and reaches through a `wsl.exe` stdio bridge. */
+/** A managed orcad OCC deployed into a WSL distro and reaches through a `wsl.exe` stdio bridge. */
 export const OrcadWslDeploymentLinkSchema = z.object({
   kind: z.literal('wsl'),
   distro: WslDistroNameSchema,

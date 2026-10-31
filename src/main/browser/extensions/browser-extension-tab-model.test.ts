@@ -48,7 +48,7 @@ const { openBrowserExtensionTab, recentWorktreeIdForBrowserProfile, recordActive
   await import('./browser-extension-tab-model')
 const { watchBrowserMainWindowReadiness } = await import('../browser-main-window-readiness')
 
-/** Orca's main window; its renderer reports readiness on the per-window IPC channel. */
+/** OCC's main window; its renderer reports readiness on the per-window IPC channel. */
 function mainWindow() {
   const contents = Object.assign(new EventEmitter(), { ipc: new EventEmitter() })
   const window = { id: 1, webContents: contents, isDestroyed: () => false }
@@ -103,7 +103,7 @@ describe('where an extension tab goes when no workspace is active', () => {
   })
 })
 
-describe('an extension tab opened while Orca starts', () => {
+describe('an extension tab opened while OCC starts', () => {
   afterEach(() => {
     vi.useRealTimers()
   })
@@ -133,7 +133,7 @@ describe('an extension tab opened while Orca starts', () => {
     vi.useFakeTimers()
     mainWindow()
     const opening = openBrowserExtensionTab('work', 'https://welcome.test', true)
-    const failed = expect(opening).rejects.toThrow('Orca has no window to open a tab in')
+    const failed = expect(opening).rejects.toThrow('OCC has no window to open a tab in')
     await vi.advanceTimersByTimeAsync(30_000)
     await failed
     expect(mocks.createTab).not.toHaveBeenCalled()

@@ -109,7 +109,7 @@ describe('OrcaRuntimeService', () => {
     runtime.markGraphReady(1)
 
     runtime.onPtyData(ptyId, '\x1b]0;⠋ Cursor Agent\x07', 100)
-    // Cursor redraws its bare title while working; retain Orca's synthesized status.
+    // Cursor redraws its bare title while working; retain OCC's synthesized status.
     runtime.onPtyData(ptyId, '\x1b]0;Cursor Agent\x07', 101)
 
     expect((await runtime.listTerminals()).terminals[0]).toMatchObject({

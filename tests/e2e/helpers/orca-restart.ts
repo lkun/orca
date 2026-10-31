@@ -244,7 +244,7 @@ export async function attachRepoAndOpenTerminal(page: Page, repoPath: string): P
             if (!repo) {
               return false
             }
-            // Show the seeded Git worktree external to Orca’s managed workspace root.
+            // Show the seeded Git worktree external to OCC’s managed workspace root.
             await store.getState().updateRepo(repo.id, { externalWorktreeVisibility: 'show' })
             return true
           }, repoId)

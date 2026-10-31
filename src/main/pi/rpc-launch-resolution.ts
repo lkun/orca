@@ -125,7 +125,7 @@ export function resolvePiRpcInvocation(deps: {
   commandSettings?: StructuredAgentCommandSettings
   resolveCommand?: typeof resolveCliCommand
   refreshEnvironmentAfterMiss?: (askedAt: number) => Promise<void>
-  /** Base for relative PATH entries; defaults to Orca's working directory. */
+  /** Base for relative PATH entries; defaults to OCC's working directory. */
   resolveWorkingDirectory?: () => Promise<string> | string
 }): Promise<StructuredAgentCommand & { env: Record<string, string> }> {
   return resolveAgainAfterRefreshOnMissingProgram(

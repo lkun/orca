@@ -26,7 +26,7 @@ const WHEEL_DOWN_REPORT = '\x1b[<65;10;10M'
 
 // Own the seed repo: concurrent globalTeardown can delete the machine-global pointer’s repo mid-restart.
 function createIsolatedProofRepo(): string {
-  // Why realpathSync: macOS tmpdir symlinks through /private and Orca canonicalizes repo.path.
+  // Why realpathSync: macOS tmpdir symlinks through /private and OCC canonicalizes repo.path.
   const repoDir = realpathSync(mkdtempSync(path.join(os.tmpdir(), 'orca-mouse-reattach-repo-')))
   const git = (...args: string[]): void => {
     execFileSync('git', args, { cwd: repoDir, stdio: 'pipe' })
@@ -34,7 +34,7 @@ function createIsolatedProofRepo(): string {
   git('init', '-q')
   git('config', 'user.email', 'e2e@test.local')
   git('config', 'user.name', 'E2E Test')
-  writeFileSync(path.join(repoDir, 'README.md'), '# Orca mouse-mode reattach proof repo\n')
+  writeFileSync(path.join(repoDir, 'README.md'), '# OCC mouse-mode reattach proof repo\n')
   git('add', '-A')
   git('commit', '-q', '-m', 'Seed commit for the reattach mouse-mode proof')
   return repoDir

@@ -24,10 +24,10 @@ const AGENT_PANES = [
   { tabId: 'tab-codex-2', leafId: '22222222-2222-4222-8222-222222222222', ptyId: 'daemon-pty-2' },
   { tabId: 'tab-codex-3', leafId: '33333333-3333-4333-8333-333333333333', ptyId: 'daemon-pty-3' }
 ] as const
-/** Argv macOS delivers for `open -n -a Orca` / Finder / Dock relaunch. */
-const DESKTOP_RELAUNCH_ARGV = ['/Applications/Orca.app/Contents/MacOS/Orca'] as const
+/** Argv macOS delivers for `open -n -a OCC` / Finder / Dock relaunch. */
+const DESKTOP_RELAUNCH_ARGV = ['/Applications/OCC.app/Contents/MacOS/OCC'] as const
 const DUPLICATE_SERVE_ARGV = [
-  '/Applications/Orca.app/Contents/MacOS/Orca',
+  '/Applications/OCC.app/Contents/MacOS/OCC',
   '--serve',
   '--serve-json',
   '--serve-port',

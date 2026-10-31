@@ -34,7 +34,7 @@ describe('electron-builder config', () => {
       'tests/e2e/example.spec.ts',
       'examples/example.ts',
       'pr-evidence/example.png',
-      'Casks/orca.rb',
+      'Casks/occ.rb',
       'AGENTS.md',
       'out/main/workspace.test.js',
       'resources/plugins/launch/example.ts'
@@ -108,9 +108,9 @@ describe('electron-builder config', () => {
         ? ['notes']
         : [
             'notes/build.log',
-            'notes/installed-orca-backup/Orca.exe',
+            'notes/installed-orca-backup/OCC.exe',
             'notes/installed-orca-backup/resources/app.asar',
-            'notes/orca-windows-setup.exe',
+            'notes/occ-windows-setup.exe',
             'notes/.recovery/state.json'
           ]
     try {
@@ -172,8 +172,8 @@ describe('electron-builder config', () => {
     const packs = (repoPath) => isPacked(join('/app', repoPath), { isDirectory: () => false })
 
     for (const devBundlePath of [
-      'out/electron-dev/1a2b3c4d5e6f/Orca: dev.app/Contents/MacOS/Electron',
-      'out/electron-dev/1a2b3c4d5e6f/orca-dev-electron-app.json',
+      'out/electron-dev/1a2b3c4d5e6f/OCC: dev.app/Contents/MacOS/Electron',
+      'out/electron-dev/1a2b3c4d5e6f/occ-dev-electron-app.json',
       '.cache/vite/renderer/deps/react.js',
       '.cache/vite/web/deps/react.js',
       '.cache/vite.lock/owner'
@@ -330,7 +330,7 @@ describe('electron-builder config', () => {
   it('validates each AppImage before electron-builder publishes it', async () => {
     const root = await mkdtemp(join(tmpdir(), 'orca-electron-builder-appimage-'))
     try {
-      const appImage = join(root, 'orca-linux.AppImage')
+      const appImage = join(root, 'occ-linux.AppImage')
       await writeFile(appImage, 'not an ELF')
       await chmod(appImage, 0o755)
 
@@ -338,7 +338,7 @@ describe('electron-builder config', () => {
         electronBuilderConfig.artifactBuildCompleted({ file: appImage, arch: 1 })
       ).toThrow(/ELF header is outside/)
       expect(() =>
-        electronBuilderConfig.artifactBuildCompleted({ file: join(root, 'orca-ide.deb') })
+        electronBuilderConfig.artifactBuildCompleted({ file: join(root, 'occ-ide.deb') })
       ).not.toThrow()
     } finally {
       await rm(root, { recursive: true, force: true })
@@ -351,7 +351,7 @@ describe('electron-builder config', () => {
       delete require.cache[configPath]
       process.env.ORCA_LINUX_ARM64_RELEASE = '1'
       expect(require('../electron-builder.config.cjs').appImage.artifactName).toBe(
-        'orca-linux-arm64.${ext}'
+        'occ-linux-arm64.${ext}'
       )
     } finally {
       if (original === undefined) {

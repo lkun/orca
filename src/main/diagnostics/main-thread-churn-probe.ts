@@ -26,7 +26,7 @@ export function classifySubprocessCommand(command: string, args: readonly string
   let binary = binaryName(command)
   const rest = [...args]
   if (binary === 'wsl') {
-    // Accept external WSL invocations using -- or -e as well as Orca's --exec.
+    // Accept external WSL invocations using -- or -e as well as OCC's --exec.
     while (rest.length > 0) {
       const arg = rest.shift()
       if (arg === '--' || arg === '--exec' || arg === '-e') {

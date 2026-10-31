@@ -12,7 +12,7 @@ import {
 
 const PENDING_DELETES_FILE_NAME = 'browser-route-partition-pending-deletes.json'
 
-// Why per profile: Partitions is shared across Orca profiles but bindings are not, so only the
+// Why per profile: Partitions is shared across OCC profiles but bindings are not, so only the
 // profile that queued a folder can tell whether it was bound again.
 export function browserRoutePartitionPendingDeletesPath(bindingFilePath: string): string {
   return join(dirname(bindingFilePath), PENDING_DELETES_FILE_NAME)

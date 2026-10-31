@@ -23,7 +23,7 @@ import {
 } from './helpers/orchestration-mail-pane-agent'
 import { mailDisposition, readMailRow } from './helpers/orchestration-mail-store'
 
-const POINTER_COMMAND = 'orca-dev orchestration check'
+const POINTER_COMMAND = 'occ-dev orchestration check'
 const DELIVERY_TIMEOUT_MS = 20_000
 
 type BackgroundWorker = {

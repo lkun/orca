@@ -73,7 +73,7 @@ async function fetchExistingReport(sha256, apiKey) {
   return body?.data?.attributes?.last_analysis_results ?? {}
 }
 
-// Use separate upload URL above 32MB; Orca installers exceed direct endpoint limit.
+// Use separate upload URL above 32MB; OCC installers exceed direct endpoint limit.
 async function uploadArtifact(filePath, apiKey) {
   const { size } = await stat(filePath)
   let endpoint = VIRUSTOTAL_FILES_ENDPOINT

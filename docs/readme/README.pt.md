@@ -1,13 +1,13 @@
 <h1 align="center">
-  <a href="https://onOrca.dev"><img src="../../resources/build/icon.png" alt="Orca" width="64" valign="middle" /></a> Orca
+  <a href="https://onOrca.dev"><img src="../../resources/build/icon.png" alt="OCC" width="64" valign="middle" /></a> OCC
 </h1>
 
 <p align="center">
   <a href="https://github.com/stablyai/orca"><img src="https://img.shields.io/github/stars/stablyai/orca?style=flat&amp;label=%E2%98%85&amp;color=08C" alt="Estrelas no GitHub" /></a>
   <a href="https://github.com/stablyai/orca/releases"><img src="../assets/readme-downloads.svg" alt="Total de downloads em todas as versões" /></a>
   <img src="https://img.shields.io/badge/license-MIT-08C?style=flat" alt="Licença: MIT" />
-  <a href="https://discord.gg/fzjDKHxv8Q"><img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="Entre no Discord do Orca" /></a>
-  <a href="https://x.com/orca_build"><img src="https://img.shields.io/badge/X-000000?logo=x&logoColor=white" alt="Siga o Orca no X" /></a>
+  <a href="https://discord.gg/fzjDKHxv8Q"><img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="Entre no Discord do OCC" /></a>
+  <a href="https://x.com/orca_build"><img src="https://img.shields.io/badge/X-000000?logo=x&logoColor=white" alt="Siga o OCC no X" /></a>
   <img src="https://img.shields.io/badge/macOS%20%7C%20Windows%20%7C%20Linux-4493F8?style=flat-square" alt="Plataformas compatíveis: macOS, Windows e Linux" />
 </p>
 
@@ -20,10 +20,10 @@
   Rode Codex, ClaudeCode, OpenCode ou Pi lado a lado — cada um em seu próprio worktree, acompanhado em um só lugar.
 </p>
 
-<h3 align="center"><a href="https://onorca.dev/download"><ins>Baixar o Orca</ins></a></h3>
+<h3 align="center"><a href="https://onorca.dev/download"><ins>Baixar o OCC</ins></a></h3>
 
 <p align="center">
-  <img src="../assets/readme-hero.jpg" alt="App desktop do Orca executando agentes em worktrees paralelos, com o app companion móvel do Orca no canto" width="960" />
+  <img src="../assets/readme-hero.jpg" alt="App desktop do OCC executando agentes em worktrees paralelos, com o app companion móvel do OCC no canto" width="960" />
 </p>
 
 ## Recursos
@@ -36,11 +36,11 @@
 
 Monitore e conduza seus agentes pelo celular — receba uma notificação quando um agente terminar e envie instruções de acompanhamento de qualquer lugar.
 
-[App Store para iOS](https://apps.apple.com/us/app/orca-ide/id6766130217) · [APK Android](https://www.onorca.dev/download/android) · [Docs →](https://www.onorca.dev/docs/mobile)
+[App Store para iOS](https://apps.apple.com/us/app/occ-ide/id6766130217) · [APK Android](https://www.onorca.dev/download/android) · [Docs →](https://www.onorca.dev/docs/mobile)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/mobile"><picture><source srcset="../assets/feature-wall/mobile-companion-app-showcase.gif" type="image/gif"><img src="../assets/feature-wall/mobile-companion-app-showcase.jpg" alt="Orca desktop com o app companion móvel" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/mobile"><picture><source srcset="../assets/feature-wall/mobile-companion-app-showcase.gif" type="image/gif"><img src="../assets/feature-wall/mobile-companion-app-showcase.jpg" alt="OCC desktop com o app companion móvel" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -96,7 +96,7 @@ Navegue por PRs, issues e quadros de projeto dentro do app — abra um worktree 
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/review/linear"><picture><source srcset="../../resources/onboarding/feature-wall/tile-03.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-03.poster.jpg" alt="Fluxos de trabalho de tarefas do GitHub e Linear no Orca" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/review/linear"><picture><source srcset="../../resources/onboarding/feature-wall/tile-03.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-03.poster.jpg" alt="Fluxos de trabalho de tarefas do GitHub e Linear no OCC" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -118,7 +118,7 @@ Execute agentes em uma máquina remota potente com edição completa de arquivos
 
 ### Anotar diffs de IA
 
-Deixe comentários em qualquer linha de diff e envie-os de volta ao agente — revise, edite e faça commit sem sair do Orca.
+Deixe comentários em qualquer linha de diff e envie-os de volta ao agente — revise, edite e faça commit sem sair do OCC.
 
 [Docs →](https://www.onorca.dev/docs/review/annotate-ai-diff)
 
@@ -144,15 +144,15 @@ O editor do VS Code com salvamento automático em todos os lugares — arraste a
 <tr>
 <td width="50%" valign="middle">
 
-### Orca CLI
+### OCC CLI
 
-Agentes também controlam o Orca — automatize qualquer fluxo de trabalho com `orca worktree create`, `snapshot`, `click` e `fill`.
+Agentes também controlam o OCC — automatize qualquer fluxo de trabalho com `orca worktree create`, `snapshot`, `click` e `fill`.
 
 [Docs →](https://www.onorca.dev/docs/cli/overview)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/cli/overview"><picture><source srcset="../../resources/onboarding/feature-wall/tile-09.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-09.poster.jpg" alt="Automatize o Orca pela CLI" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/cli/overview"><picture><source srcset="../../resources/onboarding/feature-wall/tile-09.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-09.poster.jpg" alt="Automatize o OCC pela CLI" width="100%" /></picture></a>
 </td>
 </tr>
 </table>
@@ -170,7 +170,7 @@ Agentes também controlam o Orca — automatize qualquer fluxo de trabalho com `
 
 ## Agentes compatíveis
 
-Funciona com **qualquer agente CLI** — se roda em um terminal, roda no Orca.
+Funciona com **qualquer agente CLI** — se roda em um terminal, roda no OCC.
 
 <p>
   <a href="https://docs.anthropic.com/claude/docs/claude-code"><kbd><img src="../assets/claude-logo.svg" alt="Logotipo do Claude Code" width="16" valign="middle" /> Claude Code</kbd></a> &nbsp;
@@ -216,7 +216,7 @@ Funciona com **qualquer agente CLI** — se roda em um terminal, roda no Orca.
 ### Desktop — macOS, Windows, Linux
 
 - **[Baixe em onOrca.dev](https://onorca.dev/download)**
-- Ou baixe um build diretamente: [macOS Apple Silicon](https://github.com/stablyai/orca/releases/latest/download/orca-macos-arm64.dmg) · [macOS Intel](https://github.com/stablyai/orca/releases/latest/download/orca-macos-x64.dmg) · [Windows (.exe)](https://github.com/stablyai/orca/releases/latest/download/orca-windows-setup.exe) · [Linux AppImage](https://github.com/stablyai/orca/releases/latest/download/orca-linux.AppImage) · [Todos os builds](https://github.com/stablyai/orca/releases/latest)
+- Ou baixe um build diretamente: [macOS Apple Silicon](https://github.com/stablyai/orca/releases/latest/download/occ-macos-arm64.dmg) · [macOS Intel](https://github.com/stablyai/orca/releases/latest/download/occ-macos-x64.dmg) · [Windows (.exe)](https://github.com/stablyai/orca/releases/latest/download/occ-windows-setup.exe) · [Linux AppImage](https://github.com/stablyai/orca/releases/latest/download/occ-linux.AppImage) · [Todos os builds](https://github.com/stablyai/orca/releases/latest)
 
 _Ou por um gerenciador de pacotes:_
 
@@ -235,7 +235,7 @@ yay -S stably-orca-bin
 
 Conecte ao app desktop para monitorar e conduzir seus agentes pelo celular.
 
-- **iOS:** [Baixar na App Store](https://apps.apple.com/us/app/orca-ide/id6766130217)
+- **iOS:** [Baixar na App Store](https://apps.apple.com/us/app/occ-ide/id6766130217)
 - **Android:** [Baixar APK](https://www.onorca.dev/download/android)
 
 ---
@@ -245,7 +245,7 @@ Conecte ao app desktop para monitorar e conduzir seus agentes pelo celular.
 - **Discord:** Entre na comunidade no **[Discord](https://discord.gg/fzjDKHxv8Q)**.
 - **Twitter / X:** Siga **[@orca_build](https://x.com/orca_build)** para atualizações e anúncios.
 - **Feedback e ideias:** Lançamos rápido. Sentiu falta de algo? [Peça um novo recurso](https://github.com/stablyai/orca/issues).
-- **Privacidade:** Veja a [documentação de privacidade e telemetria](https://www.onorca.dev/docs/telemetry) para saber quais dados anônimos de uso o Orca coleta e como desativar.
+- **Privacidade:** Veja a [documentação de privacidade e telemetria](https://www.onorca.dev/docs/telemetry) para saber quais dados anônimos de uso o OCC coleta e como desativar.
 - **Mostre apoio:** Dê uma [estrela](https://github.com/stablyai/orca) neste repositório para acompanhar nossos lançamentos diários.
 
 ---
@@ -255,9 +255,9 @@ Conecte ao app desktop para monitorar e conduzir seus agentes pelo celular.
 Quer contribuir ou rodar localmente? Veja nosso guia [CONTRIBUTING.md](../../.github/CONTRIBUTING.md).
 
 <a href="https://github.com/stablyai/orca/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=stablyai/orca" alt="Contribuidores do Orca" />
+  <img src="https://contrib.rocks/image?repo=stablyai/orca" alt="Contribuidores do OCC" />
 </a>
 
 ## Licença
 
-Orca é livre e de código aberto sob a [Licença MIT](../../LICENSE).
+OCC é livre e de código aberto sob a [Licença MIT](../../LICENSE).

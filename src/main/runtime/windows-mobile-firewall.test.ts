@@ -17,7 +17,7 @@ function environment(
   return {
     platform: 'win32',
     isPackaged: true,
-    executablePath: "C:\\Users\\O'Brien\\Orca\\Orca.exe",
+    executablePath: "C:\\Users\\O'Brien\\OCC\\OCC.exe",
     systemRoot: 'C:\\Windows',
     runPowerShell,
     ...overrides
@@ -53,12 +53,12 @@ describe('windows mobile firewall', () => {
     // Why: without ActiveStore, GPO-applied Block rules are invisible and the
     // post-repair re-inspection could report a false success on managed hosts.
     expect(script).toContain(
-      "Get-NetFirewallApplicationFilter -PolicyStore ActiveStore -Program 'C:\\Users\\O''Brien\\Orca\\Orca.exe'"
+      "Get-NetFirewallApplicationFilter -PolicyStore ActiveStore -Program 'C:\\Users\\O''Brien\\OCC\\OCC.exe'"
     )
     expect(script).toContain('Get-NetFirewallProfile -PolicyStore ActiveStore -Name Private')
     expect(script).toContain("LocalPort | Where-Object { [string]$_ -eq 'Any'")
     expect(script).toContain("[string]$_ -eq '6768'")
-    expect(script).toContain("C:\\Users\\O''Brien\\Orca\\Orca.exe")
+    expect(script).toContain("C:\\Users\\O''Brien\\OCC\\OCC.exe")
     expect(script).toContain("$profile -match 'Private'")
     expect(script).toContain("Get-NetIPAddress -IPAddress '192.168.0.108'")
     expect(script).toContain('Get-NetFirewallAddressFilter')
@@ -72,10 +72,10 @@ describe('windows mobile firewall', () => {
     await inspectWindowsMobileFirewall(
       6768,
       '192.168.0.108',
-      environment(runPowerShell, { executablePath: 'C:\\Users\\O\u2019Brien\\Orca\\Orca.exe' })
+      environment(runPowerShell, { executablePath: 'C:\\Users\\O\u2019Brien\\OCC\\OCC.exe' })
     )
     expect(runPowerShell.mock.calls[0]![0]).toContain(
-      "-Program 'C:\\Users\\O\u2019\u2019Brien\\Orca\\Orca.exe'"
+      "-Program 'C:\\Users\\O\u2019\u2019Brien\\OCC\\OCC.exe'"
     )
   })
 
@@ -173,7 +173,7 @@ describe('windows mobile firewall', () => {
     }
   })
 
-  it('repairs only Orca mobile pairing on private networks after elevation', async () => {
+  it('repairs only OCC mobile pairing on private networks after elevation', async () => {
     const runPowerShell = vi.fn().mockResolvedValue('{"launched":true,"exitCode":0}')
     await expect(repairWindowsMobileFirewall(6769, environment(runPowerShell))).resolves.toEqual({
       ok: true
@@ -183,7 +183,7 @@ describe('windows mobile firewall', () => {
     const encoded = outerScript.match(/'-EncodedCommand', '([^']+)'/)?.[1]
     expect(encoded).toBeTruthy()
     const repairScript = Buffer.from(encoded!, 'base64').toString('utf16le')
-    expect(repairScript).toContain("-Name 'Orca.MobilePairing'")
+    expect(repairScript).toContain("-Name 'OCC.MobilePairing'")
     expect(repairScript).toContain(
       "Where-Object { $_.Enabled -eq 'True' -and $_.Direction -eq 'Inbound' -and $_.Action -eq 'Block' }"
     )
@@ -191,7 +191,7 @@ describe('windows mobile firewall', () => {
     expect(repairScript).toContain('-Profile Private')
     expect(repairScript).toContain('-Protocol TCP')
     expect(repairScript).toContain('-LocalPort 6769')
-    expect(repairScript).toContain("-Program 'C:\\Users\\O''Brien\\Orca\\Orca.exe'")
+    expect(repairScript).toContain("-Program 'C:\\Users\\O''Brien\\OCC\\OCC.exe'")
     expect(repairScript).toContain('-EdgeTraversalPolicy Block')
   })
 
@@ -200,7 +200,7 @@ describe('windows mobile firewall', () => {
     const runPowerShell = vi.fn().mockResolvedValue('{"launched":true,"exitCode":0}')
     await repairWindowsMobileFirewall(
       6769,
-      environment(runPowerShell, { executablePath: 'C:\\My  App\\Orca.exe' })
+      environment(runPowerShell, { executablePath: 'C:\\My  App\\OCC.exe' })
     )
 
     const outerScript = runPowerShell.mock.calls[0]![0] as string
@@ -210,7 +210,7 @@ describe('windows mobile firewall', () => {
 
     const encoded = outerScript.match(/'-EncodedCommand', '([^']+)'/)?.[1]
     const repairScript = Buffer.from(encoded!, 'base64').toString('utf16le')
-    expect(repairScript).toContain("-Program 'C:\\My  App\\Orca.exe'")
+    expect(repairScript).toContain("-Program 'C:\\My  App\\OCC.exe'")
   })
 
   it('runs the local PowerShell over argv with a plain -Command script', async () => {
@@ -224,7 +224,7 @@ describe('windows mobile firewall', () => {
     await inspectWindowsMobileFirewall(6768, undefined, {
       platform: 'win32',
       isPackaged: true,
-      executablePath: 'C:\\My  App\\Orca.exe',
+      executablePath: 'C:\\My  App\\OCC.exe',
       systemRoot: 'C:\\Windows'
     })
 
@@ -235,7 +235,7 @@ describe('windows mobile firewall', () => {
     expect(args).not.toContain('-ExecutionPolicy')
     // The script travels as ONE argv element, so its spaces and newlines survive verbatim.
     expect(args).toHaveLength(4)
-    expect(args![3]).toContain("-Program 'C:\\My  App\\Orca.exe'")
+    expect(args![3]).toContain("-Program 'C:\\My  App\\OCC.exe'")
     expect(args![3]).toContain('\n')
   })
 

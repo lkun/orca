@@ -218,9 +218,9 @@ export function validateCommandAndFlags(specs: CommandSpec[], parsed: ParsedArgs
     const path = parsed.commandPath.join(' ')
     // A real group is not a typo; point at its help instead of unrelated suggestions.
     if (isCommandGroup(specs, parsed.commandPath)) {
-      throw new RuntimeClientError('invalid_argument', `Missing subcommand for: orca ${path}`, {
+      throw new RuntimeClientError('invalid_argument', `Missing subcommand for: occ ${path}`, {
         suggestions: [],
-        nextSteps: [`Run \`orca ${path} --help\` to list its commands.`]
+        nextSteps: [`Run \`occ ${path} --help\` to list its commands.`]
       })
     }
     throw new RuntimeClientError(

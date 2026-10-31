@@ -300,7 +300,7 @@ describe('WorktreeCardDetailsHover interactions', () => {
       interactionMocks.onReviewMenuOpenChange?.(true)
     })
     const nativeAction = Array.from(container.querySelectorAll('button')).find((button) =>
-      button.textContent?.includes('Open in Orca')
+      button.textContent?.includes('Open in OCC')
     )
     expect(nativeAction).toBeDefined()
     act(() => nativeAction?.dispatchEvent(new MouseEvent('click', { bubbles: true })))
@@ -339,7 +339,7 @@ describe('WorktreeCardDetailsHover interactions', () => {
       interactionMocks.onReviewMenuOpenChange?.(true)
     })
     const browserButton = Array.from(container.querySelectorAll('button')).find((button) =>
-      button.textContent?.includes('Open in Orca browser')
+      button.textContent?.includes('Open in OCC browser')
     )
 
     act(() => {

@@ -1,4 +1,4 @@
-// The signed `com.stablyai.orca` helper that runs the terminal daemon on the pinned Node.
+// The signed `com.lkun.occ` helper that runs the terminal daemon on the pinned Node.
 const { spawnSync } = require('node:child_process')
 const {
   chmodSync,
@@ -15,7 +15,7 @@ const { builtinModules } = require('node:module')
 const { basename, dirname, join, relative, resolve, sep } = require('node:path')
 const { pathToFileURL } = require('node:url')
 
-const MAC_TERMINAL_HOST_NAME = 'Orca Terminal Host'
+const MAC_TERMINAL_HOST_NAME = 'OCC Terminal Host'
 const MAC_TERMINAL_HOST_EXECUTABLE = 'orca-terminal-host'
 const macTerminalHostSignIgnore = [`/Contents/Helpers/${MAC_TERMINAL_HOST_NAME}\\.app(/|$)`]
 const NODE_PTY_FILES = [
@@ -24,7 +24,7 @@ const NODE_PTY_FILES = [
   join('build', 'Release', 'pty.node'),
   join('build', 'Release', 'spawn-helper')
 ]
-// A helper that claimed any of these could take `orca:` links or documents from Orca.app.
+// A helper that claimed any of these could take `orca:` links or documents from OCC.app.
 const FORBIDDEN_INFO_KEYS = [
   'CFBundleURLTypes',
   'CFBundleDocumentTypes',
@@ -194,13 +194,13 @@ function buildMacTerminalHostInfo({ appInfo, usageDescriptions, minimumOs }) {
   return {
     ...usageDescriptions,
     CFBundleIdentifier: appInfo.CFBundleIdentifier,
-    CFBundleName: 'Orca',
-    CFBundleDisplayName: 'Orca',
+    CFBundleName: 'OCC',
+    CFBundleDisplayName: 'OCC',
     CFBundleExecutable: MAC_TERMINAL_HOST_EXECUTABLE,
     CFBundlePackageType: 'APPL',
     CFBundleInfoDictionaryVersion: '6.0',
     CFBundleIconFile: 'icon.icns',
-    // Lower than the app's so LaunchServices ranks the helper below Orca.app among duplicates.
+    // Lower than the app's so LaunchServices ranks the helper below OCC.app among duplicates.
     CFBundleVersion: '0',
     CFBundleShortVersionString: appInfo.CFBundleShortVersionString,
     LSMinimumSystemVersion: minimumOs,

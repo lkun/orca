@@ -11,7 +11,7 @@ export const getBrowserExtensionsExperimentalSearchEntry = createLocalizedCatalo
     ),
     description: translate(
       'auto.components.settings.experimental.search.browserExtensions.description',
-      'Run Chrome extensions, such as password managers, in Orca browser tabs.'
+      'Run Chrome extensions, such as password managers, in OCC browser tabs.'
     ),
     keywords: [
       ...translateSearchKeyword(

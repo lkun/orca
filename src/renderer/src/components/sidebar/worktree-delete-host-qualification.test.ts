@@ -222,7 +222,7 @@ describe('STA-4343 sidebar delete: the confirmed row decides the host', () => {
     expect(store.getState().worktreesByRepo.repo1).toHaveLength(2)
   })
 
-  // #34677: nothing would serve the delete, so offer only Remove from Orca.
+  // #34677: nothing would serve the delete, so offer only Remove from OCC.
   it('never sends a destructive delete for an SSH workspace no server serves', async () => {
     const ssh = createHostCheckout(SSH_HOST)
     const routedHostIds: string[] = []

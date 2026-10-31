@@ -337,7 +337,7 @@ jobs:
           assets="$(gh release view "$TAG" --repo "stablyai/orca-$CHANNEL" --json assets --jq '.assets[].name')"
           echo "Assets on $TAG:"
           echo "$assets"
-          for required in latest.yml orca-windows-setup.exe; do
+          for required in latest.yml occ-windows-setup.exe; do
             if ! grep -qx "$required" <<<"$assets"; then
               echo "::error::$TAG is missing $required; Windows could not install this build."
               exit 1
@@ -362,7 +362,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for required in orca-windows-setup.exe orca-windows-setup.exe.blockmap latest.yml; do
+          for required in occ-windows-setup.exe occ-windows-setup.exe.blockmap latest.yml; do
             if [[ ! -s "dist/$required" ]]; then
               echo "::error::Missing or empty staged Windows artifact: $required"
               exit 1
@@ -375,8 +375,8 @@ jobs:
         with:
           name: dev-channel-windows-${{ inputs.tag }}
           path: |
-            dist/orca-windows-setup.exe
-            dist/orca-windows-setup.exe.blockmap
+            dist/occ-windows-setup.exe
+            dist/occ-windows-setup.exe.blockmap
             dist/latest.yml
           if-no-files-found: error
           retention-days: 3

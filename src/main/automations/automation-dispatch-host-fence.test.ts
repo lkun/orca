@@ -316,7 +316,7 @@ describe('scheduled dispatch fenced on the host the record captured', () => {
     service.setRendererReady()
     await vi.advanceTimersByTimeAsync(0)
     await expect(service.runNow(automation.id)).rejects.toThrow(
-      "This automation now runs on its SSH host's Orca server."
+      "This automation now runs on its SSH host's OCC server."
     )
     await service.recordRefusedRun(automation.id)
 

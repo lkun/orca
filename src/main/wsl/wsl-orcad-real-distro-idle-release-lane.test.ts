@@ -245,7 +245,7 @@ async function vmWorkingSetKiB(): Promise<number | null> {
   return null
 }
 
-/** What Orca's processes and the whole guest use while the distro is held. */
+/** What OCC's processes and the whole guest use while the distro is held. */
 async function guestMemory(): Promise<Receipt> {
   const out = await guest(
     'ps -u "$(id -u)" -o rss=,args= | awk \'!/awk/ && /orcad|node|orca-wsl-distro-holder/ {k+=$1} END {print k+0}\'; ' +
@@ -454,7 +454,7 @@ async function restartThroughBridgeExec(): Promise<Receipt> {
   const probe = outputProbe()
   const started = performance.now()
   const result = await wslExe(
-    // The same login-shell pick Orca's own WSL commands use (bash/zsh run -ilc, so rc files load).
+    // The same login-shell pick OCC's own WSL commands use (bash/zsh run -ilc, so rc files load).
     buildWslExecArgs(PLAIN, ['sh', '-c', buildWslLoginShellCommand(probe.command)])
   )
   const firstOutputMs = Math.round(performance.now() - started)

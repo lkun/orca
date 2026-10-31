@@ -173,7 +173,7 @@ const terminalParty = (handle: string) => ({
   orcaSessionId: null
 })
 
-describe("a sender's name, from what Orca shows for it", () => {
+describe("a sender's name, from what OCC shows for it", () => {
   it("names a local worker by its active dispatch's task when its tab has no name of its own", () => {
     const run = db.createRun({
       objective: 'o',

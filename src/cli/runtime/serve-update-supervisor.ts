@@ -69,7 +69,7 @@ async function awaitInstalledHandoff(
   await recordServeUpdateHandoffFailure(
     handoffPath,
     handoff,
-    `Timed out waiting for Orca ${handoff.targetVersion} to be installed.`
+    `Timed out waiting for OCC ${handoff.targetVersion} to be installed.`
   )
   return null
 }

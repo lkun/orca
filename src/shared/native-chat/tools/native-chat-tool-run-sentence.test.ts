@@ -45,7 +45,7 @@ describe('nativeChatToolRunSentence in English', () => {
     expect(english([shell, shell])).toBe('Ran 2 commands')
   })
 
-  it('counts Orca browser CLI calls as browser use, settled and live', () => {
+  it('counts OCC browser CLI calls as browser use, settled and live', () => {
     const browser = [
       { name: 'Bash', input: { command: 'orca goto --url https://example.com' } },
       { name: 'Bash', input: { command: 'orca snapshot --page p1' } },

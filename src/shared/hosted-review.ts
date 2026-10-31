@@ -113,7 +113,7 @@ export type CreateHostedReviewErrorCode =
   | 'push_failed'
   | 'unknown'
 
-/** An Orca-authored create failure that clients can show in their own language. */
+/** An OCC-authored create failure that clients can show in their own language. */
 export type CreateHostedReviewFailureReason =
   | NonNullable<HostedReviewCreationBlockedReason>
   | 'branch_changed'

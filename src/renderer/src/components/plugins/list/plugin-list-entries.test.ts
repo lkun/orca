@@ -13,7 +13,7 @@ import {
 function listing(pluginKey: string, extra: Partial<PluginMarketplaceHostListing> = {}) {
   const value: PluginMarketplaceHostListing = {
     marketplaceSourceId: 'official',
-    marketplaceName: 'Orca Official Plugins',
+    marketplaceName: 'OCC Official Plugins',
     marketplaceOwner: 'stablyai',
     marketplaceCommit: 'abc123',
     pluginKey,
@@ -191,7 +191,7 @@ describe('plugin list entries', () => {
     expect(joined?.updateVersion).toBe('2.0.0')
   })
 
-  it('does not offer an update this Orca is too old to run', () => {
+  it('does not offer an update this OCC is too old to run', () => {
     const plugin = fromCatalog(installed('acme.notes', 'Notes'), 'https://official.invalid/c.git')
     const sources = [catalog('official', 'https://official.invalid/c.git')]
     const newer = listing('acme.notes', {
@@ -232,7 +232,7 @@ describe('plugin list entries', () => {
     const build = (offered: PluginMarketplaceHostListing, target = plugin) =>
       buildPluginListEntries([target], [offered], { sources, orcaVersion: '1.5.0' }).installed[0]
     expect(build(release('e'.repeat(64)))?.reinstallVersion).toBe('1.0.0')
-    // Same bytes would fail the same way; a release this Orca can't run is no fix either.
+    // Same bytes would fail the same way; a release this OCC can't run is no fix either.
     expect(build(release('b'.repeat(64)))?.reinstallVersion).toBeNull()
     expect(build(release('e'.repeat(64), '2.0.0'))?.reinstallVersion).toBeNull()
     expect(
@@ -242,7 +242,7 @@ describe('plugin list entries', () => {
 
   it('lists installed plugins once, joined to their listing, and the rest as available', () => {
     const result = buildPluginListEntries(
-      [installed('stablyai.orca-midnight-theme', 'Orca Midnight')],
+      [installed('stablyai.orca-midnight-theme', 'OCC Midnight')],
       [
         listing('stablyai.orca-midnight-theme'),
         listing('stablyai.orca-nord-theme'),
@@ -250,18 +250,18 @@ describe('plugin list entries', () => {
       ]
     )
     expect(result.installed.map((entry) => [entry.name, entry.categories])).toEqual([
-      ['Orca Midnight', ['themes']]
+      ['OCC Midnight', ['themes']]
     ])
     expect(
       result.available.map((entry) => [entry.name, entry.listing?.marketplaceSourceId])
-    ).toEqual([['Orca Nord Theme', 'official']])
+    ).toEqual([['OCC Nord Theme', 'official']])
   })
 
   it('names and versions a listing from its flat release fields, then the raw release', () => {
     const flat = pluginListEntryFromListing(
-      listing('stablyai.orca-midnight-theme', { name: 'Orca Midnight', version: '2.0.0' })
+      listing('stablyai.orca-midnight-theme', { name: 'OCC Midnight', version: '2.0.0' })
     )
-    expect(flat).toMatchObject({ name: 'Orca Midnight', version: '2.0.0' })
+    expect(flat).toMatchObject({ name: 'OCC Midnight', version: '2.0.0' })
     const bare = pluginListEntryFromListing(listing('stablyai.orca-midnight-theme'))
     expect(bare.version).toBeNull()
     expect(bare.name).not.toBe('')
@@ -269,7 +269,7 @@ describe('plugin list entries', () => {
 
   it("names a catalog entry's publisher from its key, not the catalog owner", () => {
     const community = pluginListEntryFromListing(
-      listing('vale-c.catppuccin', { marketplaceName: 'Orca Community Plugins', official: false })
+      listing('vale-c.catppuccin', { marketplaceName: 'OCC Community Plugins', official: false })
     )
     expect(community.publisher).toBe('vale-c')
     expect(pluginListEntryFromListing(listing('stablyai.orca-nord-theme')).publisher).toBe(

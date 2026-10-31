@@ -91,7 +91,7 @@ export function createBrowserPageWebviewNavigationHandlers({
     }
     const browserStartedUrl = redactKagiSessionToken(event.url)
     const startedUrl = normalizeBrowserNavigationUrl(browserStartedUrl) ?? browserStartedUrl
-    // Read the departing URL from the guest; Orca sets lastKnownWebviewUrlRef to the destination before assigning src.
+    // Read the departing URL from the guest; OCC sets lastKnownWebviewUrlRef to the destination before assigning src.
     let committedUrl: string | null = null
     try {
       committedUrl = webview.getURL() || null

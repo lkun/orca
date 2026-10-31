@@ -108,7 +108,7 @@ function seedRemoteRepo(target: DockerSshHostTarget, repoPath: string): void {
       `cd ${quotePosixShell(repoPath)}`,
       'git init',
       'git config user.email e2e@test.local',
-      'git config user.name "Orca Docker SSH E2E"',
+      'git config user.name "OCC Docker SSH E2E"',
       `printf '%s\\n' ${quotePosixShell(sentinel)} > .orca-e2e-destination-id`,
       `printf '%s\\n' ${quotePosixShell(`remote relay ${sentinel}`)} > README.md`,
       'git add README.md .orca-e2e-destination-id',
@@ -225,7 +225,7 @@ export function startDockerSshHostTarget(
           `printf "%s\\n" "$AUTHORIZED_KEY" ${options.sharedHomeVolume ? '>>' : '>'} /root/.ssh/authorized_keys`,
           'chmod 600 /root/.ssh/authorized_keys',
           'git config --global user.email e2e@test.local',
-          'git config --global user.name "Orca Docker SSH E2E"',
+          'git config --global user.name "OCC Docker SSH E2E"',
           'exec /usr/sbin/sshd -D -e'
         ].join(' && ')
       ],

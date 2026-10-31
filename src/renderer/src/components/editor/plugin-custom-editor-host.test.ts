@@ -394,11 +394,11 @@ describe('custom editor document channel', () => {
     send(edit('pending'))
     send({ orca: 1, kind: 'res', id: 0, result: null })
     await expect(flushed).resolves.toBe(true)
-    // A frame that never answers holds edits Orca can't see.
+    // A frame that never answers holds edits OCC can't see.
     await expect(host.flush()).resolves.toBe(false)
   })
 
-  it('forwards key chords from the shell for Orca to match, dropping malformed ones', () => {
+  it('forwards key chords from the shell for OCC to match, dropping malformed ones', () => {
     const { onKeyChord, send } = setup({ text: 'a' })
     send(keydown({ key: 'x'.repeat(65), code: 'a' }))
     expect(onKeyChord).not.toHaveBeenCalled()

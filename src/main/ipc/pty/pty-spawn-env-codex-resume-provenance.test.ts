@@ -149,7 +149,7 @@ describe('registerPtyHandlers', () => {
       }
 
       posixOnlyIt(
-        'launches plain codex when a REAL rollout sits under a home Orca no longer trusts',
+        'launches plain codex when a REAL rollout sits under a home OCC no longer trusts',
         async () => {
           // The rollout exists; only provenance trust can reject cross-account resume.
           const mockProc = createMockProc()

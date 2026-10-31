@@ -222,7 +222,7 @@ let gatedOffHoldersReleased = false
 
 /**
  * With the gate closed, a launch still releases orphans (no host record, or a pending Remove)
- * but keeps every host's holder: a tester reopening Orca without the gate must not end a live
+ * but keeps every host's holder: a tester reopening OCC without the gate must not end a live
  * host's sessions. With no holder recorded it touches nothing beyond one folder check.
  */
 function releaseHoldersWhileGatedOff(userDataPath: string): void {

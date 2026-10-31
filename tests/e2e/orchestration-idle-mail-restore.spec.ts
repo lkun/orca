@@ -21,7 +21,7 @@ import {
 import { mailDisposition, readMailRow } from './helpers/orchestration-mail-store'
 import { waitForPtyShellEcho } from './terminal-pty-readiness'
 
-const POINTER_COMMAND = 'orca-dev orchestration check'
+const POINTER_COMMAND = 'occ-dev orchestration check'
 const NO_DELIVERY_SETTLE_MS = 5_000
 const DELIVERY_TIMEOUT_MS = 20_000
 

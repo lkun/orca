@@ -28,7 +28,7 @@ export type PtyProcessInfo = {
   agentSessionOwners?: AgentSessionOwnerBinding[]
   /** Owning-host clock age; absent is unmeasured, so age-dependent decisions must defer. */
   hostAgeMs?: number
-  /** Host attests Orca pane (true) or bare shell (false); absent is unknown on older hosts. */
+  /** Host attests OCC pane (true) or bare shell (false); absent is unknown on older hosts. */
   paneBound?: boolean
   /** Creator identity attested by the owning host; absent never means unowned. */
   ownerClientInstanceId?: string

@@ -1,7 +1,7 @@
-// libuv spawns with bInheritHandles=TRUE and no handle list, so every inheritable handle in Orca
+// libuv spawns with bInheritHandles=TRUE and no handle list, so every inheritable handle in OCC
 // reaches a long-lived child. This spawn lists exactly one NUL handle, used for all three stdio.
 // Flags mirror libuv's detached spawn plus CREATE_BREAKAWAY_FROM_JOB: a holder must outlive a
-// kill-on-close job Orca was launched into (an OpenSSH session's, a terminal's). A job that forbids
+// kill-on-close job OCC was launched into (an OpenSSH session's, a terminal's). A job that forbids
 // breakaway fails that with ERROR_ACCESS_DENIED; the spawn then retries inside it and reports so.
 
 #include "isolated-spawn.h"

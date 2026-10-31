@@ -22,7 +22,7 @@ export type GitHubProjectViewErrorType =
   | 'rate_limited'
   | 'unknown'
 
-/** Distinguishes Orca-authored sentences that share one `type`; renderers fall back to `message` for unknown or missing reasons. */
+/** Distinguishes OCC-authored sentences that share one `type`; renderers fall back to `message` for unknown or missing reasons. */
 export type GitHubProjectViewErrorReason =
   | 'project_or_view_not_found'
   | 'project_not_found'
@@ -54,7 +54,7 @@ export type GitHubProjectViewError = {
   /** GitHub host for sign-in commands. */
   host?: string
   rateLimit?: { remaining: number; limit: number; resetMinutes: number }
-  /** Untranslated diagnostic or field name that follows Orca's own prefix. */
+  /** Untranslated diagnostic or field name that follows OCC's own prefix. */
   detail?: string
   /** Rejected slug value for `invalid_slug`. */
   value?: string

@@ -154,7 +154,7 @@ describe('TerminalAgentPromptAnswers', () => {
     expect(h.keys).toEqual([])
   })
 
-  it('refuses an option the prompt does not offer, and a prompt only Orca can answer', async () => {
+  it('refuses an option the prompt does not offer, and a prompt only OCC can answer', async () => {
     const h = harness()
     const { promptId } = h.answers.pending(h.runtime, target)!
     await expect(h.answer(promptId, 'allow_always')).resolves.toMatchObject({

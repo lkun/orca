@@ -583,7 +583,7 @@ describe('updater mac install handoff', () => {
       expect(send).toHaveBeenCalledWith(
         'updater:status',
         expect.objectContaining({
-          message: expect.stringMatching(/close the other Orca instances.*quit Orca/i)
+          message: expect.stringMatching(/close the other OCC instances.*quit OCC/i)
         })
       )
     }

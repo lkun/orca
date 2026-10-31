@@ -145,7 +145,7 @@ export const ORCHESTRATION_WORKER_TERMINAL_HANDLERS: Record<string, CommandHandl
     if (requiresCurrentListSemantics && !result.result.page) {
       throw new RuntimeClientError(
         'incompatible_runtime',
-        'The connected Orca runtime did not prove support for the requested worker-list flags, so no inventory was printed. Update the connected Orca runtime and retry.'
+        'The connected OCC runtime did not prove support for the requested worker-list flags, so no inventory was printed. Update the connected OCC runtime and retry.'
       )
     }
     printResult({ ...result, result: { ...result.result, scope } }, json, (value) => {

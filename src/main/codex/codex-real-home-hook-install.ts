@@ -89,17 +89,17 @@ export async function reconcileCodexHookEntriesInHome(
           }
         }
       }
-      throw new Error(`Orca entries in ${home.homePath} did not settle`)
+      throw new Error(`OCC entries in ${home.homePath} did not settle`)
     })
   } catch (error) {
     console.warn(
-      `[codex-real-home-hooks] could not reconcile Orca entries in ${home.homePath}:`,
+      `[codex-real-home-hooks] could not reconcile OCC entries in ${home.homePath}:`,
       error
     )
   }
 }
 
-// Settlement also covers homes that cannot accept Orca's entry.
+// Settlement also covers homes that cannot accept OCC's entry.
 function reconcilePass(
   home: CodexHookHome,
   args: ReconcileArgs,
@@ -134,7 +134,7 @@ function reconcilePass(
     writeHooksJson(hooksWritePath, { ...config, hooks: nextHooks }, { preserveMode: true })
   }
   if (plan.kind === 'prune') {
-    // Move shifted user approvals before writing Orca approvals into their former slots.
+    // Move shifted user approvals before writing OCC approvals into their former slots.
     mutateRealHomeHooksPreservingUserTrust({
       sourcePaths,
       tomlPath,
@@ -193,12 +193,12 @@ function reconcilePass(
     removeHookTrustEntries(tomlPath, findStale(readHookTrustEntries(tomlPath)))
   } catch (error) {
     // The installed entry remains valid; leftover approvals match no hook.
-    console.warn('[codex-real-home-hooks] could not drop stale Orca approvals:', error)
+    console.warn('[codex-real-home-hooks] could not drop stale OCC approvals:', error)
   }
   return 'settled'
 }
 
-// Preserve held and untouched slots; stale approvals must carry a known Orca hash.
+// Preserve held and untouched slots; stale approvals must carry a known OCC hash.
 function findStaleOrcaApprovals(
   trustStates: ReadonlyMap<string, CodexHookTrustState>,
   events: CodexManagedHookInstallMaterial['events'],
@@ -227,7 +227,7 @@ function findStaleOrcaApprovals(
   })
 }
 
-/** Opt-out must move shifted user approvals when removing Orca entries. */
+/** Opt-out must move shifted user approvals when removing OCC entries. */
 export async function removeRealHomeCodexHookForOptOut(
   codexHashes: readonly CodexHookHashes[],
   home: CodexHookHome = getRealHomeCodexHookHome()

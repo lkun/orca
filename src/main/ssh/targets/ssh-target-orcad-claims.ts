@@ -236,7 +236,7 @@ export function collectTargetCatalogBlockers(
   return blockers
 }
 
-/** Who holds the target exclusively: a managed Orca server, or an unmigrated legacy owner. */
+/** Who holds the target exclusively: a managed OCC server, or an unmigrated legacy owner. */
 function targetHolder(
   target: SshTarget
 ): Extract<OrcadMigrationBlocker, { code: 'orcad_migration_target_owned' }>['holder'] | null {
@@ -261,7 +261,7 @@ export function orcadTargetBlockerMessage(
       return 'This SSH target is held for this server, but no record explains why. Recover the server before reusing the host.'
     case 'orcad_migration_direct_ssh_repositories':
     case 'orcad_migration_direct_ssh_folder_workspaces':
-      return 'This SSH target owns repositories or folder workspaces. Orca can only be set up on a host with no direct SSH projects yet; keep this host in direct SSH mode.'
+      return 'This SSH target owns repositories or folder workspaces. OCC can only be set up on a host with no direct SSH projects yet; keep this host in direct SSH mode.'
     case 'orcad_migration_direct_ssh_terminal_leases':
       return 'This SSH target still owns terminal sessions. Close them before converting the host.'
     case 'orcad_migration_saved_port_forwards':
@@ -269,6 +269,6 @@ export function orcadTargetBlockerMessage(
     case 'orcad_migration_dependent_state':
       return dependentStateMessage(blocker.dependencies)
     case 'orcad_migration_dependency_unverifiable':
-      return `Orca could not read its saved ${blocker.sources.join(', ')} state, so it cannot show this SSH target is unused; the target was left in direct SSH mode.`
+      return `OCC could not read its saved ${blocker.sources.join(', ')} state, so it cannot show this SSH target is unused; the target was left in direct SSH mode.`
   }
 }

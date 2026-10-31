@@ -53,7 +53,7 @@ function shouldKeepPhysicalResizeAnchor(terminal: Terminal): boolean {
   if (!windowsPty?.buildNumber) {
     return false
   }
-  // Only explicit legacy Windows builds disable xterm reflow; Orca’s unknown-build backend fallback still reflows.
+  // Only explicit legacy Windows builds disable xterm reflow; OCC’s unknown-build backend fallback still reflows.
   return windowsPty.backend !== 'conpty' || windowsPty.buildNumber < 21376
 }
 

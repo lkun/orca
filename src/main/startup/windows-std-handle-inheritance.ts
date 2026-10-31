@@ -1,7 +1,7 @@
 import { loadWindowsSecurity } from '../../shared/windows-security-addon'
 
 /** libuv spawns with bInheritHandles=TRUE, so an inheritable std handle reaches every child, and a
- * long-lived one (the WSL holder, the daemon) keeps a launcher's pipe open after Orca exits. */
+ * long-lived one (the WSL holder, the daemon) keeps a launcher's pipe open after OCC exits. */
 export function clearWindowsStdHandleInheritance(
   platform: NodeJS.Platform = process.platform
 ): void {

@@ -32,7 +32,7 @@ const TRUNCATED_PREVIEW_MESSAGE = 'This document is too large for the server to 
 const RUNTIME_TOO_LARGE_ERROR = 'file_too_large'
 
 const RUNTIME_DOC_PREVIEW_UPDATE_REQUIRED_MESSAGE =
-  'Secure document previews require a newer Orca on the paired machine. Update it and try again.'
+  'Secure document previews require a newer OCC on the paired machine. Update it and try again.'
 
 function isTooLargeReadError(error: unknown): boolean {
   return error instanceof Error && error.message === RUNTIME_TOO_LARGE_ERROR

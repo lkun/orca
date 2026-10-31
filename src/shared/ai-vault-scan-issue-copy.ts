@@ -1,4 +1,4 @@
-// One English table for Orca-authored Agent Session History scan copy: main builds the wire `message`, the renderer translates by code.
+// One English table for OCC-authored Agent Session History scan copy: main builds the wire `message`, the renderer translates by code.
 export const AI_VAULT_SCAN_ISSUE_COPY = {
   issuesOmitted: 'Additional scan issues were omitted.',
   sessionMetadataUnreadable: 'Session metadata could not be read this scan.',
@@ -16,11 +16,11 @@ export const AI_VAULT_SCAN_ISSUE_COPY = {
   openCodeWriteAheadLogUnreadable:
     '{{label}} history in {{name}} could not be read. Its write-ahead log cannot be opened read-only on this filesystem. Exit {{label}} cleanly to flush the log.',
   wslTranscriptFsSlow:
-    'WSL transcript files are temporarily unavailable because filesystem access is taking too long. Try again shortly or restart Orca if the issue continues.',
+    'WSL transcript files are temporarily unavailable because filesystem access is taking too long. Try again shortly or restart OCC if the issue continues.',
   wslTranscriptFsCapacity:
-    'WSL transcript discovery is temporarily unavailable because too many filesystem requests are already waiting. Try again shortly or restart Orca if the issue continues.',
+    'WSL transcript discovery is temporarily unavailable because too many filesystem requests are already waiting. Try again shortly or restart OCC if the issue continues.',
   wslTranscriptFsProcessFailed:
-    'WSL transcript files are temporarily unavailable because the filesystem helper process failed ({{detail}}). Try again shortly or restart Orca if the issue continues.',
+    'WSL transcript files are temporarily unavailable because the filesystem helper process failed ({{detail}}). Try again shortly or restart OCC if the issue continues.',
   wslDistroNotRunning:
     "WSL transcript files are unavailable because WSL distro '{{distro}}' is not running. Open a terminal in it to start it.",
   wslDistroUnverifiable:
@@ -35,7 +35,7 @@ export const AI_VAULT_SCAN_ISSUE_COPY = {
   scannerPaused: 'Session scanning paused after repeated failures. Refresh to try again.',
   scannerBusy: 'Too many session scans in flight. Wait a moment, then refresh.',
   scannerMissing:
-    'The session scanner is missing from this Orca install. Reinstalling Orca restores it.',
+    'The session scanner is missing from this OCC install. Reinstalling OCC restores it.',
   scannerStopped: 'The session scanner stopped unexpectedly. Refresh to try again.'
 } as const
 

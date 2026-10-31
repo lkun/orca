@@ -248,7 +248,7 @@ describe('target=_blank links', () => {
     guestDownloadURLMock.mockReset()
   })
 
-  it('opens local files in an Orca tab from a local page', () => {
+  it('opens local files in an OCC tab from a local page', () => {
     const handler = attachClickedGuest('file:///tmp/site/index.html')
 
     expect(handler({ url: 'file:///tmp/site/detail.html#pain', ...link })).toEqual({

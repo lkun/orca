@@ -87,7 +87,7 @@ async function requireStoppedRuntime(client: RuntimeClient): Promise<void> {
   if (status.reachable || status.legacyPidRunning) {
     throw new RuntimeClientError(
       'runtime_error',
-      'Stop Orca before profile-state rollback so no process can write the SQLite database.'
+      'Stop OCC before profile-state rollback so no process can write the SQLite database.'
     )
   }
 }

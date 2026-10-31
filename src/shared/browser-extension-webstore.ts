@@ -47,13 +47,13 @@ export function parseChromeWebStoreExtensionInput(input: string): string | null 
   return candidates.find((segment) => isChromeExtensionId(segment)) ?? null
 }
 
-/** Main → trusted renderer: show / close Orca's install confirmation. */
+/** Main → trusted renderer: show / close OCC's install confirmation. */
 export const BROWSER_EXTENSION_INSTALL_PROMPT_REQUESTED_CHANNEL =
   'browserExtensions:installPromptRequested'
 export const BROWSER_EXTENSION_INSTALL_PROMPT_CLOSED_CHANNEL =
   'browserExtensions:installPromptClosed'
 
-/** Orca's own install/uninstall confirmation, shown by the trusted renderer. */
+/** OCC's own install/uninstall confirmation, shown by the trusted renderer. */
 export type BrowserExtensionInstallPromptRequest = {
   requestId: string
   /** `permissions`: an installed extension's permissions.request for optional access. */

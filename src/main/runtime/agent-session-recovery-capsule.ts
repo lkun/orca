@@ -265,7 +265,7 @@ export class AgentSessionRecoveryCapsule {
     })
   }
 
-  /** Preserve records unreadable to this host for a compatible Orca. */
+  /** Preserve records unreadable to this host for a compatible OCC. */
   clearAll(now: number, keep: KeepRecord = () => false): Promise<number> {
     return withFileTransactionLock(this.filePath, async () => {
       let state: Pick<RecoveryCapsuleState, 'entries' | 'failed'>

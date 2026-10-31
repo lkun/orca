@@ -62,7 +62,7 @@ export function MobilePdfPreview({ media }: { media: MobileFileMedia }) {
     return (
       <View style={styles.state}>
         <Text style={styles.stateText}>
-          {t('files.pdfPreview.updateRequired', 'Update Orca Mobile to open PDFs')}
+          {t('files.pdfPreview.updateRequired', 'Update OCC Mobile to open PDFs')}
         </Text>
       </View>
     )

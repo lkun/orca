@@ -33,7 +33,7 @@ export async function openLocalOrca(
 
   throw new RuntimeClientError(
     'runtime_open_timeout',
-    'Timed out waiting for an Orca desktop window. The runtime may still be running headlessly.'
+    'Timed out waiting for an OCC desktop window. The runtime may still be running headlessly.'
   )
 }
 
@@ -58,7 +58,7 @@ async function getStatusForOpen(
 function throwDesktopActivationBlocked(): never {
   throw new RuntimeClientError(
     'desktop_activation_blocked',
-    'Orca is running headlessly, but it cannot open a desktop window safely because the persistent terminal provider is unavailable. Quit Orca normally and start the app again; do not use open -n.'
+    'OCC is running headlessly, but it cannot open a desktop window safely because the persistent terminal provider is unavailable. Quit OCC normally and start the app again; do not use open -n.'
   )
 }
 

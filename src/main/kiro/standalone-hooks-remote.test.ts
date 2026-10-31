@@ -36,7 +36,7 @@ describe('KiroHookService.installRemote with the V3 standalone hooks file', () =
     expect(fs.files.has(REMOTE_HOOKS_FILE)).toBe(false)
   })
 
-  it('refuses to overwrite a remote same-named file that holds hooks Orca did not write', async () => {
+  it('refuses to overwrite a remote same-named file that holds hooks OCC did not write', async () => {
     const userFile = JSON.stringify({
       version: 'v1',
       hooks: [{ name: 'mine', trigger: 'Stop', action: { type: 'command', command: 'notify.sh' } }]

@@ -9,7 +9,7 @@ export function resolveBuildSourceCommit() {
     throw new Error(
       `Could not read the source commit with \`git rev-parse HEAD\`: ${
         error instanceof Error ? error.message : String(error)
-      }. Orca builds must run from a git checkout so official skills can pin to it.`
+      }. OCC builds must run from a git checkout so official skills can pin to it.`
     )
   }
   if (!/^[0-9a-f]{40}$/.test(commit)) {

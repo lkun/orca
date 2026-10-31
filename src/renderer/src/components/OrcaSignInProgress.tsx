@@ -10,7 +10,7 @@ async function copySignInLink(link: string): Promise<void> {
     await window.api.ui.writeClipboardText(link)
     toast.success(translate('auto.components.OrcaSignInProgress.copied', 'Sign-in link copied'))
   } catch (error) {
-    console.warn('Could not copy the Orca sign-in link:', error)
+    console.warn('Could not copy the OCC sign-in link:', error)
     toast.error(
       translate('auto.components.OrcaSignInProgress.copyFailed', 'Could not copy the link.')
     )

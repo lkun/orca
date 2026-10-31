@@ -11,5 +11,5 @@ This exercises production rendering and callbacks, not the complete terminal lau
 
 Run `ORCA_BACKGROUND_LAUNCH=1 bun tests/tools/omp-child-session-resume-smoke.mjs /path/to/oh-my-pi`
 for a zero-model-call check against real OMP session storage and CLI parsing. The smoke
-builds Orca's path-based resume command, creates parent, child and grandchild transcripts,
+builds OCC's path-based resume command, creates parent, child and grandchild transcripts,
 and verifies OMP selects each descendant's distinct identity in a folder workspace.

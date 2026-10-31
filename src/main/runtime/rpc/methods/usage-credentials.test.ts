@@ -194,7 +194,7 @@ describe('usage credential RPC methods', () => {
   ] as const
 
   it.each(providers)(
-    'never overwrites a %s key the other Orca app on this machine sealed, but forgets it',
+    'never overwrites a %s key the other OCC app on this machine sealed, but forgets it',
     async (_provider, fileName, prefix, methodPrefix) => {
       useSealingSecretStore({ working: true })
       const { runtime, rateLimits } = createRuntime()

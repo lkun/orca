@@ -46,7 +46,7 @@ export const REMOVED_WORK_LINEAGE_FIELDS = {
     hostScope: text,
     depth: int,
     status: text,
-    // Null when no exit was ever recorded; an exit Orca could not certify is saved as 'unknown'.
+    // Null when no exit was ever recorded; an exit OCC could not certify is saved as 'unknown'.
     terminationReason: text,
     createdAt: text
   },

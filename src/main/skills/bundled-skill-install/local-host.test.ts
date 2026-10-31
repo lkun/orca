@@ -41,7 +41,7 @@ describe('localBundledSkillInput', () => {
     })
   })
 
-  it('detects agents when none are given and keeps only ones Orca can place a skill for', async () => {
+  it('detects agents when none are given and keeps only ones OCC can place a skill for', async () => {
     detectMock.mockResolvedValue(['claude', 'aider', 'codex'])
     const input = await localBundledSkillInput({
       userDataPath: USER_DATA,
@@ -77,7 +77,7 @@ describe('localBundledSkillInput', () => {
     expect(workspace.providerRootOverrides).toEqual({})
   })
 
-  it("reads past a CLAUDE_CONFIG_DIR Orca injected, as the app's account router does", async () => {
+  it("reads past a CLAUDE_CONFIG_DIR OCC injected, as the app's account router does", async () => {
     const injected = join(USER_DATA, 'claude-profiles', 'work')
     vi.stubEnv('CLAUDE_CONFIG_DIR', injected)
     vi.stubEnv(CLAUDE_INJECTED_CONFIG_DIR_ENV, injected)

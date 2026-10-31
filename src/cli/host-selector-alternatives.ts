@@ -82,12 +82,12 @@ export function crossKindNextSteps(
   const environment = findEnvironmentByName(alternatives.environments, name)
   if (requested !== 'ssh' && ssh) {
     steps.push(
-      `"${name}" is an SSH target on this Orca host, not a paired server. Use --host ssh:${ssh.id}.`
+      `"${name}" is an SSH target on this OCC host, not a paired server. Use --host ssh:${ssh.id}.`
     )
   }
   if (requested !== 'environment' && environment) {
     steps.push(
-      `"${name}" is a paired Orca server, not an SSH target. Use --environment ${environment.name}.`
+      `"${name}" is a paired OCC server, not an SSH target. Use --environment ${environment.name}.`
     )
   }
   return steps
@@ -174,8 +174,8 @@ export async function resolveSshHostTargetId(
   throw new RuntimeClientError(
     'invalid_argument',
     bareName
-      ? `Unknown host in ${flagSpelling}: it is not this machine or a paired Orca server the command can use, and the connected Orca host has no SSH target named ${targetId}. Run \`orca host list\` to see every name.`
-      : `Unknown SSH target in ${flagSpelling}: this Orca host has no SSH target named or with id ${targetId}.`,
+      ? `Unknown host in ${flagSpelling}: it is not this machine or a paired OCC server the command can use, and the connected OCC host has no SSH target named ${targetId}. Run \`occ host list\` to see every name.`
+      : `Unknown SSH target in ${flagSpelling}: this OCC host has no SSH target named or with id ${targetId}.`,
     {
       knownSshTargets: targets,
       knownEnvironments: environments,
@@ -183,7 +183,7 @@ export async function resolveSshHostTargetId(
         ...crossKindNextSteps(targetId, { sshTargets: targets, environments }, 'ssh'),
         ...(targets.length > 0
           ? [`Known SSH targets: ${targets.map((target) => target.label).join(', ')}.`]
-          : ['This Orca host has no SSH targets registered.'])
+          : ['This OCC host has no SSH targets registered.'])
       ]
     }
   )

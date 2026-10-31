@@ -257,7 +257,7 @@ describe('foldMobileNativeChatMessages', () => {
     return {
       id,
       role: 'assistant',
-      blocks: [{ type: 'tool-call', name: 'Bash', input: { command: 'command -v orca-ide' } }],
+      blocks: [{ type: 'tool-call', name: 'Bash', input: { command: 'command -v occ-ide' } }],
       timestamp: 0,
       source: 'transcript'
     }
@@ -328,7 +328,7 @@ describe('foldMobileNativeChatMessages', () => {
     const folded = fold([
       assistant('a1', 'Checking which binary is on PATH.'),
       toolCall('c1'),
-      toolResult('r1', 'orca-ide not found')
+      toolResult('r1', 'occ-ide not found')
     ])
 
     expect(folded).toHaveLength(1)
@@ -355,7 +355,7 @@ describe('foldMobileNativeChatMessages', () => {
     ])
 
     expect(folded[0]?.blocks).toEqual([
-      { type: 'tool-call', name: 'Bash', input: { command: 'command -v orca-ide' } },
+      { type: 'tool-call', name: 'Bash', input: { command: 'command -v occ-ide' } },
       { type: 'tool-result', output: 'important output' }
     ])
   })

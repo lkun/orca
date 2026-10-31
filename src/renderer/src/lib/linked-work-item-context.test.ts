@@ -29,7 +29,7 @@ const PRODUCT_WORKFLOW_PHRASES = [
   'orca linear',
   'meta.partial',
   'install',
-  'enable it from Orca Settings',
+  'enable it from OCC Settings',
   'Before planning or editing',
   'Full Linear context was not loaded',
   'linear-tickets completion flow',

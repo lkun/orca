@@ -403,7 +403,7 @@ describe('agent-session create operation ledger', () => {
     )
 
     expect(planned?.command).toContain(
-      process.platform === 'linux' ? 'orca-ide claude-teams' : 'orca claude-teams'
+      process.platform === 'linux' ? 'occ-ide claude-teams' : 'orca claude-teams'
     )
   })
 

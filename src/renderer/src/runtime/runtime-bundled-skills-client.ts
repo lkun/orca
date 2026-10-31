@@ -10,11 +10,11 @@ import { callRuntimeRpc, runtimeEnvironmentSupportsCapability } from './runtime-
 const BUNDLED_SKILL_PLAN_TIMEOUT_MS = 60_000
 const BUNDLED_SKILL_EXECUTE_TIMEOUT_MS = 5 * 60_000
 
-/** `unsupported`: the host answered its status and predates the capability ("Update Orca on
+/** `unsupported`: the host answered its status and predates the capability ("Update OCC on
  *  the server"). A failed probe is not this; it rejects like any other error. */
 export type BundledSkillPlanResult =
   | { kind: 'plan'; plan: BundledSkillPlan }
-  /** `connect-host`: an SSH host no Orca server serves yet; never planned on this machine. */
+  /** `connect-host`: an SSH host no OCC server serves yet; never planned on this machine. */
   | { kind: 'unsupported'; reason: BundledSkillUnsupportedReason }
 
 export type BundledSkillUnsupportedReason = 'update-server' | 'connect-host'

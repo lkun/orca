@@ -1,4 +1,4 @@
-// An in-process Orca Cloud connector speaking the real wire shapes, with tokens minted per account.
+// An in-process OCC Cloud connector speaking the real wire shapes, with tokens minted per account.
 import { randomBytes } from 'node:crypto'
 import { CONNECTOR_CLIENT_LIMITS, CONNECTOR_PATHS } from '../../shared/connector-cloud-contract'
 import type { ConnectorResult } from './connector-cloud-request'

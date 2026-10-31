@@ -351,7 +351,7 @@ describe('runSleepWorktree', () => {
       'Failed to sleep workspace',
       expect.objectContaining({
         description:
-          "Orca couldn't tell which host runs this workspace's terminals, so the workspace was kept open. Reconnect its hosts and try again."
+          "OCC couldn't tell which host runs this workspace's terminals, so the workspace was kept open. Reconnect its hosts and try again."
       })
     )
   })

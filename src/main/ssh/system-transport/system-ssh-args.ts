@@ -12,7 +12,7 @@ export type SystemSshBuildArgsOptions = {
   logChannelFailures?: boolean
   /** Only proven absence of a matching Host/Match block permits stored endpoint overrides; unknown keeps the alias authoritative. */
   aliasClaimedByConfig?: boolean
-  /** Dial Orca's held `ssh -L` forward instead of the target's proxy. See `system-ssh-loopback-route`. */
+  /** Dial OCC's held `ssh -L` forward instead of the target's proxy. See `system-ssh-loopback-route`. */
   loopbackRoute?: SystemSshLoopbackRouteArgs
   /** Server-alive probes for a long-lived unmultiplexed process, which no ControlMaster watches. */
   keepAlive?: boolean
@@ -36,7 +36,7 @@ export function buildSshArgs(target: SshTarget, options?: SystemSshBuildArgsOpti
   }
   if (options?.gssapiOnly) {
     // Why: the probe must neither authenticate with a key nor open an OpenSSH
-    // credential prompt; failure belongs to Orca's existing ssh2 prompt path.
+    // credential prompt; failure belongs to OCC's existing ssh2 prompt path.
     args.push('-o', 'GSSAPIAuthentication=yes')
     args.push('-o', 'PreferredAuthentications=gssapi-with-mic')
   }
@@ -66,7 +66,7 @@ export function buildSshArgs(target: SshTarget, options?: SystemSshBuildArgsOpti
   return args
 }
 
-/** Saved-target routing and login args, separate from Orca transport options. */
+/** Saved-target routing and login args, separate from OCC transport options. */
 export function appendSshTargetDestinationArgs(
   args: string[],
   target: SshTarget,
@@ -202,7 +202,7 @@ function hasUserConfiguredControlMaster(
   if (!resolvedConfig) {
     return false
   }
-  // ControlPersist/ControlPath reuse existing masters; Orca also needs ControlMaster enabled to create one.
+  // ControlPersist/ControlPath reuse existing masters; OCC also needs ControlMaster enabled to create one.
   return (
     hasEnabledControlMaster(resolvedConfig.controlMaster) &&
     hasEnabledControlPath(resolvedConfig.controlPath)

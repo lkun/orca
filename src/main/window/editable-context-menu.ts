@@ -197,7 +197,7 @@ function buildNativeEditMenuTemplate(
   ]
 }
 
-/** The spelling actions an editable context menu offers; Orca's window and browser pages share it. */
+/** The spelling actions an editable context menu offers; OCC's window and browser pages share it. */
 export function readContextMenuSpelling(
   params: Pick<Electron.ContextMenuParams, 'dictionarySuggestions' | 'misspelledWord'>
 ): ContextMenuSpelling {

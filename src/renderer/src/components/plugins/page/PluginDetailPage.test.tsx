@@ -28,7 +28,7 @@ vi.mock('../../ui/tooltip', () => ({
 
 const listing: PluginMarketplaceHostListing = {
   marketplaceSourceId: 'official',
-  marketplaceName: 'Orca Official Plugins',
+  marketplaceName: 'OCC Official Plugins',
   marketplaceOwner: 'stablyai',
   marketplaceCommit: 'c',
   pluginKey: 'stablyai.orca-minimal-icons',
@@ -51,7 +51,7 @@ const manifest = pluginManifestSchema.parse({
   manifestVersion: 1,
   id: 'orca-minimal-icons',
   publisher: 'stablyai',
-  name: 'Orca Minimal Icons',
+  name: 'OCC Minimal Icons',
   version: '1.0.0',
   engines: { orca: '>=1.0.0' },
   pluginApi: 1,
@@ -62,7 +62,7 @@ const manifest = pluginManifestSchema.parse({
 
 const preview: PluginMarketplaceHostInstallPreview = {
   marketplaceSourceId: 'official',
-  marketplaceName: 'Orca Official Plugins',
+  marketplaceName: 'OCC Official Plugins',
   marketplaceOwner: 'stablyai',
   marketplaceCommit: 'c',
   pluginKey: listing.pluginKey,
@@ -434,7 +434,7 @@ describe('PluginDetailPage', () => {
         expect(banner(container) !== null).toBe(shown)
         if (shown) {
           expect(banner(container)?.textContent).toBe(
-            'Not an official plugin: Make sure you trust stablyai before installing. This plugin runs the publisher’s code inside Orca.'
+            'Not an official plugin: Make sure you trust stablyai before installing. This plugin runs the publisher’s code inside OCC.'
           )
           expect(banner(container)?.querySelector('button')).toBeNull()
         }
@@ -450,7 +450,7 @@ describe('PluginDetailPage', () => {
       const container = await render(pluginListEntryFromListing(page), () => new Promise(() => {}))
       expect(banner(container)?.getAttribute('data-plugin-not-official')).toBe('translations')
       expect(banner(container)?.textContent).toBe(
-        'Not an official plugin: Translations can change any text in Orca. Make sure you trust stablyai.'
+        'Not an official plugin: Translations can change any text in OCC. Make sure you trust stablyai.'
       )
     })
 

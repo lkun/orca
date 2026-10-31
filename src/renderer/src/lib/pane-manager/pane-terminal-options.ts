@@ -42,7 +42,7 @@ export function buildDefaultTerminalOptions(): ITerminalOptions {
     fontWeight: '300',
     fontWeightBold: '500',
     scrollback: DESKTOP_TERMINAL_SCROLLBACK_ROWS_DEFAULT,
-    // A small wheel multiplier offsets Orca’s taller default terminal cells.
+    // A small wheel multiplier offsets OCC’s taller default terminal cells.
     scrollSensitivity: DEFAULT_TERMINAL_SCROLL_SENSITIVITY,
     fastScrollSensitivity: DEFAULT_TERMINAL_FAST_SCROLL_SENSITIVITY,
     allowTransparency: false,
@@ -56,7 +56,7 @@ export function buildDefaultTerminalOptions(): ITerminalOptions {
       // Accept the slim scrollbar’s ~one-column gutter cost and enable overview ruler. The old v1.4.51 table corruption was the ZWJ width bug, now fixed by terminal-unicode-provider; composeActiveTerminalTheme hides the ruler border.
       width: 7
     },
-    // Advertise KKP so handshake-gated CLIs accept Orca’s enhanced CSI-u chords (including Shift+Enter off Windows), matching VS Code.
+    // Advertise KKP so handshake-gated CLIs accept OCC’s enhanced CSI-u chords (including Shift+Enter off Windows), matching VS Code.
     vtExtensions: {
       kittyKeyboard: true
     }

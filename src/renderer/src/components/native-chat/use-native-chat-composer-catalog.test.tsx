@@ -110,7 +110,7 @@ describe('composer catalog authority', () => {
       sessionSkills: []
     })
   })
-  it("puts Orca's /resume in place of an agent command and beside a namesake skill", () => {
+  it("puts OCC's /resume in place of an agent command and beside a namesake skill", () => {
     const reported = [
       { name: 'review', kind: 'command' as const },
       { name: 'resume', kind: 'command' as const, description: 'Resume a saved chat' },

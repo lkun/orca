@@ -72,7 +72,7 @@ function status(workspace: string, overrides: Partial<AgentStatusIpcPayload> = {
 }
 
 const dispatch = (taskId: string, task: string) =>
-  `You are working inside Orca, a multi-agent IDE. You are a dispatched worker.
+  `You are working inside OCC, a multi-agent IDE. You are a dispatched worker.
 Your task ID is: ${taskId}
 
 === TASK ===

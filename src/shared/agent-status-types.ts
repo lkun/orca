@@ -128,7 +128,7 @@ export type AgentStatusEntry = {
   /** Retain the last completed non-boundary output across working: batched done→working publication may already clear lastAssistantMessage. */
   lastCompletedAssistantMessage?: string
   /** True when this `done` was reached via interrupt, not normal completion
-   *  (agent-reported or Orca's guarded fallback). Undefined otherwise. */
+   *  (agent-reported or OCC's guarded fallback). Undefined otherwise. */
   interrupted?: boolean
   /** True when this `done` is a session boundary, not a completed turn. See AgentStatusPayload. */
   sessionBoundary?: boolean
@@ -144,7 +144,7 @@ export type AgentStatusEntry = {
    *  these instead of `subagents`. Absent from older hosts. */
   children?: AgentChildWorkView[]
   /** Provider-owned conversation/session id captured from hook payloads.
-   *  Used only for exact CLI resume; Orca terminal ids are not agent-session ids. */
+   *  Used only for exact CLI resume; OCC terminal ids are not agent-session ids. */
   providerSession?: AgentProviderSessionMetadata
   /** False when the status belongs to a non-terminal owner that restores itself. */
   terminalResumeEligible?: false

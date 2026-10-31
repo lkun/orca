@@ -143,7 +143,7 @@ describe('isGitRepo', () => {
     git(realRepo, ['init', '--quiet'])
     git(realRepo, [
       '-c',
-      'user.name=Orca Test',
+      'user.name=OCC Test',
       '-c',
       'user.email=orca@example.com',
       'commit',
@@ -353,7 +353,7 @@ describe('getLinkedWorktreeMainRepoRoot', () => {
     mkdirSync(repoRoot, { recursive: true })
     git(repoRoot, ['init', '--quiet'])
     git(repoRoot, ['config', 'user.email', 'test@orca.test'])
-    git(repoRoot, ['config', 'user.name', 'Orca Test'])
+    git(repoRoot, ['config', 'user.name', 'OCC Test'])
     writeFileSync(path.join(repoRoot, 'README.md'), 'seed\n')
     git(repoRoot, ['add', 'README.md'])
     git(repoRoot, ['commit', '--quiet', '-m', 'seed'])

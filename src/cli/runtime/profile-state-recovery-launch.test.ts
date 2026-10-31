@@ -12,7 +12,7 @@ import {
 const mocks = vi.hoisted(() => ({ run: vi.fn() }))
 vi.mock('@orca/process-host', () => ({ runProcess: mocks.run }))
 vi.mock('./orca-app-executable', () => ({
-  resolveForegroundOrcaExecutable: () => '/packaged/Orca',
+  resolveForegroundOrcaExecutable: () => '/packaged/OCC',
   resolveAppRoot: () => '/application',
   getExecutableAppArgs: () => ['/application'],
   stripElectronRunAsNode: (env: NodeJS.ProcessEnv) => {
@@ -54,7 +54,7 @@ describe('profile-state recovery launch', () => {
     vi.stubEnv('ELECTRON_RUN_AS_NODE', '1')
     expect(canLaunchProfileStateRecovery()).toBe(true)
     vi.stubEnv('ELECTRON_RUN_AS_NODE', undefined)
-    vi.stubEnv('ORCA_APP_EXECUTABLE', '/explicit/Orca')
+    vi.stubEnv('ORCA_APP_EXECUTABLE', '/explicit/OCC')
     expect(canLaunchProfileStateRecovery()).toBe(true)
   })
 
@@ -64,7 +64,7 @@ describe('profile-state recovery launch', () => {
     expect(await launchProfileStateRecovery(request)).toEqual(result)
     expect(mocks.run).toHaveBeenCalledWith(
       expect.objectContaining({
-        program: '/packaged/Orca',
+        program: '/packaged/OCC',
         args: [
           '/application',
           '--serve',

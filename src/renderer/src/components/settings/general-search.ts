@@ -30,7 +30,7 @@ export const getGeneralWorkspaceSearchEntries = createLocalizedCatalog(() => [
     ),
     description: translate(
       'auto.components.settings.general.search.externalWorktreesDescription',
-      'Choose whether worktrees created outside Orca appear by default.'
+      'Choose whether worktrees created outside OCC appear by default.'
     ),
     keywords: [
       ...translateSearchKeyword(
@@ -204,10 +204,10 @@ export const getGeneralNavigationSearchEntries = createLocalizedCatalog(() => [
 
 export const getGeneralCliSearchEntries = createLocalizedCatalog(() => [
   {
-    title: translate('auto.components.settings.general.search.327e3fa70d', 'Orca CLI'),
+    title: translate('auto.components.settings.general.search.327e3fa70d', 'OCC CLI'),
     description: translate(
       'auto.components.settings.general.search.ca529079bf',
-      'Register or remove the Orca CLI command.'
+      'Register or remove the OCC CLI command.'
     ),
     keywords: [
       ...translateSearchKeyword('auto.components.settings.general.search.924a660a78', 'cli'),
@@ -231,7 +231,7 @@ export const getGeneralCliSearchEntries = createLocalizedCatalog(() => [
     title: translate('auto.components.settings.general.search.2d9f7b42df', 'Agent skill'),
     description: translate(
       'auto.components.settings.general.search.244e3fb4c8',
-      'Install the Orca skill so agents know to use the Orca CLI.'
+      'Install the OCC skill so agents know to use the OCC CLI.'
     ),
     keywords: [
       ...translateSearchKeyword('auto.components.settings.general.search.bda108e66c', 'skill'),
@@ -245,7 +245,7 @@ export const getGeneralUpdateSearchEntries = createLocalizedCatalog(() => [
     title: translate('auto.components.settings.general.search.e15af4eb64', 'Check for Updates'),
     description: translate(
       'auto.components.settings.general.search.79ff46776e',
-      'Check for app updates and install a newer Orca version.'
+      'Check for app updates and install a newer OCC version.'
     ),
     keywords: [
       ...translateSearchKeyword('auto.components.settings.general.search.f89a94773c', 'update'),

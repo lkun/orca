@@ -1,11 +1,11 @@
-// Inventory win-unpacked daemon inputs: Orca.exe, ICU/V8 snapshots, DLLs, daemon-entry/chunks and packaged node-pty/ConPTY.
+// Inventory win-unpacked daemon inputs: OCC.exe, ICU/V8 snapshots, DLLs, daemon-entry/chunks and packaged node-pty/ConPTY.
 // See electron-builder.config.cjs and packaged-runtime-node-modules.cjs for layout.
 
 import { existsSync, readdirSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 
 export const RUNTIME_DATA_FILES = ['icudtl.dat', 'snapshot_blob.bin', 'v8_context_snapshot.bin']
-export const HOST_EXE = 'Orca.exe'
+export const HOST_EXE = 'OCC.exe'
 
 // Prefer packaged build/Release over node-pty architecture prebuild directories.
 const NODE_PTY_NATIVE_CANDIDATES = ['build/Release', 'prebuilds/win32-x64', 'prebuilds/win32-arm64']

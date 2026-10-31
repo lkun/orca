@@ -66,7 +66,7 @@ describe('stageStartupCommand', () => {
 
   // Why: ksh runs a sourced file's commands in the shell's own process group, so Ctrl-Z is lost.
   it.each([['/bin/ksh'], ['/usr/bin/mksh']])(
-    'runs a long Orca-built line through /bin/sh in %s, and types a short one as is',
+    'runs a long OCC-built line through /bin/sh in %s, and types a short one as is',
     (shellPath) => {
       const staged = stageStartupCommand({
         command: `claude '${'x'.repeat(600)}'`,
@@ -100,7 +100,7 @@ describe('stageStartupCommand', () => {
 
   // Measured: tcsh typed `'fix C:'"\\"'dir'` as `fix C:\\dir` and expanded `!!` in `'wow!! great'`.
   it.each([['/bin/tcsh'], ['/usr/bin/nu'], [undefined]])(
-    'stages even a short Orca-built line for a shell that cannot source it (%s)',
+    'stages even a short OCC-built line for a shell that cannot source it (%s)',
     (shellPath) => {
       const command = `claude 'wow!! great'`
       const staged = stageStartupCommand({
@@ -117,7 +117,7 @@ describe('stageStartupCommand', () => {
 
   // Why: behind `/bin/sh` the agent is not the shell's own job, and a pasted prompt waits on that.
   it.each([['/bin/tcsh'], ['/usr/bin/nu'], [undefined]])(
-    'types a short plain Orca-built line as is for a shell that cannot source it (%s)',
+    'types a short plain OCC-built line as is for a shell that cannot source it (%s)',
     (shellPath) => {
       const command = `claude '--dangerously-skip-permissions' '--model' 'claude-opus-5-5[1m]'`
       expect(
@@ -134,7 +134,7 @@ describe('stageStartupCommand', () => {
   )
 
   it.each([[`claude 'it'\\''s'`], ['claude "x"'], ["claude '$HOME'"], ["claude 'a`b'"]])(
-    'stages a short Orca-built line tcsh would not read literally: %s',
+    'stages a short OCC-built line tcsh would not read literally: %s',
     (command) => {
       const staged = stageStartupCommand({
         command,

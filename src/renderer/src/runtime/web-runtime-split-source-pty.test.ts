@@ -52,7 +52,7 @@ describe('host-tab split source', () => {
 
   it.each([
     ['still starting', 'ready', 'its terminal hasn’t started'],
-    ['disconnected', 'disconnected', 'not connected to a remote Orca host']
+    ['disconnected', 'disconnected', 'not connected to a remote OCC host']
   ])('tells the user why the split was refused while the server is %s', (_c, transport, text) => {
     mocks.owner.transport = transport
     notifyHostTabSplitRefused(SOURCE)

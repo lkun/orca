@@ -2,7 +2,7 @@
  * Official ids start with `orca-`, as the catalog requires for unsolicited suggestions.
  *
  * Invariant: opening a file a catalog plugin handles suggests that plugin — an unknown file
- * (.gleam syntax), Orca's binary placeholder (.xlsx editor), and a file Orca already shows as text
+ * (.gleam syntax), OCC's binary placeholder (.xlsx editor), and a file OCC already shows as text
  * (.excalidraw editor). View plugin opens the plugin's page and never installs.
  */
 
@@ -138,18 +138,18 @@ async function createCatalogFixture(root: string) {
   await mkdir(catalog, { recursive: true })
   await writeFile(
     join(catalog, 'orca-catalog.json'),
-    JSON.stringify({ catalogVersion: 2, name: 'Orca Plugins', owner: 'stablyai', plugins })
+    JSON.stringify({ catalogVersion: 2, name: 'OCC Plugins', owner: 'stablyai', plugins })
   )
   await commitRepository(catalog, gitEnvironment)
 
   const workspace = join(root, 'workspace')
   await mkdir(workspace, { recursive: true })
   await writeFile(join(workspace, 'main.gleam'), 'pub fn main() { Nil }\n')
-  // NULs make Orca show its binary placeholder, as it does for a real workbook.
+  // NULs make OCC show its binary placeholder, as it does for a real workbook.
   await writeFile(join(workspace, 'book.xlsx'), Buffer.from([0x50, 0x4b, 3, 4, 0, 0, 0, 0]))
   await writeFile(join(workspace, 'scene.excalidraw'), '{"type":"excalidraw","elements":[]}\n')
   await commitRepository(workspace, gitEnvironment)
-  // Why realpath: Orca registers the repository by its resolved path, as macOS /var is a link.
+  // Why realpath: OCC registers the repository by its resolved path, as macOS /var is a link.
   return { gitEnvironment, workspace: await realpath(workspace) }
 }
 

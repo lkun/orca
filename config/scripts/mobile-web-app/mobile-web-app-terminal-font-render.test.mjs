@@ -36,7 +36,7 @@ describeRender('terminal font startup and late painting', () => {
     })
     try {
       expect(
-        await page.evaluate(() => document.fonts.check('13px "Orca Nerd Font Symbols"', '\ue0b0'))
+        await page.evaluate(() => document.fonts.check('13px "OCC Nerd Font Symbols"', '\ue0b0'))
       ).toBe(false)
       await openProbeTerminal(page)
       await page.evaluate(() =>
@@ -62,7 +62,7 @@ describeRender('terminal font startup and late painting', () => {
       const before = await capture()
       releaseFont()
       await page.waitForFunction(
-        () => document.fonts.check('13px "Orca Nerd Font Symbols"', '\ue0b0'),
+        () => document.fonts.check('13px "OCC Nerd Font Symbols"', '\ue0b0'),
         undefined,
         { timeout: 30_000, polling: 50 }
       )
@@ -100,7 +100,7 @@ describeRender('terminal font startup and late painting', () => {
       await openProbeTerminal(page)
       expect(await page.locator('.xterm').count()).toBe(1)
       expect(
-        await page.evaluate(() => document.fonts.check('13px "Orca Nerd Font Symbols"', '\ue0b0'))
+        await page.evaluate(() => document.fonts.check('13px "OCC Nerd Font Symbols"', '\ue0b0'))
       ).toBe(false)
       expect(await page.evaluate(() => globalThis.__orcaTerminalEngineErrors)).toEqual([])
     } finally {

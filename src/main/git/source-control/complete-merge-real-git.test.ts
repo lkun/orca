@@ -25,7 +25,7 @@ describe('delete/modify merge resolved through resolveConflict and completeMerge
     const git = (...args: string[]): string =>
       execFileSync('git', args, { cwd: repoPath, encoding: 'utf8' })
     git('init', '--quiet', '-b', 'main')
-    git('config', 'user.name', 'Orca Test')
+    git('config', 'user.name', 'OCC Test')
     git('config', 'user.email', 'orca@example.test')
     git('config', 'commit.gpgSign', 'false')
     git('config', 'core.hooksPath', '.git/no-hooks')

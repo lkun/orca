@@ -50,7 +50,7 @@ describe.skipIf(!REAL_OPENSSH_TEST_ENABLED)(
     let orcad: Server
     const orcadSockets = new Set<Socket>()
     let orcadPort = 0
-    // User-configured forwards on the master must survive Orca tunnel cleanup.
+    // User-configured forwards on the master must survive OCC tunnel cleanup.
     let configuredForwardPort = 0
     let conn: SshConnection
 
@@ -132,7 +132,7 @@ describe.skipIf(!REAL_OPENSSH_TEST_ENABLED)(
       }
     }, 30_000)
 
-    it('takes back a persisted port an older Orca’s forward left on the master', async () => {
+    it('takes back a persisted port an older OCC’s forward left on the master', async () => {
       const persisted = await freePort()
       mux('forward', persisted, orcadPort)
       expect(await dial(persisted)).toBe(true)
@@ -145,7 +145,7 @@ describe.skipIf(!REAL_OPENSSH_TEST_ENABLED)(
       } finally {
         await tunnel.close()
       }
-      // Cancel only Orca's stale forward; preserve the master and user-configured forwards.
+      // Cancel only OCC's stale forward; preserve the master and user-configured forwards.
       expect(() => fixture.ssh(['-O', 'check'])).not.toThrow()
       expect(await readGreeting(configuredForwardPort)).toBe(GREETING)
       expect(await dial(persisted)).toBe(false)

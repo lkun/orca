@@ -114,7 +114,7 @@ test.describe('onboarding scene blur', () => {
     })
 
     const crashReport = orcaPage.getByRole('dialog').filter({
-      has: orcaPage.getByRole('heading', { name: 'Orca hit a recoverable UI error' })
+      has: orcaPage.getByRole('heading', { name: 'OCC hit a recoverable UI error' })
     })
     await crashReport.getByRole('button', { name: 'Close', exact: true }).click()
     const recovery = orcaPage.getByRole('alert').filter({ hasText: 'Onboarding hit an error.' })

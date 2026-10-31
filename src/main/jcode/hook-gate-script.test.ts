@@ -32,13 +32,13 @@ function installManagedScript(): { scriptPath: string; cleanup: () => void } {
 }
 
 describe.runIf(process.platform !== 'win32')('jcode managed hook as jcode runs it', () => {
-  it('drains the gate stdin before exiting on a missing Orca environment', () => {
+  it('drains the gate stdin before exiting on a missing OCC environment', () => {
     const { scriptPath, cleanup } = installManagedScript()
     try {
       // Returning proves the gate drained input larger than the pipe buffer before exiting.
       execFileSync('/bin/sh', [scriptPath], {
         input: JSON.stringify({ content: 'y'.repeat(512 * 1024) }),
-        // Outside Orca, POSIX must still drain stdin before exiting.
+        // Outside OCC, POSIX must still drain stdin before exiting.
         env: { ...process.env, JCODE_HOOK_EVENT: 'pre_tool', ORCA_PANE_KEY: '' },
         // This checks completion, not latency; allow slow CI hosts.
         timeout: 60_000,
@@ -79,13 +79,13 @@ describe('the Windows managed hook', () => {
     }
   }
 
-  it('drains the gate stdin, but only after the Orca environment check', () => {
+  it('drains the gate stdin, but only after the OCC environment check', () => {
     const script = windowsScript()
     const guardIndex = script.indexOf('if "%ORCA_PANE_KEY%"==""')
     const drainIndex = script.indexOf('if "%JCODE_HOOK_EVENT%"=="pre_tool"')
     expect(guardIndex).toBeGreaterThan(-1)
     expect(drainIndex).toBeGreaterThan(guardIndex)
-    // Outside Orca on Windows, abandoned stdin can hang forever; early exit leaves only jcode's fail-open timeout (#11549).
+    // Outside OCC on Windows, abandoned stdin can hang forever; early exit leaves only jcode's fail-open timeout (#11549).
     expect(script).toContain('more.com')
   })
 

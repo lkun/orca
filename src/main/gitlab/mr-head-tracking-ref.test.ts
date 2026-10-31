@@ -24,7 +24,7 @@ describe('fetchGitLabMergeRequestHeadRef', () => {
     })
   })
 
-  it('fetches a GitLab MR head into its remote-scoped Orca ref for local repos', async () => {
+  it('fetches a GitLab MR head into its remote-scoped OCC ref for local repos', async () => {
     const localRef = await fetchGitLabMergeRequestHeadRef(
       { path: '/repo', connectionId: null },
       'origin',

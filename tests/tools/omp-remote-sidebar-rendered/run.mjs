@@ -35,7 +35,7 @@ const { ELECTRON_RUN_AS_NODE: _runAsNode, ...env } = process.env
 const app = await electron.launch({ args: [main], env: { ...env, ORCA_BACKGROUND_LAUNCH: '1' } })
 const report = {
   scope:
-    'Production selector, row builder and compact sidebar rows; injected status with no tabs, then status removal. No live SSH/paired transport or full Orca shell.'
+    'Production selector, row builder and compact sidebar rows; injected status with no tabs, then status removal. No live SSH/paired transport or full OCC shell.'
 }
 try {
   const page = await app.firstWindow()

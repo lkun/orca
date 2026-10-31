@@ -27,8 +27,8 @@ async function makeGeneration() {
   const generationRoot = join(cacheRootPath, 'a'.repeat(24), 'b'.repeat(24))
   const resourcesPath = join(generationRoot, 'resources')
   await mkdir(join(resourcesPath, 'bin'), { recursive: true })
-  await writeFile(join(resourcesPath, 'bin', 'orca-ide'), '#!/usr/bin/env bash\n', { mode: 0o755 })
-  await writeFile(join(generationRoot, 'orca-ide'), '', { mode: 0o755 })
+  await writeFile(join(resourcesPath, 'bin', 'occ-ide'), '#!/usr/bin/env bash\n', { mode: 0o755 })
+  await writeFile(join(generationRoot, 'occ-ide'), '', { mode: 0o755 })
   expect(ensureAppImageStableLauncher(cacheRootPath)).toBe(
     resolveAppImageStableLauncherPath(cacheRootPath)
   )
@@ -45,24 +45,24 @@ async function makeGeneration() {
 describe.skipIf(process.platform === 'win32')(
   'CLI registration from an extracted generation',
   () => {
-    it('recognises the stable launcher it registered as its own `orca-ide`', async () => {
+    it('recognises the stable launcher it registered as its own `occ-ide`', async () => {
       const fixture = await makeGeneration()
       const commandDirectory = join(fixture.homePath, '.local', 'bin')
       await mkdir(commandDirectory, { recursive: true })
-      await symlink(fixture.stableLauncherPath, join(commandDirectory, 'orca-ide'))
+      await symlink(fixture.stableLauncherPath, join(commandDirectory, 'occ-ide'))
       const installer = new CliInstaller({
         platform: 'linux',
         isPackaged: true,
         userDataPath: join(fixture.homePath, 'user-data'),
         resourcesPath: fixture.resourcesPath,
-        execPath: join(fixture.generationRoot, 'orca-ide'),
+        execPath: join(fixture.generationRoot, 'occ-ide'),
         appPath: join(fixture.resourcesPath, 'app.asar'),
         homePath: fixture.homePath,
         processPathEnv: commandDirectory
       })
       const status = await installer.install()
       expect(status.state).toBe('installed')
-      expect(status.commandPath).toBe(join(commandDirectory, 'orca-ide'))
+      expect(status.commandPath).toBe(join(commandDirectory, 'occ-ide'))
     })
   }
 )

@@ -51,7 +51,7 @@ export function resolveAgentStartupPlanInputs(args: {
   shell: AgentStartupShell | undefined
   sessionOptions?: Readonly<Record<string, SessionOptionValue>> | undefined
   sessionOptionsYieldToAgentArgs?: boolean
-  /** Orca types into this launch after start (worker, automation, handoff), not a user. */
+  /** OCC types into this launch after start (worker, automation, handoff), not a user. */
   suppressStartupUpdatePrompt?: boolean
 }): AgentStartupPlanInputs {
   const { agent, platform, isRemote, sessionOptions } = args

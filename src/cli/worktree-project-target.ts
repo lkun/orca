@@ -59,7 +59,7 @@ function selectSetupOnHost(
         ...candidates.map(
           (candidate) => `Use --host ${setupHostId(candidate)} for ${candidate.path}.`
         ),
-        'Run `orca host list` to see every machine you can target and the flag for each.'
+        'Run `occ host list` to see every machine you can target and the flag for each.'
       ]
     }
   )
@@ -90,7 +90,7 @@ export async function resolveProjectCreateTarget(
     if (error instanceof RuntimeClientError && error.code === 'method_not_found') {
       throw new RuntimeClientError(
         'incompatible_runtime',
-        'This Orca server does not support project host setup yet. Update Orca on the server and try again.'
+        'This OCC server does not support project host setup yet. Update OCC on the server and try again.'
       )
     }
     throw error
@@ -124,7 +124,7 @@ export async function resolveProjectCreateTarget(
         `No ready setup found for --project ${projectId} on any host.`,
         {
           nextSteps: [
-            'Run `orca project list` for project ids and names, and `orca project setups` for where each is set up.'
+            'Run `occ project list` for project ids and names, and `occ project setups` for where each is set up.'
           ]
         }
       )
@@ -178,6 +178,6 @@ export async function getCreateRepoTarget(
   }
   throw new RuntimeClientError(
     'invalid_argument',
-    'Missing repo selector. Pass --repo or run from inside an Orca-managed worktree.'
+    'Missing repo selector. Pass --repo or run from inside an OCC-managed worktree.'
   )
 }

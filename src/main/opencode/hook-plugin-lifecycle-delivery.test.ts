@@ -167,7 +167,7 @@ describe('OpenCode plugin lifecycle delivery', () => {
     expect(fetchMock).toHaveBeenCalledOnce()
     const [url, init] = fetchMock.mock.calls[0]!
     expect(String(url)).toBe('http://127.0.0.1:45678/hook/opencode')
-    expect(new Headers(init?.headers).get('X-Orca-Agent-Hook-Token')).toBe('file-token')
+    expect(new Headers(init?.headers).get('X-OCC-Agent-Hook-Token')).toBe('file-token')
   })
 
   it('warns once for an unreadable endpoint without exposing hook credentials', async () => {
@@ -783,7 +783,7 @@ describe('OpenCode plugin lifecycle delivery', () => {
       posts.push(readPayload(init))
       deliveries.push({
         url: String(url),
-        token: new Headers(init?.headers).get('X-Orca-Agent-Hook-Token')
+        token: new Headers(init?.headers).get('X-OCC-Agent-Hook-Token')
       })
       return new Response(null, { status: 204 })
     }) as typeof globalThis.fetch

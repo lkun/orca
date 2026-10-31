@@ -31,7 +31,7 @@ it.each([
   const repo: Repo = {
     id: 'repo',
     path: '/repo',
-    displayName: 'Orca',
+    displayName: 'OCC',
     addedAt: 0,
     badgeColor: '',
     gitRemoteIdentity: {

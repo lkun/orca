@@ -44,8 +44,8 @@ const nsis = (name: string): string =>
   readFileSync(new URL(`../../../config/nsis/${name}`, import.meta.url), 'utf8')
 
 function realUninstallBranch(): string {
-  const unInstall = nsis('orca-installer-hooks.nsh').slice(
-    nsis('orca-installer-hooks.nsh').indexOf('!macro customUnInstall')
+  const unInstall = nsis('occ-installer-hooks.nsh').slice(
+    nsis('occ-installer-hooks.nsh').indexOf('!macro customUnInstall')
   )
   // The real-uninstall branch ends with the relocated daemon host's cleanup.
   return unInstall.slice(
@@ -77,7 +77,7 @@ describe('managed agent hook removal on uninstall', () => {
   })
 
   it('ignores ordinary launches', () => {
-    expect(runAgentHooksUninstallPreflight(['Orca.exe'])).toBe(false)
+    expect(runAgentHooksUninstallPreflight(['OCC.exe'])).toBe(false)
     expect(hooks.remove).not.toHaveBeenCalled()
   })
 
@@ -85,7 +85,7 @@ describe('managed agent hook removal on uninstall', () => {
     electron.exit.mockClear()
     hooks.remove.mockResolvedValueOnce([status('claude', 'not_installed')])
 
-    expect(runAgentHooksUninstallPreflight(['Orca.exe', AGENT_HOOKS_UNINSTALL_FLAG])).toBe(true)
+    expect(runAgentHooksUninstallPreflight(['OCC.exe', AGENT_HOOKS_UNINSTALL_FLAG])).toBe(true)
 
     await vi.waitFor(() => expect(electron.exit).toHaveBeenCalledWith(0))
     expect(hooks.remove).toHaveBeenCalledExactlyOnceWith()
@@ -98,11 +98,11 @@ describe('managed agent hook removal on uninstall', () => {
     vi.useFakeTimers()
     electron.exit.mockClear()
     appData.ensure.mockImplementationOnce(() => {
-      throw new Error('Orca could not find the Windows roaming AppData folder')
+      throw new Error('OCC could not find the Windows roaming AppData folder')
     })
     try {
       vi.spyOn(console, 'warn').mockImplementation(() => {})
-      expect(runAgentHooksUninstallPreflight(['Orca.exe', AGENT_HOOKS_UNINSTALL_FLAG])).toBe(true)
+      expect(runAgentHooksUninstallPreflight(['OCC.exe', AGENT_HOOKS_UNINSTALL_FLAG])).toBe(true)
       expect(electron.exit).toHaveBeenCalledExactlyOnceWith(1)
       // The timer armed before setup is cleared, so it can't exit a second time.
       vi.runAllTimers()
@@ -120,14 +120,14 @@ describe('the NSIS uninstaller', () => {
       `nsExec::Exec '"$INSTDIR\\\${APP_EXECUTABLE_FILENAME}" ${AGENT_HOOKS_UNINSTALL_FLAG}'`
     )
     expect(launch).toBeGreaterThan(-1)
-    // Killed first, so a running Orca cannot reinstall the hooks behind the removal.
+    // Killed first, so a running OCC cannot reinstall the hooks behind the removal.
     expect(launch).toBeGreaterThan(branch.indexOf('orca-terminal-daemon.exe'))
     // The exit code is popped and never checked.
     expect(branch.slice(launch).split('\n')[1].trim()).toBe('Pop $0')
-    expect(nsis('orca-installer-hooks.nsh').split(AGENT_HOOKS_UNINSTALL_FLAG)).toHaveLength(2)
+    expect(nsis('occ-installer-hooks.nsh').split(AGENT_HOOKS_UNINSTALL_FLAG)).toHaveLength(2)
   })
 
-  it('keeps the hooks while another Orca install for this user still uses them', () => {
+  it('keeps the hooks while another OCC install for this user still uses them', () => {
     const branch = realUninstallBranch()
     const launch = branch.indexOf(AGENT_HOOKS_UNINSTALL_FLAG)
     const check = branch.indexOf('!insertmacro ORCA_OTHER_INSTALL_STATE $1')
@@ -136,11 +136,11 @@ describe('the NSIS uninstaller', () => {
     const gate = branch.lastIndexOf('${if} $1 == "none"', launch)
     expect(gate).toBeGreaterThan(check)
     expect(branch.slice(gate, launch)).not.toContain('${endIf}')
-    expect(nsis('orca-installer-hooks.nsh')).toContain(
-      '!include "${__FILEDIR__}\\orca-other-install-check.nsh"'
+    expect(nsis('occ-installer-hooks.nsh')).toContain(
+      '!include "${__FILEDIR__}\\occ-other-install-check.nsh"'
     )
 
-    const detect = nsis('orca-other-install-check.nsh')
+    const detect = nsis('occ-other-install-check.nsh')
     // Both registrations a second install can have, by the key the installer writes.
     expect(detect).toContain(
       '!insertmacro ORCA_CHECK_ONE_REGISTRATION ${ORCA_OTHER_INSTALL_HKCU} HKCU ${OUT}'
@@ -159,8 +159,8 @@ describe('the NSIS uninstaller', () => {
     expect(detect).not.toMatch(/nsExec|ExecWait|powershell/i)
   })
 
-  it('keeps the hooks when an Orca registration names no install location', () => {
-    const detect = nsis('orca-other-install-check.nsh')
+  it('keeps the hooks when an OCC registration names no install location', () => {
+    const detect = nsis('occ-other-install-check.nsh')
     // An opened key whose InstallLocation reads empty is doubtful, never "none".
     expect(detect).toMatch(
       /ReadRegStr \$R5 \$\{HIVE\} "\$\{INSTALL_REGISTRY_KEY\}" InstallLocation[\s\S]*?\$\{if\} \$R5 == ""\s+(?:;[^\n]*\n\s+)?StrCpy \$\{OUT\} "unknown"\s+\$\{elseIf\} \$R5 != \$INSTDIR/
@@ -168,8 +168,8 @@ describe('the NSIS uninstaller', () => {
   })
 
   it("removes the `orca` command's PATH entry on a real uninstall only", () => {
-    const hooksFile = nsis('orca-installer-hooks.nsh')
-    expect(hooksFile).toContain('!include "${__FILEDIR__}\\orca-user-path-cleanup.nsh"')
+    const hooksFile = nsis('occ-installer-hooks.nsh')
+    expect(hooksFile).toContain('!include "${__FILEDIR__}\\occ-user-path-cleanup.nsh"')
     const call = '!insertmacro ORCA_REMOVE_USER_PATH_ENTRY "$INSTDIR\\resources\\bin"'
     expect(realUninstallBranch()).toContain(call)
     expect(hooksFile.split(call)).toHaveLength(2)
@@ -183,7 +183,7 @@ describe('the NSIS uninstaller', () => {
   })
 
   it('edits PATH natively, keeps its type, and never writes back a truncated read', () => {
-    const cleanup = nsis('orca-user-path-cleanup.nsh')
+    const cleanup = nsis('occ-user-path-cleanup.nsh')
     const code = cleanup
       .split('\n')
       .filter((line) => !line.trim().startsWith(';'))

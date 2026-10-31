@@ -222,7 +222,7 @@ describe('createPtySubprocess', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     Object.defineProperty(process, 'platform', { configurable: true, value: 'linux' })
     delete process.env.SHELL
-    // Remove wrapper state inherited when the test runner starts inside an Orca pane.
+    // Remove wrapper state inherited when the test runner starts inside an OCC pane.
     delete process.env.ORCA_SHELL_FEATURES
     delete process.env.ZDOTDIR
 

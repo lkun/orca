@@ -125,7 +125,7 @@ export function registerJournalStoreSchemaTests(): void {
       expect(await digest(journalDatabasePath(root))).toBe(before)
     })
 
-    it("refuses as a newer Orca's a chat whose tables a newer build changed", async () => {
+    it("refuses as a newer OCC's a chat whose tables a newer build changed", async () => {
       const journal = await open()
       await journal.appendItem(item(0), body('a'), {
         fence: 1,
@@ -159,7 +159,7 @@ export function registerJournalStoreSchemaTests(): void {
   })
 
   describe('axis 2: the row body shape', () => {
-    it("refuses a journal holding a row from a newer build as a newer Orca's, and keeps that row", async () => {
+    it("refuses a journal holding a row from a newer build as a newer OCC's, and keeps that row", async () => {
       const journal = await open()
       await journal.appendItem(item(0), body('a'), {
         fence: 1,

@@ -63,10 +63,10 @@ describe('WindowsUserPathRegistryReader', () => {
     now += 1
     const refreshed = reader.readFresh()
     expect(registryLoader).toHaveBeenCalledTimes(2)
-    resolveRegistry(registryModule('C:\\Tools;C:\\Orca'))
+    resolveRegistry(registryModule('C:\\Tools;C:\\OCC'))
     await expect(refreshed).resolves.toEqual({
       state: 'success',
-      value: 'C:\\Tools;C:\\Orca',
+      value: 'C:\\Tools;C:\\OCC',
       expandable: true
     })
   })
@@ -77,12 +77,12 @@ describe('WindowsUserPathRegistryReader', () => {
   ])('preserves whether registry type $type expands variables', async ({ type, expandable }) => {
     const reader = new WindowsUserPathRegistryReader({
       platform: 'win32',
-      registryLoader: async () => registryModule('%LOCALAPPDATA%\\Orca', type)
+      registryLoader: async () => registryModule('%LOCALAPPDATA%\\OCC', type)
     })
 
     await expect(reader.read()).resolves.toEqual({
       state: 'success',
-      value: '%LOCALAPPDATA%\\Orca',
+      value: '%LOCALAPPDATA%\\OCC',
       expandable
     })
   })

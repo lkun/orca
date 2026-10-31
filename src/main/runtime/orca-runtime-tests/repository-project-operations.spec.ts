@@ -633,7 +633,7 @@ describe('OrcaRuntimeService', () => {
         .catch((error: unknown) => error)
 
       expect(() => runtime.addSshRepo({ connectionId: 'openclaw' })).toThrow(
-        "This Orca server can't add projects on its SSH hosts."
+        "This OCC server can't add projects on its SSH hosts."
       )
 
       // Await both calls and assert absent side effects before wording to expose local writes misattributed as remote.
@@ -645,7 +645,7 @@ describe('OrcaRuntimeService', () => {
       expect(existingFolderError).toMatchObject({
         code: 'ssh_host_not_served',
         connectionId: 'openclaw',
-        message: expect.stringContaining("This Orca server can't add projects on its SSH hosts.")
+        message: expect.stringContaining("This OCC server can't add projects on its SSH hosts.")
       })
     } finally {
       spawnSpy.mockRestore()

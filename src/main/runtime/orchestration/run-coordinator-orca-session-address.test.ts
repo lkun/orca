@@ -55,7 +55,7 @@ function insertSessionCoordinatedRun(db: OrchestrationDb, runId: string): void {
     .run(runId, CHAT_SESSION_ID)
 }
 
-describe('Run coordinator Orca session address', () => {
+describe('Run coordinator OCC session address', () => {
   let db: OrchestrationDb | undefined
   const tempRoots: string[] = []
 
@@ -86,7 +86,7 @@ describe('Run coordinator Orca session address', () => {
     expect(db.getMessageById(reply.id)?.to_handle).toBe('run:run_session')
   })
 
-  it('remembers an Orca session id bound by update, and again on reopen when the cache row is gone', () => {
+  it('remembers an OCC session id bound by update, and again on reopen when the cache row is gone', () => {
     const path = tempDbPath(tempRoots)
     db = new OrchestrationDb(path)
     db.db
@@ -191,7 +191,7 @@ describe('Run coordinator Orca session address', () => {
     )
   })
 
-  it('adds no session address for an Orca session id at a stale generation', () => {
+  it('adds no session address for an OCC session id at a stale generation', () => {
     const path = tempDbPath(tempRoots)
     db = new OrchestrationDb(path)
     db.db
@@ -240,7 +240,7 @@ describe('Run coordinator Orca session address', () => {
     expect(addressesFor(db, run.id)).toEqual(['term_first', 'term_second'])
   })
 
-  it("never leaves a replaced structured coordinator's Orca session id on the Run", () => {
+  it("never leaves a replaced structured coordinator's OCC session id on the Run", () => {
     db = new OrchestrationDb(':memory:')
     const handle = mintStructuredWorkerHandle()
     const pane = mintStructuredWorkerPaneKey(WORKER_SESSION_ID)

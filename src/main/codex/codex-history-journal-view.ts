@@ -120,7 +120,7 @@ function codexTurnIdOfRow(
   if (!turn) {
     return null
   }
-  // Command rows use Orca turn IDs; their provider turn ID is stored separately.
+  // Command rows use OCC turn IDs; their provider turn ID is stored separately.
   if (body?.kind === 'turn' && body.providerTurnId) {
     return body.providerTurnId
   }

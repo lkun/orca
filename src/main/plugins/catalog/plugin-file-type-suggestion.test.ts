@@ -12,7 +12,7 @@ function listing(
 ) {
   return {
     marketplaceSourceId: 'official',
-    marketplaceName: 'Orca',
+    marketplaceName: 'OCC',
     marketplaceOwner: 'stablyai',
     marketplaceCommit: 'c'.repeat(40),
     pluginKey,
@@ -113,7 +113,7 @@ describe('findPluginFileTypeSuggestion', () => {
   })
 })
 
-describe('editor suggestions for files Orca already opens as text', () => {
+describe('editor suggestions for files OCC already opens as text', () => {
   const excalidraw = (pluginKey = 'stablyai.excalidraw') =>
     listing(pluginKey, ['excalidraw'], {
       release: {
@@ -163,7 +163,7 @@ describe('editor suggestions for files Orca already opens as text', () => {
     expect(suggest('excalidraw', summaryOnly)).toBeNull()
   })
 
-  it('suggests the same editor for a binary file Orca cannot open', () => {
+  it('suggests the same editor for a binary file OCC cannot open', () => {
     const sheet = listing('stablyai.spreadsheet', ['xlsx'], {
       release: {
         version: '1.0.0',

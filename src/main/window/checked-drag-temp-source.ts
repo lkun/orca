@@ -97,7 +97,7 @@ export function isDragTempSourceChanged(error: unknown): boolean {
   return error instanceof DropCopyError && error.reason === 'changed'
 }
 
-/** A private 0600 copy in Orca's temp storage, for consumers that need a path. */
+/** A private 0600 copy in OCC's temp storage, for consumers that need a path. */
 export async function copyCheckedDragTempSource(
   source: CheckedDragTempSource,
   env: DragTempCopyEnvironment,
@@ -112,7 +112,7 @@ export async function copyCheckedDragTempSource(
     await writeCheckedDragTempSource(source, destPath, signal)
     // Why: a caller that gave up mid-copy never hands this path out; don't retain it.
     signal?.throwIfAborted()
-    console.debug('[drop] copied a drag-temp file into Orca storage', { bytes: source.size })
+    console.debug('[drop] copied a drag-temp file into OCC storage', { bytes: source.size })
     return {
       sourcePath: source.sourcePath,
       status: 'imported',

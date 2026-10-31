@@ -141,7 +141,7 @@ export type Worktree = {
   smartAt?: number
   /** Owning host throttles terminal-input/phone-attach timestamps for cleanup and other last-active readers; never use as a sort key. */
   lastTerminalUseAt?: number
-  /** Orca-created worktrees get a short Recent grace period against ambient PTY bumps. Discovered/legacy rows omit this timestamp. */
+  /** OCC-created worktrees get a short Recent grace period against ambient PTY bumps. Discovered/legacy rows omit this timestamp. */
   createdAt?: number
   /** Seed a replacement terminal with the original agent after every visible surface has closed. */
   createdWithAgent?: TuiAgent
@@ -155,7 +155,7 @@ export type Worktree = {
   sparsePresetId?: string
   /** Intended create base for stale-base probes. Persisted metadata, not UI drift state. */
   baseRef?: string
-  /** Remote/branch Orca should publish review commits to when it created this worktree. */
+  /** Remote/branch OCC should publish review commits to when it created this worktree. */
   pushTarget?: GitPushTarget
   /** Path-derived worktree ids this worktree had before folder renames. */
   priorWorktreeIds?: string[]
@@ -173,7 +173,7 @@ export type Worktree = {
 export type CliWorkspaceProvenance = {
   kind: 'created-by-cli'
   createdAt: number
-  /** Calling Orca terminal, if any, distinguishes agent-issued creates from external-shell creates. */
+  /** Calling OCC terminal, if any, distinguishes agent-issued creates from external-shell creates. */
   callerTerminalHandle?: string
   /** Agent requested via `--agent`, when one was passed. */
   startupAgent?: TuiAgent
@@ -216,7 +216,7 @@ export type GitPushTarget = {
   remoteName: string
   branchName: string
   remoteUrl?: string
-  /** True when Orca added this remote while preparing a fork-PR worktree. */
+  /** True when OCC added this remote while preparing a fork-PR worktree. */
   remoteCreated?: boolean
 }
 

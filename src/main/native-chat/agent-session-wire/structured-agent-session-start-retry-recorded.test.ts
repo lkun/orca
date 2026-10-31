@@ -132,7 +132,7 @@ describe('recorded command rejection wrappers at the startup classifier', () => 
   it.each([
     new AcpInvalidResponseError('Invalid ACP response envelope', {}),
     new AcpRpcError(-32601, 'ACP agent cannot load or resume this session')
-  ])('keeps Orca-made ACP errors final even with exit evidence: $message', (error) => {
+  ])('keeps OCC-made ACP errors final even with exit evidence: $message', (error) => {
     expectFinalWithExitEvidence(error)
   })
 

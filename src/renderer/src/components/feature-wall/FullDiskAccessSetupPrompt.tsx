@@ -126,7 +126,7 @@ function useFullDiskAccessStatus(): FullDiskAccessStatusState & { refresh: () =>
     if (!isMac) {
       return
     }
-    // Refresh on focus because users grant permission outside Orca.
+    // Refresh on focus because users grant permission outside OCC.
     window.addEventListener('focus', refreshIfLive)
     return () => {
       window.removeEventListener('focus', refreshIfLive)

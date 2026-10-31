@@ -11,7 +11,7 @@ type Snapshot = Extract<ConnectorEvent, { kind: 'snapshot' }>
 
 export const jsonBytes = (value: unknown): number => Buffer.byteLength(JSON.stringify(value))
 
-/** A prompt too large to carry, offered as one only Orca can answer. */
+/** A prompt too large to carry, offered as one only OCC can answer. */
 export const unsupported = (prompt: PendingPrompt): PendingPrompt => ({
   kind: 'unsupported',
   promptId: prompt.promptId

@@ -4,7 +4,7 @@ import { reexecHeadlessServeOnX11IfNeeded } from './headless-serve-x11-reexec'
 
 vi.mock('electron', () => ({ app: { commandLine: { getSwitchValue: () => 'wayland' } } }))
 
-const EXEC_PATH = '/opt/Orca/orca-ide'
+const EXEC_PATH = '/opt/OCC/occ-ide'
 
 /** Electron 43 resolves Wayland before main from XDG_SESSION_TYPE alone; later commandLine mutation cannot change it. Model argv-driven selection. */
 function resolveOzonePlatform(argv: readonly string[], env: NodeJS.ProcessEnv): string {

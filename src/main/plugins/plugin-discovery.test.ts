@@ -33,7 +33,7 @@ describe('project repositories', () => {
       engines: { orca: `>=${PLUGIN_SCHEMA_NEWEST_SINCE}` },
       contributes: { panels: [{ id: 'p', title: 'P', entry: 'p.html' }] }
     })
-    // Every place a repository might plausibly drop a plugin for Orca to pick up.
+    // Every place a repository might plausibly drop a plugin for OCC to pick up.
     for (const dir of [worktree, join(worktree, '.orca', 'plugins', 'acme.repo-panel')]) {
       await mkdir(dir, { recursive: true })
       await writeFile(join(dir, 'orca-plugin.json'), manifest)
@@ -133,7 +133,7 @@ describe('installed plugin discovery identity', () => {
     expect(plugin && 'error' in plugin ? plugin.error : '').toContain('does not match')
   })
 
-  it('names the version gap when a plugin for a newer Orca uses fields this build lacks', async () => {
+  it('names the version gap when a plugin for a newer OCC uses fields this build lacks', async () => {
     const pluginsDir = await tempPluginsDir()
     const hash = 'b'.repeat(64)
     const versionDir = join(pluginsDir, 'acme.future', hash)
@@ -157,7 +157,7 @@ describe('installed plugin discovery identity', () => {
     const [plugin] = await discoverPlugins({ pluginsDir, devPluginPaths: [], hostVersion: '1.4.0' })
 
     expect(plugin && 'error' in plugin ? plugin.error : '').toBe(
-      'requires Orca >=9.0.0 (this is 1.4.0)'
+      'requires OCC >=9.0.0 (this is 1.4.0)'
     )
   })
 
@@ -212,7 +212,7 @@ describe('installed plugin discovery identity', () => {
 
     // An older host still names the version gap rather than a schema error.
     const [old] = await discoverPlugins({ pluginsDir, devPluginPaths: [], hostVersion: '1.4.200' })
-    expect(old && 'error' in old ? old.error : '').toBe('requires Orca >=1.4.244 (this is 1.4.200)')
+    expect(old && 'error' in old ? old.error : '').toBe('requires OCC >=1.4.244 (this is 1.4.200)')
   })
 
   it('keeps a removable qualified identity when the current pointer is missing', async () => {

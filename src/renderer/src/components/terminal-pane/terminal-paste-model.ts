@@ -36,7 +36,7 @@ export type TerminalPastePlan = {
   target: TerminalPasteTarget
   payload: TerminalPastePayload
   mode: 'direct' | 'chunked' | 'bracketed-terminal' | 'windows-input-record' | 'reject'
-  // Every Orca-built paste path must normalize LF to CR before ConPTY, matching xterm native paste.
+  // Every OCC-built paste path must normalize LF to CR before ConPTY, matching xterm native paste.
   newlinePolicy: 'preserve' | 'terminal-cr' | 'windows-input-record'
   windowsInputRecordNewline?: WindowsInputRecordNewline
   runtimeKey: string

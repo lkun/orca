@@ -3,8 +3,8 @@
  * so a worktree link WSL Git wrote as `<root>c/src/app/.git/worktrees/x` maps back to `C:\…`.
  * Read only from a distro confirmed running after any stop settled, never waking a stopped one,
  * and read again after it stops, since `wsl.conf` changes take effect on the next start. A stop and
- * restart between two probes goes unseen, so Orca's own wake also allows one re-read; a restart
- * outside Orca with no wake after it keeps the old root until the next noticed stop or wake.
+ * restart between two probes goes unseen, so OCC's own wake also allows one re-read; a restart
+ * outside OCC with no wake after it keeps the old root until the next noticed stop or wake.
  */
 import { runProcess } from '@orca/process-host'
 import { buildPosixStdoutFence } from '../../shared/posix-stdout-fence'

@@ -109,7 +109,7 @@ describe('getManagedLifecycleHook native executable gate', () => {
       args: ['claude', SCRIPT_PATH],
       timeout: 10
     })
-    // Builds since v1.4.183 match managed args, so an older Orca replaces this entry instead of duplicating it.
+    // Builds since v1.4.183 match managed args, so an older OCC replaces this entry instead of duplicating it.
     const definitions = [{ hooks: [hook] }]
     expect(
       removeManagedCommands(definitions, createManagedCommandMatcher('claude-hook.cmd'))

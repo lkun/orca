@@ -2,7 +2,7 @@ import type { CloudDatabase } from '@orca-cloud/cloud-database'
 import { z } from 'zod'
 import type { ConnectorSource } from './connector-adapter.js'
 
-// An operator-seeded link from a source's user to an Orca account, with their machine-choice defaults.
+// An operator-seeded link from a source's user to an OCC account, with their machine-choice defaults.
 export type ConnectorIdentity = {
   accountId: string
   defaultHostId: string | null

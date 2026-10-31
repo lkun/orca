@@ -2,7 +2,7 @@
 
 export type WslInteropProbeResult =
   | { state: 'present' }
-  /** binfmt_misc is not mounted, so there is nothing Orca can safely restore. */
+  /** binfmt_misc is not mounted, so there is nothing OCC can safely restore. */
   | { state: 'unmounted' }
   | { state: 'missing'; interopDisabled: boolean }
   | { state: 'unknown' }

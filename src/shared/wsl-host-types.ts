@@ -39,7 +39,7 @@ export type WslHostStatus = {
 /** An explicit Update retries a skipped build behind the terminal census; Force also passes it. */
 export type WslHostConnectIntent = 'update' | 'force'
 
-/** A host a newer Orca runs refused this build: only Force (or updating Orca) changes that. */
+/** A host a newer OCC runs refused this build: only Force (or updating OCC) changes that. */
 export const ORCAD_HOST_NEWER_DEFERRAL_CODE = 'orcad_host_newer'
 
 /** A project move to the host runs on this desktop; the update waits for it to finish. */
@@ -63,11 +63,11 @@ export type WslHostCapability = {
 
 /**
  * What removing a host left behind in its distro, in the census vocabulary: `live` when something
- * is proven still running, `unverifiable` when Orca could not tell. `kept` (E11): the host stays
+ * is proven still running, `unverifiable` when OCC could not tell. `kept` (E11): the host stays
  * listed with its stop pending, so Remove can retry; older mains removed it anyway.
  */
 export type WslHostServerStop =
-  /** `keptForOtherDesktops`: another Orca shares the server, so only this desktop let go of it. */
+  /** `keptForOtherDesktops`: another OCC shares the server, so only this desktop let go of it. */
   | { stopped: true; keptForOtherDesktops?: string[] }
   | {
       stopped: false
@@ -81,7 +81,7 @@ export type WslHostServerStop =
 
 export type WslHostAddFailureKind =
   | 'unsupported-wsl1'
-  /** Its platform, libc or loader can't run Orca's server (e.g. NixOS, musl without libstdc++). */
+  /** Its platform, libc or loader can't run OCC's server (e.g. NixOS, musl without libstdc++). */
   | 'unsupported-distro'
   | 'distro-stopped'
   | 'already-added'

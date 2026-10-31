@@ -281,7 +281,7 @@ describe('AgentsPane', () => {
     expect(markup).not.toContain('aria-label="Agent runtime"')
     expect(markup).toContain('Keep computer awake')
     expect(markup).toContain(
-      'Choose On, Agent, or Off. Agent mode stays awake while agents are working. Orca also asks this device to stay awake when the lid is closed, subject to its power policy.'
+      'Choose On, Agent, or Off. Agent mode stays awake while agents are working. OCC also asks this device to stay awake when the lid is closed, subject to its power policy.'
     )
     expect(markup).toContain('role="radiogroup"')
     expect(markup).toContain('>Agent<')
@@ -397,7 +397,7 @@ describe('AgentsPane', () => {
       "Lid-close behavior follows this device's power settings."
     )
     expect(getAgentAwakeLidNote('X11; Linux x86_64')).toBe(
-      'Orca also asks this device to stay awake when the lid is closed, subject to its power policy.'
+      'OCC also asks this device to stay awake when the lid is closed, subject to its power policy.'
     )
   })
 
@@ -549,7 +549,7 @@ describe('AgentsPane', () => {
         <AgentPermissionsSetting mode="yolo" autoSupported={false} onChange={vi.fn()} />
       </TooltipProvider>
     )
-    expect(markup).toContain('Approve for me needs a newer Orca on this host.')
+    expect(markup).toContain('Approve for me needs a newer OCC on this host.')
   })
 
   it('keeps catalog agent ids, labels, and commands discoverable in settings search', () => {

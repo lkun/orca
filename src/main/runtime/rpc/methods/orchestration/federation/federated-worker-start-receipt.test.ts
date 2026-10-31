@@ -159,8 +159,8 @@ describe('federated worker start receipt validation', () => {
     expect(result.state).toBe('ready')
     expect(result.next).toBe(
       reportsTurnStops
-        ? "Orca wakes you when workers report; end your turn when you're done."
-        : `Orca wakes you when workers report; end your turn when you're done. remote cannot report a worker that stops without worker_done, so if no report arrives, run \`orca orchestration worker-show --dispatch ${result.dispatchId}\`.`
+        ? "OCC wakes you when workers report; end your turn when you're done."
+        : `OCC wakes you when workers report; end your turn when you're done. remote cannot report a worker that stops without worker_done, so if no report arrives, run \`orca orchestration worker-show --dispatch ${result.dispatchId}\`.`
     )
   })
 })

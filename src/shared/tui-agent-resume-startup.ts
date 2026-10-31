@@ -52,7 +52,7 @@ export function buildAgentResumeStartupPlan(args: {
       : resumeArgv
   const shell = resolveStartupShell(args.platform, args.shell)
   // Why: Codex restores a resumed thread's saved permissions unless the launch passes one, so
-  // replaying Orca's launch-time flag would undo a change made inside the session (#10886).
+  // replaying OCC's launch-time flag would undo a change made inside the session (#10886).
   const recorded =
     args.agent === 'codex' && !args.fork
       ? dropRecordedAgentPermissionArgs(args.agent, args, shell)

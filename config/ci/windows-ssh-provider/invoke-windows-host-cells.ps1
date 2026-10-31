@@ -46,7 +46,7 @@ function Set-PrivateDefaultShell([string]$Shell) {
   }
 }
 
-# Diagnostic ORCA_WMI=<ReturnValue>|denied: standard SSH logons lack root\cimv2 Remote Enable; Orca must launch without WMI.
+# Diagnostic ORCA_WMI=<ReturnValue>|denied: standard SSH logons lack root\cimv2 Remote Enable; OCC must launch without WMI.
 function Test-PrivateWmiLaunch([string]$Account) {
   $out=Invoke-PrivateSsh $Account 'powershell.exe -NoProfile -NonInteractive -Command "try{$r=Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine=''cmd.exe /d /c exit 0''} -ErrorAction Stop;''ORCA_WMI=''+$r.ReturnValue}catch{''ORCA_WMI=denied''}"'
   $match=[regex]::Match($out,'ORCA_WMI=(\S+)')

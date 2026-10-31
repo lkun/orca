@@ -1,20 +1,20 @@
 // Chinese phrase fixes from high-visibility UI audit round 5.
 export const ZH_PHRASE_FIXES_ROUND5 = [
-  { pattern: /Orca集成开发环境/g, replacement: 'Orca IDE', whenEnIncludes: 'Orca IDE' },
-  { pattern: /Orca第一/g, replacement: 'Orca 优先', whenEnIncludes: 'Orca first' },
-  { pattern: /Orca移动/g, replacement: 'Orca Mobile', whenEnIncludes: 'Orca Mobile' },
-  { pattern: /Orca标志/g, replacement: 'Orca 标志', whenEnIncludes: 'Orca logo' },
-  { pattern: /喜欢Orca/g, replacement: '喜欢 Orca', whenEnIncludes: 'Enjoying Orca' },
-  { pattern: /认识Orca/g, replacement: '了解 Orca', whenEnIncludes: 'Get to know Orca' },
-  { pattern: /支持Orca/g, replacement: '支持 Orca', whenEnIncludes: 'Support Orca' },
-  { pattern: /展开Orca/g, replacement: '展开 Orca', whenEnIncludes: 'Expand Orca' },
-  { pattern: /来自Orca/g, replacement: '来自 Orca', whenEnIncludes: 'from Orca' },
+  { pattern: /OCC集成开发环境/g, replacement: 'OCC IDE', whenEnIncludes: 'OCC IDE' },
+  { pattern: /OCC第一/g, replacement: 'OCC 优先', whenEnIncludes: 'OCC first' },
+  { pattern: /OCC移动/g, replacement: 'OCC Mobile', whenEnIncludes: 'OCC Mobile' },
+  { pattern: /OCC标志/g, replacement: 'OCC 标志', whenEnIncludes: 'OCC logo' },
+  { pattern: /喜欢OCC/g, replacement: '喜欢 OCC', whenEnIncludes: 'Enjoying OCC' },
+  { pattern: /认识OCC/g, replacement: '了解 OCC', whenEnIncludes: 'Get to know OCC' },
+  { pattern: /支持OCC/g, replacement: '支持 OCC', whenEnIncludes: 'Support OCC' },
+  { pattern: /展开OCC/g, replacement: '展开 OCC', whenEnIncludes: 'Expand OCC' },
+  { pattern: /来自OCC/g, replacement: '来自 OCC', whenEnIncludes: 'from OCC' },
   {
-    pattern: /正在重新启动Orca/g,
-    replacement: '正在重启 Orca',
-    whenEnIncludes: 'Restarting Orca'
+    pattern: /正在重新启动OCC/g,
+    replacement: '正在重启 OCC',
+    whenEnIncludes: 'Restarting OCC'
   },
-  { pattern: /Orca([\u4e00-\u9fff])/g, replacement: 'Orca $1', whenEnIncludes: 'Orca' },
+  { pattern: /OCC([\u4e00-\u9fff])/g, replacement: 'OCC $1', whenEnIncludes: 'OCC' },
   { pattern: /Linear([\u4e00-\u9fff])/g, replacement: 'Linear $1', whenEnIncludes: 'Linear' },
   { pattern: /Codex([\u4e00-\u9fff])/g, replacement: 'Codex $1', whenEnIncludes: 'Codex' },
   { pattern: /Claude([\u4e00-\u9fff])/g, replacement: 'Claude $1', whenEnIncludes: 'Claude' },
@@ -49,8 +49,8 @@ export const ZH_PHRASE_FIXES_ROUND5 = [
     whenEnIncludes: 'actionable issues'
   },
   {
-    pattern: /显示 Orca 移动按钮/g,
-    replacement: '显示 Orca Mobile 按钮',
-    whenEnIncludes: 'Show Orca Mobile Button'
+    pattern: /显示 OCC 移动按钮/g,
+    replacement: '显示 OCC Mobile 按钮',
+    whenEnIncludes: 'Show OCC Mobile Button'
   }
 ]

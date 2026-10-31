@@ -26,7 +26,7 @@ windowsIt('preserves the startup query and spaced custom args in native Windows 
     )
     const plan = planHermesStartupQuery({
       baseCommand: `"${hermesPath}"`,
-      agentArgs: '--yolo --source "Orca automation validation"',
+      agentArgs: '--yolo --source "OCC automation validation"',
       prompt,
       platform: 'win32',
       shell: 'powershell'
@@ -42,7 +42,7 @@ windowsIt('preserves the startup query and spaced custom args in native Windows 
       `--query=${prompt}`,
       '--yolo',
       '--source',
-      'Orca automation validation',
+      'OCC automation validation',
       '--tui'
     ])
   } finally {

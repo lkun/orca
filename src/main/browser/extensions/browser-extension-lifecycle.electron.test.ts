@@ -51,7 +51,7 @@ function writeManifest(version: string): void {
     join(extensionDir, 'manifest.json'),
     JSON.stringify({
       manifest_version: 3,
-      name: 'Orca lifecycle probe',
+      name: 'OCC lifecycle probe',
       version,
       permissions: ['storage'],
       background: { service_worker: 'worker.js' }

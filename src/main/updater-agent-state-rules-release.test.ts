@@ -46,7 +46,7 @@ function serveFeed(tags: readonly string[]): void {
         status: 200,
         text: () =>
           Promise.resolve(
-            `version: ${version}\npath: Orca-${version}.zip\nfiles:\n  - url: Orca-${version}.zip\n`
+            `version: ${version}\npath: OCC-${version}.zip\nfiles:\n  - url: OCC-${version}.zip\n`
           )
       })
     }
@@ -66,9 +66,9 @@ function apiRelease(tag: string, assets: readonly string[]) {
 
 const APP_ASSETS = [
   'latest-mac.yml',
-  'orca-macos-arm64.dmg',
+  'occ-macos-arm64.dmg',
   'latest.yml',
-  'orca-windows-setup.exe'
+  'occ-windows-setup.exe'
 ]
 
 beforeEach(() => {

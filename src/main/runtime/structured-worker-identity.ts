@@ -90,7 +90,7 @@ export function sessionIdFromStructuredWorkerIncarnation(
   return sessionId.length > 0 ? sessionId : null
 }
 
-/** The Orca session id a `structured:<sessionId>` incarnation names; null for any other. */
+/** The OCC session id a `structured:<sessionId>` incarnation names; null for any other. */
 export function structuredWorkerOrcaSessionIdForIncarnation(
   processIncarnation: string | null | undefined
 ): OrcaSessionId | null {

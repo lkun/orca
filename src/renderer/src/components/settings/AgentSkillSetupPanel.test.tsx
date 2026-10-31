@@ -75,7 +75,7 @@ function panelProps(
 ): ComponentProps<typeof AgentSkillSetupPanel> {
   return {
     title: 'CLI skill',
-    description: 'Enables agents to use Orca workflows.',
+    description: 'Enables agents to use OCC workflows.',
     skillNames: ['orca-cli'],
     installed: false,
     loading: false,
@@ -326,7 +326,7 @@ describe('AgentSkillSetupPanel', () => {
 
     mocks.plan.mockResolvedValue({ kind: 'plan', plan: replaced })
     mocks.execute.mockResolvedValueOnce(doneResult(replaced))
-    await clickButton("Replace with Orca's copy")
+    await clickButton("Replace with OCC's copy")
 
     const path = '/home/u/.agents/skills/orca-cli'
     expect(mocks.plan).toHaveBeenCalledWith(
@@ -346,10 +346,10 @@ describe('AgentSkillSetupPanel', () => {
     mocks.execute.mockResolvedValueOnce(doneResult(plan))
     await renderInteractivePanel()
 
-    await clickButton("Replace with Orca's copy")
+    await clickButton("Replace with OCC's copy")
 
     expect(container?.textContent).toContain(
-      'Installed · Update skipped in Shared folder: Skill edited outside Orca'
+      'Installed · Update skipped in Shared folder: Skill edited outside OCC'
     )
     expect(container?.textContent).not.toContain('Needs attention')
   })
@@ -380,7 +380,7 @@ describe('AgentSkillSetupPanel', () => {
     await clickButton('Install')
 
     expect(container?.textContent).toContain(
-      'WSL is not available on this machine, so Orca could not install the skills there.'
+      'WSL is not available on this machine, so OCC could not install the skills there.'
     )
     expect(container?.textContent).not.toContain('Error invoking remote method')
   })
@@ -392,7 +392,7 @@ describe('AgentSkillSetupPanel', () => {
     await clickButton('Install')
 
     expect(container?.textContent).toContain(
-      'Orca could not install the skills. (skill-install-journal-invalid)'
+      'OCC could not install the skills. (skill-install-journal-invalid)'
     )
   })
 
@@ -443,7 +443,7 @@ describe('AgentSkillSetupPanel', () => {
 
     expect(findButton('Install').disabled).toBe(true)
     expect(container?.textContent).toContain(
-      "Orca can't install skills on this workspace's machine yet."
+      "OCC can't install skills on this workspace's machine yet."
     )
   })
 
@@ -536,13 +536,13 @@ describe('AgentSkillSetupPanel', () => {
     expect(findButton('Install').disabled).toBe(true)
   })
 
-  it('asks for a newer Orca on a server without the installer, writing nothing here', async () => {
+  it('asks for a newer OCC on a server without the installer, writing nothing here', async () => {
     mocks.plan.mockResolvedValue({ kind: 'unsupported', reason: 'update-server' })
     mocks.target = { kind: 'environment', environmentId: 'old' }
     const onRecheck = vi.fn(async () => {})
     await renderInteractivePanel({ onRecheck })
 
-    expect(container?.textContent).toContain('Update Orca on the server to install its skills.')
+    expect(container?.textContent).toContain('Update OCC on the server to install its skills.')
     expect(buttonLabels(container?.innerHTML ?? '')).not.toContain('Install')
     expect(mocks.execute).not.toHaveBeenCalled()
     expect(onRecheck).not.toHaveBeenCalled()

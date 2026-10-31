@@ -205,7 +205,7 @@ describe('OrcaRuntimeRpcServer', () => {
         relayFailure: {
           code: 'relay_provider_unavailable',
           stage: 'provider_missing',
-          message: 'Orca Relay is not available on this desktop'
+          message: 'OCC Relay is not available on this desktop'
         }
       })
       expect(server.getDeviceRegistry()?.getPendingDevice('mobile')).toBeNull()

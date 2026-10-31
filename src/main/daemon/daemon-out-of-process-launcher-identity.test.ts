@@ -51,7 +51,7 @@ const GENERATION = {
   generationRoot: '/cache/ns/gen',
   nodePath: '/cache/ns/gen/resources/node-runtime/bin/node',
   entryPath: '/cache/ns/gen/resources/entry.js',
-  identityPath: '/apps/Orca.AppImage/resources/entry.js'
+  identityPath: '/apps/OCC.AppImage/resources/entry.js'
 }
 
 afterEach(() => {
@@ -69,12 +69,12 @@ async function expectedIdentity(): Promise<unknown> {
 describe('daemon launch identity', () => {
   it('matches a surviving own-mount daemon by its AppImage file', async () => {
     resolveLaunch.mockReturnValue({
-      appImagePath: '/apps/Orca.AppImage',
+      appImagePath: '/apps/OCC.AppImage',
       entryPathInAppDir: 'resources/entry.js',
       appPathInAppDir: 'resources/app.asar',
       appVersion: '1.0.0'
     })
-    expect(await expectedIdentity()).toBe('/apps/Orca.AppImage/resources/entry.js')
+    expect(await expectedIdentity()).toBe('/apps/OCC.AppImage/resources/entry.js')
   })
 
   it('keeps the entry path everywhere else', async () => {
@@ -85,7 +85,7 @@ describe('daemon launch identity', () => {
   it('matches by the AppImage file when the daemon runs on the extracted copy', async () => {
     resolveLaunch.mockReturnValue(null)
     resolveGeneration.mockReturnValue({ launch: GENERATION })
-    expect(await expectedIdentity()).toBe('/apps/Orca.AppImage/resources/entry.js')
+    expect(await expectedIdentity()).toBe('/apps/OCC.AppImage/resources/entry.js')
   })
 })
 

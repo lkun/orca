@@ -18,7 +18,7 @@ const ORCA_UPSTREAM = { owner: 'stablyai', repo: 'orca' }
 const isServerHost = (hostId: string | null | undefined): boolean =>
   parseExecutionHostId(hostId)?.kind === 'runtime'
 
-// Model unstamped server catalog responses, including an ungrouped copy of the grouped Orca project.
+// Model unstamped server catalog responses, including an ungrouped copy of the grouped OCC project.
 const SERVER_ORCA = repo('orca-srv', 'orca', { path: '/srv/orca', upstream: ORCA_UPSTREAM })
 const SERVER_ANSWERS = {
   'repo.list': { repos: [repo('api', 'api'), SERVER_ORCA] },

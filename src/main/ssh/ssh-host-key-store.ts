@@ -15,7 +15,7 @@ const STORE_VERSION = 1
 const MAX_PORT = 65535
 
 type TrustedHostKeyRecord = {
-  /** Lower-cased lookup host/HostKeyAlias, never the Orca target label. */
+  /** Lower-cased lookup host/HostKeyAlias, never the OCC target label. */
   host: string
   port: number
   keyType: string

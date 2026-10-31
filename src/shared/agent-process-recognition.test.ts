@@ -260,7 +260,7 @@ describe('agent process recognition', () => {
       agent: 'trae',
       processName: 'traecli'
     })
-    // Why: past `--` nothing is a flag, so this is the interactive pane Orca itself launches.
+    // Why: past `--` nothing is a flag, so this is the interactive pane OCC itself launches.
     expect(recognizeAgentProcessFromCommandLine('traecli -- "--print the release notes"')).toEqual({
       agent: 'trae',
       processName: 'traecli'
@@ -499,7 +499,7 @@ describe('agent process recognition', () => {
       agent: 'prime-agent',
       processName: 'prime-agent'
     })
-    // Why: past `--` nothing is a flag, so this is the interactive pane Orca itself launches.
+    // Why: past `--` nothing is a flag, so this is the interactive pane OCC itself launches.
     expect(
       recognizeAgentProcessFromCommandLine('prime-agent -- "--print the release notes"')
     ).toEqual({ agent: 'prime-agent', processName: 'prime-agent' })
@@ -509,7 +509,7 @@ describe('agent process recognition', () => {
     for (const mode of ['json', 'rpc', 'acp', 'daemon']) {
       expect(recognizeAgentProcessFromCommandLine(`prime-agent --mode ${mode}`)).toBeNull()
     }
-    // Why: `text` is the interactive TUI mode Orca hosts.
+    // Why: `text` is the interactive TUI mode OCC hosts.
     expect(recognizeAgentProcessFromCommandLine('prime-agent --mode text')).toEqual({
       agent: 'prime-agent',
       processName: 'prime-agent'
@@ -525,18 +525,18 @@ describe('agent process recognition', () => {
     })
   })
 
-  it('recognizes only the agent subcommand of the generic Orca CLI', () => {
+  it('recognizes only the agent subcommand of the generic OCC CLI', () => {
     expect(recognizeAgentProcessFromCommandLine('orca claude-teams')).toEqual({
       agent: 'claude-agent-teams',
       processName: 'orca'
     })
     expect(recognizeAgentProcessFromCommandLine('orca status')).toBeNull()
-    expect(recognizeAgentProcessFromCommandLine('orca-dev terminal list')).toBeNull()
-    expect(recognizeAgentProcessFromCommandLine('node /usr/local/bin/orca claude-teams')).toEqual({
+    expect(recognizeAgentProcessFromCommandLine('occ-dev terminal list')).toBeNull()
+    expect(recognizeAgentProcessFromCommandLine('node /usr/local/bin/occ claude-teams')).toEqual({
       agent: 'claude-agent-teams',
       processName: 'orca'
     })
-    expect(recognizeAgentProcessFromCommandLine('node /usr/local/bin/orca status')).toBeNull()
+    expect(recognizeAgentProcessFromCommandLine('node /usr/local/bin/occ status')).toBeNull()
   })
 
   it('recognizes the versioned Cursor Node wrapper without accepting generic agent processes', () => {

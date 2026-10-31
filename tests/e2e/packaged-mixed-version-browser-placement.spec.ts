@@ -255,7 +255,7 @@ async function createBrowserThroughCurrentClient(args: {
 test.describe('packaged mixed-version browser placement', () => {
   test.skip(
     packagedExecutableMissing,
-    `${PACKAGED_EXECUTABLE_ENV} must point at an older packaged Orca executable`
+    `${PACKAGED_EXECUTABLE_ENV} must point at an older packaged OCC executable`
   )
 
   test('keeps an old packaged client on the current server-hosted path', async ({

@@ -134,7 +134,7 @@ beforeEach(() => {
   mocks.resumeInChat.mockReset()
 })
 
-// What Orca remembers once the agent exits and the pane is back at its shell prompt.
+// What OCC remembers once the agent exits and the pane is back at its shell prompt.
 const exitedAgentRecords: Record<string, Partial<AppState>> = {
   retained: {
     retainedAgentsByPaneKey: {
@@ -420,7 +420,7 @@ describe('resolveTabSessionHistorySubject', () => {
     ).toBeNull()
   })
 
-  it('looks up both Chat and CLI conversations on their remote Orca server', () => {
+  it('looks up both Chat and CLI conversations on their remote OCC server', () => {
     const state = makeState(liveClaudeEntry, {
       executionHostId: 'runtime:server-1'
     })
@@ -796,7 +796,7 @@ describe('lookupTabSessionHistoryRow', () => {
     expect(claimAiVaultForcedRescan()).toBe(true)
   })
 
-  it('forces no scan on a remote Orca server', async () => {
+  it('forces no scan on a remote OCC server', async () => {
     const listSessions = vi.fn(async (_args: AiVaultListArgs) => listResult([]))
     await lookupTabSessionHistoryRow(
       {

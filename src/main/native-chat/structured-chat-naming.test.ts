@@ -356,7 +356,7 @@ describe.each(['claude', 'codex'] as const)('structured %s chat naming', (provid
     expect(state.handle.failure(state.summary.sessionId)).toBeUndefined()
   })
 
-  it('codes the Orca-authored failure when the chat-name agent cannot run', async () => {
+  it('codes the OCC-authored failure when the chat-name agent cannot run', async () => {
     const state = rig(provider)
     state.deps.generate = vi.fn(async () => {
       throw new Error('spawn ENOENT')
@@ -364,7 +364,7 @@ describe.each(['claude', 'codex'] as const)('structured %s chat naming', (provid
     state.handle(state.summary, { replay: false })
     await settle()
     expect(state.handle.failure(state.summary.sessionId)).toMatchObject({
-      message: 'Orca could not run the chat-name agent.',
+      message: 'OCC could not run the chat-name agent.',
       messageCode: 'agentNotRun'
     })
   })
@@ -489,7 +489,7 @@ describe.each(['claude', 'codex'] as const)('structured %s chat naming', (provid
     }
   )
 
-  it("takes a window's pre-upgrade tab name only over a name Orca chose", async () => {
+  it("takes a window's pre-upgrade tab name only over a name OCC chose", async () => {
     const state = rig(provider)
     const id = state.summary.sessionId
     await state.handle(state.summary, { replay: false })

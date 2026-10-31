@@ -1,6 +1,6 @@
-/** One entry Orca shows for an extension's chrome.contextMenus item. */
+/** One entry OCC shows for an extension's chrome.contextMenus item. */
 export type BrowserExtensionContextMenuItem = {
-  /** JSON of the extension's item id (string or number); empty for Orca's per-extension submenu. */
+  /** JSON of the extension's item id (string or number); empty for OCC's per-extension submenu. */
   key: string
   title: string
   type: 'normal' | 'checkbox' | 'radio' | 'separator'

@@ -201,7 +201,7 @@ describe('ACP history catch-up', () => {
     ])
   })
 
-  it('adds a Grok turn made outside the chat under its own id, never the turn Orca sent', async () => {
+  it('adds a Grok turn made outside the chat under its own id, never the turn OCC sent', async () => {
     const { fixture, catchUp } = await setup(GROK_ACP_DIALECT, 'prompt-id')
     const frames = await recording('grok-v1-reopen-outside')
     await fixture.feed(frames.filter((frame) => frame.process === 'A'))

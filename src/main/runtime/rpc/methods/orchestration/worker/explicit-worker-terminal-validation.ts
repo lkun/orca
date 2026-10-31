@@ -54,7 +54,7 @@ export async function assertExplicitWorkerTerminalUsable(args: {
   }
 }
 
-/** A `--terminal` party: a terminal pane, or a chat named by its Orca session ID. */
+/** A `--terminal` party: a terminal pane, or a chat named by its OCC session ID. */
 export async function assertExplicitWorkerUsable(args: {
   runtime: OrcaRuntimeService
   db: OrchestrationDb
@@ -69,7 +69,7 @@ export async function assertExplicitWorkerUsable(args: {
     : assertExplicitWorkerTerminalUsable({ ...args, terminal: args.terminal.address }))
 }
 
-/** The same refusals for a chat named by its Orca session ID: itself, unreachable, another worktree. */
+/** The same refusals for a chat named by its OCC session ID: itself, unreachable, another worktree. */
 async function assertExplicitWorkerChatUsable(args: {
   runtime: Pick<OrcaRuntimeService, 'ensureStructuredAgentSessionHost'>
   db: OrchestrationDb

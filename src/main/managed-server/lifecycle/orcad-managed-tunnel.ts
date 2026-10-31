@@ -127,7 +127,7 @@ export function disposeOrcadManagedTunnels(): void {
   managedTunnels.dispose()
 }
 
-// System SSH forwards have independent processes and can outlive Orca.
+// System SSH forwards have independent processes and can outlive OCC.
 export function shutdownOrcadManagedTunnels(): Promise<void> {
   return managedTunnels.shutdown()
 }

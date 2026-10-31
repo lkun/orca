@@ -46,7 +46,7 @@ import { useWorktreeAwarenessEnvironment } from './index-test-harness'
 
 const ORCA_PROJECT = {
   id: 'github:stablyai/orca',
-  displayName: 'Orca',
+  displayName: 'OCC',
   badgeColor: '#7c3aed',
   sourceRepoIds: ['repo-1'],
   createdAt: 1,
@@ -158,7 +158,7 @@ describe('orca cli project and host names', () => {
     vi.spyOn(console, 'log').mockImplementation(() => {})
 
     await main(
-      ['project', 'setup-create', '--project', 'Orca', '--host', 'this machine', '--json'],
+      ['project', 'setup-create', '--project', 'OCC', '--host', 'this machine', '--json'],
       '/tmp/repo'
     )
 

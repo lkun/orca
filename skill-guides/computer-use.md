@@ -6,12 +6,12 @@ description: >-
   browser windows (Chrome, Edge, Safari) or webviews. Prefer a programmatic path
   (shell, filesystem, git, HTTP, existing CLIs) whenever it can complete the task.
   Use only when a visible window needs GUI control those cannot reach. Do not use
-  for Orca's embedded browser (`orca-cli`).
+  for OCC's embedded browser (`orca-cli`).
 ---
 
 # Computer Use
 
-Use this skill to drive a visible app window through `orca computer`. Prefer a programmatic path (shell, filesystem, git, HTTP, existing CLIs) whenever it can complete the task; use this skill only when a visible window needs GUI control those cannot reach. Do not use it for Orca's embedded browser (`orca-cli`).
+Use this skill to drive a visible app window through `orca computer`. Prefer a programmatic path (shell, filesystem, git, HTTP, existing CLIs) whenever it can complete the task; use this skill only when a visible window needs GUI control those cannot reach. Do not use it for OCC's embedded browser (`orca-cli`).
 
 ## Preconditions
 

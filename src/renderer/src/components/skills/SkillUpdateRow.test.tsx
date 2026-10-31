@@ -87,12 +87,12 @@ describe('SkillUpdateRow', () => {
   })
 
   it.each([
-    ['edited', 'Skill edited outside Orca'],
+    ['edited', 'Skill edited outside OCC'],
     ['other', 'A different skill uses this name'],
-    ['unwritable', "Orca can't write to this folder"],
-    ['unreadable', "Orca can't read every file"],
+    ['unwritable', "OCC can't write to this folder"],
+    ['unreadable', "OCC can't read every file"],
     ['busy', 'Another install is still running'],
-    ['shared-not-current', "The shared copy isn't Orca's"]
+    ['shared-not-current', "The shared copy isn't OCC's"]
   ] as const)(
     'explains %s copies without repeating the status on folder lines',
     async (reason, text) => {
@@ -144,8 +144,8 @@ describe('SkillUpdateRow', () => {
         />
       )
 
-      expect(row(view).split("Update skipped: The shared copy isn't Orca's")).toHaveLength(2)
-      expect(row(view).split('Update skipped: Skill edited outside Orca')).toHaveLength(2)
+      expect(row(view).split("Update skipped: The shared copy isn't OCC's")).toHaveLength(2)
+      expect(row(view).split('Update skipped: Skill edited outside OCC')).toHaveLength(2)
       for (const path of [SHARED, CLAUDE, cursor]) {
         expect(view.querySelector(`.font-mono[title="${path}"]`)).not.toBeNull()
       }
@@ -167,7 +167,7 @@ describe('SkillUpdateRow', () => {
       />
     )
 
-    expect(row(view).split('Update skipped: Skill edited outside Orca')).toHaveLength(2)
+    expect(row(view).split('Update skipped: Skill edited outside OCC')).toHaveLength(2)
     const checkboxes = view.querySelectorAll('[role="checkbox"]')
     expect(checkboxes).toHaveLength(2)
     await act(async () => {
@@ -189,8 +189,8 @@ describe('SkillUpdateRow', () => {
         replace={{ isReplaced: () => false, onReplaceChange }}
       />
     )
-    expect(row(view)).toContain("Update skipped: Orca can't write to this folder")
-    expect(row(view)).toContain('Update skipped: Skill edited outside Orca')
+    expect(row(view)).toContain("Update skipped: OCC can't write to this folder")
+    expect(row(view)).toContain('Update skipped: Skill edited outside OCC')
     expect(row(view)).not.toContain('Claude Code:')
     const checkboxes = view.querySelectorAll('[role="checkbox"]')
     expect(checkboxes).toHaveLength(1)
@@ -220,7 +220,7 @@ describe('SkillUpdateRow', () => {
         showLocations={false}
       />
     )
-    expect(row(view)).toBe('orca-cliUpdatedUpdate skipped: Skill edited outside Orca')
+    expect(row(view)).toBe('orca-cliUpdatedUpdate skipped: Skill edited outside OCC')
   })
 
   it.each<{

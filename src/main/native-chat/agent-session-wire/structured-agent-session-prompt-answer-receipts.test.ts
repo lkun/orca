@@ -273,7 +273,7 @@ describe('a prompt answer', () => {
     expect(await resolution(prompt.itemId)).toBe('pending')
   })
 
-  it("refuses with the update words when a newer Orca's journal holds the chat", async () => {
+  it("refuses with the update words when a newer OCC's journal holds the chat", async () => {
     const prompt = await seeded()
     const id = opId()
     Object.defineProperty(openTestJournalHostDatabase(root), 'readOnly', { value: true })

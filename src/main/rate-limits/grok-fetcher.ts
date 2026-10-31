@@ -279,7 +279,7 @@ async function fetchMonthlyUsageFallback(
   return { kind: 'window', window: mapMonthlyUsage(config), config }
 }
 
-// Grok CLI owns login/refresh; Orca only reads its session file.
+// Grok CLI owns login/refresh; OCC only reads its session file.
 export async function fetchGrokRateLimits(
   options: { signal?: AbortSignal; authReadResult?: GrokAuthReadResult } = {}
 ): Promise<ProviderRateLimits> {
@@ -295,7 +295,7 @@ export async function fetchGrokRateLimits(
     // Missing auth returned earlier; this stored session refreshes on next Grok use, so do not request login (#8497).
     return result(
       'error',
-      'Grok sign-in expired — run grok on the computer running Orca; sign in if prompted. No chat message is needed.',
+      'Grok sign-in expired — run grok on the computer running OCC; sign in if prompted. No chat message is needed.',
       { failureKind: 'delegated-refresh-required', source: 'oauth' }
     )
   }

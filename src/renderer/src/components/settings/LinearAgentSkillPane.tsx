@@ -86,7 +86,7 @@ export function LinearAgentSkillPane(): React.JSX.Element {
       title={translate('auto.components.settings.LinearAgentSkillPane.title', 'Linear')}
       description={translate(
         'auto.components.settings.LinearAgentSkillPane.description',
-        'How Linear works in Orca: browse issues, start linked workspaces, and let agents update tickets with /orca-linear.'
+        'How Linear works in OCC: browse issues, start linked workspaces, and let agents update tickets with /orca-linear.'
       )}
       keywords={getLinearAgentSkillPaneSearchEntries()[0].keywords}
       className="space-y-6 py-2"

@@ -44,11 +44,11 @@ function requestHeaders(call = 0): Record<string, string> {
 // Non-filtering cases need installable assets on every tested platform.
 const allPlatformAssets = [
   { name: 'latest-mac.yml' },
-  { name: 'orca-macos-arm64.dmg' },
+  { name: 'occ-macos-arm64.dmg' },
   { name: 'latest.yml' },
-  { name: 'orca-windows-setup.exe' },
+  { name: 'occ-windows-setup.exe' },
   { name: 'latest-linux.yml' },
-  { name: 'orca-linux.AppImage' }
+  { name: 'occ-linux.AppImage' }
 ]
 
 const release = (tag: string, extra: Record<string, unknown> = {}) => ({
@@ -169,7 +169,7 @@ describe('listReleaseBuilds', () => {
       jsonResponse([
         release('v1.4.163-hourly.202607312054'),
         release('v1.4.163-hourly.202607311933', {
-          assets: [{ name: 'latest-mac.yml' }, { name: 'orca-macos-arm64.dmg' }]
+          assets: [{ name: 'latest-mac.yml' }, { name: 'occ-macos-arm64.dmg' }]
         })
       ])
     )
@@ -208,7 +208,7 @@ describe('listReleaseBuilds', () => {
     const [build] = await listReleaseBuilds('hourly', 'win32')
 
     expect(build.installerUrl).toBe(
-      'https://github.com/stablyai/orca-hourly/releases/download/v1.4.163-hourly.202607312054/orca-windows-setup.exe'
+      'https://github.com/stablyai/orca-hourly/releases/download/v1.4.163-hourly.202607312054/occ-windows-setup.exe'
     )
   })
 
@@ -398,7 +398,7 @@ describe('listReleaseBuilds', () => {
 
     const failure = listReleaseBuilds('hourly', 'darwin')
     await expect(failure).rejects.toThrow(
-      "GitHub rate limit reached. Try again in about 28 minutes, or run `gh auth login` so Orca can use your account's higher limit."
+      "GitHub rate limit reached. Try again in about 28 minutes, or run `gh auth login` so OCC can use your account's higher limit."
     )
     await expect(failure).rejects.toMatchObject({
       coded: { messageCode: 'rateLimitedInMinutesSignedOut', messageParams: { count: 28 } }

@@ -107,7 +107,7 @@ describe('relay observability', () => {
     expect(entries).toEqual([
       {
         severity: 'WARNING',
-        message: 'Orca Relay readiness check',
+        message: 'OCC Relay readiness check',
         event: 'orca_relay_readiness_check',
         metricVersion: 1,
         role: 'cell',
@@ -175,7 +175,7 @@ describe('relay observability', () => {
     expect(entries).toEqual([
       {
         severity: 'WARNING',
-        message: 'Orca Relay readiness entered last-known-good grace',
+        message: 'OCC Relay readiness entered last-known-good grace',
         event: 'orca_relay_readiness_grace_entered',
         metricVersion: 1,
         role: 'cell',
@@ -189,7 +189,7 @@ describe('relay observability', () => {
       },
       {
         severity: 'INFO',
-        message: 'Orca Relay readiness left last-known-good grace',
+        message: 'OCC Relay readiness left last-known-good grace',
         event: 'orca_relay_readiness_grace_left',
         metricVersion: 1,
         role: 'cell',

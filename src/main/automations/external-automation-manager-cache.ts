@@ -1,4 +1,4 @@
-// Provider failures affect only their owner/provider cache entry, never Orca storage health.
+// Provider failures affect only their owner/provider cache entry, never OCC storage health.
 
 import type { ExternalAutomationManager } from '../../shared/automations-types'
 import { isExternalAutomationProbeCancelled } from './external-automation-probe-scheduler'

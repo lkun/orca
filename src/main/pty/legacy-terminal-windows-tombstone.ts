@@ -63,7 +63,7 @@ for %%P in ("%orca_clean_path:;=" "%") do (
 )
 :orca_candidates_walked
 if not defined orca_real (
-  echo Orca compatibility wrapper could not locate __ORCA_COMMAND__ on PATH. 1>&2
+  echo OCC compatibility wrapper could not locate __ORCA_COMMAND__ on PATH. 1>&2
   exit /b 127
 )
 :run
@@ -190,7 +190,7 @@ if (-not $realCommand -or -not (Test-Path -LiteralPath $realCommand)) {
   }
 }
 if (-not $realCommand) {
-  [Console]::Error.WriteLine("Orca compatibility wrapper could not locate $commandName on PATH.")
+  [Console]::Error.WriteLine("OCC compatibility wrapper could not locate $commandName on PATH.")
   exit 127
 }
 & $realCommand @args

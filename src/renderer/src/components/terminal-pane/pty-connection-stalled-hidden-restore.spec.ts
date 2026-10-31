@@ -515,7 +515,7 @@ export function registerPtyConnectionStalledHiddenRestoreTests(): void {
         expect(getMainBufferSnapshot).toHaveBeenCalledTimes(4)
         expect(pane.terminal.write).toHaveBeenCalledWith(
           expect.stringContaining(
-            'Orca skipped hidden terminal output because main recovery was unavailable.'
+            'OCC skipped hidden terminal output because main recovery was unavailable.'
           ),
           expect.any(Function)
         )

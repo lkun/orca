@@ -117,7 +117,7 @@ describe('sendMobileNativeChatMessage', () => {
     const client = {
       sendRequest: vi
         .fn()
-        .mockRejectedValue(new Error('Timed out while connecting to the remote Orca runtime.'))
+        .mockRejectedValue(new Error('Timed out while connecting to the remote OCC runtime.'))
     } as unknown as RpcClient
 
     await expect(

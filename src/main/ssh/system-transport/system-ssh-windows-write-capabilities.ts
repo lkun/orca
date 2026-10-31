@@ -4,7 +4,7 @@ import { CapabilityProbeCache } from '../../../shared/capability-probe-cache'
 /** Cache SFTP/PowerShell 7 absence per execution host to avoid per-file probes. */
 type WindowsRemoteWriteCapability = 'sftp-subsystem' | 'pwsh'
 
-// Reprobe so admins can enable SFTP/install PowerShell 7 without restarting Orca.
+// Reprobe so admins can enable SFTP/install PowerShell 7 without restarting OCC.
 const WINDOWS_WRITE_CAPABILITY_RETRY_INTERVAL_MS = 30 * 60_000
 const MAX_WINDOWS_WRITE_CAPABILITY_HOSTS = 256
 

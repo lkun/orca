@@ -96,7 +96,7 @@ test('Quit Completely closes the terminal tab and ends its shell and the daemon'
     // Why the exit event, not a poll: session.close needs app.process(), which Playwright drops soon after exit.
     const exited = waitForExit(first.app.process(), 60_000)
     await confirmQuitAndStopAllSessionsFromMenu(first.app)
-    expect(await exited, 'Orca stayed open after Quit Completely').toBe(true)
+    expect(await exited, 'OCC stayed open after Quit Completely').toBe(true)
     await session.close(first.app)
     firstApp = null
 

@@ -295,7 +295,7 @@ export class RuntimeLinearCommentCommands extends RuntimeLinearCreateCommands {
     const readBack = `orca linear issue ${issue} --comments --workspace ${workspaceId} --json`
     return linearError(
       'linear_write_unconfirmed',
-      `Linear may have applied the comment ${verb}, but Orca could not confirm it.`,
+      `Linear may have applied the comment ${verb}, but OCC could not confirm it.`,
       {
         workspaceId,
         issueIdentifier: comment.issue.identifier,

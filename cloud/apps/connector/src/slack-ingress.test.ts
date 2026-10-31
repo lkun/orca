@@ -76,7 +76,7 @@ describe('Slack event ingress', () => {
     )
     const installs = new SlackInstalls(harness.tokenKey)
     const install = { appId: 'A2', botUserId: 'UBOT2', botToken: 'xoxb-2' }
-    // One Orca app per workspace: app 2 can't take over app 1's workspace.
+    // One OCC app per workspace: app 2 can't take over app 1's workspace.
     expect(await installs.save(harness.database, { ...install, teamId: TEAM }, now)).toBe(false)
     expect(await installs.save(harness.database, { ...install, teamId: 'T2' }, now)).toBe(true)
     const signedBy = (secret: string, path: string, body: string) => {
@@ -229,7 +229,7 @@ describe('Slack event ingress', () => {
     expect(send).toMatchObject({ kind: 'send', text: 'go ahead' })
   })
 
-  it('gives a teammate who mentions Orca their own conversation', async () => {
+  it('gives a teammate who mentions OCC their own conversation', async () => {
     const harness = await linkedOwner()
     await harness.operator('link', '--team', TEAM, '--user', TEAMMATE, '--account', 'user-2')
     const theirs = await harness.machineWith('user-2', [project('orca', 'pl_theirs')])
@@ -364,7 +364,7 @@ describe('Slack event ingress', () => {
       [
         `update:${TEAM}:${CHANNEL}:1800000000.000200`,
         'ephemeral',
-        { user: OWNER, text: 'Update Orca and turn on connectors, then send again.' }
+        { user: OWNER, text: 'Update OCC and turn on connectors, then send again.' }
       ]
     ])
   })
@@ -406,7 +406,7 @@ describe('Slack event ingress', () => {
       [`eyes:${TEAM}:${CHANNEL}:${THREAD}`, undefined],
       [
         `status:${EXTERNAL_ID}`,
-        `Couldn’t reach <@${OWNER}>’s Orca on build-box. Send again when it’s back.`
+        `Couldn’t reach <@${OWNER}>’s OCC on build-box. Send again when it’s back.`
       ]
     ])
 

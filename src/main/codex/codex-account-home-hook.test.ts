@@ -93,7 +93,7 @@ afterEach(() => {
 })
 
 describe('reconcileCodexAccountHomeHook', () => {
-  it("adds Orca's entry beside the account's own hook, keeping its approval", async () => {
+  it("adds OCC's entry beside the account's own hook, keeping its approval", async () => {
     await reconcileCodexAccountHomeHook(accountHome, () => true, true)
 
     const orcaCommand = getCodexManagedHookInstallMaterial().command
@@ -107,7 +107,7 @@ describe('reconcileCodexAccountHomeHook', () => {
     expect(existsSync(join(root, 'home', '.codex'))).toBe(false)
   })
 
-  it("takes only Orca's entry back out when hooks are turned off", async () => {
+  it("takes only OCC's entry back out when hooks are turned off", async () => {
     await reconcileCodexAccountHomeHook(accountHome, () => true, false)
     await reconcileCodexAccountHomeHook(accountHome, () => false, false)
 

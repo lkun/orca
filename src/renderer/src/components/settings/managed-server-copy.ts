@@ -61,7 +61,7 @@ export function terminalCensusLabel(terminals: OrcadManagedRuntimeStatus['termin
 export function forceUpdateMessage(): string {
   return translate(
     'auto.components.settings.managedServers.row.forceUpdate',
-    'Terminals are running on this host. They keep running through the update, and their panes reconnect when Orca’s server restarts.'
+    'Terminals are running on this host. They keep running through the update, and their panes reconnect when OCC’s server restarts.'
   )
 }
 
@@ -76,7 +76,7 @@ export function conversionBlockerLabel(blocker: OrcadMigrationBlocker): string {
     case 'orcad_migration_owner_unrecorded':
       return translate(
         'auto.components.settings.managedServers.blocker.owned',
-        'Orca already runs on this SSH host.'
+        'OCC already runs on this SSH host.'
       )
     case 'orcad_migration_direct_ssh_repositories':
     case 'orcad_migration_direct_ssh_folder_workspaces':
@@ -108,7 +108,7 @@ export function conversionBlockerLabel(blocker: OrcadMigrationBlocker): string {
     case 'orcad_migration_dependency_unverifiable':
       return translate(
         'auto.components.settings.managedServers.blocker.unverifiable',
-        'Orca could not read its saved {{sources}}, so it cannot tell what would move.',
+        'OCC could not read its saved {{sources}}, so it cannot tell what would move.',
         { sources: blocker.sources.map(dependencyKindLabel).join(', ') }
       )
   }
@@ -163,13 +163,13 @@ export function managedServerOutcomeLabel(result: {
   if (result.verdict === 'unverifiable' || UNVERIFIABLE_CODES.has(code)) {
     return translate(
       'auto.components.settings.managedServers.outcome.unverifiable',
-      'Not done: Orca couldn’t confirm what is running on this server. Try again when the host is reachable.'
+      'Not done: OCC couldn’t confirm what is running on this server. Try again when the host is reachable.'
     )
   }
   if (code === ORCAD_UPDATE_WSL_MOVE_RUNNING_CODE) {
     return translate(
       'auto.components.settings.managedServers.outcome.wslMoveRunning',
-      'Not done: a project is moving onto this server. Orca updates it once the move finishes.'
+      'Not done: a project is moving onto this server. OCC updates it once the move finishes.'
     )
   }
   if (MIGRATION_CODES.has(code)) {
@@ -186,6 +186,6 @@ export function managedServerOutcomeLabel(result: {
   }
   return translate(
     'auto.components.settings.managedServers.outcome.failed',
-    'Orca couldn’t finish this on the server. Try again.'
+    'OCC couldn’t finish this on the server. Try again.'
   )
 }

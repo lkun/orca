@@ -9,7 +9,7 @@ type CompositeKind =
   | 'worktree-id'
   /** A worktree id, `worktree:<worktreeId>` or `folder:<id>`. */
   | 'owner-key'
-  /** `<owner key>@@<id>` when minted by Orca; anything else is opaque. */
+  /** `<owner key>@@<id>` when minted by OCC; anything else is opaque. */
   | 'pty-session-id'
   /** `editor:<enc worktreeId>:<enc runtime>:<enc filePath>`, a raw absolute path, or an opaque id. */
   | 'editor-file-id'

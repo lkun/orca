@@ -178,7 +178,7 @@ describe('Jira reference keys', () => {
     expect(console.error).toHaveBeenCalledExactlyOnceWith(
       id === 'all'
         ? 'Choose one Jira site ID; --reference-site all is unsupported.'
-        : 'No matching connected Jira site. Check orca jira connection and Orca Jira settings.'
+        : 'No matching connected Jira site. Check orca jira connection and OCC Jira settings.'
     )
     expect(process.exitCode).toBe(1)
     expect(mocks.callMock).not.toHaveBeenCalledWith('jira.lookupIssueSummary', expect.anything())
@@ -400,7 +400,7 @@ describe('Jira reference keys', () => {
   it('requires Jira agent capability before resolving keys', async () => {
     responses({ 'status.get': { capabilities: [WORKTREE_LINKED_ITEMS_DELTA_RUNTIME_CAPABILITY] } })
     await main(addArgs, '/tmp/api')
-    expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Update Orca'))
+    expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Update OCC'))
     expect(mocks.callMock.mock.calls.map(([method]) => method)).not.toContain('jira.status')
     expectNoWrite()
   })

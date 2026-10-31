@@ -36,7 +36,7 @@ function resourcePatternToRegExp(pattern: string): RegExp {
 }
 
 /**
- * Keeps Orca's private files out of reach of web pages. Chromium matches the URL's spelling but
+ * Keeps OCC's private files out of reach of web pages. Chromium matches the URL's spelling but
  * serves through the file system, where other spellings (case, Unicode folding, 8.3 names) can
  * name a private file. So every pattern becomes the package files it matches, and `isPrivate`
  * drops any entry that is a private file on disk, whatever its spelling.

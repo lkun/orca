@@ -37,10 +37,10 @@ export const ORCHESTRATION_WORKER_START_METHODS = [
         )
       }
       if (params.on && params.terminal?.startsWith(ORCA_SESSION_ADDRESS_PREFIX)) {
-        // Refused here, before any remote call: an Orca session ID names a chat only on its own host.
+        // Refused here, before any remote call: an OCC session ID names a chat only on its own host.
         throw new OrchestrationError(
           SESSION_CODES.hostBoundary,
-          `${params.terminal} names a chat by its Orca session ID, which identifies it only on the host that runs it. Run worker-start on that host. No effects were applied.`,
+          `${params.terminal} names a chat by its OCC session ID, which identifies it only on the host that runs it. Run worker-start on that host. No effects were applied.`,
           { effectsApplied: false }
         )
       }

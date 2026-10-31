@@ -10,7 +10,7 @@ export function hasCustomCodexHomeOverride(env: NodeJS.ProcessEnv = process.env)
   const normalizedOrcaCodexHome = orcaCodexHome
     ? normalizePathForComparison(orcaCodexHome)
     : undefined
-  // Custom native homes need ownership tracking before Orca can safely mutate and clean them.
+  // Custom native homes need ownership tracking before OCC can safely mutate and clean them.
   return Boolean(
     normalizedCodexHome &&
     normalizedCodexHome !== normalizedOrcaCodexHome &&

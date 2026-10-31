@@ -444,7 +444,7 @@ describe('Resume', () => {
     expect(ledgerRow(id)).toBeUndefined()
   })
 
-  it("answers a no-op on a newer Orca's records with that refusal, not unknown", async () => {
+  it("answers a no-op on a newer OCC's records with that refusal, not unknown", async () => {
     await rig.workingSend()
     const id = opId()
     Object.defineProperty(openTestJournalHostDatabase(rig.root), 'readOnly', { value: true })

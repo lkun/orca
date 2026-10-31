@@ -14,12 +14,12 @@ export function getBrowserLinkRoutingDescription(
   if (modifierInverts) {
     return translate(
       'auto.components.settings.BrowserLinkRoutingSetting.descriptionBase',
-      'Open http(s) links from anywhere in Orca in its built-in browser. Sign-in pages still open in your system browser.'
+      'Open http(s) links from anywhere in OCC in its built-in browser. Sign-in pages still open in your system browser.'
     )
   }
   return translate(
     'auto.components.settings.BrowserLinkRoutingSetting.description',
-    'Open http(s) links from anywhere in Orca in its built-in browser. Sign-in pages and {{shortcut}} always use your system browser.',
+    'Open http(s) links from anywhere in OCC in its built-in browser. Sign-in pages and {{shortcut}} always use your system browser.',
     { shortcut: getBrowserLinkRoutingShortcutLabel(platform) }
   )
 }
@@ -33,11 +33,11 @@ export function getLinkRoutingModifierTitle(openLinksInApp: boolean): string {
       )
     : translate(
         'auto.components.settings.BrowserLinkRoutingModifierSetting.titleOrca',
-        'Hold Shift to open in Orca'
+        'Hold Shift to open in OCC'
       )
 }
 
-// Orca describes enabled inversion; while disabled the chord still opens the system browser.
+// OCC describes enabled inversion; while disabled the chord still opens the system browser.
 export function getLinkRoutingModifierDescription({
   openLinksInApp,
   isMac
@@ -49,12 +49,12 @@ export function getLinkRoutingModifierDescription({
   return openLinksInApp
     ? translate(
         'auto.components.settings.BrowserLinkRoutingModifierSetting.descriptionSystem',
-        'Links open in Orca, so {{chord}}+click sends one to your system browser instead.',
+        'Links open in OCC, so {{chord}}+click sends one to your system browser instead.',
         { chord }
       )
     : translate(
         'auto.components.settings.BrowserLinkRoutingModifierSetting.descriptionOrca',
-        "Links open in your system browser. When enabled, {{chord}}+click opens one in Orca's built-in browser instead.",
+        "Links open in your system browser. When enabled, {{chord}}+click opens one in OCC's built-in browser instead.",
         { chord }
       )
 }

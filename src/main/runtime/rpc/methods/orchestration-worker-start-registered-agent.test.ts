@@ -53,7 +53,7 @@ describe('a worker for a registered native-chat agent', () => {
     })
   })
 
-  it('starts a terminal worker when the chat program Orca installs is missing here', async () => {
+  it('starts a terminal worker when the chat program OCC installs is missing here', async () => {
     const mode = decideWorkerStartMode({
       params: { agent: 'antigravity' },
       settings: STRUCTURED_PREFERENCE

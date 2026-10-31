@@ -278,7 +278,7 @@ test('a host whose port 6768 another runtime holds still runs a managed server',
   test.setTimeout(15 * 60_000)
   cpSync(TEMPLATE_SOURCE!, TEMPLATE_DIR, { recursive: true })
   const host = startHost(testInfo)
-  // Stands in for a desktop Orca on the host: it holds 6768 and turns every client away.
+  // Stands in for a desktop OCC on the host: it holds 6768 and turns every client away.
   host.exec!(
     `setsid nohup node -e "require('net').createServer((s) => s.destroy()).listen(6768, '127.0.0.1')" >/dev/null 2>&1 &`
   )

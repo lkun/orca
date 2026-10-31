@@ -40,7 +40,7 @@ index 9747a7402600cd252859144d32580ed45c8c93f7..69cf7fe6d14e52b199ac9ab869567be5
  exports.getAllProcesses = exports.getProcessTree = exports.getProcessCpuUsage = exports.getProcessList = exports.filterProcessList = exports.buildProcessTree = exports.ProcessDataFlag = void 0;
  const util_1 = require("util");
 -const native = process.platform === 'win32' ? require('../build/Release/windows_process_tree.node') : undefined;
-+// Orca's per-ABI build, published into package dirs shared across worktrees, wins over build/Release.
++// OCC's per-ABI build, published into package dirs shared across worktrees, wins over build/Release.
 +const orcaNativeBuild = `${__dirname}/../build/orca-napi-win32-${process.arch}/windows_process_tree.node`;
 +const native = process.platform === 'win32' ? require(require('fs').existsSync(orcaNativeBuild) ? orcaNativeBuild : '../build/Release/windows_process_tree.node') : undefined;
 +exports.getProcessCreationTime = native === undefined ? undefined : native.getProcessCreationTime;
@@ -77,7 +77,7 @@ index 7b53aad05c3682a5c7d814d81a39c3f391ae97e3..364b384e7d55f3682515431839352b5b
  import { promisify } from 'util';
  
 -const native = process.platform === 'win32' ? require('../build/Release/windows_process_tree.node') : undefined;
-+// Orca's per-ABI build, published into package dirs shared across worktrees, wins over build/Release.
++// OCC's per-ABI build, published into package dirs shared across worktrees, wins over build/Release.
 +const orcaNativeBuild = `${__dirname}/../build/orca-napi-win32-${process.arch}/windows_process_tree.node`;
 +const native = process.platform === 'win32' ? require(require('fs').existsSync(orcaNativeBuild) ? orcaNativeBuild : '../build/Release/windows_process_tree.node') : undefined;
 +export const getProcessCreationTime: ((pid: number) => number | undefined) | undefined = native?.getProcessCreationTime;
@@ -283,7 +283,7 @@ index 716051d..25907c0 100644
 +// memory reads across every pid on a timer -- is the credential-dumping
 +// primitive this reader exists to not perform, so it is absent from the binary
 +// rather than one anomalous NTSTATUS away. Electron's floor is Windows 10, so
-+// every OS Orca supports has this class; if a hooked ntdll refuses it anyway,
++// every OS OCC supports has this class; if a hooked ntdll refuses it anyway,
 +// the command line comes back empty, which callers already handle, instead of
 +// silently reinstating the primitive on exactly the instrumented machines this
 +// reader was written for.
@@ -432,7 +432,7 @@ index 0000000..e3141c5
 --- /dev/null
 +++ b/src/process_launch.cc
 @@ -0,0 +1,140 @@
-+// Orca: start a detached process outside the caller's job object.
++// OCC: start a detached process outside the caller's job object.
 +//
 +// Win32-OpenSSH puts every session's shell in a job with KILL_ON_JOB_CLOSE, so
 +// anything a session starts dies when the session ends. The same job carries
@@ -578,7 +578,7 @@ index 0000000..88872a1
 --- /dev/null
 +++ b/src/process_launch.h
 @@ -0,0 +1,10 @@
-+// Orca: start a detached process outside the caller's job object.
++// OCC: start a detached process outside the caller's job object.
 +
 +#ifndef SRC_PROCESS_LAUNCH_H_
 +#define SRC_PROCESS_LAUNCH_H_

@@ -111,7 +111,7 @@ describe('a restart batch holds a chat until its continuation is handed over', (
 })
 
 // Host-origin continuations must not become personal kept cards on close/restart.
-it('sends the continuation with no source, as Orca’s and no person’s', async () => {
+it('sends the continuation with no source, as OCC’s and no person’s', async () => {
   const send = vi.fn(async () => {
     throw new Error('refused')
   })

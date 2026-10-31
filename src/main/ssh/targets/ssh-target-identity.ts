@@ -58,7 +58,7 @@ function expandSshRouteTokens(
   return unknown ? null : expanded.trim()
 }
 
-/** OpenSSH expands %h %p %r %n %%; Orca's ssh2 path expands only %h %p %r in a ProxyCommand and nothing in a jump host. */
+/** OpenSSH expands %h %p %r %n %%; OCC's ssh2 path expands only %h %p %r in a ProxyCommand and nothing in a jump host. */
 export type SshRouteTokenExpander = 'openssh' | 'ssh2'
 
 /**

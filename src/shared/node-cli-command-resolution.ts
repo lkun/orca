@@ -227,7 +227,7 @@ export function withCliRuntimeOnPath<T extends NodeJS.ProcessEnv>(
   }
   const pathKey = platform === 'win32' ? firstWindowsPathEnvKey(env) : 'PATH'
   const pathDelimiter = platform === 'win32' ? ';' : delimiter
-  // Missing child PATH inherits Orca’s; pair over that inherited value.
+  // Missing child PATH inherits OCC’s; pair over that inherited value.
   const segments = splitPath(env[pathKey] ?? process.env[pathKey], pathDelimiter)
   if (segments[0] === commandDirectory) {
     return env

@@ -96,7 +96,7 @@ function versionBlock(): Error {
   return Object.assign(new Error('update needed'), { code: RUNTIME_COMPAT_BLOCK_CODE })
 }
 
-// Existing sentences, each translated whole: the cause and what to do, or which Orca to update.
+// Existing sentences, each translated whole: the cause and what to do, or which OCC to update.
 const UNREACHABLE = `${AGENT_SESSION_WRITE_NOTICE_COPY.unreachable} ${AGENT_SESSION_WRITE_NOTICE_COPY.tryAgain}`
 const UPDATE = AGENT_SESSION_WRITE_NOTICE_COPY.updateOrcaToOpenChat
 const OLDER_HOST = AGENT_SESSION_WRITE_NOTICE_COPY.unsupported

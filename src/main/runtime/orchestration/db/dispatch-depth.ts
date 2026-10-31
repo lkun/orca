@@ -24,10 +24,10 @@ export type DispatchCreator =
       paneKey?: string
       /** Remote attachment matching requires the exact incarnation; local rows do not. */
       processIncarnation?: string
-      /** A structured worker's bare Orca session id, recorded beside its handle. */
+      /** A structured worker's bare OCC session id, recorded beside its handle. */
       orcaSessionId?: OrcaSessionId | null
     }
-  /** A structured session with no terminal handle, identified by its Orca session id alone. */
+  /** A structured session with no terminal handle, identified by its OCC session id alone. */
   | { kind: 'session'; orcaSessionId: OrcaSessionId }
 
 /** Creator identity to persist on a new row, so depth can later tell delegation from bookkeeping. */

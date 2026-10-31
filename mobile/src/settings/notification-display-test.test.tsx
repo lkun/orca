@@ -77,7 +77,7 @@ it.each([
     failWhenDisconnected: true
   })
   expect(third).not.toHaveBeenCalled()
-  expect(JSON.stringify(renderer.toJSON())).toContain('Accepted by Orca’s push service')
+  expect(JSON.stringify(renderer.toJSON())).toContain('Accepted by OCC’s push service')
 })
 
 it('does not try another desktop after an uncertain transport failure', async () => {
@@ -134,7 +134,7 @@ it.each(['no-token', 'old-host'])('explains %s and schedules only a local test',
   const output = JSON.stringify(renderer.toJSON())
   expect(output).toContain(reason === 'no-token' ? 'No push token' : 'does not support push')
   expect(output).toContain('Local test scheduled')
-  expect(output).toContain('while Orca is running and connected')
+  expect(output).toContain('while OCC is running and connected')
 })
 
 it.each(['app', 'os'])(

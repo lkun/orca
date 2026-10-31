@@ -43,11 +43,11 @@ export function disposeCodexServerRequest(
       connection.respondWithError(
         request.id,
         -32001,
-        `Orca could not model ${request.method} as a durable prompt`
+        `OCC could not model ${request.method} as a durable prompt`
       )
       break
     case CODEX_MCP_ELICITATION_METHOD:
-      // Tool-call approvals become prompts above; Orca renders no other elicitation form.
+      // Tool-call approvals become prompts above; OCC renders no other elicitation form.
       connection.respond(request.id, { action: 'decline', content: null, _meta: null })
       break
     case CODEX_PERMISSIONS_APPROVAL_METHOD:
@@ -61,16 +61,16 @@ export function disposeCodexServerRequest(
       connection.respond(request.id, { decision: 'abort' })
       break
     case CODEX_AUTH_TOKEN_REFRESH_METHOD:
-      connection.respondWithError(request.id, -32001, 'Orca cannot refresh app-server auth tokens')
+      connection.respondWithError(request.id, -32001, 'OCC cannot refresh app-server auth tokens')
       break
     case CODEX_ATTESTATION_METHOD:
-      connection.respondWithError(request.id, -32001, 'Orca did not negotiate attestation')
+      connection.respondWithError(request.id, -32001, 'OCC did not negotiate attestation')
       break
     default:
       connection.respondWithError(
         request.id,
         -32000,
-        `Orca rejected unrecognized blocking request ${request.method}`
+        `OCC rejected unrecognized blocking request ${request.method}`
       )
   }
   return { kind: 'responded', method: request.method }

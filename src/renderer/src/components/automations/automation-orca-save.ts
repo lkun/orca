@@ -30,7 +30,7 @@ import {
 } from './automation-orca-save-operations'
 import type { AutomationSaveContext } from './automation-save-context'
 
-/** Saves an Orca automation, including destination validation and host moves. */
+/** Saves an OCC automation, including destination validation and host moves. */
 export async function saveOrcaAutomation(
   context: AutomationSaveContext,
   time: { hour: number; minute: number; now: number; surface: 'chat' | 'terminal' }

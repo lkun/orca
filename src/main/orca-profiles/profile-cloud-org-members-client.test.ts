@@ -43,7 +43,7 @@ function mockJsonResponse(value: unknown, init: { ok?: boolean; status?: number 
   })
 }
 
-describe('Orca cloud org members client', () => {
+describe('OCC cloud org members client', () => {
   beforeEach(() => {
     fetchMock.mockReset()
     vi.stubGlobal('fetch', fetchMock)

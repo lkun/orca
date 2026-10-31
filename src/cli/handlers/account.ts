@@ -245,7 +245,7 @@ async function assertAccountImportSupported(
   if (!status.result.capabilities?.includes(capability)) {
     throw new RuntimeClientError(
       'incompatible_runtime',
-      'The running Orca runtime is too old to add accounts from the CLI. Update or restart Orca and try again.'
+      'The running OCC runtime is too old to add accounts from the CLI. Update or restart OCC and try again.'
     )
   }
 }
@@ -267,7 +267,7 @@ export const ACCOUNT_HANDLERS: Record<string, CommandHandler> = {
         `Unsupported --agent "${agent}". Use "claude", "codex", "opencode", or "devin".`
       )
     }
-    rejectAccountRemoteSelectionFlags(ctx, 'orca account add')
+    rejectAccountRemoteSelectionFlags(ctx, 'occ account add')
     if (agent === 'opencode' || agent === 'devin') {
       await addDataAccount(ctx, agent, runAgentLoginInTerminal)
       return
@@ -278,7 +278,7 @@ export const ACCOUNT_HANDLERS: Record<string, CommandHandler> = {
     await (agent === 'claude' ? addClaudeAccount(ctx) : addCodexAccount(ctx))
   },
   'account list': async (ctx) => {
-    rejectAccountRemoteSelectionFlags(ctx, 'orca account list')
+    rejectAccountRemoteSelectionFlags(ctx, 'occ account list')
     const provider = ctx.flags.get('agent')
     if (provider !== undefined) {
       await listDataAccounts(ctx, provider)
@@ -299,11 +299,11 @@ export const ACCOUNT_HANDLERS: Record<string, CommandHandler> = {
     )
   },
   'account select': async (ctx) => {
-    rejectAccountRemoteSelectionFlags(ctx, 'orca account select')
+    rejectAccountRemoteSelectionFlags(ctx, 'occ account select')
     await mutateDataAccount(ctx, 'select')
   },
   'account rm': async (ctx) => {
-    rejectAccountRemoteSelectionFlags(ctx, 'orca account rm')
+    rejectAccountRemoteSelectionFlags(ctx, 'occ account rm')
     await mutateDataAccount(ctx, 'remove')
   }
 }

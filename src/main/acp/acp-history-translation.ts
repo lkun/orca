@@ -17,7 +17,7 @@ import { AcpTimelineTranslator } from './acp-timeline-translator'
 
 /** The chat a replay belongs to. */
 export type AcpHistoryScope = {
-  /** Orca's session id. */
+  /** OCC's session id. */
   sessionId: string
   agent: AgentType
   providerSessionId: string

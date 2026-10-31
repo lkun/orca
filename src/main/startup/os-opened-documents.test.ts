@@ -10,7 +10,7 @@ describe('OsOpenedDocumentState', () => {
     const state = new OsOpenedDocumentState()
     const publish = vi.fn()
 
-    expect(state.capture(['/Applications/Orca.app/Contents/MacOS/Orca', '--serve'], publish)).toBe(
+    expect(state.capture(['/Applications/OCC.app/Contents/MacOS/OCC', '--serve'], publish)).toBe(
       false
     )
     expect(publish).not.toHaveBeenCalled()
@@ -22,7 +22,7 @@ describe('OsOpenedDocumentState', () => {
     const publish = vi.fn()
     const filePath = hostPath('a.csv')
 
-    expect(state.capture(['/Applications/Orca.app/Contents/MacOS/Orca', filePath], publish)).toBe(
+    expect(state.capture(['/Applications/OCC.app/Contents/MacOS/OCC', filePath], publish)).toBe(
       true
     )
     expect(publish).toHaveBeenCalledTimes(1)

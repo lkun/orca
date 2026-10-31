@@ -323,7 +323,7 @@ describe('orchestration new-worktree workers', () => {
 
         await expect(startWorker({ worktree, ...extra })).rejects.toMatchObject({
           code: 'invalid_argument',
-          message: expect.stringContaining('could not be resolved to a git worktree Orca manages')
+          message: expect.stringContaining('could not be resolved to a git worktree OCC manages')
         })
         expect(createWorktree).not.toHaveBeenCalled()
         expect(db.getDispatchContext(db.listTasks()[0]!.id)).toBeUndefined()
@@ -333,12 +333,12 @@ describe('orchestration new-worktree workers', () => {
 
   it('injects the execution host CLI command without a Dispatch capability', async () => {
     mockCreatedWorktree()
-    vi.mocked(runtime.getTerminalOrchestrationCliCommand).mockReturnValue('orca-ide')
+    vi.mocked(runtime.getTerminalOrchestrationCliCommand).mockReturnValue('occ-ide')
 
     await startWorker({ worktree: 'new-top-level' })
 
     const prompt = vi.mocked(runtime.sendTerminalAgentPrompt).mock.calls[0]?.[1] ?? ''
-    expect(prompt).toContain('orca-ide orchestration send')
+    expect(prompt).toContain('occ-ide orchestration send')
     expect(prompt).not.toMatch(/(^|\s)orca orchestration send/)
   })
 

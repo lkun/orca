@@ -1,4 +1,4 @@
-// Claude >=2.1.80 supplies rate_limits via statusLine from API responses, avoiding usage-endpoint polling that 429s under Orca.
+// Claude >=2.1.80 supplies rate_limits via statusLine from API responses, avoiding usage-endpoint polling that 429s under OCC.
 
 export const CLAUDE_STATUSLINE_PATHNAME = '/statusline/claude'
 

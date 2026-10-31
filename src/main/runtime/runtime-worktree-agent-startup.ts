@@ -37,7 +37,7 @@ type StartupEnvironment = {
   agentArgs?: string | null
   /** An automation's saved extras, merged over the launch's arguments. */
   extraAgentArgs?: string
-  /** Orca, not a user, types into this agent once it starts. */
+  /** OCC, not a user, types into this agent once it starts. */
   suppressStartupUpdatePrompt?: boolean
   /** Caller-supplied telemetry attribution, validated leniently at the host boundary. */
   launchSource?: string

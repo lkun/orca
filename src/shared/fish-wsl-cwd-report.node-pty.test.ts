@@ -27,7 +27,7 @@ function reports(output: string): Report[] {
     }))
 }
 
-// Orca's reports and the foreign one carry no host; fish 4 also sends its own, with one.
+// OCC's reports and the foreign one carry no host; fish 4 also sends its own, with one.
 const hostless = (output: string): string[] =>
   reports(output)
     .filter((report) => !report.hosted)

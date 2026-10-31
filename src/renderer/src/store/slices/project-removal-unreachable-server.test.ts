@@ -36,7 +36,7 @@ const remoteRepo: Repo = {
 }
 
 const UNREACHABLE =
-  'Could not connect to the remote Orca runtime at ws://192.0.2.1:6768: the host did not answer'
+  'Could not connect to the remote OCC runtime at ws://192.0.2.1:6768: the host did not answer'
 let reachable = false
 const hostCalls: string[] = []
 let answerRepoRm: () => Promise<unknown> = async () => ({ removed: true })

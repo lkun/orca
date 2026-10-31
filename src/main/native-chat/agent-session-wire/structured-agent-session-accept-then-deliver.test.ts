@@ -368,7 +368,7 @@ describe('a start the chat needed and did not get', () => {
     await eventually(async () => expect((await submission(second))?.dispatchState).toBe('accepted'))
     const rows = await errorRows()
     expect(rows).toHaveLength(1)
-    // Log Orca’s spawn error; absent observed exit must not blame the provider.
+    // Log OCC’s spawn error; absent observed exit must not blame the provider.
     expect(rows[0]).toBe("Codex couldn't restart. Send your message to try again.")
     const failure = {
       kind: 'restartFailed',
@@ -466,7 +466,7 @@ describe('a start the chat needed and did not get', () => {
           )
         ),
       {
-        text: "Orca couldn't prepare Codex to start on the computer running this chat. Send your message to try again.",
+        text: "OCC couldn't prepare Codex to start on the computer running this chat. Send your message to try again.",
         failure: {
           kind: 'launchPreparationFailed',
           detail: { text: 'selector_not_found', audience: 'log' }
@@ -503,7 +503,7 @@ describe('a start the chat needed and did not get', () => {
     await eventually(async () => expect((await submission(id))?.dispatchState).toBe('rejected'))
     expect(await submission(id)).toMatchObject({
       reason:
-        "Orca couldn't prepare Codex to start on the computer running this chat. Send your message to try again.",
+        "OCC couldn't prepare Codex to start on the computer running this chat. Send your message to try again.",
       rejection: {
         kind: 'launchPreparationFailed',
         detail: { text: "ENOENT: no such file or directory, stat '/srv/app'", audience: 'log' }

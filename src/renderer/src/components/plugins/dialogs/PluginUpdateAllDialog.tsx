@@ -19,7 +19,7 @@ function needsOwnApproval(candidate: UpdateCandidate): boolean {
   return candidate.preview !== null && updateNeedsApproval(candidate.preview)
 }
 
-/** The update's minimum Orca when this Orca can't run it; null when it can or either is unknown. */
+/** The update's minimum OCC when this OCC can't run it; null when it can or either is unknown. */
 function requiredNewerOrca(
   preview: PluginMarketplaceHostInstallPreview,
   orcaVersion: string | null | undefined

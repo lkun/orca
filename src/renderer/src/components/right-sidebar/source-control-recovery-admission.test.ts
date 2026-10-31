@@ -21,13 +21,13 @@ describe('source-control recovery admission', () => {
     mocks.toastError.mockReset()
   })
 
-  it('admits when the host reports no Orca Git work in flight', async () => {
+  it('admits when the host reports no OCC Git work in flight', async () => {
     await expect(admitSourceControlRecovery(context)).resolves.toBe(true)
     expect(mocks.probe).toHaveBeenCalledExactlyOnceWith(context)
     expect(mocks.toastError).not.toHaveBeenCalled()
   })
 
-  it('refuses with a message while the host runs Orca Git work here', async () => {
+  it('refuses with a message while the host runs OCC Git work here', async () => {
     mocks.probe.mockResolvedValue({ inFlight: true })
     await expect(admitSourceControlRecovery(context)).resolves.toBe(false)
     expect(mocks.toastError).toHaveBeenCalledWith('Wait for the running Git operation to finish.')

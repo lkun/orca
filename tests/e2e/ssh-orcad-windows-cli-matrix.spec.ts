@@ -386,7 +386,7 @@ test('@orcad-cli-managed an empty Windows host deploys, serves CLI terminals thr
     ])
     expect(refused.code, refused.stdout).not.toBe(0)
     expect(`${refused.stdout}${refused.stderr}`).toContain(
-      'Orca runs this server on an SSH host for you'
+      'OCC runs this server on an SSH host for you'
     )
     expect(`${refused.stdout}${refused.stderr}`).toContain('orca environment stop')
     const unconfirmed = await runCompiledOrcaCli(userData, [

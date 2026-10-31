@@ -4,7 +4,7 @@ import { normalizeSshTarget } from './ssh-normalization'
 
 const base: SshTarget = { id: 'ssh-1', label: 'Box', host: 'box', port: 22, username: 'me' }
 
-describe('loading a managed Orca server fence', () => {
+describe('loading a managed OCC server fence', () => {
   it('moves a phase-3 owner fence to orcadFence, so shipped builds stop hiding the host', () => {
     const loaded = normalizeSshTarget({
       ...base,

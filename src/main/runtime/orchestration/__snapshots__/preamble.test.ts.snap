@@ -1,10 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`buildDispatchPreamble > renders a stable snapshot of a chat worker preamble 1`] = `
-"You are working inside Orca, a multi-agent IDE. You are a dispatched worker.
-Your coordinator's Orca session ID is: orca_session_id:COORD
+"You are working inside OCC, a multi-agent IDE. You are a dispatched worker.
+Your coordinator's OCC session ID is: orca_session_id:COORD
 Your task ID is: task_SNAP
-Your Orca session ID is: orca_session_id:WORKER
+Your OCC session ID is: orca_session_id:WORKER
 
 The coordinator cannot see this chat, so reach it only with the \`orca orchestration\`
 commands below; a question or result left only in this chat never gets to it.
@@ -14,7 +14,7 @@ Do only this task, yourself: no subagents or helper workers unless the task asks
 === CLI COMMANDS ===
 
 \`\`\`sh
-  # Ask the coordinator, then end your turn; Orca wakes you with the answer.
+  # Ask the coordinator, then end your turn; OCC wakes you with the answer.
   # Never use a local question prompt such as AskUserQuestion; the
   # coordinator cannot see or answer it.
   orca orchestration ask --from orca_session_id:WORKER --question "<your question>" --options "<optional,comma,separated>"
@@ -48,7 +48,7 @@ TASK_BODY"
 `;
 
 exports[`buildDispatchPreamble > renders a stable snapshot of the full preamble 1`] = `
-"You are working inside Orca, a multi-agent IDE. You are a dispatched worker.
+"You are working inside OCC, a multi-agent IDE. You are a dispatched worker.
 Your coordinator's terminal handle is: term_COORD
 Your task ID is: task_SNAP
 
@@ -60,7 +60,7 @@ Do only this task, yourself: no subagents or helper workers unless the task asks
 === CLI COMMANDS ===
 
 \`\`\`sh
-  # Ask the coordinator, then end your turn; Orca wakes you with the answer.
+  # Ask the coordinator, then end your turn; OCC wakes you with the answer.
   # Never use a local question prompt such as AskUserQuestion; the
   # coordinator cannot see or answer it.
   orca orchestration ask --from term_WORKER --question "<your question>" --options "<optional,comma,separated>"

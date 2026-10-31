@@ -1,5 +1,5 @@
 /**
- * R39: two Orca desktops (say a stable and a dev profile) moving into the one orcad of a distro.
+ * R39: two OCC desktops (say a stable and a dev profile) moving into the one orcad of a distro.
  * Each desktop is its own process with its own profile and journal, so desktop B runs on a second
  * copy of the mover modules. The host's staging claims serialize overlapping moves: one wins, the
  * other is refused and back at zero; neither corrupts the other.

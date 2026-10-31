@@ -32,7 +32,7 @@ export function describeRuntimeCompatBlock(verdict: RuntimeCompatVerdict): strin
   if (verdict.reason === 'client-too-old') {
     return translate(
       'runtime.compat.clientTooOld',
-      'This Orca client is too old for the selected server. Update Orca on this machine. Client protocol {{clientProtocol}}, server requires client protocol {{requiredProtocol}}.',
+      'This OCC client is too old for the selected server. Update OCC on this machine. Client protocol {{clientProtocol}}, server requires client protocol {{requiredProtocol}}.',
       {
         clientProtocol: verdict.clientProtocolVersion,
         requiredProtocol: verdict.requiredClientProtocolVersion
@@ -41,7 +41,7 @@ export function describeRuntimeCompatBlock(verdict: RuntimeCompatVerdict): strin
   }
   return translate(
     'runtime.compat.serverTooOld',
-    'The selected Orca server is too old for this client. Update Orca on the server. Server protocol {{serverProtocol}}, client requires server protocol {{requiredProtocol}}.',
+    'The selected OCC server is too old for this client. Update OCC on the server. Server protocol {{serverProtocol}}, client requires server protocol {{requiredProtocol}}.',
     {
       serverProtocol: verdict.serverProtocolVersion,
       requiredProtocol: verdict.requiredServerProtocolVersion

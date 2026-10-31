@@ -210,7 +210,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(buildBody({ hook_event_name: 'UserPromptSubmit', prompt }))
         })
@@ -239,7 +239,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(buildBody(payload, { launchToken: 'retired-launch-token' }))
         })
@@ -279,7 +279,7 @@ describe('AgentHookServer listener replay', () => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+              'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
             },
             body: JSON.stringify(buildBody(payload, { launchToken: `retired-${kind}-token` }))
           })
@@ -313,7 +313,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(buildBody(payload, { launchToken: 'idle-reattach-token' }))
         })
@@ -346,7 +346,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(buildBody(payload, { launchToken: 'closed-tab-token' }))
         })
@@ -376,7 +376,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(buildBody(payload, { launchToken: 'detached-token' }))
         })
@@ -408,7 +408,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(
             buildBody(payload, { paneKey: legacyPane, launchToken: 'legacy-token' })
@@ -444,7 +444,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(buildBody(payload, { launchToken: 'detached-closed-token' }))
         })
@@ -475,7 +475,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(buildBody(payload, { launchToken: 'reopen-origin-token' }))
         })
@@ -511,7 +511,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(buildBody(payload, { launchToken: 'evict-token', ...overrides }))
         })
@@ -556,7 +556,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(
             buildBody(payload, { paneKey: legacyPane, launchToken: 'legacy-cross-tab-token' })
@@ -590,7 +590,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(
             buildBody(payload, { paneKey: legacyPane, launchToken: 'rebind-token' })
@@ -621,7 +621,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(buildBody(payload, { launchToken: 'retired-launch-token' }))
         })

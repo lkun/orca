@@ -128,7 +128,7 @@ export function observeBrowserExtensionTabLifecycle(contents: Electron.WebConten
   const tabId = contents.id
   const sess = contents.session
   contents.on('did-start-loading', () => {
-    // Why the first load: a guest is a tab only once attached to Orca's window, and loads after that.
+    // Why the first load: a guest is a tab only once attached to OCC's window, and loads after that.
     announceTab(contents)
     emitTabUpdated(contents, { status: 'loading' })
   })

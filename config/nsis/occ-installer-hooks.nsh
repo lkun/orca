@@ -1,14 +1,14 @@
 ; electron-builder accepts one nsis.include; keep every customInstall/customUnInstall hook here.
 
-!include "${__FILEDIR__}\orca-process-check.nsh"
-!include "${__FILEDIR__}\orca-user-path-cleanup.nsh"
-!include "${__FILEDIR__}\orca-other-install-check.nsh"
+!include "${__FILEDIR__}\occ-process-check.nsh"
+!include "${__FILEDIR__}\occ-user-path-cleanup.nsh"
+!include "${__FILEDIR__}\occ-other-install-check.nsh"
 
 ; #10138/#23225: electron-builder’s APP_ASSOCIATE overwrites the extension’s default without backup,
 ; and APP_UNASSOCIATE never restores it. Register only additive ProgID/OpenWithProgids/SupportedTypes
 ; entries; never write the extension’s default handler. Sync extensions with isOsOpenedDocumentName().
-!define MARKDOWN_PROGID "Orca.Markdown"
-!define TABULAR_PROGID "Orca.Tabular"
+!define MARKDOWN_PROGID "OCC.Markdown"
+!define TABULAR_PROGID "OCC.Tabular"
 
 !macro ORCA_REGISTER_DOCUMENT_OPEN_WITH EXT PROGID
   WriteRegNone SHELL_CONTEXT "Software\Classes\${EXT}\OpenWithProgids" "${PROGID}"
@@ -61,7 +61,7 @@
     Pop $0
     nsExec::Exec 'taskkill /F /IM "orca-terminal-daemon.exe" $2'
     Pop $0
-    ; WSL hosts: the detached wsl.exe holders outlive the app and keep their distros running. Orca
+    ; WSL hosts: the detached wsl.exe holders outlive the app and keep their distros running. OCC
     ; ends only the holders its profile recorded, each checked by pid, start time and command line.
     ; Only a userData that has a holder folder launches it: everyone who never ran a WSL host sees
     ; nothing here. These are the folders Electron's userData (app.getName()) can be, as the
@@ -92,7 +92,7 @@
       Pop $0
     ${endIf}
     ; Agent hook entries call the ~/.orca\agent-hooks scripts by bare path. Those scripts outlive the
-    ; app, but once that folder is removed every agent fails a hook per event, so the last Orca for
+    ; app, but once that folder is removed every agent fails a hook per event, so the last OCC for
     ; this user takes the entries out. Another install, or an unreadable registry, keeps them.
     ; Best effort: the exit code never blocks uninstall.
     ; Sync the flag with AGENT_HOOKS_UNINSTALL_FLAG in src/main/startup/agent-hooks-uninstall-preflight.ts.
@@ -108,8 +108,8 @@
     Pop $0
     ; Give the OS a moment to release the image lock before removing the tree.
     Sleep 500
-    RMDir /r "$LOCALAPPDATA\Orca\daemon-host"
-    RMDir /r "$LOCALAPPDATA\Orca\daemon-host-profiles"
+    RMDir /r "$LOCALAPPDATA\OCC\daemon-host"
+    RMDir /r "$LOCALAPPDATA\OCC\daemon-host-profiles"
   ${endIf}
   ; customInstall rewrites associations on every update, so remove them during uninstallOldVersion too.
   DeleteRegKey SHELL_CONTEXT "Software\Classes\${MARKDOWN_PROGID}"

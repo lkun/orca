@@ -48,7 +48,7 @@ import { STRUCTURED_AGENT_SESSION_RESUME_HISTORY_RUNTIME_CAPABILITY } from '../.
 import { selectFolderWorkspaces, selectWorktreesByRepo } from '@/store/workspace-record-selectors'
 import { workspaceKindForWorktreeId } from '../../../../shared/workspace-launch-kind'
 
-/** Find native chats by Orca session ID and terminal tabs by their provider conversation. */
+/** Find native chats by OCC session ID and terminal tabs by their provider conversation. */
 export type TabSessionHistorySubject = {
   workspaceId: string
   /** The panel's own list request for this workspace, so both share one cached list. */

@@ -139,7 +139,7 @@ it('collects cold orphan folders without opening sessions, preserving retained a
   }
 })
 
-it('leaves a folder queued by one Orca profile for that profile to delete', async () => {
+it('leaves a folder queued by one OCC profile for that profile to delete', async () => {
   const profileDirectory = (id: string) => {
     const directory = join(mocks.userData, 'profiles', id)
     mkdirSync(directory, { recursive: true })

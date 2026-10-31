@@ -77,7 +77,7 @@ describe.skipIf(process.platform === 'win32')('relocated endpoint binds (#17840)
     try {
       rmdirSync(dirname(shortDaemonSocketDir(runtimeDir, uid)))
     } catch {
-      // Another Orca instance may still use the shared parent.
+      // Another OCC instance may still use the shared parent.
     }
   })
 

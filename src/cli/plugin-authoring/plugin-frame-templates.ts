@@ -57,7 +57,7 @@ export function editor(input: PluginTemplateInput): PluginTemplate {
     <script>
       const text = document.getElementById('text')
       let version = 0
-      // Orca sends the document now and again whenever the file changes outside the editor.
+      // OCC sends the document now and again whenever the file changes outside the editor.
       orca.document.onDidChange((doc) => {
         version = doc.version
         text.readOnly = doc.readOnly
@@ -76,7 +76,7 @@ export function editor(input: PluginTemplateInput): PluginTemplate {
 `,
       'README.md': readme(
         input,
-        `A custom editor for \`${extension}\` files. It runs in a sandboxed frame and talks to Orca only through \`window.orca\`. Loading it needs approval: \`orca plugin dev load\` prints the exact access and the \`--approve\` fingerprint.`
+        `A custom editor for \`${extension}\` files. It runs in a sandboxed frame and talks to OCC only through \`window.orca\`. Loading it needs approval: \`occ plugin dev load\` prints the exact access and the \`--approve\` fingerprint.`
       ),
       ...COMMON_FILES
     }
@@ -110,7 +110,7 @@ export function panel(input: PluginTemplateInput): PluginTemplate {
       const label = document.getElementById('workspace')
       async function refresh() {
         if (!orca.host.has('workspace.readContext')) {
-          label.textContent = 'This Orca cannot read workspace context.'
+          label.textContent = 'This OCC cannot read workspace context.'
           return
         }
         try {
@@ -127,7 +127,7 @@ export function panel(input: PluginTemplateInput): PluginTemplate {
 `,
       'README.md': readme(
         input,
-        'A right-sidebar panel. It runs in a sandboxed frame and calls host methods its `capabilities` allow through `window.orca`. Loading it needs approval: `orca plugin dev load` prints the exact access and the `--approve` fingerprint.'
+        'A right-sidebar panel. It runs in a sandboxed frame and calls host methods its `capabilities` allow through `window.orca`. Loading it needs approval: `occ plugin dev load` prints the exact access and the `--approve` fingerprint.'
       ),
       ...COMMON_FILES
     }

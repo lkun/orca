@@ -243,7 +243,7 @@ export function CommitMessageAiPane({
         ),
         description: translate(
           'auto.components.settings.CommitMessageAiPane.1ef29f8c29',
-          'Command line Orca runs when a text recipe uses Custom command.'
+          'Command line OCC runs when a text recipe uses Custom command.'
         ),
         keywords: [
           translate('auto.components.settings.CommitMessageAiPane.25350d670f', 'custom'),
@@ -264,7 +264,7 @@ export function CommitMessageAiPane({
         )}
         description={translate(
           'auto.components.settings.CommitMessageAiPane.1ef29f8c29',
-          'Command line Orca runs when a text recipe uses Custom command.'
+          'Command line OCC runs when a text recipe uses Custom command.'
         )}
         keywords={['custom', 'command', 'cli', 'binary', 'prompt', 'placeholder']}
         className="space-y-2 py-2"

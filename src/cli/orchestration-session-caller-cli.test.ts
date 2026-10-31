@@ -466,7 +466,7 @@ describe('a host refusal of the session', () => {
     }
   )
 
-  it('keeps the Orca id a provider-id refusal names, for a JSON reader to branch on', () => {
+  it('keeps the OCC id a provider-id refusal names, for a JSON reader to branch on', () => {
     const providerId = new RuntimeRpcFailureError({
       id: 'rpc_1',
       ok: false,
@@ -504,7 +504,7 @@ describe('the orchestration envelope', () => {
     })
   })
 
-  it('binds whichever current Orca CLI the agent reached, not only the one the session names', () => {
+  it('binds whichever current OCC CLI the agent reached, not only the one the session names', () => {
     // Another CLI install may rewrite ORCA_CLI_COMMAND; the envelope must still pin the session instance.
     vi.stubEnv('ORCA_USER_DATA_PATH', '/data/session-orca')
     try {

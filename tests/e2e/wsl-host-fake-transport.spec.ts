@@ -394,7 +394,7 @@ test('adds a WSL distro as a host, adds a project on it, and runs a terminal the
     await page.getByRole('menuitem', { name: 'Remove…' }).click()
     const confirm = page.getByRole('dialog', { name: `Remove ${WSL_HOST_LABEL}?` })
     await expect(confirm).toContainText(
-      'ends its open terminals and stops Orca’s server in that distro'
+      'ends its open terminals and stops OCC’s server in that distro'
     )
     await expect(confirm).toContainText('Files in the distro are untouched.')
     await settleAnimations(page)
@@ -457,7 +457,7 @@ test('a build without the WSL host server files says so instead of failing an ad
     await page.getByRole('button', { name: /Add WSL distro/ }).click()
     const addHost = page.getByRole('dialog', { name: 'Add WSL distro' })
     await expect(addHost.getByRole('alert')).toHaveText(
-      'This build of Orca can’t run WSL hosts (server files missing).'
+      'This build of OCC can’t run WSL hosts (server files missing).'
     )
     await expect(addHost.getByRole('button', { name: 'Add host' })).toBeDisabled()
     await expect(addHost.getByRole('combobox')).toBeDisabled()

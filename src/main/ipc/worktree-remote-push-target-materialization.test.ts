@@ -392,7 +392,7 @@ describe('materializeWorktreePushTargetRemote', () => {
     )
   })
 
-  it("never adopts a remote as Orca's because a twin on another host created one", async () => {
+  it("never adopts a remote as OCC's because a twin on another host created one", async () => {
     gitExecFileAsyncMock.mockImplementation(async (args: string[]) => {
       if (args[0] === 'remote' && args[1] === 'get-url') {
         return { stdout: `${FORK_URL}\n`, stderr: '' }
@@ -406,7 +406,7 @@ describe('materializeWorktreePushTargetRemote', () => {
     const setWorktreeMeta = vi.fn()
     const repo = { id: 'repo', path: REPO_PATH, displayName: 'r', badgeColor: '#000', addedAt: 1 }
     const store: WorktreePushTargetStore = {
-      // The SSH twin's Orca-created remote shares this remote's name and URL.
+      // The SSH twin's OCC-created remote shares this remote's name and URL.
       getAllWorktreeMeta: () => ({
         'repo::/ssh-wt': mergeWorktreeMetaForWrite(undefined, {
           hostId: 'ssh:box',
@@ -430,7 +430,7 @@ describe('materializeWorktreePushTargetRemote', () => {
     expect(setWorktreeMeta).not.toHaveBeenCalled()
   })
 
-  it("never reuses a remote as Orca's because a twin on another host minted it", async () => {
+  it("never reuses a remote as OCC's because a twin on another host minted it", async () => {
     gitExecFileAsyncMock.mockImplementation(async (args: string[]) => {
       if (args[0] === 'remote' && args[1] === 'get-url') {
         throw new Error('No such remote')

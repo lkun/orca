@@ -109,7 +109,7 @@ function hostMessage(hostPermissions: string[]): string | null {
   )
 }
 
-/** Why skip unsupported ones: "It can" must not promise what Orca does not do; they get their own line. */
+/** Why skip unsupported ones: "It can" must not promise what OCC does not do; they get their own line. */
 export function describeBrowserExtensionAccess(
   permissions: string[],
   hostPermissions: string[]
@@ -131,7 +131,7 @@ function featureLabel(feature: UnsupportedBrowserExtensionFeature): string {
   }
 }
 
-/** One calm line naming what the extension asks for that Orca cannot do yet, or null. */
+/** One calm line naming what the extension asks for that OCC cannot do yet, or null. */
 export function describeUnsupportedBrowserExtensionFeatures(permissions: string[]): string | null {
   const features = unsupportedBrowserExtensionFeatures(permissions)
   if (features.length === 0) {
@@ -139,7 +139,7 @@ export function describeUnsupportedBrowserExtensionFeatures(permissions: string[
   }
   return translate(
     'browserExtensions.unsupported.line',
-    'Not available in Orca yet: {{features}}.',
+    'Not available in OCC yet: {{features}}.',
     { features: features.map(featureLabel).join(', ') }
   )
 }

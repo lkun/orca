@@ -86,7 +86,7 @@ export function formatOrchestrationCheckText(
   const deliveryNotice =
     formatCurrentDeliveryNotice(prepared.legacyCompatibility?.currentDelivery) +
     (prepared.deliveryId && prepared.deliveryAcknowledged !== true
-      ? `\nThis Orca version does not acknowledge batches automatically. After handling every message, rerun this check with --ack ${prepared.deliveryId}.`
+      ? `\nThis OCC version does not acknowledge batches automatically. After handling every message, rerun this check with --ack ${prepared.deliveryId}.`
       : '')
   if (prepared.formatted) {
     return `${legacyHeader}${prepared.deliveryId ? `Delivery ${prepared.deliveryId}\n` : ''}${prepared.formatted}${deliveryNotice}`

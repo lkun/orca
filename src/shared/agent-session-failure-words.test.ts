@@ -21,7 +21,7 @@ import {
   DISPATCH_REJECTED_WRITE_FAILED
 } from './structured-agent-session-dispatch-rejection'
 
-/** What Orca's own text looks like: a code or marker, a uuid, a path, an exception. */
+/** What OCC's own text looks like: a code or marker, a uuid, a path, an exception. */
 const ORCA_INTERNAL = /\b[a-z]+_[a-z_]+\b|[0-9a-f]{8}-[0-9a-f]{4}-|[/\\][\w.-]+[/\\]|Error:|ENOENT/
 
 const SURFACES: readonly AgentSessionFailureSurface[] = ['row', 'rejection', 'answer']
@@ -200,7 +200,7 @@ describe('the words written beside a failure fact', () => {
     ).toBe('Codex 0.135.0 is too old for chats. Update to 0.136.0 or newer.')
   })
 
-  it('says a start refused beside a process Orca could not stop in its own words', () => {
+  it('says a start refused beside a process OCC could not stop in its own words', () => {
     const refused = (context: { command?: 'compact'; retryControl?: boolean } = {}) =>
       agentSessionFailureSentence(
         {

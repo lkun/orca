@@ -32,7 +32,7 @@ function requireCapturedOwner<T extends { owner?: AutomationOwnerRef | null }>(
   return request
 }
 
-/** Prioritize Orca work over queued external probes for the full operation lifetime. */
+/** Prioritize OCC work over queued external probes for the full operation lifetime. */
 function underOrcaPriority<T>(scheduler: ExternalAutomationProbeScheduler, run: () => T): T {
   const release = scheduler.beginPriorityWork()
   let pending = false

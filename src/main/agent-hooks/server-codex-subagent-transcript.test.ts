@@ -72,7 +72,7 @@ describe('AgentHookServer Codex subagent transcript polling', () => {
         headers: {
           'Content-Type': 'application/json',
           Connection: 'close',
-          'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+          'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -120,7 +120,7 @@ describe('AgentHookServer Codex subagent transcript polling', () => {
         headers: {
           'Content-Type': 'application/json',
           Connection: 'close',
-          'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+          'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -168,7 +168,7 @@ describe('AgentHookServer Codex subagent transcript polling', () => {
           headers: {
             'Content-Type': 'application/json',
             Connection: 'close',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify({ paneKey: PANE_KEY, tabId: 'tab-1', worktreeId: 'wt-1', payload })
         })

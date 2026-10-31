@@ -54,7 +54,7 @@ describe('pinned scroll intent anchoring', () => {
     expect(terminal.buffer.active.viewportY).toBe(8)
     expect(topVisibleLine(terminal)).toBe(pinnedContent)
 
-    // A mouse report or typed key snaps xterm to the bottom before Orca restores.
+    // A mouse report or typed key snaps xterm to the bottom before OCC restores.
     terminal.scrollToBottom()
     enforceTerminalCurrentScrollIntent(terminal)
 

@@ -156,7 +156,7 @@ describe('runtime environment store under interleaved writers and unreadable rec
           expect(
             () => writeEnvironmentStore(userDataPath, { version: 1, environments: next }),
             label
-          ).toThrow('newer version of Orca')
+          ).toThrow('newer version of OCC')
           expect(readFileSync(storePath(), 'utf8'), label).toBe(before)
         } else {
           writeEnvironmentStore(userDataPath, { version: 1, environments: next })
@@ -210,7 +210,7 @@ describe('runtime environment store under interleaved writers and unreadable rec
           expect(
             () => writeRuntimeEnvironmentSidecarEntry(userDataPath, environments, target, null),
             label
-          ).toThrow('newer version of Orca')
+          ).toThrow('newer version of OCC')
           expect(readFileSync(storePath(), 'utf8'), label).toBe(before)
         } else if (target) {
           writeRuntimeEnvironmentSidecarEntry(userDataPath, environments, target, {
@@ -244,7 +244,7 @@ describe('runtime environment store under interleaved writers and unreadable rec
           expect(
             () => readCurrentRuntimeEnvironmentSidecarEntry(userDataPath, environment),
             label
-          ).toThrow('newer version of Orca')
+          ).toThrow('newer version of OCC')
         }
       }
     }

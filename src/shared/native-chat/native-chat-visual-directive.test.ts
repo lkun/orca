@@ -73,7 +73,7 @@ describe('parseNativeChatVisualDirectiveLine', () => {
     ['unclosed', '::orca-visual{file="a.html"'],
     ['text after the line', '::orca-visual{file="a.html"} see above'],
     ['text before the marker', 'Chart: ::orca-visual{file="a.html"}'],
-    ['wrong case', '::Orca-Visual{file="a.html"}'],
+    ['wrong case', '::OCC-Visual{file="a.html"}'],
     ['single quotes', "::orca-visual{file='a.html'}"],
     ['unquoted value', '::orca-visual{file=a.html}'],
     ['escaped quote', '::orca-visual{file="a.html" title="say \\"hi\\""}'],

@@ -78,7 +78,7 @@ async function proveIdlePromptCycle(
   }
 }
 
-describeOnWindows("Git Bash launcher shell proof with Orca's real launch", () => {
+describeOnWindows("Git Bash launcher shell proof with OCC's real launch", () => {
   let userData: string
   const previousUserData = process.env.ORCA_USER_DATA_PATH
 
@@ -99,7 +99,7 @@ describeOnWindows("Git Bash launcher shell proof with Orca's real launch", () =>
 
   it.each([
     ['login shell', {}],
-    // Why: with the Codex preflight set, the exec'd shell runs Orca's --rcfile wrapper.
+    // Why: with the Codex preflight set, the exec'd shell runs OCC's --rcfile wrapper.
     ['rcfile wrapper', { ORCA_CODEX_LAUNCH_PREFLIGHT: 'C:\\orca-missing-preflight.exe' }]
   ])(
     'confirms an idle %s prompt, refutes a running command, and confirms again',

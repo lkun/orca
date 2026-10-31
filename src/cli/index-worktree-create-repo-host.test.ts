@@ -47,7 +47,7 @@ import { useWorktreeAwarenessEnvironment } from './index-test-harness'
 function buildSetup(overrides: { id: string; hostId: string; repoId: string; path: string }) {
   return {
     projectId: 'github:stablyai/orca',
-    displayName: 'Orca',
+    displayName: 'OCC',
     setupState: 'ready',
     setupMethod: 'legacy-repo',
     createdAt: 1,

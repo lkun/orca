@@ -210,13 +210,13 @@ export function throwNoActiveSenderTerminal(): never {
   if (hasStructuredSessionMarker() && !process.env.ORCA_TERMINAL_HANDLE) {
     throw structuredSessionRefusal('from')
   }
-  // Codex sets CODEX_THREAD_ID after the env filter that can drop Orca identity (#25775).
+  // Codex sets CODEX_THREAD_ID after the env filter that can drop OCC identity (#25775).
   if (process.env.CODEX_THREAD_ID && !process.env.ORCA_TERMINAL_HANDLE) {
     throw new RuntimeClientError(
       'no_active_sender_terminal',
       'Codex ran this orchestration command without ORCA_TERMINAL_HANDLE. If Codex was started in ' +
-        'an Orca terminal, its shell_environment_policy removed it, and relaunching the same way ' +
-        'will not restore it. Start Codex by typing `codex` in an Orca terminal, or set ' +
+        'an OCC terminal, its shell_environment_policy removed it, and relaunching the same way ' +
+        'will not restore it. Start Codex by typing `codex` in an OCC terminal, or set ' +
         'inherit = "all" with include_only listing the variables to keep plus "ORCA_*". ' +
         "Pass --from only with your own terminal's handle — another pane's handle would act on " +
         'its mailbox.'
@@ -226,6 +226,6 @@ export function throwNoActiveSenderTerminal(): never {
     'no_active_sender_terminal',
     'Could not determine the sender terminal for this orchestration command. ' +
       "Pass --from with your own terminal's handle — another pane's handle would act on its mailbox — " +
-      'or run the command inside a live Orca terminal with ORCA_TERMINAL_HANDLE set.'
+      'or run the command inside a live OCC terminal with ORCA_TERMINAL_HANDLE set.'
   )
 }

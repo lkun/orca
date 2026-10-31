@@ -14,7 +14,7 @@ export function isSafeFishHistorySession(session: unknown): session is string {
   return typeof session === 'string' && SAFE_SESSION_NAME.test(session)
 }
 
-/** Clear inherited Orca session names so nested apps cannot write into the launching workspace’s history. */
+/** Clear inherited OCC session names so nested apps cannot write into the launching workspace’s history. */
 export function dropInheritedOrcaFishHistory(env: Record<string, string | undefined>): void {
   if (isSafeFishHistorySession(env.fish_history)) {
     delete env.fish_history
@@ -30,7 +30,7 @@ export function relayFishHistorySessionName(worktreeHash: string): string {
   return `${RELAY_SESSION_PREFIX}${worktreeHash}`
 }
 
-/** Use the PTY spawn environment; its HOME/XDG_DATA_HOME may differ from Orca’s. */
+/** Use the PTY spawn environment; its HOME/XDG_DATA_HOME may differ from OCC’s. */
 export function resolveFishHistoryDir(env: NodeJS.ProcessEnv = process.env): string {
   const xdg = env.XDG_DATA_HOME?.trim()
   const dataHome =

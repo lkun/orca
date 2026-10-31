@@ -12,7 +12,7 @@ export function getInstallCopy(platform: Platform): InstallCopy {
           'auto.components.mobile.mobile.platform.copy.openAppStore',
           'Open App Store'
         ),
-        url: 'https://apps.apple.com/app/orca-ide/id6766130217'
+        url: 'https://apps.apple.com/app/occ-ide/id6766130217'
       }
     : {
         ctaLabel: translate(

@@ -63,7 +63,7 @@ test('ZCode native chat reads ordered visible history and follows new messages',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Orca-Agent-Hook-Token': endpoint.token
+        'X-OCC-Agent-Hook-Token': endpoint.token
       },
       body: JSON.stringify({
         ...descriptor,

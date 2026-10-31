@@ -9,8 +9,8 @@ import { testOrcaSessionId } from './orca-session-address-test-fixture'
 const SESSION_ID = testOrcaSessionId('0b7e4c2a-5f1d-4e8a-9c3b-2d6f8a1e4b70')
 const ADDRESS = `orca_session_id:${SESSION_ID}`
 
-describe('Orca session address', () => {
-  it('addresses an Orca session id as orca_session_id:<id> and parses the bare id back', () => {
+describe('OCC session address', () => {
+  it('addresses an OCC session id as orca_session_id:<id> and parses the bare id back', () => {
     expect(formatOrcaSessionAddress(SESSION_ID)).toBe(ADDRESS)
     expect(parseOrcaSessionAddress(ADDRESS)).toBe(SESSION_ID)
     const parsed = parseOrcaSessionAddress(ADDRESS)
@@ -47,13 +47,13 @@ describe('Orca session address', () => {
     ['a PTY terminal handle', 'term_4f2c9a1b-7d3e-4a5f-8b6c-9d0e1f2a3b4c'],
     ['a short PTY terminal handle', 'term_4f2c9a'],
     ['a structured-worker handle', 'structworker_4f2c9a1b-7d3e-4a5f-8b6c-9d0e1f2a3b4c']
-  ])('never treats %s as an Orca session id', (_label, handle) => {
+  ])('never treats %s as an OCC session id', (_label, handle) => {
     // Handles share the session-id charset, so the session-record predicate alone would accept them.
     expect(isOrcaSessionId(handle)).toBe(false)
     expect(parseOrcaSessionAddress(`orca_session_id:${handle}`)).toBeNull()
   })
 
-  it('validates an Orca session id with the session-record predicate', () => {
+  it('validates an OCC session id with the session-record predicate', () => {
     expect(isOrcaSessionId(SESSION_ID)).toBe(true)
     expect(isOrcaSessionId('has space in it')).toBe(false)
     expect(isOrcaSessionId('x'.repeat(129))).toBe(false)

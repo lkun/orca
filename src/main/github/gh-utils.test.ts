@@ -261,11 +261,11 @@ describe('github owner/repo resolution', () => {
   it('resolves PR candidates as upstream then origin and de-dupes matching slugs', async () => {
     mockGitRemoteCommands({
       origin: 'git@github.com:acme/orca.git\n',
-      upstream: 'git@github.com:Acme/Orca.git\n'
+      upstream: 'git@github.com:Acme/OCC.git\n'
     })
 
     await expect(resolvePRRepositoryCandidates('/repo')).resolves.toEqual({
-      candidates: [{ owner: 'Acme', repo: 'Orca' }],
+      candidates: [{ owner: 'Acme', repo: 'OCC' }],
       headRepo: { owner: 'acme', repo: 'orca' }
     })
     expect(gitRemoteGetUrlCalls('upstream')).toHaveLength(1)
@@ -289,7 +289,7 @@ describe('github owner/repo resolution', () => {
   it('ignores non-GitHub upstream while keeping origin as the head repo', async () => {
     mockGitRemoteCommands({
       origin: 'git@github.com:fork/orca.git\n',
-      upstream: 'git@example.com:Acme/Orca.git\n'
+      upstream: 'git@example.com:Acme/OCC.git\n'
     })
 
     await expect(resolvePRRepositoryCandidates('/repo')).resolves.toEqual({

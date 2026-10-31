@@ -290,7 +290,7 @@ describe('createManagedOrcadEnvironment', () => {
     it('refuses an older build on a host a newer desktop stopped, naming both versions', async () => {
       const stopped = withDeactivatedVersionCommitted(servedBy('1.6.0', '0.1.0+new'))
       const { admitted, result } = await admitOn(stopped)
-      expect(admitted).toContain('Orca 1.6.0')
+      expect(admitted).toContain('OCC 1.6.0')
       expect(admitted).toContain('(1.5.0)')
       expect(result).toMatchObject({
         outcome: 'deferred',
@@ -299,7 +299,7 @@ describe('createManagedOrcadEnvironment', () => {
       })
     })
 
-    it('redeploys a host the same Orca version stopped', async () => {
+    it('redeploys a host the same OCC version stopped', async () => {
       const stopped = withDeactivatedVersionCommitted(servedBy('1.5.0', '0.1.0+other'))
       const { admitted, result } = await admitOn(stopped)
       expect(admitted).toBeNull()
@@ -319,7 +319,7 @@ describe('createManagedOrcadEnvironment', () => {
     })
   })
 
-  describe('a host another Orca version already serves', () => {
+  describe('a host another OCC version already serves', () => {
     const OTHER = '0.0.9+old111'
     let hostAppVersion = '9.9.9'
     const activeRecord = (active: string): OrcadActivationRecord => ({
@@ -345,7 +345,7 @@ describe('createManagedOrcadEnvironment', () => {
     })
 
     it.each(['9.9.9', '0.0.1'])(
-      'pairs with a build Orca %s runs, without uploading or restarting it',
+      'pairs with a build OCC %s runs, without uploading or restarting it',
       async (appVersion) => {
         vi.spyOn(getAppEnvironment(), 'getVersion').mockReturnValue('1.5.0')
         hostAppVersion = appVersion

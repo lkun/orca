@@ -60,7 +60,7 @@ describe('extra agent args capability gate', () => {
         { ...INPUT, extraAgentArgs: '--model opus' },
         { selector: { kind: 'self' } }
       )
-    ).rejects.toThrow('Update Orca on this host to use extra arguments.')
+    ).rejects.toThrow('Update OCC on this host to use extra arguments.')
     expect(callRuntimeRpc).not.toHaveBeenCalled()
   })
 
@@ -70,7 +70,7 @@ describe('extra agent args capability gate', () => {
 
     await expect(
       updateAutomationForOwner(OWNER, 'a1', { extraAgentArgs: '--model opus' })
-    ).rejects.toThrow('Update Orca on this host to use extra arguments.')
+    ).rejects.toThrow('Update OCC on this host to use extra arguments.')
     expect(callRuntimeRpc).not.toHaveBeenCalled()
   })
 
@@ -145,7 +145,7 @@ describe('extra agent args capability gate', () => {
         { ...INPUT, launchSetupPatch: { surface: 'chat' } },
         { selector: { kind: 'self' } }
       )
-    ).rejects.toThrow('Update Orca on this host')
+    ).rejects.toThrow('Update OCC on this host')
     expect(callRuntimeRpc).not.toHaveBeenCalled()
   })
 })

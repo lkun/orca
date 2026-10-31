@@ -14,8 +14,8 @@ describe('adaptChromeWebStoreWordingForOrca', () => {
       '<a>Chrome Web Store</a><button aria-label="Add to Chrome"><span>Add to Chrome</span></button>'
     adaptChromeWebStoreWordingForOrca()
     expect(document.querySelector('a')?.textContent).toBe('Chrome Web Store')
-    expect(document.querySelector('button')?.getAttribute('aria-label')).toBe('Add to Orca')
-    expect(document.querySelector('span')?.textContent).toBe('Add to Orca')
+    expect(document.querySelector('button')?.getAttribute('aria-label')).toBe('Add to OCC')
+    expect(document.querySelector('span')?.textContent).toBe('Add to OCC')
   })
 
   it('renames wording the store draws later, including the removal toast', async () => {
@@ -27,11 +27,11 @@ describe('adaptChromeWebStoreWordingForOrca', () => {
     toast.textContent = 'Bitwarden has been removed from Chrome.'
     document.body.appendChild(toast)
     await flushMutations()
-    expect(button.textContent).toBe('Remove from Orca')
-    expect(toast.textContent).toBe('Bitwarden has been removed from Orca.')
+    expect(button.textContent).toBe('Remove from OCC')
+    expect(toast.textContent).toBe('Bitwarden has been removed from OCC.')
     button.firstChild!.nodeValue = 'Add to Chrome'
     await flushMutations()
-    expect(button.textContent).toBe('Add to Orca')
+    expect(button.textContent).toBe('Add to OCC')
   })
 
   it('hides the switch-to-Chrome banner and shows the box again when the store reuses it', async () => {

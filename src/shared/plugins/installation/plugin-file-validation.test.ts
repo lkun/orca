@@ -64,14 +64,14 @@ describe('validatePluginFile', () => {
       'plugins[0].description: must be text of 1 to 4096 characters',
       'plugins[1].id: duplicate plugin id acme.gleam-syntax',
       'plugins[2].releases[0]: commit: must be a full lowercase SHA-1 commit',
-      'plugins[3]: releases: needs at least one release this Orca can read'
+      'plugins[3]: releases: needs at least one release this OCC can read'
     ])
   })
 
   it('refuses publishers that are or imitate a reserved name', () => {
     expect(
       validatePluginFile('orca-plugin.json', v2ManifestFixture({ publisher: 'orca-team' }))
-    ).toEqual(['publisher: "orca-team" is reserved for official Orca plugins; use your own name'])
+    ).toEqual(['publisher: "orca-team" is reserved for official OCC plugins; use your own name'])
     expect(
       validatePluginFile('orca-plugin.json', v2ManifestFixture({ publisher: 'stablyai' }))
     ).toEqual([])
@@ -86,7 +86,7 @@ describe('validatePluginFile', () => {
   it('refuses a newer catalog format', () => {
     expect(
       validatePluginFile('orca-catalog.json', { ...catalogFixture([]), catalogVersion: 3 })
-    ).toEqual(['uses catalog format 3; update Orca to browse this catalog'])
+    ).toEqual(['uses catalog format 3; update OCC to browse this catalog'])
   })
 
   it('checks catalog images against the files in the catalog repository', () => {

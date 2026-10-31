@@ -1,10 +1,10 @@
-# Orca Mobile
+# OCC Mobile
 
-React Native companion app for Orca. Monitor worktrees, view terminal output, and send commands from your phone.
+React Native companion app for OCC. Monitor worktrees, view terminal output, and send commands from your phone.
 
 Local development uses two processes:
 
-- Orca desktop/Electron from the repo root. This hosts the mobile WebSocket RPC server on port `6768`.
+- OCC desktop/Electron from the repo root. This hosts the mobile WebSocket RPC server on port `6768`.
 - Expo Metro from `mobile/`. This serves the React Native app on port `8081`.
 
 Unless a command says otherwise, run mobile app commands from the `mobile/` directory.
@@ -19,7 +19,7 @@ The Node commands `pnpm rpc:diff` and `pnpm rpc:record` use a development depend
 - Expo Go on your phone, or a development client build when native modules are needed
 - Phone and desktop on the same LAN when testing a physical phone
 
-## Start Desktop Orca
+## Start Desktop OCC
 
 From the repository root:
 
@@ -69,9 +69,9 @@ generated from older inputs. Expo caches iOS Simulator builds only, not physical
 `pnpm native fingerprint` prints the current hashes. On pull requests, the `Mobile native fingerprint`
 job reports in its summary whether the PR changes them, which means dev clients need a native rebuild.
 
-## Pair With Desktop Orca
+## Pair With Desktop OCC
 
-1. Open Orca desktop.
+1. Open OCC desktop.
 2. Go to Settings > Mobile.
 3. Scan the pairing QR code from the mobile app.
 4. Confirm the mobile host endpoint is `ws://<desktop-ip>:6768`.
@@ -219,7 +219,7 @@ To exercise the block screen locally: set `MIN_COMPATIBLE_DESKTOP_VERSION = 999`
 
 ## Mock Server
 
-Develop the mobile app without a running Orca desktop instance:
+Develop the mobile app without a running OCC desktop instance:
 
 ```bash
 pnpm mock-server           # starts mock WebSocket server on port 6768
@@ -241,10 +241,10 @@ Read on every request, so behaviour can be flipped mid-session without a restart
 - `MOCK_TERMINAL_LIST_MODE_FILE` (default `orca-mock-terminal-list-mode` in the system temporary directory) — `omit` returns an empty terminal list, `other` returns a list that omits the chat handle, anything else lists it.
 - `MOCK_TERMINAL_STREAM_MODE_FILE` (default `orca-mock-terminal-stream-mode` in the system temporary directory) — `dead` answers a subscribe with `subscribed` then `end` (a gone PTY), which is what exercises the rearm bound and terminal prune; anything else streams normally.
 
-## Connecting to Real Orca
+## Connecting to Real OCC
 
-1. Start Orca desktop with WebSocket transport enabled
-2. In Orca, go to Settings > Mobile and scan the QR code with this app
+1. Start OCC desktop with WebSocket transport enabled
+2. In OCC, go to Settings > Mobile and scan the QR code with this app
 3. The QR encodes the connection endpoint, device token, and TLS fingerprint
 
 ## Project Structure

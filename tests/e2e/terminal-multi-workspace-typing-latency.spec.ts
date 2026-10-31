@@ -530,7 +530,7 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
       )
       expect(
         registration,
-        `churn repos were not registered with Orca: ${registration.failures.join('; ')}`
+        `churn repos were not registered with OCC: ${registration.failures.join('; ')}`
       ).toMatchObject({ registered: repos.length })
       panes = await ensureActiveWorktreePaneLoad(orcaPage, 2)
       const [typingPane, ...loadPanes] = panes

@@ -23,7 +23,7 @@ async function waitForManagedConfig(configPath: string): Promise<void> {
         }
         return Boolean(config.hooks?.SessionStart && config.hooks?.UserPromptSubmit)
       },
-      { timeout: 30_000, message: 'Orca did not install the managed Grok hook config' }
+      { timeout: 30_000, message: 'OCC did not install the managed Grok hook config' }
     )
     .toBe(true)
 }

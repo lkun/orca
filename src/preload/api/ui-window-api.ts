@@ -27,7 +27,7 @@ export type UiWindowApi = {
   clipboardHasImage: () => Promise<boolean | null>
   /** Empty if no files were copied or the host cannot list them. */
   readClipboardFilePaths: () => Promise<string[]>
-  /** Only files inside Orca's paste folder count as kept. */
+  /** Only files inside OCC's paste folder count as kept. */
   restoreNativeChatPastes: (
     paths: string[]
   ) => Promise<{ path: string; kept: boolean; exists: boolean }[]>

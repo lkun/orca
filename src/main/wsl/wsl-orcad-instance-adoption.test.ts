@@ -337,7 +337,7 @@ describe('adopting an orcad the activation record does not name', () => {
     host.alive.add(910)
     host.stopTarget = stopTargetFor(910, OLD)
     host.fenced = true
-    await expect(adopt(record())).rejects.toThrow(/Another Orca is changing/)
+    await expect(adopt(record())).rejects.toThrow(/Another OCC is changing/)
     host.fenced = false
     host.transaction = { transactionId: 't1' }
     await expect(adopt(record())).rejects.toThrow(/interrupted activation is pending/)

@@ -40,7 +40,7 @@ export type CustomEditorBinaryDocument = { bytes: Uint8Array<ArrayBuffer>; fileT
 
 export type CustomEditorHostOptions = {
   getFrameWindow: () => Window | null
-  /** The buffer as Orca holds it now. */
+  /** The buffer as OCC holds it now. */
   getDocument: () => { text: string; readOnly: boolean }
   /** Binary editors only: the document's bytes, or null while they load. */
   getBinaryDocument?: () => CustomEditorBinaryDocument | null
@@ -71,7 +71,7 @@ export type CustomEditorHost = {
   reset: () => void
 }
 
-/** The frame only ever holds the document: Orca owns the buffer, dirty state and save. */
+/** The frame only ever holds the document: OCC owns the buffer, dirty state and save. */
 export function createCustomEditorHost(options: CustomEditorHostOptions): CustomEditorHost {
   const budget =
     options.budget ??

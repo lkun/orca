@@ -94,7 +94,7 @@ describe('Kiro V3 standalone hooks file', () => {
 
   it.each([
     ['unparsable JSON', '{ "version": "v1", "hooks": '],
-    ['a hook Orca did not write', JSON.stringify({ version: 'v1', hooks: [ORCA_HOOK, USER_HOOK] })]
+    ['a hook OCC did not write', JSON.stringify({ version: 'v1', hooks: [ORCA_HOOK, USER_HOOK] })]
   ])('leaves a same-named file with %s untouched and reports it', (_label, userFile) => {
     writeAgent(defaultKiroHome(), 'plain')
     writeHooksFile(userFile)

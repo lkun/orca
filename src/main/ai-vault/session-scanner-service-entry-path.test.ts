@@ -22,12 +22,12 @@ describe('resolveAiVaultServiceEntryPath', () => {
   })
 
   it('uses app.asar.unpacked for packaged Electron', () => {
-    const appPath = join('C:', 'Orca', 'resources', 'app.asar')
+    const appPath = join('C:', 'OCC', 'resources', 'app.asar')
 
     expect(resolveAiVaultServiceEntryPath(appPath, true)).toBe(
       join(
         'C:',
-        'Orca',
+        'OCC',
         'resources',
         'app.asar.unpacked',
         'out',
@@ -47,12 +47,12 @@ describe('resolveAiVaultServiceEntryPath', () => {
   })
 
   it('never forks an adjacent decoy from inside app.asar', () => {
-    const appPath = join('/opt', 'Orca', 'resources', 'app.asar')
+    const appPath = join('/opt', 'OCC', 'resources', 'app.asar')
 
     expect(resolveAiVaultServiceEntryPath(appPath, true, () => true)).toBe(
       join(
         '/opt',
-        'Orca',
+        'OCC',
         'resources',
         'app.asar.unpacked',
         'out',
@@ -63,7 +63,7 @@ describe('resolveAiVaultServiceEntryPath', () => {
   })
 
   it('uses resourcesPath from packaged Electron-as-Node runtimes', () => {
-    const resourcesPath = join('Applications', 'Orca.app', 'Contents', 'Resources')
+    const resourcesPath = join('Applications', 'OCC.app', 'Contents', 'Resources')
     const entry = join(
       resourcesPath,
       'app.asar.unpacked',

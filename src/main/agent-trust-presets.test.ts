@@ -331,7 +331,7 @@ describe('markCodexProjectTrusted', () => {
     function git(cwd: string, ...args: string[]): void {
       const result = runProcessSync({
         program: 'git',
-        args: ['-c', 'user.name=Orca', '-c', 'user.email=orca@example.com', ...args],
+        args: ['-c', 'user.name=OCC', '-c', 'user.email=orca@example.com', ...args],
         cwd
       })
       expect(result.code, result.stderr).toBe(0)

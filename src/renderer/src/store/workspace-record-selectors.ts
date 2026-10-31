@@ -27,7 +27,7 @@ export function selectFolderWorkspaces<TState extends { folderWorkspaces?: unkno
   return state.folderWorkspaces
 }
 
-/** Checkouts git reports that Orca does not track, per repo id. */
+/** Checkouts git reports that OCC does not track, per repo id. */
 export function selectDetectedWorktreesByRepo<TState extends { detectedWorktreesByRepo?: unknown }>(
   state: TState
 ): TState['detectedWorktreesByRepo'] {

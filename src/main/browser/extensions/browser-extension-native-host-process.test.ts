@@ -142,7 +142,7 @@ describe('native host process', () => {
     host.connection.close()
     expect(isRunning(pid)).toBe(true)
     await expect.poll(() => isRunning(pid), { timeout: 8000 }).toBe(false)
-    // Closing from Orca's side never reports back to the extension.
+    // Closing from OCC's side never reports back to the extension.
     expect(host.closes).toEqual([])
   })
 
@@ -249,7 +249,7 @@ describe('native host process', () => {
     expect(host.messages).toEqual([])
   })
 
-  it('forwards a bounded amount of stderr to Orca’s log', async () => {
+  it('forwards a bounded amount of stderr to OCC’s log', async () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const host = await start(NOISY)
     await expect.poll(() => warn.mock.calls.length).toBeGreaterThan(0)

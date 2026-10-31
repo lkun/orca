@@ -368,7 +368,7 @@ describePane('the browser pane in a page', () => {
     const view = await openPane({ grants: [faultGrant] })
     try {
       await view.page.waitForFunction(() =>
-        document.body.innerText.includes('Update the Orca app to stream browser tabs here.')
+        document.body.innerText.includes('Update the OCC app to stream browser tabs here.')
       )
       expect(await view.page.evaluate(() => globalThis.__orcaRenderCheckSubscribes)).toEqual([])
       expect(view.consoleErrors).toEqual([])

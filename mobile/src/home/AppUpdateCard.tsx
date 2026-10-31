@@ -12,7 +12,7 @@ export function AppUpdateCard(props: {
 }) {
   const t = useMobileTranslation()
   useMobileColorScheme()
-  const title = t('home.appUpdateCard.title', 'Orca {{version}} is available', {
+  const title = t('home.appUpdateCard.title', 'OCC {{version}} is available', {
     version: props.version
   })
   return (
@@ -21,7 +21,7 @@ export function AppUpdateCard(props: {
         accessibilityRole="button"
         accessibilityLabel={t(
           'home.appUpdateCard.updateAccessibilityLabel',
-          'Orca {{version}} is available, tap to update',
+          'OCC {{version}} is available, tap to update',
           { version: props.version }
         )}
         style={({ pressed }) => [styles.cardMain, pressed && styles.cardPressed]}
@@ -43,7 +43,7 @@ export function AppUpdateCard(props: {
         accessibilityRole="button"
         accessibilityLabel={t(
           'home.appUpdateCard.dismissAccessibilityLabel',
-          'Dismiss Orca {{version}} update',
+          'Dismiss OCC {{version}} update',
           { version: props.version }
         )}
         hitSlop={8}

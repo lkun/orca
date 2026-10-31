@@ -287,7 +287,7 @@ describe('openMobileFileTap', () => {
       client,
       hostId: 'host-1',
       worktreeId: 'wt-1',
-      worktreeName: 'Orca',
+      worktreeName: 'OCC',
       candidates: [{ pathText: 'src/index.ts:120:7', line: 120, column: 7 }],
       pushPreviewRoute,
       openBrowser: vi.fn(),
@@ -310,7 +310,7 @@ describe('openMobileFileTap', () => {
         relativePath: 'src/index.ts',
         line: '120',
         column: '7',
-        worktreeName: 'Orca'
+        worktreeName: 'OCC'
       })
     })
     expect(triggerOpenFeedback).toHaveBeenCalledTimes(1)

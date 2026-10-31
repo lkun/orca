@@ -1,4 +1,4 @@
-// E9 regression: a WSL bridge pane's exit after `wsl --terminate` must not lead Orca to run a command
+// E9 regression: a WSL bridge pane's exit after `wsl --terminate` must not lead OCC to run a command
 // in the distro (any `wsl.exe -d <distro> --exec` boots it again) while WSL still lists it as stopping.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 

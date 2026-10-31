@@ -31,7 +31,7 @@ describe('AppUpdateCard', () => {
   it('opens the update from the card body and dismisses from the X', () => {
     const { root, onPress, onDismiss } = render()
     const [body, dismiss] = root.findAll((node) => String(node.type) === 'Pressable')
-    expect(dismiss.props.accessibilityLabel).toBe('Dismiss Orca 0.0.51 update')
+    expect(dismiss.props.accessibilityLabel).toBe('Dismiss OCC 0.0.51 update')
     act(() => body.props.onPress())
     expect(onPress).toHaveBeenCalledTimes(1)
     expect(onDismiss).not.toHaveBeenCalled()

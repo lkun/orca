@@ -19,28 +19,28 @@ export function concurrentLookupDetail(input: ChecksPanelReviewStateInput): stri
   if (input.reviewLookup === 'positive_unresolved') {
     return translate(
       'auto.components.right.sidebar.checks.panel.review.detail.positive',
-      'Orca also has saved {{reviewLabel}} information that it could not verify.',
+      'OCC also has saved {{reviewLabel}} information that it could not verify.',
       { reviewLabel }
     )
   }
   if (isRateLimitRefresh(refresh)) {
     return translate(
       'auto.components.right.sidebar.checks.panel.review.detail.rate_limited',
-      'Orca also could not check {{reviewLabel}} status because {{provider}} is temporarily limiting requests.',
+      'OCC also could not check {{reviewLabel}} status because {{provider}} is temporarily limiting requests.',
       { reviewLabel, provider: providerName }
     )
   }
   if (refresh?.errorType === 'network') {
     return translate(
       'auto.components.right.sidebar.checks.panel.review.detail.network',
-      'Orca also could not check {{reviewLabel}} status because this environment could not reach {{provider}}.',
+      'OCC also could not check {{reviewLabel}} status because this environment could not reach {{provider}}.',
       { reviewLabel, provider: providerName }
     )
   }
   if (refresh?.status === 'error' || isHardRefreshError(refresh)) {
     return translate(
       'auto.components.right.sidebar.checks.panel.review.detail.untyped',
-      'Orca also could not confirm whether this branch already has a {{reviewLabel}}.',
+      'OCC also could not confirm whether this branch already has a {{reviewLabel}}.',
       { reviewLabel }
     )
   }
@@ -108,7 +108,7 @@ export function transientRefreshState(
       ),
       description: translate(
         'auto.components.right.sidebar.checks.panel.review.unknown_error.body',
-        'The lookup failed, so Orca could not confirm whether this branch already has a {{reviewLabel}}.',
+        'The lookup failed, so OCC could not confirm whether this branch already has a {{reviewLabel}}.',
         { reviewLabel }
       )
     }
@@ -122,7 +122,7 @@ export function transientRefreshState(
     ),
     description: translate(
       'auto.components.right.sidebar.checks.panel.review.untyped.body',
-      'Orca could not confirm whether this branch already has a {{reviewLabel}}. Retry to check again.',
+      'OCC could not confirm whether this branch already has a {{reviewLabel}}. Retry to check again.',
       { reviewLabel }
     )
   }
@@ -176,7 +176,7 @@ const HARD_ERROR_COPY: Record<
     body: {
       key: 'auto.components.right.sidebar.checks.panel.review.cli.body',
       fallback:
-        'Orca could not run {{provider}} CLI in this environment. Set it up here, then retry.'
+        'OCC could not run {{provider}} CLI in this environment. Set it up here, then retry.'
     }
   }
 }
@@ -211,7 +211,7 @@ const SKIPPED_COPY: Partial<
     body: {
       key: 'auto.components.right.sidebar.checks.panel.review.skipped.disconnected.body',
       fallback:
-        "This repository's execution host is disconnected, so Orca cannot refresh {{reviewLabel}} status."
+        "This repository's execution host is disconnected, so OCC cannot refresh {{reviewLabel}} status."
     },
     recovery: ['retry']
   },
@@ -233,7 +233,7 @@ const SKIPPED_COPY: Partial<
     },
     body: {
       key: 'auto.components.right.sidebar.checks.panel.review.skipped.archived.body',
-      fallback: 'This repository is archived, so Orca is not refreshing {{reviewLabel}} status.'
+      fallback: 'This repository is archived, so OCC is not refreshing {{reviewLabel}} status.'
     },
     recovery: []
   },
@@ -244,7 +244,7 @@ const SKIPPED_COPY: Partial<
     },
     body: {
       key: 'auto.components.right.sidebar.checks.panel.review.skipped.not_git.body',
-      fallback: 'Orca could not treat this folder as a Git repository for {{reviewLabel}} status.'
+      fallback: 'OCC could not treat this folder as a Git repository for {{reviewLabel}} status.'
     },
     recovery: []
   },
@@ -256,7 +256,7 @@ const SKIPPED_COPY: Partial<
     body: {
       key: 'auto.components.right.sidebar.checks.panel.review.skipped.host_off.body',
       fallback:
-        'Orca refreshes {{reviewLabel}} status through this project’s WSL host, which is off. Reconnect it to refresh.'
+        'OCC refreshes {{reviewLabel}} status through this project’s WSL host, which is off. Reconnect it to refresh.'
     },
     recovery: []
   },
@@ -268,7 +268,7 @@ const SKIPPED_COPY: Partial<
     body: {
       key: 'auto.components.right.sidebar.checks.panel.review.skipped.remote.body',
       fallback:
-        'Orca could not refresh {{reviewLabel}} status for this remote context. Retry after the host is available.'
+        'OCC could not refresh {{reviewLabel}} status for this remote context. Retry after the host is available.'
     },
     recovery: ['retry']
   }

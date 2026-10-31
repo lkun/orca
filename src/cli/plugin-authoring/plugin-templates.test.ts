@@ -52,7 +52,7 @@ describe('orca plugin create templates', () => {
 })
 
 describe('orca plugin validate', () => {
-  it('reports artifact errors Orca would otherwise skip silently', async () => {
+  it('reports artifact errors OCC would otherwise skip silently', async () => {
     const dir = join(await tempRoot(), 'broken')
     await createPluginFromTemplate({ dir, template: 'theme', publisher: 'acme' })
     await writeFile(
@@ -64,7 +64,7 @@ describe('orca plugin validate', () => {
     expect(report.errors.join('\n')).toContain('contributes.themes')
   })
 
-  it('names a folder without a publisher the way Orca loads it', async () => {
+  it('names a folder without a publisher the way OCC loads it', async () => {
     const dir = join(await tempRoot(), 'nopub')
     await createPluginFromTemplate({ dir, template: 'theme', publisher: 'acme' })
     const manifestPath = join(dir, 'orca-plugin.json')

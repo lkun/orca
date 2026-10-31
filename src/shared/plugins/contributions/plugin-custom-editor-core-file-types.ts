@@ -1,7 +1,7 @@
 import { pluginFileBaseName, type PluginFileMatchResult } from './plugin-file-match'
 
 /**
- * Files Orca opens itself, or that usually hold secrets or drive tooling. A plugin editor may be
+ * Files OCC opens itself, or that usually hold secrets or drive tooling. A plugin editor may be
  * offered for them in the view toggle, but never opens them by default.
  */
 const CORE_FILE_TYPES = new Set([

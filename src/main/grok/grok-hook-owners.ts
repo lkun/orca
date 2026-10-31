@@ -86,7 +86,7 @@ export async function hasLivePeer(
         owner = candidate as GrokHookOwner
       }
     } catch {
-      // Invalid Orca-owned records cannot prove a live peer and are pruned below.
+      // Invalid OCC-owned records cannot prove a live peer and are pruned below.
     }
     if (!owner) {
       await rm(path, { force: true })

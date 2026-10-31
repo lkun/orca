@@ -155,7 +155,7 @@ function makeRepo(overrides: Partial<Repo> = {}): Repo {
   return {
     id: 'repo-1',
     path: '/workspace/orca',
-    displayName: 'Orca',
+    displayName: 'OCC',
     badgeColor: '#33aa99',
     addedAt: 100,
     kind: 'git',
@@ -382,7 +382,7 @@ describe('profile project transfer', () => {
     writeProfileState(
       'personal',
       makeState({
-        repos: [makeRepo({ path: 'C:\\Work\\Orca\\' })]
+        repos: [makeRepo({ path: 'C:\\Work\\OCC\\' })]
       })
     )
     writeProfileState(

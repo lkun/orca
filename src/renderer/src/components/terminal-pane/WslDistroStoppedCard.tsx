@@ -22,7 +22,7 @@ export function WslDistroStoppedCard({
         unverifiable
           ? translate(
               'components.native-chat.hostOutage.unverifiable',
-              "Orca couldn't check whether {{distro}} is running",
+              "OCC couldn't check whether {{distro}} is running",
               { distro }
             )
           : translate('components.native-chat.hostOutage.stopped', '{{distro}} is stopped', {

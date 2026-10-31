@@ -114,7 +114,7 @@ try {
       producers: ['omp', 'pi'],
       reports: posts.length,
       proof:
-        'Actual OMP loader and persistent SessionManager, custom directory, lazy creation, new-session switch, HTTP metadata, Orca transcript reader, child suppression',
+        'Actual OMP loader and persistent SessionManager, custom directory, lazy creation, new-session switch, HTTP metadata, OCC transcript reader, child suppression',
       modelCalls: 0,
       rendered: false
     })

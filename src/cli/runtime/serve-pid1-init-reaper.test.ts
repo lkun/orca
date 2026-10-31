@@ -13,9 +13,9 @@ function deps(overrides: Partial<ServeInitReaperDeps> = {}): ServeInitReaperDeps
     platform: 'linux',
     pid: 1,
     env: { ELECTRON_RUN_AS_NODE: '1' },
-    execPath: '/opt/orca/orca-ide',
+    execPath: '/opt/occ/occ-ide',
     execArgv: [],
-    argv: ['/opt/orca/orca-ide', '/opt/orca/resources/cli/index.js', 'serve', '--port', '6768'],
+    argv: ['/opt/occ/occ-ide', '/opt/occ/resources/cli/index.js', 'serve', '--port', '6768'],
     exists: (path) => path === '/bin/bash',
     execve: vi.fn(),
     warn: vi.fn(),
@@ -34,8 +34,8 @@ describe('reexecServeUnderInitReaper', () => {
         '-c',
         SERVE_INIT_REAPER_SCRIPT,
         'orca-serve-init',
-        '/opt/orca/orca-ide',
-        '/opt/orca/resources/cli/index.js',
+        '/opt/occ/occ-ide',
+        '/opt/occ/resources/cli/index.js',
         'serve',
         '--port',
         '6768'
@@ -45,10 +45,10 @@ describe('reexecServeUnderInitReaper', () => {
   })
 
   it('keeps the eval script of a `-e <cli> -- serve` launch', () => {
-    const d = deps({ execArgv: ['-e', 'require(cli)'], argv: ['/opt/orca/orca-ide', 'serve'] })
+    const d = deps({ execArgv: ['-e', 'require(cli)'], argv: ['/opt/occ/occ-ide', 'serve'] })
     expect(reexecServeUnderInitReaper(d)).toBe('reexec')
     expect(vi.mocked(d.execve!).mock.calls[0][1].slice(4)).toEqual([
-      '/opt/orca/orca-ide',
+      '/opt/occ/occ-ide',
       '-e',
       'require(cli)',
       '--',
@@ -58,30 +58,30 @@ describe('reexecServeUnderInitReaper', () => {
 
   it('runs a mounted AppImage afresh instead of the files its exec would unmount', () => {
     const d = deps({
-      execPath: '/tmp/.mount_orcaX/orca-ide',
-      argv: ['/tmp/.mount_orcaX/orca-ide', '/tmp/.mount_orcaX/resources/cli/index.js', 'serve'],
+      execPath: '/tmp/.mount_orcaX/occ-ide',
+      argv: ['/tmp/.mount_orcaX/occ-ide', '/tmp/.mount_orcaX/resources/cli/index.js', 'serve'],
       env: {
         APPDIR: '/tmp/.mount_orcaX',
-        APPIMAGE: '/opt/orca/orca.AppImage',
+        APPIMAGE: '/opt/occ/orca.AppImage',
         ELECTRON_RUN_AS_NODE: '1',
         ORCA_NODE_OPTIONS: '--max-old-space-size=4096',
         ORCA_NODE_REPL_EXTERNAL_MODULE: ''
       },
-      exists: (path) => path === '/bin/bash' || path === '/opt/orca/orca.AppImage'
+      exists: (path) => path === '/bin/bash' || path === '/opt/occ/orca.AppImage'
     })
     expect(reexecServeUnderInitReaper(d)).toBe('reexec')
     const [, args, env] = vi.mocked(d.execve!).mock.calls[0]
-    expect(args.slice(4)).toEqual(['/opt/orca/orca.AppImage', 'serve'])
+    expect(args.slice(4)).toEqual(['/opt/occ/orca.AppImage', 'serve'])
     expect(env).toEqual({
       APPDIR: '/tmp/.mount_orcaX',
-      APPIMAGE: '/opt/orca/orca.AppImage',
+      APPIMAGE: '/opt/occ/orca.AppImage',
       NODE_OPTIONS: '--max-old-space-size=4096'
     })
   })
 
   it('warns instead of re-execing a mounted AppImage whose image cannot be found', () => {
     const d = deps({
-      execPath: '/tmp/.mount_orcaX/orca-ide',
+      execPath: '/tmp/.mount_orcaX/occ-ide',
       env: { APPDIR: '/tmp/.mount_orcaX' }
     })
     expect(reexecServeUnderInitReaper(d)).toBe('unavailable')

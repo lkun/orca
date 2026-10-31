@@ -18,7 +18,7 @@ export function getSystemNotificationSettingsCopy(
       ),
       failureDescription: translate(
         'auto.components.settings.notification.settings.copy.macFailureDescription',
-        'Enable Allow notifications for Orca in System Settings.'
+        'Enable Allow notifications for OCC in System Settings.'
       )
     }
   }
@@ -31,7 +31,7 @@ export function getSystemNotificationSettingsCopy(
       ),
       failureDescription: translate(
         'auto.components.settings.notification.settings.copy.windowsFailureDescription',
-        'Enable notifications for Orca in Windows Settings.'
+        'Enable notifications for OCC in Windows Settings.'
       )
     }
   }
@@ -119,7 +119,7 @@ export async function sendNotificationSettingsTestNotification(
         {
           description: translate(
             'auto.components.settings.NotificationsPane.115437bc35',
-            'If no macOS banner appeared, enable Allow notifications for Orca.'
+            'If no macOS banner appeared, enable Allow notifications for OCC.'
           ),
           action: {
             label: translate(
@@ -167,7 +167,7 @@ export async function sendNotificationSettingsTestNotification(
         {
           description: translate(
             'auto.components.settings.NotificationsPane.4676a95bc3',
-            'Check your desktop notification settings for Orca.'
+            'Check your desktop notification settings for OCC.'
           )
         }
       )

@@ -41,7 +41,7 @@ vi.mock('@/lib/ai-vault-session-resume-preparation', () => ({
   prepareAiVaultSessionForTerminalResume: mocks.prepareAiVaultSessionForTerminalResume,
   dropDeletedRemoteResumeCwd: async (session: unknown) => session,
   aiVaultCliForkHostTooOldMessage: () =>
-    'Update Orca on the host that runs this chat to resume it in a new CLI.'
+    'Update OCC on the host that runs this chat to resume it in a new CLI.'
 }))
 vi.mock('@/lib/launch-ai-vault-session', () => ({
   launchAiVaultSessionInNewTab: mocks.launchAiVaultSessionInNewTab
@@ -222,7 +222,7 @@ describe('Switch to Terminal launch', () => {
 
     await waitFor(() => expect(mocks.toastError).toHaveBeenCalledTimes(1))
     expect(mocks.toastError).toHaveBeenCalledWith(
-      'Update Orca on the host that runs this chat to resume it in a new CLI.'
+      'Update OCC on the host that runs this chat to resume it in a new CLI.'
     )
     expect(mocks.toastSuccess).not.toHaveBeenCalled()
   })
@@ -234,7 +234,7 @@ describe('Switch to Terminal launch', () => {
 
     await waitFor(() => expect(mocks.toastError).toHaveBeenCalledTimes(1))
     expect(mocks.toastError).toHaveBeenCalledWith(
-      'Update Orca on the host that runs this chat to resume it in a new CLI.'
+      'Update OCC on the host that runs this chat to resume it in a new CLI.'
     )
     expect(mocks.launchAiVaultSessionInNewTab).not.toHaveBeenCalled()
   })

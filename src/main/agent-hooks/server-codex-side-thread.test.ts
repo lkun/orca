@@ -15,7 +15,7 @@ afterEach(() => {
   }
 })
 
-it('keeps the main Codex turn working through a /side chat after Orca restarts', async () => {
+it('keeps the main Codex turn working through a /side chat after OCC restarts', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'codex-side-thread-'))
   dirs.push(dir)
   const userDataPath = join(dir, 'user-data')

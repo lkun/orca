@@ -530,7 +530,7 @@ async function teardown({
   // Uninstall only fully owned targets; leave a pre-existing developer install that this run updated.
   if (hadPreexistingInstall) {
     console.log(
-      '\n*** NOTE: an Orca install existed before this run. It was OVERWRITTEN and the\n' +
+      '\n*** NOTE: an OCC install existed before this run. It was OVERWRITTEN and the\n' +
         '    --to version is now installed. Your prior build was NOT restored — reinstall\n' +
         '    your intended build if needed. Skipping uninstall. ***\n'
     )

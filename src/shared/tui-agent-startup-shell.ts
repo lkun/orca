@@ -196,7 +196,7 @@ export function buildShellCommandFromArgv(
 
 const ENV_VAR_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/
 
-/** Clear in the calling shell using self-contained fish/sh branches: copied commands may run without Orca wrappers. unset is absent in fish; sh set -e enables errexit.
+/** Clear in the calling shell using self-contained fish/sh branches: copied commands may run without OCC wrappers. unset is absent in fish; sh set -e enables errexit.
  * Guard branches independently (already-unset fish erase fails), bypass test aliases with command test, and finish with true for a clean prompt status.
  * Use --erase so a false fish_pid match cannot enable sh errexit; -g preserves user universal variables while revealing any value shadowed by injected globals.
  * Known limit: sh set -u aborts on unset fish_pid; nounset-safe expansion does not parse in fish. Avoid executable probes such as math: they can launch arbitrary PATH programs (measured 10.4s).

@@ -175,7 +175,7 @@ export function registerHostedReviewHandlers(store: Store, stats: StatsCollector
       ...getLocalProjectGhExecOptions(store, repo),
       admissionTier: 'interactive' as const
     }
-    // Exclude Orca-owned symlinks from local dirty checks; remote paths must never read or cache unrelated local orca.yaml files (#10451).
+    // Exclude OCC-owned symlinks from local dirty checks; remote paths must never read or cache unrelated local orca.yaml files (#10451).
     const sharedLinkPaths = getRepoSshConnectionId(repo) ? [] : getWorktreeSharedLinkPaths(repo)
     const executionOptions =
       Object.keys(localGitOptions).length > 0 || sharedLinkPaths.length > 0

@@ -33,7 +33,7 @@ describe('verifyProvisionedRootCheckout', () => {
     expect(verify(gitWorktree(projectRoot)).path).toBe(projectRoot)
   })
 
-  it('rejects a checkout on a branch Orca did not request', () => {
+  it('rejects a checkout on a branch OCC did not request', () => {
     expect(() => verify(gitWorktree(projectRoot, { branch: 'refs/heads/wrong' }))).toThrow(
       'requested branch'
     )
@@ -82,7 +82,7 @@ describe('verifyProvisionedRootCheckout', () => {
       verifyProvisionedRootCheckout({
         worktrees: [gitWorktree('c:/workspace/orca/')],
         sparseCheckoutEnabled: false,
-        projectRoot: 'C:\\Workspace\\Orca',
+        projectRoot: 'C:\\Workspace\\OCC',
         request: { name: 'fix-sandbox' }
       }).path
     ).toBe('c:/workspace/orca/')

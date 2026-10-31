@@ -80,7 +80,7 @@ function getWslHostRowStatus(
   }
 }
 
-/** Settings → Orca servers: the WSL distros added as hosts (Windows, experimental). */
+/** Settings → OCC servers: the WSL distros added as hosts (Windows, experimental). */
 export function WslHostsSection({
   onChanged
 }: {
@@ -143,7 +143,7 @@ export function WslHostsSection({
                 ? getWslHostsPausedLabel()
                 : translate(
                     'auto.components.settings.wslHosts.description',
-                    'Orca runs a server inside each distro. A stopped distro starts only when you open one of its projects or connect it here.'
+                    'OCC runs a server inside each distro. A stopped distro starts only when you open one of its projects or connect it here.'
                   ))}
           </p>
         </div>
@@ -210,7 +210,7 @@ export function WslHostsSection({
                 status={getWslHostRowStatus(status, unavailableLabel !== null)}
                 footer={moveLine ? <WslMoveOrchestratorStatusLine distro={distro} /> : undefined}
                 primaryAction={
-                  // A newer Orca's host refuses Update; Force stays in the menu.
+                  // A newer OCC's host refuses Update; Force stays in the menu.
                   deferred && deferred.code !== ORCAD_HOST_NEWER_DEFERRAL_CODE ? (
                     <Button
                       type="button"

@@ -33,7 +33,7 @@ export type StructuredAgentRuntimeCatalogEntry =
   | { kind: 'pi' | 'codex' | 'claude'; metadata: StructuredAgentRuntimeMetadata }
   | { kind: 'acp'; metadata: StructuredAgentRuntimeMetadata; spec: AcpLaunchSpec }
 
-// Why the host's data folder: a start runs Orca's installed release before PATH.
+// Why the host's data folder: a start runs OCC's installed release before PATH.
 function acpChatProgram(spec: AcpLaunchSpec): StructuredAgentChatProgram {
   const { managedRuntime } = spec
   return {

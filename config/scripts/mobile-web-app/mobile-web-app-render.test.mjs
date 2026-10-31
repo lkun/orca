@@ -463,7 +463,7 @@ describeRender('the Route A page in a real browser', () => {
     const { entry, errors, text, url } = await renderWithoutTree({ shellRoute: null })
     expect(entry).toBe('shell-too-old')
     expect(errors).toEqual([])
-    expect(text).toContain('Update Orca to open this workspace')
+    expect(text).toContain('Update OCC to open this workspace')
     // Missing route must not mount Unmatched tree at /.
     expect(text).not.toContain(UNMATCHED)
     expect(url).toBe('/')

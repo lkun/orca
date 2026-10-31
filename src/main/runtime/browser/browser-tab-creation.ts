@@ -76,7 +76,7 @@ export class RuntimeBrowserTabCreation {
     ) {
       throw new BrowserError(
         'invalid_argument',
-        'Opening a browser tab in a split pane needs an Orca desktop window on this host.'
+        'Opening a browser tab in a split pane needs an OCC desktop window on this host.'
       )
     }
     if (params.placement?.kind === 'client') {

@@ -37,7 +37,7 @@ async function postClaudeHook(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+      'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
     },
     body: JSON.stringify(buildBody(payload))
   })
@@ -53,9 +53,9 @@ describe('AgentHookServer listener replay', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN,
-          'X-Orca-Agent-Hook-Meta-Encoding': 'base64',
-          'X-Orca-Agent-Hook-Meta': Buffer.from(
+          'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN,
+          'X-OCC-Agent-Hook-Meta-Encoding': 'base64',
+          'X-OCC-Agent-Hook-Meta': Buffer.from(
             [PANE, 'tab-1', '', 'wt-1', 'production', ''].join('\x1f')
           ).toString('base64')
         },
@@ -174,7 +174,7 @@ describe('AgentHookServer listener replay', () => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+              'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
             },
             body: JSON.stringify(buildBody(payload))
           }
@@ -226,7 +226,7 @@ describe('AgentHookServer listener replay', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify(buildBody(payload))
         })
@@ -268,7 +268,7 @@ describe('AgentHookServer listener replay', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+          'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
         },
         body: JSON.stringify(
           buildBody(
@@ -311,7 +311,7 @@ describe('AgentHookServer listener replay', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+          'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
         },
         body: JSON.stringify(
           buildBody(
@@ -466,7 +466,7 @@ describe('AgentHookServer listener replay', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+          'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
         },
         body: params
       })

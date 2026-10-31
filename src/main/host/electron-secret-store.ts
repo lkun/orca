@@ -28,7 +28,7 @@ export class ElectronSecretStore implements SecretStore {
       }
       return readLinuxBackend() === 'basic_text'
         ? // Chromium may leave an installed secret service unselected on unrecognized tiling desktops.
-          `Orca could not tell which keyring service this desktop uses${describeDesktop()}, so secrets are stored unencrypted — even if a secret service is already running. Start Orca with --password-store=gnome-libsecret (or --password-store=kwallet6 on KDE) to name one.`
+          `OCC could not tell which keyring service this desktop uses${describeDesktop()}, so secrets are stored unencrypted — even if a secret service is already running. Start OCC with --password-store=gnome-libsecret (or --password-store=kwallet6 on KDE) to name one.`
         : 'The OS keyring is unavailable, so secrets are stored unencrypted. Install and unlock gnome-keyring or kwallet to seal them.'
     }
     // basic_text uses a built-in password: report the gap without stranding credentials by disabling sealing.
@@ -59,6 +59,6 @@ function readLinuxBackend(): string | null {
 
 function describeLinuxBackendGap(): string | null {
   return readLinuxBackend() === 'basic_text'
-    ? 'Secrets are obfuscated with a built-in key, not protected by the OS keyring. Install and unlock gnome-keyring or kwallet, then restart Orca, to seal them properly.'
+    ? 'Secrets are obfuscated with a built-in key, not protected by the OS keyring. Install and unlock gnome-keyring or kwallet, then restart OCC, to seal them properly.'
     : null
 }

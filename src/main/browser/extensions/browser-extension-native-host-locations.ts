@@ -1,8 +1,8 @@
 import { posix, win32 } from 'node:path'
 
 /**
- * Where native messaging host manifests (`<name>.json`) are looked up, in order. Orca's own folder
- * comes first so a user can register or override a host for Orca alone. Then Chrome's and
+ * Where native messaging host manifests (`<name>.json`) are looked up, in order. OCC's own folder
+ * comes first so a user can register or override a host for OCC alone. Then Chrome's and
  * Chromium's own locations, user before system as Chrome reads them, then the user folders of other
  * Chromium browsers, where desktop apps often register only for the browsers they detect.
  */
@@ -15,7 +15,7 @@ export type NativeHostManifestSource =
 export type NativeHostLocationEnvironment = {
   platform: NodeJS.Platform
   homeDir: string
-  /** Orca's userData folder. */
+  /** OCC's userData folder. */
   userDataDir: string
   /** Linux: $XDG_CONFIG_HOME, which Chromium browsers use instead of ~/.config when set. */
   xdgConfigHome?: string

@@ -33,7 +33,7 @@ export function TerminalPaneResumeInChatButton({
   const tooltip = updateRequired
     ? translate(
         'components.native-chat.resumeInNewChat.hostUpdateRequired',
-        'Update Orca on this host to continue in Chat UI.'
+        'Update OCC on this host to continue in Chat UI.'
       )
     : label
 

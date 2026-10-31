@@ -2,7 +2,7 @@
 
 ## Git Binary Compatibility
 
-Orca runs the user's Git binary on native, WSL, and SSH hosts, which may all have different versions. Treat Git 2.25 as the core-workflow baseline.
+OCC runs the user's Git binary on native, WSL, and SSH hosts, which may all have different versions. Treat Git 2.25 as the core-workflow baseline.
 
 ## Git Scan Safety
 
@@ -24,7 +24,7 @@ Before merging, verify that the required checks and aggregate gate in the full P
 
 ## Retrying GitHub Actions
 
-Inspect a failed run with `gh run view <run-id> --log-failed --repo stablyai/orca`, then retry failed jobs with `gh run rerun <run-id> --failed --repo stablyai/orca`. GitHub also reruns jobs that depend on the failed jobs. In GitHub's UI, choose **Re-run failed jobs**; Orca offers **Rerun failed checks**.
+Inspect a failed run with `gh run view <run-id> --log-failed --repo stablyai/orca`, then retry failed jobs with `gh run rerun <run-id> --failed --repo stablyai/orca`. GitHub also reruns jobs that depend on the failed jobs. In GitHub's UI, choose **Re-run failed jobs**; OCC offers **Rerun failed checks**.
 
 Keep successful jobs unless there is a concrete reason to revalidate them, such as investigating runner-dependent flakiness. A full rerun restarts passing unit shards, packages, and platform checks too. If fixing the failure changes code, push the fix and validate the new commit; rerunning an older run still tests its original commit.
 

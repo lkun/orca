@@ -221,7 +221,7 @@ async function relaunchWithSleepingAgents(
     await session.close(firstApp)
     firstApp = null
     pointRecordsAtFakeAgent(session.userDataDir, fakeAgent.command, panes.length)
-    // Why: every agent dies with the daemon while Orca is closed, as on a reboot.
+    // Why: every agent dies with the daemon while OCC is closed, as on a reboot.
     process.kill(daemonPid, 'SIGKILL')
 
     const secondLaunch = await session.launch()

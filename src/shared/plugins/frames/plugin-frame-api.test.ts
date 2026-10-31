@@ -192,7 +192,7 @@ describe('window.orca.document', () => {
     expect(posted().at(-1)).toEqual({ orca: 1, kind: 'res', id: 7, result: null })
   })
 
-  it('forwards modifier chords for Orca shortcuts', () => {
+  it('forwards modifier chords for OCC shortcuts', () => {
     const { posted } = mountShell('editor')
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 's', code: 'KeyS', metaKey: true }))
     expect(posted().at(-1)).toMatchObject({
@@ -204,7 +204,7 @@ describe('window.orca.document', () => {
 })
 
 describe('hello-orca example panel', () => {
-  it('talks to Orca only through window.orca', async () => {
+  it('talks to OCC only through window.orca', async () => {
     const html = readFileSync(
       join(process.cwd(), 'examples', 'plugins', 'hello-orca', 'panel.html'),
       'utf8'

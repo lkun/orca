@@ -13,7 +13,7 @@ const TAB_ACTIONS_WITHOUT_KEYBOARD_OWNER = new Set<KeybindingActionId>([
   'tab.openMarkdown'
 ])
 
-/** A focused page hands tab chords back to Orca. */
+/** A focused page hands tab chords back to OCC. */
 export function matchesGuestTabShortcut(
   input: WindowShortcutInput,
   platform: NodeJS.Platform,

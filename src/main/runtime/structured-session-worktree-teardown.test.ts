@@ -467,7 +467,7 @@ describe('worktree teardown and structured agent sessions', () => {
 
   it('separates a close it could not confirm from one it watched stay attached', async () => {
     // `src/shared/worktree/removal.ts` keeps these two apart on purpose: a user waiving "we could
-    // not confirm" is making a different decision than one discarding a conversation Orca just saw
+    // not confirm" is making a different decision than one discarding a conversation OCC just saw
     // running. The toast branches on this marker, so flattening them makes one of the two a lie.
     installHost({ records: [record('s1', WORKTREE)], unverifiable: new Set(['s1']) })
     const unconfirmed = await killAllProcessesForWorktree(WORKTREE, destructiveDeps()).catch(

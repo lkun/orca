@@ -287,7 +287,7 @@ async function main() {
     throw new Error(`Missing ${entryPath}; run pnpm build:electron-vite first`)
   }
 
-  const scratch = mkdtempSync(join(tmpdir(), 'orca-windows-daemon-close-'))
+  const scratch = mkdtempSync(join(tmpdir(), 'occ-windows-daemon-close-'))
   const socketPath = `\\\\.\\pipe\\orca-daemon-close-${process.pid}-${randomUUID()}`
   const tokenPath = join(scratch, 'daemon.token')
   const daemonLogPath = join(scratch, 'daemon.log')

@@ -42,7 +42,7 @@ afterEach(async () => {
 })
 
 async function writePayload(rootPath: string, content = '#!/usr/bin/env bash\n'): Promise<string> {
-  const launcherPath = join(rootPath, 'resources', 'bin', 'orca-ide')
+  const launcherPath = join(rootPath, 'resources', 'bin', 'occ-ide')
   await mkdir(dirname(launcherPath), { recursive: true })
   await writeFile(launcherPath, content, { mode: 0o755 })
   return launcherPath
@@ -51,7 +51,7 @@ async function writePayload(rootPath: string, content = '#!/usr/bin/env bash\n')
 async function makeExtractionFixture() {
   const root = await mkdtemp(join(tmpdir(), 'orca-appimage-pruning-'))
   created.push(root)
-  const appImagePath = join(root, 'Orca.AppImage')
+  const appImagePath = join(root, 'OCC.AppImage')
   await writeFile(appImagePath, '#!/usr/bin/env bash\n', { mode: 0o755 })
   return { root, appImagePath, cacheRootPath: join(root, 'cache') }
 }

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 // Every route is POST except hello (PUT), with `Authorization: Bearer <connector token>`: the 5-minute
-// token Orca's auth service mints for a signed-in machine. The machine is that token's (sub, mid), the
+// token OCC's auth service mints for a signed-in machine. The machine is that token's (sub, mid), the
 // user and the per-install machine id. A 401 means fetch a new token and try again.
 export const CONNECTOR_PATHS = {
   hello: '/v1/connector/hello',

@@ -122,7 +122,7 @@ describe('a removal that failed', () => {
   it('says where removal happens when the page refuses, and re-offers nothing', async () => {
     // Page removal is unsupported, so its refusal must not reopen an unusable confirm.
     const writes = await runRemoval(new PageHostRemovalUnavailableError())
-    expect(writes.action).toEqual(['Remove this host from the host list in the Orca app.'])
+    expect(writes.action).toEqual(['Remove this host from the host list in the OCC app.'])
     expect(writes.confirm).toEqual([])
     expect(writes.identity).toEqual([])
   })

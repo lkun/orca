@@ -23,7 +23,7 @@ it('keeps a remote main Codex turn working through /side chats across relay rest
     const { port, token } = relay.getCoordinates()
     const response = await fetch(`http://127.0.0.1:${port}/hook/codex`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+      headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
       body: JSON.stringify({ paneKey: PANE_KEY, tabId: 'tab-1', worktreeId: 'folder-1', payload })
     })
     expect(response.status).toBe(204)
@@ -53,7 +53,7 @@ it('keeps a remote main Codex turn working through /side chats across relay rest
     const { port, token } = relay.getCoordinates()
     await fetch(`http://127.0.0.1:${port}/hook/codex`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+      headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
       body: JSON.stringify({
         paneKey: PANE_KEY,
         tabId: 'tab-1',
@@ -81,7 +81,7 @@ it('lets a new remote ephemeral Codex conversation replace a row left working', 
     const post = (payload: Record<string, unknown>): Promise<Response> =>
       fetch(`http://127.0.0.1:${port}/hook/codex`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+        headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
         body: JSON.stringify({ paneKey: PANE_KEY, tabId: 'tab-1', worktreeId: 'folder-1', payload })
       })
     // The old Codex died mid-turn without a Stop, so its row still says working.

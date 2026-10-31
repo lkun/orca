@@ -67,7 +67,7 @@ export async function addRepoWithWorkspaces(
   await evaluatePolled(
     page,
     async (repoId) => {
-      // Checkouts made outside Orca's workspace root are hidden by default.
+      // Checkouts made outside OCC's workspace root are hidden by default.
       const shown = await window
         .__store!.getState()
         .updateRepo(repoId, { externalWorktreeVisibility: 'show' })

@@ -53,7 +53,7 @@ describe('MobileNativeChatView: send and read failure banners', () => {
 
   it('leaves only the words of a read that failed for good, over a loaded transcript', async () => {
     const loaded = [assistantTurn('m1', 'earlier reply')]
-    const words = 'This chat was saved by a newer Orca. Update Orca to open it.'
+    const words = 'This chat was saved by a newer OCC. Update OCC to open it.'
     const shown = (text: string) =>
       root().findAll((node) => hostType(node) === 'Text' && node.props.children === text)
     const composers = () => root().findAll((node) => hostType(node) === 'Composer')
@@ -74,7 +74,7 @@ describe('MobileNativeChatView: send and read failure banners', () => {
     expect(banners()).toHaveLength(0)
     expect(root().findAllByProps({ accessibilityLabel: 'Stop the agent' })).toHaveLength(0)
 
-    await update({ ...failure, error: "Orca couldn't open this chat's history right now." })
+    await update({ ...failure, error: "OCC couldn't open this chat's history right now." })
     expect(listIds()).toEqual(['m1'])
     expect(composers()).toHaveLength(1)
     expect(banners()).toHaveLength(1)

@@ -1,4 +1,4 @@
-// Replay recorded traffic with this run's session and prompt IDs, advancing on Orca's frames.
+// Replay recorded traffic with this run's session and prompt IDs, advancing on OCC's frames.
 
 import { expect } from 'vitest'
 import { z } from 'zod'
@@ -71,7 +71,7 @@ export class GrokFixtureReplay {
       this.cursor += 1
       const message = this.rewrite(recorded.message)
       if (message.method !== undefined && message.id !== undefined) {
-        // Resume only after Orca answers the agent's request.
+        // Resume only after OCC answers the agent's request.
         void agent
           .request(message.id, message.method, message.params)
           .then((response) => {

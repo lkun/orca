@@ -145,7 +145,7 @@ describe('fastForwardLocalBaseBranch against real Git', () => {
     expect(existsSync(marker)).toBe(true)
   })
 
-  // Control commands prove each merge setting is active; Orca must still fast-forward exactly to the target.
+  // Control commands prove each merge setting is active; OCC must still fast-forward exactly to the target.
   it.each([
     ['merge.verifySignatures', 'true', 'refuses'],
     ['branch.main.mergeOptions', '--verify-signatures', 'refuses'],

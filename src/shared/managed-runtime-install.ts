@@ -34,9 +34,9 @@ export type ManagedRuntimeInstallState = {
   installedCurrent: boolean
   /** The pinned release's folder is there but not whole; Install repairs it. */
   damaged?: boolean
-  /** Orca's copy is there to remove, whole or damaged; absent from a host without Remove. */
+  /** OCC's copy is there to remove, whole or damaged; absent from a host without Remove. */
   canRemove?: boolean
-  /** What a chat start runs now: Orca's release, a copy found outside it, or nothing. */
+  /** What a chat start runs now: OCC's release, a copy found outside it, or nothing. */
   source: 'managed' | 'external' | null
   /** The latest operation; an ended one stays readable until the next starts. */
   operation: ManagedRuntimeOperation | null

@@ -64,7 +64,7 @@ export function ActivityScopeFilterMenuItems(): React.JSX.Element {
           onSelect={(event) => event.preventDefault()}
           aria-label={translate(
             'auto.components.activity.ActivityScopeFilterControls.hideOtherClientsAria',
-            'Hide agents in workspaces created from other Orca clients on shared remote servers'
+            'Hide agents in workspaces created from other OCC clients on shared remote servers'
           )}
         >
           {translate(

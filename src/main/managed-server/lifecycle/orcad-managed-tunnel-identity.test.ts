@@ -42,7 +42,7 @@ describe('classifyOrcadTunnelIdentityFailure', () => {
   it('reads a runtime that rejected our keys as another server', () => {
     const rejected = new RemoteRuntimeClientError(
       'remote_runtime_unavailable',
-      'Remote Orca runtime closed the connection (4001: Unauthorized).',
+      'Remote OCC runtime closed the connection (4001: Unauthorized).',
       { closeCode: 4001 }
     )
     expect(classifyOrcadTunnelIdentityFailure(rejected).verdict).toBe('foreign')
@@ -51,7 +51,7 @@ describe('classifyOrcadTunnelIdentityFailure', () => {
   it('reads a sealed token refusal as our own server that dropped this pairing', () => {
     const refused = new RemoteRuntimeClientError(
       'unauthorized',
-      'Remote Orca runtime rejected the pairing token.',
+      'Remote OCC runtime rejected the pairing token.',
       { pairingStage: 'access-grant' }
     )
     expect(classifyOrcadTunnelIdentityFailure(refused).verdict).toBe('unpaired')
@@ -65,9 +65,9 @@ describe('classifyOrcadTunnelIdentityFailure', () => {
   it.each([
     new RemoteRuntimeClientError(
       'remote_runtime_unavailable',
-      'Could not connect to the remote Orca runtime: ECONNREFUSED'
+      'Could not connect to the remote OCC runtime: ECONNREFUSED'
     ),
-    new RemoteRuntimeClientError('runtime_timeout', 'Timed out waiting for the remote Orca runtime')
+    new RemoteRuntimeClientError('runtime_timeout', 'Timed out waiting for the remote OCC runtime')
   ])('never reads silence as another server: %s', (error) => {
     expect(classifyOrcadTunnelIdentityFailure(error).verdict).toBe('unreachable')
   })

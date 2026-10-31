@@ -35,7 +35,7 @@
       "title": "智能体会话历史",
       "unavailable": "智能体会话历史不可用",
       "unknownHostPlatform": "无法确定主机平台。",
-      "updateHost": "请更新此主机上的 Orca，以浏览智能体会话历史。",
+      "updateHost": "请更新此主机上的 OCC，以浏览智能体会话历史。",
       "waitingForHost": "正在等待主机…",
       "workspace": "工作区"
     },
@@ -73,7 +73,7 @@
       "stepProgress": "第 {{step}} 步，共 {{total}} 步"
     },
     "notifications": {
-      "description": "即使应用已关闭，也能收到智能体提醒。提醒通过 Orca 的推送服务及 Apple 或 Google 送达。"
+      "description": "即使应用已关闭，也能收到智能体提醒。提醒通过 OCC 的推送服务及 Apple 或 Google 送达。"
     },
     "pair": {
       "backToHome": "返回首页",
@@ -92,19 +92,19 @@
     "pairScan": {
       "cameraDisabledDescription": "请在“设置”中启用相机访问权限，或粘贴配对码。",
       "cameraDisabledTitle": "相机访问已禁用",
-      "cameraPermissionDescription": "扫描桌面上 Orca 显示的二维码，或粘贴配对码。",
+      "cameraPermissionDescription": "扫描桌面上 OCC 显示的二维码，或粘贴配对码。",
       "connectTimedOut": "未能在 {{seconds}} 秒内连接，请查看下方日志，了解连接停在哪一步",
       "connecting": "正在连接…",
       "invalidPairingCode": "配对码无效，请从电脑上复制后重新粘贴",
-      "invalidQrCode": "无效的 Orca 二维码",
+      "invalidQrCode": "无效的 OCC 二维码",
       "downloadQrCode": "这是下载码。请扫描桌面端第 2 步中的配对码。",
-      "openDesktopStep": "在电脑上打开 Orca",
+      "openDesktopStep": "在电脑上打开 OCC",
       "openMobileSettingsStep": "前往“设置” → “移动端”",
       "openSettings": "打开设置",
       "pairingFailed": "配对失败：{{error}}",
       "pairingLog": "配对日志",
       "pasteCodeMessage": "复制电脑上二维码下方显示的配对码。",
-      "pasteCodePlaceholder": "orca://pair?code=... 或粘贴配对码",
+      "pasteCodePlaceholder": "occ://pair?code=... 或粘贴配对码",
       "pasteCodeTitle": "粘贴配对码",
       "pasteInstead": "改为粘贴配对码",
       "pastePairingCode": "或粘贴配对码",
@@ -123,7 +123,7 @@
       "largeText": "大（125%）",
       "largerText": "更大（150%）",
       "largestText": "最大（200%）",
-      "leaveAppDescription": "在手机上使用终端时，Orca 会缩小终端尺寸以适应屏幕。关闭应用或切换到其他应用时，此设置决定终端是保持手机尺寸（避免交互式 CLI 工具的界面重新排版），还是恢复为桌面尺寸。您随时可以点击桌面横幅中的“恢复”手动调整尺寸。",
+      "leaveAppDescription": "在手机上使用终端时，OCC 会缩小终端尺寸以适应屏幕。关闭应用或切换到其他应用时，此设置决定终端是保持手机尺寸（避免交互式 CLI 工具的界面重新排版），还是恢复为桌面尺寸。您随时可以点击桌面横幅中的“恢复”手动调整尺寸。",
       "leaveAppHeading": "离开应用时",
       "noPairedDesktops": "尚未配对桌面。配对后即可设置终端行为。",
       "restoreAfterMinutes_one": "{{count}} 分钟后",
@@ -283,15 +283,15 @@
     },
     "orcaStop": {
       "canContinue": "您可以在此对话中继续。",
-      "crash": "此回复进行期间，{{machine}} 上的 Orca 意外停止。",
-      "quit": "此回复进行期间，{{machine}} 上的 Orca 已关闭。",
-      "remote": "此回复进行期间，{{machine}} 上的 Orca 已停止。",
+      "crash": "此回复进行期间，{{machine}} 上的 OCC 意外停止。",
+      "quit": "此回复进行期间，{{machine}} 上的 OCC 已关闭。",
+      "remote": "此回复进行期间，{{machine}} 上的 OCC 已停止。",
       "unnamedServer": "远程服务器",
-      "update": "此回复进行期间，{{machine}} 上的 Orca 为更新而重新启动。"
+      "update": "此回复进行期间，{{machine}} 上的 OCC 为更新而重新启动。"
     },
     "permission": {
       "needsAccessTo": "需要访问： ",
-      "newerVersionRequired": "此请求需要更新版本的 Orca。",
+      "newerVersionRequired": "此请求需要更新版本的 OCC。",
       "planFile": "计划文件：{{filePath}}",
       "reason": "原因： "
     },
@@ -548,7 +548,7 @@
       "copyFailed": "无法复制",
       "copyPrompt": "复制提示",
       "statusUnreadable": "无法读取此主机的状态。正在重试…",
-      "updateRequired": "请先更新电脑上的 Orca，才能从手机启动智能体。"
+      "updateRequired": "请先更新电脑上的 OCC，才能从手机启动智能体。"
     },
     "agentSpinner": {
       "monitoring": "监控后台任务",
@@ -563,7 +563,7 @@
     },
     "authFailedBannerActions": {
       "repair": "重新配对",
-      "webNote": "请在 Orca 应用中重新连接或移除此主机。"
+      "webNote": "请在 OCC 应用中重新连接或移除此主机。"
     },
     "codexResetCredit": {
       "alreadyAppliedTitle": "已执行重置",
@@ -693,7 +693,7 @@
       "terminalLabel": "{{title}} ({{id}})",
       "unsentNotes_one": "{{count}} 条未发送的备注",
       "unsentNotes_other": "{{count}} 条未发送的备注",
-      "updateRequired": "请更新电脑上的 Orca"
+      "updateRequired": "请更新电脑上的 OCC"
     },
     "diffReviewFileSummary": {
       "branch": "分支",
@@ -776,7 +776,7 @@
       "pairingTemporarilyUnavailable": "配对暂时不可用",
       "repairHint": "轻点以重新与桌面配对",
       "unlockHint": "解锁手机后，轻点重试",
-      "updateDesktopHint": "更新桌面端 Orca 并登录，即可随时随地连接",
+      "updateDesktopHint": "更新桌面端 OCC 并登录，即可随时随地连接",
       "worktreeAccessibilitySummary": "{{summary}}，{{activeCount}} 个活跃"
     },
     "hostDiagnosticsLink": {
@@ -797,10 +797,10 @@
     },
     "jiraConnectPrompt": {
       "checkAgain": "再次检查",
-      "connectHint": "请在 Orca 桌面端的“设置 → 集成”中添加 Jira 站点，然后再次检查。",
+      "connectHint": "请在 OCC 桌面端的“设置 → 集成”中添加 Jira 站点，然后再次检查。",
       "connectOnDesktop": "在桌面端连接 Jira",
       "credentialUnreadable": "Jira 凭据已保存，但无法读取：{{credentialError}}",
-      "updateDesktop": "更新 Orca 桌面端"
+      "updateDesktop": "更新 OCC 桌面端"
     },
     "markdownBlocks": {
       "copyCode": "复制代码",
@@ -862,20 +862,20 @@
     },
     "protocolBlockScreen": {
       "backToHosts": "返回主机列表",
-      "desktopTooOldBody": "已配对的桌面应用版本过旧，无法与当前的 Orca Mobile 兼容。请更新电脑上的 Orca，然后重新连接此主机。",
-      "getVersion": "获取 Orca {{version}}",
-      "mobileTooOldAppStore": "此桌面需要更新版本的 Orca Mobile。请从 App Store 更新 Orca Mobile，然后重新连接此主机。",
-      "mobileTooOldGitHubReleases": "此桌面需要更新版本的 Orca Mobile。请从 GitHub Releases 更新 Orca Mobile，然后重新连接此主机。",
+      "desktopTooOldBody": "已配对的桌面应用版本过旧，无法与当前的 OCC Mobile 兼容。请更新电脑上的 OCC，然后重新连接此主机。",
+      "getVersion": "获取 OCC {{version}}",
+      "mobileTooOldAppStore": "此桌面需要更新版本的 OCC Mobile。请从 App Store 更新 OCC Mobile，然后重新连接此主机。",
+      "mobileTooOldGitHubReleases": "此桌面需要更新版本的 OCC Mobile。请从 GitHub Releases 更新 OCC Mobile，然后重新连接此主机。",
       "openAppStore": "打开 App Store",
       "openGitHubReleases": "打开 GitHub Releases",
       "refreshRecoveryNote": "如果仍显示此消息，请移除此主机并重新配对。",
       "refreshWorkspaceBody": "此主机的工作区缓存版本低于桌面要求。请重新连接此主机，下载当前版本。",
       "refreshWorkspaceTitle": "刷新移动端工作区",
-      "updateDesktopTitle": "更新电脑上的 Orca",
-      "updateMobileTitle": "更新 Orca Mobile",
+      "updateDesktopTitle": "更新电脑上的 OCC",
+      "updateMobileTitle": "更新 OCC Mobile",
       "updateRecoveryNote": "已经更新？请返回“主机”并刷新连接。如果仍显示此消息，请移除此主机并重新配对。",
-      "workspaceNeedsUpdateAppStore": "此桌面的移动端工作区需要更新版本的 Orca Mobile。请从 App Store 更新 Orca Mobile，然后重新连接此主机。",
-      "workspaceNeedsUpdateGitHubReleases": "此桌面的移动端工作区需要更新版本的 Orca Mobile。请从 GitHub Releases 更新 Orca Mobile，然后重新连接此主机。"
+      "workspaceNeedsUpdateAppStore": "此桌面的移动端工作区需要更新版本的 OCC Mobile。请从 App Store 更新 OCC Mobile，然后重新连接此主机。",
+      "workspaceNeedsUpdateGitHubReleases": "此桌面的移动端工作区需要更新版本的 OCC Mobile。请从 GitHub Releases 更新 OCC Mobile，然后重新连接此主机。"
     },
     "richMarkdownEditor": {
       "imageUrl": "图像 URL",
@@ -1022,7 +1022,7 @@
       "disconnected": "已断开连接",
       "hostFallback": "主机",
       "hostOffline": "{{host}} 已离线",
-      "hostOfflineDetail": "请确认电脑已唤醒、Orca 正在运行且已登录",
+      "hostOfflineDetail": "请确认电脑已唤醒、OCC 正在运行且已登录",
       "labelWithHint": "{{label}} — {{hint}}",
       "pairingInvalid": "配对无效，请重新与桌面配对",
       "rePairDetail": "请重新与桌面配对",
@@ -1030,7 +1030,7 @@
       "relayAccessExpired": "{{host}} 的 Relay 访问权限已过期",
       "relayConnectFailed": "无法通过 Relay 连接",
       "relayUnreachable": "无法访问 Relay",
-      "signInDetail": "请在桌面上登录 Orca 以重新连接",
+      "signInDetail": "请在桌面上登录 OCC 以重新连接",
       "signInRequired": "需要在 {{host}} 上登录",
       "tailscaleHint": "检查 Tailscale"
     },
@@ -1075,7 +1075,7 @@
       "privacyHint": "发送一份经过脱敏且大小受限的报告，包含主机名、端点、版本、连接状态和事件，绝不包含终端内容或凭据。",
       "reconnecting": "重新连接中",
       "retrySending": "重试发送",
-      "sendDiagnostics": "向 Orca 发送诊断信息",
+      "sendDiagnostics": "向 OCC 发送诊断信息",
       "sending": "正在发送…",
       "sent": "诊断信息已发送",
       "stateWithAttempt": "{{state}} · 第 {{attempts}} 次尝试",
@@ -1098,21 +1098,21 @@
       "title": "工作区更新"
     },
     "troubleshootCommonIssues": {
-      "allowNotifications": "检查系统设置是否允许 Orca 发送通知，并确认专注模式或勿扰模式已关闭。",
+      "allowNotifications": "检查系统设置是否允许 OCC 发送通知，并确认专注模式或勿扰模式已关闭。",
       "checkTailnet": "确认桌面未休眠，并在 tailnet 中显示为已连接。",
       "desktopTitle": "桌面应用未运行",
       "disableVpn": "关闭该 VPN，或启用分流功能／“允许 LAN”选项。",
       "firewallTitle": "防火墙拦截端口 {{port}}",
       "linuxFirewall": "Linux: sudo ufw allow {{port}}",
       "keepTailscaleOn": "100.x.x.x 或 *.ts.net 等主机地址通过 Tailscale 连接，请保持 Tailscale 开启。",
-      "macosFirewall": "macOS：系统设置 → 网络 → 防火墙，允许 Orca 通过。",
+      "macosFirewall": "macOS：系统设置 → 网络 → 防火墙，允许 OCC 通过。",
       "notificationNetwork": "尝试切换到蜂窝网络或其他 Wi-Fi 网络。如果切换后能收到通知，则原网络可能导致通知延迟。",
       "notificationsTitle": "推送通知",
-      "openDesktop": "桌面上的 Orca 必须保持运行才能接受连接。",
+      "openDesktop": "桌面上的 OCC 必须保持运行才能接受连接。",
       "pairAfterUpdate": "更新后可能需要重新扫描二维码配对。",
       "reconnectWifi": "尝试在两台设备上重新连接 WiFi。",
       "restartBothApps": "如果持续超时，请重启手机端和桌面端应用。",
-      "restartDesktop": "尝试重启 Orca，移动端连接服务会随应用启动。",
+      "restartDesktop": "尝试重启 OCC，移动端连接服务会随应用启动。",
       "restartTailscale": "iOS/Android 可能在无提示的情况下导致隧道卡住：请在 Tailscale 应用中关闭 Tailscale 后再重新开启。",
       "restrictedNetwork": "公司或学校网络可能阻止 P2P 连接，请尝试使用个人热点。",
       "retryHost": "返回主机列表，点按要连接的主机以重试。",
@@ -1125,7 +1125,7 @@
       "vpnTitle": "其他 VPN 干扰",
       "wifiSignal": "检查手机的 WiFi 信号强度。",
       "wifiTitle": "WiFi 网络不同",
-      "windowsFirewall": "Windows：Defender 防火墙 → 允许应用，允许 Orca 通过专用网络。"
+      "windowsFirewall": "Windows：Defender 防火墙 → 允许应用，允许 OCC 通过专用网络。"
     },
     "troubleshootView": {
       "commonIssues": "常见问题",
@@ -1202,11 +1202,11 @@
       "alreadyActive": "电脑或另一部手机正在使用听写。",
       "cloudModelNeedsKey": "需要 OpenAI 密钥",
       "deleteFailed": "删除模型失败",
-      "desktopUpdateRequired": "请更新已配对的 Orca 桌面应用，以使用移动端语音设置。",
+      "desktopUpdateRequired": "请更新已配对的 OCC 桌面应用，以使用移动端语音设置。",
       "downloadFailed": "启动下载失败",
       "loadFailed": "加载听写模型失败",
       "repairRequired": "请将此手机与电脑重新配对，以使用听写。",
-      "serverUpdateRequired": "请更新此服务器上的 Orca，以使用语音听写。",
+      "serverUpdateRequired": "请更新此服务器上的 OCC，以使用语音听写。",
       "sessionLost": "听写与电脑的连接已断开。请重试。",
       "updateFailed": "更新听写设置失败"
     }
@@ -1298,7 +1298,7 @@
       "open": "打开 PDF",
       "openFailed": "无法打开此 PDF",
       "opening": "正在打开 PDF…",
-      "updateRequired": "更新 Orca Mobile 才能打开 PDF"
+      "updateRequired": "更新 OCC Mobile 才能打开 PDF"
     }
   },
   "home": {
@@ -1309,17 +1309,17 @@
       "weeklyWindow": "7天"
     },
     "appUpdateCard": {
-      "dismissAccessibilityLabel": "关闭 Orca {{version}} 更新提示",
-      "title": "Orca {{version}} 已可用",
-      "updateAccessibilityLabel": "Orca {{version}} 已可用，点按更新",
+      "dismissAccessibilityLabel": "关闭 OCC {{version}} 更新提示",
+      "title": "OCC {{version}} 已可用",
+      "updateAccessibilityLabel": "OCC {{version}} 已可用，点按更新",
       "updateHint": "点按更新"
     },
     "emptyState": {
       "connectedDescription": "桌面将显示在这里。所有数据均采用端到端加密。",
       "connectedTitle": "已连接",
-      "description": "与电脑上的 Orca 配对，即可在手机上查看智能体、进入任意终端并推进工作。",
+      "description": "与电脑上的 OCC 配对，即可在手机上查看智能体、进入任意终端并推进工作。",
       "openDesktopDescription": "前往“设置” → “移动端”，生成配对二维码。",
-      "openDesktopTitle": "打开 Orca 桌面应用",
+      "openDesktopTitle": "打开 OCC 桌面应用",
       "pairDesktop": "配对桌面",
       "scanCodeDescription": "点按上方按钮打开扫码器，然后对准屏幕上的二维码。",
       "scanCodeTitle": "扫描二维码",
@@ -1429,7 +1429,7 @@
       "closed": "已关闭",
       "createdByAutomation": "由自动化创建",
       "createdByNamedAutomation": "由自动化“{{name}}”创建",
-      "createdFromCli": "通过 Orca CLI 创建",
+      "createdFromCli": "通过 OCC CLI 创建",
       "draft": "草稿",
       "merged": "已合并",
       "openLink": "打开 {{label}}",
@@ -1532,7 +1532,7 @@
   "notifications": {
     "desktopChannel": {
       "name": "桌面通知",
-      "silentName": "Orca 静默通知"
+      "silentName": "OCC 静默通知"
     },
     "notificationDeliverySection": {
       "footer": "提醒类型遵循各个已配对桌面的通知设置。连续 7 天未使用此应用后，通知将暂停；打开应用并重新连接即可恢复。",
@@ -1557,7 +1557,7 @@
       "keepTerminal": "继续使用终端",
       "notNow": "暂不",
       "notificationsDescription": "智能体完成任务或等待响应时，即使未使用应用，此手机也会收到通知。",
-      "notificationsDisclosure": "桌面空闲 3 分钟后，通过 Orca 的推送服务发送通知。可随时在“设置”中更改。",
+      "notificationsDisclosure": "桌面空闲 3 分钟后，通过 OCC 的推送服务发送通知。可随时在“设置”中更改。",
       "notificationsTitle": "智能体需要您时，及时收到提醒",
       "openInChatUi": "在聊天界面中打开会话",
       "openInTerminal": "在终端中打开会话",
@@ -1976,7 +1976,7 @@
       "committedChangesFailed": "加载已提交的更改失败",
       "committedChangesUnavailable": "已提交的更改不可用",
       "committedDiffUnavailable": "已提交的差异不可用",
-      "desktopUpdateRequired": "请更新 Orca 桌面端，以便在手机上评审更改。",
+      "desktopUpdateRequired": "请更新 OCC 桌面端，以便在手机上评审更改。",
       "diffLoadFailed": "无法加载差异",
       "invalidSourceControlResponse": "源代码控制响应无效",
       "reviewNotesLoadFailed": "无法加载评审笔记"
@@ -1993,7 +1993,7 @@
     },
     "failure": {
       "accountSwitchInProgress": "正在此主机上更改 {{agent}} 的设置。请在完成后重试。",
-      "agentCommandNotRunnable": "{{agent}} 在设置 → 智能体中的命令必须是 Orca 能找到的程序路径或名称，且不能包含参数或变量。请修改或重置。",
+      "agentCommandNotRunnable": "{{agent}} 在设置 → 智能体中的命令必须是 OCC 能找到的程序路径或名称，且不能包含参数或变量。请修改或重置。",
       "agentCommandNotSignedIn": "请在运行此聊天的电脑上使用 `{{loginCommand}}` 登录 {{agent}}。",
       "agentNotSignedIn": "请登录 {{agent}}。",
       "agentStarting": "智能体仍在启动。",
@@ -2053,13 +2053,13 @@
       "fullAccessAsRoot": "{{agent}} 以 root 身份运行时不会使用完全访问。请在运行此聊天的计算机的“设置”→“智能体”中为 {{agent}} 选择其他权限，然后开始新的聊天。",
       "historyInOtherAccount": "此聊天的历史记录位于另一个 Claude 账户中。请切换回该账户以继续此聊天。",
       "historyTooLarge": "此对话的历史记录过大，无法在此恢复。",
-      "hostFault": "Orca 遇到问题，因此此操作未完成。",
-      "hostFaultTryAgain": "Orca 遇到问题，因此此操作未完成。请重试。",
-      "hostRestarted": "此消息发送前 Orca 已重新启动。",
-      "hostStopped": "{{agent}} 始终未完成启动，因此 Orca 已将其停止。",
+      "hostFault": "OCC 遇到问题，因此此操作未完成。",
+      "hostFaultTryAgain": "OCC 遇到问题，因此此操作未完成。请重试。",
+      "hostRestarted": "此消息发送前 OCC 已重新启动。",
+      "hostStopped": "{{agent}} 始终未完成启动，因此 OCC 已将其停止。",
       "interactiveAgentNotSignedIn": "请在运行此聊天的电脑上启动 `{{loginCommand}}` 并使用 `{{slashCommand}}` 登录 {{agent}}。",
       "launchFolderMissing": "此聊天运行所在的文件夹已不存在。请恢复该文件夹以继续此聊天。",
-      "launchPreparationFailed": "Orca 无法在运行此聊天的计算机上准备启动 {{agent}}。",
+      "launchPreparationFailed": "OCC 无法在运行此聊天的计算机上准备启动 {{agent}}。",
       "managedAccountEnvOverride": "此次 Claude 启动设置了自己的 Anthropic 登录变量。请移除这些变量以使用受管理的 Claude 账户。",
       "managedAccountUnsupported": "虽然已在 WSL 中添加 Claude 账户，但 Claude 聊天仍需使用 Windows 中的 Claude 账户。",
       "modelUnavailable": "{{agent}} 无法使用 {{detail}}。请选择其他模型并重新发送。",
@@ -2084,7 +2084,7 @@
       "quitTerminalAgent": "请退出该智能体，以便在此处继续聊天。",
       "runCommandAgain": "请重新运行 /{{command}}。",
       "runCommandWhenDone": "完成后再运行 /{{command}}。",
-      "runtimeNotInstalled": "运行此聊天的计算机上未安装 {{agent}}。请在最新版本的 Orca 中从聊天里安装。",
+      "runtimeNotInstalled": "运行此聊天的计算机上未安装 {{agent}}。请在最新版本的 OCC 中从聊天里安装。",
       "sendAgainToTryOnceMore": "请重新发送您的消息，再试一次。",
       "sendToTryAgain": "请发送您的消息以重试。",
       "sessionNotRestored": "{{agent}} 无法重新打开之前的会话，因此此聊天将在新会话中继续。{{agent}} 不记得之前的消息。",
@@ -2109,7 +2109,7 @@
       "usageLimitWindowWeeklyModel": "模型每周",
       "waitForBackgroundTasks": "请等待后台任务完成。",
       "waitForStart": "请等待智能体完成启动。",
-      "writeFailed": "Orca 无法将此消息交给智能体，因此消息未发送。"
+      "writeFailed": "OCC 无法将此消息交给智能体，因此消息未发送。"
     },
     "fileReader": {
       "copyReviewNotes": "复制评审备注",
@@ -2219,7 +2219,7 @@
       "emptyPrompt": "此操作保存的提示词为空。请在电脑上更新“源代码控制 AI”设置。",
       "loadFailed": "无法加载可用的智能体。",
       "promptNotSent": "智能体已启动，但提示词未发送。",
-      "updateRequired": "请更新电脑上的 Orca，以便从手机启动智能体。"
+      "updateRequired": "请更新电脑上的 OCC，以便从手机启动智能体。"
     },
     "prSidebarState": {
       "loadFailed": "无法加载 PR"
@@ -2260,7 +2260,7 @@
       "globalScope": "全局",
       "label": "名称",
       "labelPlaceholder": "启动开发服务器",
-      "olderHostPromptTooLong": "对此主机来说过长。请在主机上更新 Orca 以保存更长的提示词。",
+      "olderHostPromptTooLong": "对此主机来说过长。请在主机上更新 OCC 以保存更长的提示词。",
       "projectScope": "项目",
       "prompt": "提示词",
       "promptHint": "支持技能、文件路径和内置命令。",
@@ -2522,7 +2522,7 @@
       "liveInputInterrupted": "实时输入已中断，输入框已清空。继续前请检查终端。"
     },
     "useStartup": {
-      "wakeAgents": "请在主机上打开 Orca，以唤醒睡眠中的智能体。"
+      "wakeAgents": "请在主机上打开 OCC，以唤醒睡眠中的智能体。"
     },
     "useTerminalCreateActions": {
       "createFailed": "创建终端失败",
@@ -2557,10 +2557,10 @@
       "attachmentExpired": "此附件已过期。",
       "backgroundTasksRunning": "后台任务仍在运行。",
       "cancelNotSaved": "无法取消此问题或审批。",
-      "cannotRunHere": "Orca 无法在此处以聊天方式运行此智能体。",
-      "capacity": "运行此聊天的计算机上的 Orca 已达到请求上限。请在那台计算机上更新 Orca，然后重试。",
-      "chatNotFound": "Orca 找不到此聊天。",
-      "chatSavedByNewerOrca": "此聊天由更新版本的 Orca 保存。",
+      "cannotRunHere": "OCC 无法在此处以聊天方式运行此智能体。",
+      "capacity": "运行此聊天的计算机上的 OCC 已达到请求上限。请在那台计算机上更新 OCC，然后重试。",
+      "chatNotFound": "OCC 找不到此聊天。",
+      "chatSavedByNewerOrca": "此聊天由更新版本的 OCC 保存。",
       "clearAfterAnswer": "请先回答智能体的问题或审批，然后再运行 /clear。",
       "clearAfterRetry": "请先重试您之前的消息，然后再运行 /clear。",
       "clearAfterSending": "您之前的消息仍在发送中。发送完成后再运行 /clear。",
@@ -2572,10 +2572,10 @@
       "continuationSuperseded": "此聊天已有后续进展。请查看最新消息后再继续。",
       "conversationCleared": "此对话已被清除。",
       "goalsUnsupported": "此智能体不支持目标。",
-      "historyUnavailable": "Orca 目前无法打开此聊天的历史记录。",
-      "historyUnreadable": "Orca 无法读取此聊天的已保存历史记录。",
+      "historyUnavailable": "OCC 目前无法打开此聊天的历史记录。",
+      "historyUnreadable": "OCC 无法读取此聊天的已保存历史记录。",
       "historyUnusable": "无法加载此聊天。",
-      "hostReconciling": "Orca 重启后仍在检查此聊天。",
+      "hostReconciling": "OCC 重启后仍在检查此聊天。",
       "messageNotSaved": "无法保存您的消息。",
       "messageTooLarge": "超过了单条消息 256 KB 的上限。",
       "messagesUnsettled": "您之前发送的一条消息尚未确认。",
@@ -2592,7 +2592,7 @@
       "notDoneStopTasks": "后台任务未停止。",
       "openCurrentConversation": "请打开当前对话以继续。",
       "optionRejected": "智能体未接受此设置。",
-      "outcomeUnknown": "Orca 无法确认发生了什么。请查看聊天。",
+      "outcomeUnknown": "OCC 无法确认发生了什么。请查看聊天。",
       "ownerUnproven": "此聊天之前的智能体可能仍在运行。",
       "pendingWork": "在使用此命令之前，请等待挂起的工作和消息完成。",
       "promptPending": "智能体正在等待您回答问题或审批。",
@@ -2600,14 +2600,14 @@
       "queueTooLarge": "队列中等待的文本过多。",
       "quitTerminalAgent": "请退出该智能体，以便在此处继续聊天。",
       "reattachFile": "请将其移除后重新附加。",
-      "recordFailed": "Orca 无法将此内容保存到聊天历史记录中。",
-      "recordUnreadable": "Orca 无法读取此聊天的已保存状态。",
+      "recordFailed": "OCC 无法将此内容保存到聊天历史记录中。",
+      "recordUnreadable": "OCC 无法读取此聊天的已保存状态。",
       "reopenChat": "请重新打开聊天以再次检查。",
       "restartFailed": "智能体无法重新启动。",
       "runClearWhenDone": "完成后再运行 /clear。",
       "runCompactWhenDone": "完成后再运行 /compact。",
-      "savedByNewerOrca": "这些聊天由更新版本的 Orca 保存。",
-      "sendOutcomeLost": "Orca 无法确认你的消息已送达智能体。请查看聊天，如有需要请重新发送。",
+      "savedByNewerOrca": "这些聊天由更新版本的 OCC 保存。",
+      "sendOutcomeLost": "OCC 无法确认你的消息已送达智能体。请查看聊天，如有需要请重新发送。",
       "settleEarlierMessage": "请等待之前的消息送达，或重试该消息。",
       "shortenMessage": "请缩短或拆分后再发送。",
       "shrinkQueue": "请删除一条排队的消息，或等待其送达，然后重试。",
@@ -2616,10 +2616,10 @@
       "tryAgain": "请重试。",
       "tryAgainComposerSend": "请重新发送。",
       "turnActive": "智能体仍在回复。",
-      "unreachable": "Orca 无法连接到智能体。",
-      "unsupported": "运行此聊天的计算机需要更新版本的 Orca。请在该计算机上更新 Orca 后重试。",
-      "updateOrcaToKeepUsing": "请更新 Orca 以继续使用这些聊天。",
-      "updateOrcaToOpenChat": "请更新 Orca 以打开它。",
+      "unreachable": "OCC 无法连接到智能体。",
+      "unsupported": "运行此聊天的计算机需要更新版本的 OCC。请在该计算机上更新 OCC 后重试。",
+      "updateOrcaToKeepUsing": "请更新 OCC 以继续使用这些聊天。",
+      "updateOrcaToOpenChat": "请更新 OCC 以打开它。",
       "waitForBackgroundTasks": "请等待后台任务完成。",
       "waitForCommand": "请等待 /compact 或 /clear 完成。",
       "waitForStart": "请等待智能体完成启动。",
@@ -2680,11 +2680,11 @@
   "settings": {
     "aboutScreen": {
       "openLinkFailed": "无法打开链接。请重试。",
-      "socialProfile": "Orca 的 X 主页",
-      "sourceCode": "Orca 源代码",
+      "socialProfile": "OCC 的 X 主页",
+      "sourceCode": "OCC 源代码",
       "tagline": "助力开发者百倍提效的开源智能体 IDE",
       "title": "关于",
-      "website": "Orca 网站"
+      "website": "OCC 网站"
     },
     "appUpdateSettingsRows": {
       "checkFailed": "检查失败",
@@ -2702,7 +2702,7 @@
       "neverChecked": "从未",
       "upToDate": "已是最新",
       "update": "更新",
-      "updateToVersion": "更新至 Orca {{version}}"
+      "updateToVersion": "更新至 OCC {{version}}"
     },
     "appearance": {
       "language": {
@@ -2720,7 +2720,7 @@
       "title": "外观"
     },
     "browserSettingsScreen": {
-      "desktopBrowser": "桌面 Orca 浏览器",
+      "desktopBrowser": "桌面 OCC 浏览器",
       "desktopBrowserDescription": "在已配对桌面通过串流提供的浏览器中打开。",
       "linksDescription": "选择点按终端输出中的 HTTP(S) 链接时使用的浏览器。",
       "linksHeading": "链接",
@@ -2759,13 +2759,13 @@
       "updateDesktopHint": "配对已更新的桌面，即可在此手机上接收通知。"
     },
     "notificationDisplayTest": {
-      "accepted": "Orca 推送服务已接受请求。请查看通知。",
+      "accepted": "OCC 推送服务已接受请求。请查看通知。",
       "connectDesktop": "请先连接桌面，然后重试。",
       "description": "测试推送送达；推送不可用时，测试本地通知。",
       "desktopUnreachable": "无法连接到桌面。请重试。",
       "loadFailed": "无法加载已配对的桌面。",
       "pairDesktop": "请先配对桌面，然后重试。",
-      "pushServiceFailed": "无法通过 Orca 推送服务发送。请重试。",
+      "pushServiceFailed": "无法通过 OCC 推送服务发送。请重试。",
       "rateLimited": "通知发送过于频繁。请稍后重试。",
       "sendButton": "发送测试通知",
       "sendFailed": "无法发送测试推送。",
@@ -2775,12 +2775,12 @@
       "localTitle": "测试通知",
       "localBody": "来自此手机的本地通知测试。",
       "localScheduled": "{{reason}} 已安排本地测试。请检查通知。此测试仅验证显示，不验证Agent提醒是否送达。",
-      "disabled": "Orca 中的通知已关闭。请启用通知后重试。",
+      "disabled": "OCC 中的通知已关闭。请启用通知后重试。",
       "osDisabled": "系统设置中的通知已关闭。请允许通知后重试。",
       "noToken": "此手机上没有可用的推送令牌。",
       "unsupportedHost": "此桌面端不支持推送通知。请更新以接收推送。",
       "registrationPending": "此桌面端的推送注册尚未就绪。请稍后重试。",
-      "liveFallbackScheduled": "{{reason}} 已安排本地测试。请检查通知。Orca 运行且保持连接时，可接收实时提醒。"
+      "liveFallbackScheduled": "{{reason}} 已安排本地测试。请检查通知。OCC 运行且保持连接时，可接收实时提醒。"
     },
     "notificationSettingsScreen": {
       "description": "智能体需要您提供输入或已完成任务时，在此设备上接收通知。",
@@ -3089,7 +3089,7 @@
     "loaders": {
       "connectingToDesktop": "正在连接桌面…",
       "loadFailed": "无法加载源代码控制",
-      "updateDesktop": "请更新 Orca 桌面端，以在手机上使用源代码控制。",
+      "updateDesktop": "请更新 OCC 桌面端，以在手机上使用源代码控制。",
       "waitingForDesktop": "正在等待桌面…"
     },
     "modals": {
@@ -3124,7 +3124,7 @@
     "prCreate": {
       "authRequired": "请在创建 {{reviewLabel}} 之前完成身份验证。",
       "baseNotOnRemote": "请先推送基础分支，再创建 {{reviewLabel}}。",
-      "createdNotRefreshed": "{{titleLabel}} 已创建，但 Orca 暂时无法刷新其信息。",
+      "createdNotRefreshed": "{{titleLabel}} 已创建，但 OCC 暂时无法刷新其信息。",
       "defaultBranch": "请在创建 {{reviewLabel}} 之前切换到功能分支。",
       "detachedHead": "请在创建 {{reviewLabel}} 之前检出分支。",
       "dirty": "请在创建 {{reviewLabel}} 之前提交更改。",
@@ -3132,7 +3132,7 @@
       "existingNumber": "{{titleLabel}} #{{number}} 已处于开放状态。",
       "existingReview": "此分支已存在 {{reviewLabel}}。",
       "forkHeadUnsupported": "不支持从此复刻仓库创建 {{reviewLabel}}。",
-      "lookupUnconfirmed": "Orca 无法确认此分支是否已有 {{reviewLabel}}。请稍后重试。",
+      "lookupUnconfirmed": "OCC 无法确认此分支是否已有 {{reviewLabel}}。请稍后重试。",
       "needsSync": "请在创建 {{reviewLabel}} 之前同步此分支。",
       "noUpstream": "请在创建 {{reviewLabel}} 之前发布提交。",
       "notReady": "此分支尚不具备创建 {{reviewLabel}} 的条件。",
@@ -3272,7 +3272,7 @@
       "kimiSessionNotFound": "Kimi 找不到请求的会话。请使用现有会话或启动新会话。",
       "kimiSessionOccupied": "Kimi 无法使用此会话，因为它在另一个客户端中处于活动状态。请在该客户端中停止会话或退出该客户端，然后重试。",
       "kimiSessionOtherDirectory": "此 Kimi 会话属于另一个目录。请在该目录中恢复会话，或使用为此工作区创建的会话。",
-      "kimiUnreadableOutput": "Kimi 返回了 Orca 无法读取的输出。请重试。",
+      "kimiUnreadableOutput": "Kimi 返回了 OCC 无法读取的输出。请重试。",
       "noBranchChanges": "没有可供总结的分支更改。",
       "noModelForAgent": "{{label}} 没有可用的模型。",
       "noStagedChanges": "没有可供总结的已暂存更改。",
@@ -3290,7 +3290,7 @@
       "sourceControlCustomCommandEmpty": "自定义命令为空。请在设置 -> Git -> 源代码控制 AI 中添加。",
       "stagedChangesReadFailed": "无法读取已暂存的更改。",
       "timedOut": "生成在 {{seconds}} 秒后超时。",
-      "windowsBatchUnsafeArguments": "{{label}} 通过 Windows 批处理脚本运行，该脚本无法将多行提示词作为参数接收。请在设置中指定智能体的可执行文件，或使用不含 {prompt} 的自定义命令，让 Orca 通过 stdin 发送提示词。"
+      "windowsBatchUnsafeArguments": "{{label}} 通过 Windows 批处理脚本运行，该脚本无法将多行提示词作为参数接收。请在设置中指定智能体的可执行文件，或使用不含 {prompt} 的自定义命令，让 OCC 通过 stdin 发送提示词。"
     },
     "useMobileCommitFailureRecovery": {
       "launchFailed": "启动智能体失败",
@@ -3309,7 +3309,7 @@
       "waitingForDesktop": "正在等待桌面…"
     },
     "conflictActions": {
-      "needsNewerHost": "请更新运行此工作区的电脑上的 Orca，以便通过手机解决合并冲突。",
+      "needsNewerHost": "请更新运行此工作区的电脑上的 OCC，以便通过手机解决合并冲突。",
       "markResolved": "标记为已解决",
       "keepFile": "保留文件",
       "keepDeletion": "保留删除",
@@ -3391,7 +3391,7 @@
       "sort": "项目排序",
       "subtitle": "为“任务”页面选择项目视图。",
       "title": "GitHub 项目",
-      "unsupportedLayout": "Orca 暂不支持此 GitHub 项目布局。",
+      "unsupportedLayout": "OCC 暂不支持此 GitHub 项目布局。",
       "view": "项目视图"
     },
     "githubViewControls": {
@@ -3506,7 +3506,7 @@
       "connectLinearTitle": "连接您的 Linear 账户",
       "jiraStatusFailed": "读取 Jira 状态失败",
       "updateDesktopMessage": "此移动端“任务”视图需要更高版本的桌面端运行时。",
-      "updateDesktopTitle": "更新 Orca 桌面端"
+      "updateDesktopTitle": "更新 OCC 桌面端"
     },
     "options": {
       "all": "全部",
@@ -3605,7 +3605,7 @@
       "show": "显示"
     },
     "projectDetailDrawer": {
-      "addRepositoryFromDesktop": "{{repository}} 尚未添加到 Orca。请在桌面应用中添加此仓库，然后刷新移动端的“任务”。",
+      "addRepositoryFromDesktop": "{{repository}} 尚未添加到 OCC。请在桌面应用中添加此仓库，然后刷新移动端的“任务”。",
       "clearType": "清除类型",
       "closeItem": "关闭条目",
       "copyGitHubLink": "复制 GitHub 链接",
@@ -3616,7 +3616,7 @@
       "issueType": "议题类型",
       "loadingIssueTypes": "正在加载议题类型…",
       "mergePullRequest": "合并 PR",
-      "mergeRepositoryRequirement": "合并前需在 Orca 中添加此仓库。",
+      "mergeRepositoryRequirement": "合并前需在 OCC 中添加此仓库。",
       "noIssueTypes": "此仓库未配置议题类型。",
       "noType": "无类型",
       "openInGitHub": "在 GitHub 中打开",
@@ -3624,7 +3624,7 @@
       "projectSubtitle": "GitHub 项目 · {{repository}}{{itemNumber}}",
       "pullRequest": "PR",
       "reopenItem": "重新打开条目",
-      "repositoryNotInOrca": "仓库不在 Orca 中",
+      "repositoryNotInOrca": "仓库不在 OCC 中",
       "status": "状态",
       "type": "类型",
       "workspaceCreationRequirement": "只能从 GitHub 议题和 PR 创建工作区。"
@@ -3935,7 +3935,7 @@
       "automaticName": "自动命名",
       "existing": "现有分支",
       "existingHint": "新提交将添加到此分支。",
-      "hostUpdateRequired": "请更新工作区主机上的 Orca，以复用分支或明确选择创建独立分支。",
+      "hostUpdateRequired": "请更新工作区主机上的 OCC，以复用分支或明确选择创建独立分支。",
       "new": "新分支",
       "newHint": "创建新的本地分支",
       "newName": "新分支名称",
@@ -3964,7 +3964,7 @@
       "working": "工作中"
     },
     "hostWorkspaceListStates": {
-      "checkHost": "请确认电脑已唤醒且 Orca 正在运行",
+      "checkHost": "请确认电脑已唤醒且 OCC 正在运行",
       "empty": "暂无工作区",
       "loadFailed": "无法从此主机加载工作区",
       "noFilterMatches": "没有符合筛选条件的工作区",

@@ -101,7 +101,7 @@ describe('Codex catalog account key: picker read vs launch', () => {
     await expectOneKey(createSettings({ realHomeRoutable: true }), getSystemCodexHomePath())
   })
 
-  it("system account on Orca's shared runtime home", async () => {
+  it("system account on OCC's shared runtime home", async () => {
     await expectOneKey(createSettings({ realHomeRoutable: false }), getRuntimeCodexHomePath())
   })
 

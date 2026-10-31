@@ -140,7 +140,7 @@ async function chat() {
       capture.turnEnded()
       await vi.waitFor(() => expect(persist).toHaveBeenCalledOnce())
     },
-    /** Model a prompt Pi received before Orca died without journaling its turn. */
+    /** Model a prompt Pi received before OCC died without journaling its turn. */
     crashedPrompt: async (text: string) => {
       ordinal += 1
       deferred.sink.appendItem(
@@ -310,7 +310,7 @@ describe('Pi chat catch-up', () => {
     const own = [entry('u1', null, 'user', 'ask 1'), entry('a1', 'u1', 'assistant', 'answer ask 1')]
     await c.turn('ask 1', own, null)
 
-    // The chat's Pi saved ask 2 before Orca died; then a terminal wrote ask 3.
+    // The chat's Pi saved ask 2 before OCC died; then a terminal wrote ask 3.
     await c.crashedPrompt('ask 2')
     const mixed = [
       ...own,

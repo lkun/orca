@@ -52,7 +52,7 @@ export function readPromotedSettingValuesFromContent(
   config: string
 ): Map<string, TopLevelSettingValue> {
   const result = new Map<string, TopLevelSettingValue>()
-  // Keep Orca's runtime-only daemon override out of the canonical config.
+  // Keep OCC's runtime-only daemon override out of the canonical config.
   for (const setting of scanStructuredSettingLines(stripCodexDaemonOverride(config).split('\n'))) {
     if (PROMOTED_STRUCTURED_KEYS.includes(setting.structuredKey)) {
       result.set(setting.structuredKey, { raw: setting.raw, multiline: setting.multiline })

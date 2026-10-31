@@ -21,7 +21,7 @@ describe('WSL CLI registration registry', () => {
   })
 
   it('skips a registered distro already reconciled by this build against this launcher', async () => {
-    const reconciled = { target: 'C:\\Orca\\resources\\bin\\orca.exe', appVersion: '1.4.138' }
+    const reconciled = { target: 'C:\\OCC\\resources\\bin\\orca.exe', appVersion: '1.4.138' }
     await recordWslCliRegistrationObservations(userDataPath, [
       { distro: 'Ubuntu', inspected: true, managed: true, reconciled }
     ])
@@ -127,7 +127,7 @@ describe('WSL CLI registration registry', () => {
   })
 
   it('forgets every entry of a deleted distro and leaves the others', async () => {
-    const reconciled = { target: 'C:\\Orca\\resources\\bin\\orca.exe', appVersion: '1.4.244' }
+    const reconciled = { target: 'C:\\OCC\\resources\\bin\\orca.exe', appVersion: '1.4.244' }
     await recordWslCliRegistrationObservations(
       userDataPath,
       [

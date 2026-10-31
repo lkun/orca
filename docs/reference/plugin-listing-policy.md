@@ -1,12 +1,12 @@
 # Plugin listing policy
 
-These rules apply to every plugin listed in Orca's official and community catalogs and on the
+These rules apply to every plugin listed in OCC's official and community catalogs and on the
 [plugin directory](https://onorca.dev/plugins). For how to write and publish a plugin, see
-[Writing an Orca plugin](plugin-authoring.md).
+[Writing an OCC plugin](plugin-authoring.md).
 
 ## Free to install and use
 
-Orca doesn't support paid plugins yet. A listed plugin must be free to install and use:
+OCC doesn't support paid plugins yet. A listed plugin must be free to install and use:
 
 - No paywalls, license keys, trials, or features locked behind a purchase or subscription.
 - A plugin may connect to a paid service the user already has, such as their own API account.
@@ -37,5 +37,5 @@ explicit content.
 ## Reports and removal
 
 Anyone can use **Report this plugin** on a plugin's directory page. A plugin that is reported and
-breaks these rules is removed from the listings. If it is harmful, Orca's kill list also disables
+breaks these rules is removed from the listings. If it is harmful, OCC's kill list also disables
 copies that are already installed.

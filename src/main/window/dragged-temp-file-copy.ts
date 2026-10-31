@@ -24,7 +24,7 @@ import {
   type CheckedDragTempSource
 } from './checked-drag-temp-source'
 
-// macOS drag thumbnails require Orca-main TCC attribution; detached PTY daemons get EPERM on TemporaryItems/NSIRD_* originals.
+// macOS drag thumbnails require OCC-main TCC attribution; detached PTY daemons get EPERM on TemporaryItems/NSIRD_* originals.
 
 const DRAG_TEMP_COPY_ROOT_NAME = 'orca-drops'
 // No expiry: terminal agents/drafts/messages may still name copies without ownership signals. A local chat's drop goes straight into its chat store instead.
@@ -33,7 +33,7 @@ export type DragTempCopyEnvironment = {
   platform: NodeJS.Platform
   /** macOS per-user temp dir: where drag providers put their files. */
   sourceTempRoot: string
-  /** Orca-owned directory that holds one `orca-drop-*` directory per copy. */
+  /** OCC-owned directory that holds one `orca-drop-*` directory per copy. */
   copyRoot: string
 }
 
@@ -68,7 +68,7 @@ export function getDragTempCopyRoot(appTempRoot: string): string {
 }
 
 /**
- * Copy every drag-temp path in a drop into Orca-owned storage, sequentially,
+ * Copy every drag-temp path in a drop into OCC-owned storage, sequentially,
  * within the per-drop byte budget. Other paths pass through unchanged.
  */
 export async function materializeDragTempPaths(

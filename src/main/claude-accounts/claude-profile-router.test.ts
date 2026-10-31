@@ -298,7 +298,7 @@ describe('ClaudeProfileRouter', () => {
     await expect(refused).rejects.toThrow(CLAUDE_PROFILE_SETUP_FAILED_MESSAGE)
   })
 
-  it("reads an older Orca's copy-based switching from the System default snapshot it left", () => {
+  it("reads an older OCC's copy-based switching from the System default snapshot it left", () => {
     const f = fixture()
     expect(f.router.copiedLoginIntoSystemDefault()).toBe(false)
     mkdirSync(join(f.dataRoot, 'claude-runtime-auth'), { recursive: true })
@@ -571,7 +571,7 @@ describe('ClaudeProfileRouter', () => {
     })
   })
 
-  it('treats a CLAUDE_CONFIG_DIR an outer Orca injected as not the user’s', () => {
+  it('treats a CLAUDE_CONFIG_DIR an outer OCC injected as not the user’s', () => {
     const f = fixture({
       CLAUDE_CONFIG_DIR: '/outer/profile',
       ORCA_CLAUDE_INJECTED_CONFIG_DIR: '/outer/profile'
@@ -621,7 +621,7 @@ describe('ClaudeProfileRouter', () => {
     expect(claudeProfileHistoryDirs('projects')).toEqual([projects])
   })
 
-  it("lists history under the CLAUDE_CONFIG_DIR set in Orca's Claude launch environment", () => {
+  it("lists history under the CLAUDE_CONFIG_DIR set in OCC's Claude launch environment", () => {
     const f = fixture()
     const configDir = join(f.root, '.claude-settings')
     mkdirSync(join(configDir, 'projects'), { recursive: true })

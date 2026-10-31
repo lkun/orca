@@ -98,7 +98,7 @@ describe('Claude hooks at an explicit profile', () => {
     expect(readFileSync(join(f.defaultDir, 'settings.json'), 'utf8')).toBe(before)
     expect(f.settings(f.profile)).toEqual({ model: 'profile', hooks: JSON.parse(before).hooks })
   })
-  it("shares the user's hooks, Orca's hooks and statusline as plain keys that installs leave in sync", async () => {
+  it("shares the user's hooks, OCC's hooks and statusline as plain keys that installs leave in sync", async () => {
     const f = fixture()
     const { hook, setStop, stop, orcaCount } = stopHooks(f)
     f.service.install(CURRENT)
@@ -118,7 +118,7 @@ describe('Claude hooks at an explicit profile', () => {
     expect(orcaCount(f.profile)).toBe(1)
   })
   it.each(['with', 'without'])(
-    'leaves the profile settings untouched by a refresh that changes nothing, %s Orca hooks in the default home',
+    'leaves the profile settings untouched by a refresh that changes nothing, %s OCC hooks in the default home',
     async (variant) => {
       const f = fixture()
       writeFileSync(join(f.defaultDir, 'settings.json'), JSON.stringify({ model: 'opus' }))

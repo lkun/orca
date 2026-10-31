@@ -27,7 +27,7 @@ export function usePdfOpener(): PdfOpener | null {
           }
           if (error instanceof NativeVerbError && error.reason === 'native_pdf_host_outdated') {
             throw new PdfOpenRefusedError(
-              'Update Orca where this workspace runs to open PDFs on mobile'
+              'Update OCC where this workspace runs to open PDFs on mobile'
             )
           }
           throw new Error('Unable to open this PDF')

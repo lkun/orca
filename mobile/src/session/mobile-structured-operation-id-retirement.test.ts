@@ -299,7 +299,7 @@ describe('what a structured refusal says on the phone', () => {
     expect(result).toEqual({
       status: 'failed',
       message:
-        'This needs a newer Orca on the computer running this chat. Update Orca there, then try again.'
+        'This needs a newer OCC on the computer running this chat. Update OCC there, then try again.'
     })
   })
 })

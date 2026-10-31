@@ -47,16 +47,16 @@ function notInstalledStatus(overrides: Partial<CliInstallStatus> = {}): CliInsta
   return {
     platform: 'darwin',
     commandName: 'orca',
-    commandPath: '/usr/local/bin/orca',
+    commandPath: '/usr/local/bin/occ',
     pathDirectory: '/usr/local/bin',
     pathConfigured: true,
-    launcherPath: '/Applications/Orca.app/Contents/Resources/bin/orca',
+    launcherPath: '/Applications/OCC.app/Contents/Resources/bin/occ',
     installMethod: 'symlink',
     supported: true,
     state: 'not_installed',
     currentTarget: null,
     unsupportedReason: null,
-    detail: 'Register /usr/local/bin/orca to use Orca from the terminal.',
+    detail: 'Register /usr/local/bin/occ to use OCC from the terminal.',
     ...overrides
   }
 }
@@ -92,7 +92,7 @@ describe('CliSection install failure surfacing', () => {
   it('shows the thrown conflict reason and its remedy instead of a success toast', async () => {
     await renderCliSectionAndInstall(async () => {
       throw new Error(
-        "Error invoking remote method 'cli:install': Error: Refusing to replace non-Orca " +
+        "Error invoking remote method 'cli:install': Error: Refusing to replace non-OCC " +
           'command at /usr/local/bin/orca. Remove it and register again if it is no longer needed.'
       )
     })
@@ -100,7 +100,7 @@ describe('CliSection install failure surfacing', () => {
     const alert = screen.getByRole('alert')
     expect(alert.textContent).toContain('Failed to register `orca` in PATH.')
     expect(alert.textContent).toContain(
-      'Refusing to replace non-Orca command at /usr/local/bin/orca.'
+      'Refusing to replace non-OCC command at /usr/local/bin/orca.'
     )
     expect(alert.textContent).toContain('Remove it and register again if it is no longer needed.')
     expect(alert.textContent).not.toContain('invoking remote method')
@@ -112,14 +112,14 @@ describe('CliSection install failure surfacing', () => {
     await renderCliSectionAndInstall(async () =>
       notInstalledStatus({
         state: 'conflict',
-        detail: '/usr/local/bin/orca exists but is not an Orca symlink.'
+        detail: '/usr/local/bin/occ exists but is not an OCC symlink.'
       })
     )
 
     const alert = screen.getByRole('alert')
-    expect(alert.textContent).toContain('/usr/local/bin/orca exists but is not an Orca symlink.')
+    expect(alert.textContent).toContain('/usr/local/bin/occ exists but is not an OCC symlink.')
     expect(alert.textContent).toContain(
-      'Remove /usr/local/bin/orca and register again if it is no longer needed.'
+      'Remove /usr/local/bin/occ and register again if it is no longer needed.'
     )
     expect(toasts.success).not.toHaveBeenCalled()
   })
@@ -130,12 +130,12 @@ describe('CliSection install failure surfacing', () => {
         state: 'unsupported',
         supported: false,
         unsupportedReason: 'launcher_missing',
-        detail: 'The bundled CLI launcher is missing from this Orca build.'
+        detail: 'The bundled CLI launcher is missing from this OCC build.'
       })
     )
 
     expect(screen.getByRole('alert').textContent).toContain(
-      'The bundled CLI launcher is missing from this Orca build.'
+      'The bundled CLI launcher is missing from this OCC build.'
     )
     expect(toasts.success).not.toHaveBeenCalled()
     expect(toasts.error).toHaveBeenCalledTimes(1)

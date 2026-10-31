@@ -149,7 +149,7 @@ export function driveSyntheticTitleFromHook(
   sendSyntheticTitle(ptyId, `\x1b]0;${label}\x07${needsUserInput ? '\x07' : ''}`, { force: true })
 }
 
-// Why: a profile that leaves working titles to the agent never overwrites the rest label Orca
+// Why: a profile that leaves working titles to the agent never overwrites the rest label OCC
 // wrote, so an agent that paints no working title (Codex with its activity title off) would read
 // as at rest for the whole next turn, to tui-idle, mailbox delivery and the tab alike.
 function retractSyntheticRestTitle(paneKey: string, profile: SyntheticAgentTitleProfile): void {

@@ -85,7 +85,7 @@ describeOnWindows('Windows secure paths against a real filesystem', () => {
     }
   }
 
-  it('starts from a relocated root that really is broader than Orca allows', () => {
+  it('starts from a relocated root that really is broader than OCC allows', () => {
     const verdict = findSecureDaclViolation(addon.getDaclAces(relocatedRoot), sid, true)
     expect(verdict).toMatch(/unexpected rule for S-1-5-(11|32-545)/)
   })

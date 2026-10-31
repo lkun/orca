@@ -50,7 +50,7 @@ describe('detectSkillProvidersInWsl', () => {
     expect(found.toSorted()).toEqual(['claude', 'codex'])
   })
 
-  it('probes every install provider by the commands Orca detects it with', async () => {
+  it('probes every install provider by the commands OCC detects it with', async () => {
     runWslProcessMock.mockResolvedValue({
       environmentResolved: true,
       code: 0,

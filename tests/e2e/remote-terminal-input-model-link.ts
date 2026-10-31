@@ -129,7 +129,7 @@ export function createModelLink(writeInput: (text: string) => Promise<unknown>) 
     sendBinary: (bytes: Uint8Array) => void
   }> {
     if (link.unreachable) {
-      throw Object.assign(new Error('Could not connect to the remote Orca runtime.'), {
+      throw Object.assign(new Error('Could not connect to the remote OCC runtime.'), {
         code: 'remote_runtime_unavailable'
       })
     }

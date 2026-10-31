@@ -133,12 +133,12 @@ describe('Pi session changes', () => {
     expect(posts(harness).at(-2)).not.toHaveProperty('session_boundary')
   })
 
-  it('gives up on a completion Orca keeps refusing, then sends what came after', async () => {
+  it('gives up on a completion OCC keeps refusing, then sends what came after', async () => {
     let attempts = 0
     const harness = createPi(async () => {
       attempts += 1
       if (attempts >= 3 && attempts <= 6) {
-        throw new Error('Orca down')
+        throw new Error('OCC down')
       }
       return { ok: true }
     })
@@ -196,7 +196,7 @@ describe('Pi session changes', () => {
     const harness = createPi(async () => {
       attempts += 1
       if (attempts === 3) {
-        throw new Error('Orca restarting')
+        throw new Error('OCC restarting')
       }
       return { ok: true }
     })

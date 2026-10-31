@@ -184,7 +184,7 @@ describe('managed server CLI verbs', () => {
       }
       throw new RuntimeClientError(
         'runtime_timeout',
-        'Timed out waiting for the Orca runtime to respond.'
+        'Timed out waiting for the OCC runtime to respond.'
       )
     })
     await expect(run('environment update', call, [])).rejects.toMatchObject({
@@ -205,7 +205,7 @@ describe('managed server CLI verbs', () => {
         updated = true
         throw new RuntimeClientError(
           'runtime_unavailable',
-          'The Orca runtime closed the connection before responding.'
+          'The OCC runtime closed the connection before responding.'
         )
       }
       return envelope({ activeVersion: '0.2.0+bb01', recovery: null, deferredUpdate: null })

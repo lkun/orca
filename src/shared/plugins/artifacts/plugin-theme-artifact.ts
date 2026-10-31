@@ -71,7 +71,7 @@ const DERIVED_TOKENS: Record<string, DerivationRule> = {
   '--secondary-foreground': ['--foreground'],
   '--input': ['--border'],
   '--ring': ['--primary'],
-  // Why a lift: Orca draws no line between the left sidebar and the canvas; the surface step is
+  // Why a lift: OCC draws no line between the left sidebar and the canvas; the surface step is
   // the divider, so a sidebar equal to the background leaves no edge at all.
   '--sidebar': { mixForeground: 8 },
   '--sidebar-foreground': ['--foreground'],
@@ -196,7 +196,7 @@ const hasRequiredTokens = (theme: { tokens: Record<string, string> }): boolean =
   PLUGIN_APP_THEME_REQUIRED_TOKENS.every((token) => theme.tokens[token])
 
 /** `validate:plugin` refuses unknown keys; shipped clients skip them, so a token or slot added
- *  later never fails a whole theme on an older Orca. */
+ *  later never fails a whole theme on an older OCC. */
 export type PluginArtifactStrictness = 'strict' | 'tolerant'
 
 /** Keeps only `known` keys of an object; anything else passes through for the schema to reject. */

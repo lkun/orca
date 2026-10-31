@@ -12,7 +12,7 @@ import { MobileRelayBetaNotice } from './MobileRelayBetaNotice'
 import { openAppHttpLink } from '@/lib/app-http-link-open'
 export { getMobileSettingsPaneSearchEntries }
 
-const ORCA_IOS_APP_STORE_URL = 'https://apps.apple.com/app/orca-ide/id6766130217'
+const ORCA_IOS_APP_STORE_URL = 'https://apps.apple.com/app/occ-ide/id6766130217'
 const ORCA_ANDROID_APK_URL = 'https://www.onorca.dev/download/android'
 
 export function MobileSettingsPane(): React.JSX.Element {
@@ -34,7 +34,7 @@ export function MobileSettingsPane(): React.JSX.Element {
           <p>
             {translate(
               'auto.components.settings.MobileSettingsPane.installIntro',
-              'Install Orca Mobile from the'
+              'Install OCC Mobile from the'
             )}{' '}
             <button
               type="button"
@@ -67,11 +67,11 @@ export function MobileSettingsPane(): React.JSX.Element {
       <SearchableSetting
         title={translate(
           'auto.components.settings.MobileSettingsPane.1de96ec8a6',
-          'Show Orca Mobile Button'
+          'Show OCC Mobile Button'
         )}
         description={translate(
           'auto.components.settings.MobileSettingsPane.682293cadf',
-          'Show the Orca Mobile button at the top of the left sidebar.'
+          'Show the OCC Mobile button at the top of the left sidebar.'
         )}
         keywords={getMobileSidebarShortcutSearchEntry().keywords}
       >
@@ -79,11 +79,11 @@ export function MobileSettingsPane(): React.JSX.Element {
         <SettingsSwitchRow
           label={translate(
             'auto.components.settings.MobileSettingsPane.1de96ec8a6',
-            'Show Orca Mobile Button'
+            'Show OCC Mobile Button'
           )}
           description={translate(
             'auto.components.settings.MobileSettingsPane.d4f2b65f30',
-            'Show the Orca Mobile shortcut in the sidebar.'
+            'Show the OCC Mobile shortcut in the sidebar.'
           )}
           checked={showMobileButton}
           onChange={() => updateSettings({ showMobileButton: !showMobileButton })}

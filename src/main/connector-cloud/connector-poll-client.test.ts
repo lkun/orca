@@ -585,7 +585,7 @@ describe('ConnectorPollClient', () => {
     client.stop()
   })
 
-  it('posts a reply to Orca Cloud with its turn, and a resend with the same id posts once', async () => {
+  it('posts a reply to OCC Cloud with its turn, and a resend with the same id posts once', async () => {
     const { client } = startClient()
     await settle()
     const body = { replyId: 'r1', conversation, turnId: 7, text: 'done' }

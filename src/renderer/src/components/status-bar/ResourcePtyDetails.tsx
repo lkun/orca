@@ -25,9 +25,9 @@ export function ResourcePtyDetails({
   const copySessionId = async (): Promise<void> => {
     try {
       await window.api.ui.writeClipboardText(row.session.id)
-      toast.success(translate('resourceManager.pty.idCopied', 'Orca session ID copied'))
+      toast.success(translate('resourceManager.pty.idCopied', 'OCC session ID copied'))
     } catch {
-      toast.error(translate('resourceManager.pty.copyFailed', 'Could not copy Orca session ID'))
+      toast.error(translate('resourceManager.pty.copyFailed', 'Could not copy OCC session ID'))
     }
   }
   const unavailable = translate('resourceManager.pty.unavailable', 'Unavailable')
@@ -38,7 +38,7 @@ export function ResourcePtyDetails({
         ? translate('resourceManager.pty.ownerAbsent', 'Absent')
         : translate('resourceManager.pty.ownerUnknown', 'Unknown')
   const fields = [
-    [translate('resourceManager.pty.sessionId', 'Orca session ID'), row.session.id],
+    [translate('resourceManager.pty.sessionId', 'OCC session ID'), row.session.id],
     [
       translate('resourceManager.pty.incarnation', 'Incarnation'),
       row.session.incarnationId || unavailable
@@ -68,7 +68,7 @@ export function ResourcePtyDetails({
       </dl>
       <Button variant="ghost" size="xs" className="mt-2" onClick={() => void copySessionId()}>
         <Copy className="size-3.5" />
-        {translate('resourceManager.pty.copyId', 'Copy Orca session ID')}
+        {translate('resourceManager.pty.copyId', 'Copy OCC session ID')}
       </Button>
     </div>
   )

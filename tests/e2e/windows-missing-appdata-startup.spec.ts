@@ -11,7 +11,7 @@ import { RuntimeClient } from '../../src/cli/runtime/client'
 import { RuntimeClientError } from '../../src/cli/runtime/types'
 
 // Regression: a profile-less Windows session (e.g. `orca serve` over SSH) has no roaming AppData,
-// and Electron 43 crashed natively resolving userData before Orca pinned it.
+// and Electron 43 crashed natively resolving userData before OCC pinned it.
 test('orca serve starts on Windows when the home has no AppData folder', async (// oxlint-disable-next-line no-empty-pattern -- This spec owns its launch and opts out of the default app fixture.
 {}, testInfo) => {
   test.skip(process.platform !== 'win32', 'Windows AppData resolution only')
@@ -48,7 +48,7 @@ test('orca serve starts on Windows when the home has no AppData folder', async (
     expect(realpathSync.native(paths.userData).toLowerCase()).toBe(
       realpathSync.native(userDataDir).toLowerCase()
     )
-    // Records whether Windows reported AppData or Orca fell back to the environment.
+    // Records whether Windows reported AppData or OCC fell back to the environment.
     testInfo.annotations.push({
       type: 'appData',
       description: `${paths.appData === missingAppData ? 'env fallback' : 'native'}: ${paths.appData}`

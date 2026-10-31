@@ -34,7 +34,7 @@ export class AiVaultScanIssueError extends Error {
   }
 }
 
-/** Issue copy for a caught scan error: coded when Orca authored it, else its verbatim message. */
+/** Issue copy for a caught scan error: coded when OCC authored it, else its verbatim message. */
 export function scanIssueTextFromError(error: unknown): AiVaultScanIssueText {
   if (error instanceof AiVaultScanIssueError) {
     return error.text

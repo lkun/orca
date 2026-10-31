@@ -136,7 +136,7 @@ it('shows the queued task and edits, saves and reopens its full raw input in the
   expect(screen.getByTitle(task).textContent).toBe(task)
   expect(screen.getByText('From')).toBeDefined()
   expect(screen.getByText('an agent')).toBeDefined()
-  expect(screen.queryByText(/You are working inside Orca/)).toBeNull()
+  expect(screen.queryByText(/You are working inside OCC/)).toBeNull()
 
   fireEvent.pointerDown(screen.getByRole('button', { name: 'More actions' }))
   fireEvent.click(await screen.findByRole('menuitem', { name: 'Edit message' }))

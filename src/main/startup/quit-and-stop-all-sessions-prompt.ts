@@ -22,11 +22,11 @@ export async function confirmQuitAndStopAllSessions(
     title: translateMain('quitAndStopAllSessions.title', 'Quit Completely'),
     message: translateMain(
       'quitAndStopAllSessions.message',
-      'Stop all terminal sessions and quit Orca?'
+      'Stop all terminal sessions and quit OCC?'
     ),
     detail: translateMain(
       'quitAndStopAllSessions.detail',
-      "Orca closes every terminal tab and stops its session, including agents running in terminals, then quits. Plain Quit keeps them running so Orca reattaches on next launch. Terminal sessions on remote hosts may keep running there. Unsaved terminal work is lost, and the closed tabs don't come back on next launch. This can't be undone."
+      "OCC closes every terminal tab and stops its session, including agents running in terminals, then quits. Plain Quit keeps them running so OCC reattaches on next launch. Terminal sessions on remote hosts may keep running there. Unsaved terminal work is lost, and the closed tabs don't come back on next launch. This can't be undone."
     )
   })
   return response === CONFIRM_BUTTON_INDEX
@@ -45,11 +45,11 @@ export async function explainStopAllSessionsUnavailable(
     title: translateMain('quitAndStopAllSessions.title', 'Quit Completely'),
     message: translateMain(
       'quitAndStopAllSessions.unavailableMessage',
-      "Orca can't stop every terminal session right now."
+      "OCC can't stop every terminal session right now."
     ),
     detail: translateMain(
       'quitAndStopAllSessions.unavailableDetail',
-      'Nothing was stopped. Try again once your terminals have opened. If a terminal says it was opened in a newer version of Orca, reopen it first. If your terminals are already open, quit and reopen Orca, then try again.'
+      'Nothing was stopped. Try again once your terminals have opened. If a terminal says it was opened in a newer version of OCC, reopen it first. If your terminals are already open, quit and reopen OCC, then try again.'
     )
   })
   return false

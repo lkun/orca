@@ -9,7 +9,7 @@ export function buildSleepingAgentLaunchConfig(args: {
   return {
     ...(args.agentCommand?.trim() ? { agentCommand: args.agentCommand } : {}),
     agentArgs: args.agentArgs ?? '',
-    // Startup env may contain prompt/pane transport; persist only Orca-managed launch inputs.
+    // Startup env may contain prompt/pane transport; persist only OCC-managed launch inputs.
     agentEnv: args.agentEnv ? { ...args.agentEnv } : {},
     ...(args.ompResumeFilePath?.trim() ? { ompResumeFilePath: args.ompResumeFilePath.trim() } : {})
   }

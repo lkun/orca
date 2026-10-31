@@ -124,14 +124,14 @@ beforeAll(async () => {
     join(extensionDir, 'manifest.json'),
     JSON.stringify({
       manifest_version: 3,
-      name: 'Orca persistence probe',
+      name: 'OCC persistence probe',
       version: '1.0.0',
       permissions: ['contextMenus', 'scripting', 'storage', 'webRequest'],
       host_permissions: ['http://127.0.0.1/*'],
       background: { service_worker: 'worker.js' },
       commands: {
         fill_login: { suggested_key: { default: 'Ctrl+Shift+L' }, description: 'Fill' },
-        orca_owned: { suggested_key: { default: 'Ctrl+Shift+F' }, description: 'Taken by Orca' }
+        orca_owned: { suggested_key: { default: 'Ctrl+Shift+F' }, description: 'Taken by OCC' }
       }
     })
   )
@@ -181,10 +181,10 @@ describe('browser extension state across a restart', () => {
       Boolean(status.contentScript && status.webRequest && status.menu !== undefined)
     )
     const status = readStatus('second')
-    // Orca keeps sync storage across a restart (Electron disables the native area).
+    // OCC keeps sync storage across a restart (Electron disables the native area).
     await pollStatus('second', (current) => Boolean(current.sync))
     expect(readStatus('second').sync).toEqual({ remembered: { dark: true } })
-    // Electron forgot the script; Orca re-registered it before the tab's first load.
+    // Electron forgot the script; OCC re-registered it before the tab's first load.
     expect(status.contentScript).toEqual({ path: '/login' })
     expect(status.webRequest).toEqual({
       path: '/login',
@@ -192,13 +192,13 @@ describe('browser extension state across a restart', () => {
       tabId: expect.any(Number),
       statusCode: 200
     })
-    // The worker did not create menus this run; they came back from Orca's saved state.
+    // The worker did not create menus this run; they came back from OCC's saved state.
     expect(status.menu).toEqual([
       {
         extensionId: expect.any(String),
         items: [
           expect.objectContaining({
-            title: 'Orca persistence probe',
+            title: 'OCC persistence probe',
             children: [
               expect.objectContaining({ key: '"fill"', title: 'Fill field' }),
               expect.objectContaining({ key: '"generate"', title: 'Generate password' })
@@ -207,7 +207,7 @@ describe('browser extension state across a restart', () => {
         ]
       }
     ])
-    // Command shortcuts typed into the tab reach the extension unless Orca owns the keys.
+    // Command shortcuts typed into the tab reach the extension unless OCC owns the keys.
     await pollStatus('second', (current) => Boolean(current.commands))
     // ast-grep-ignore: test-no-real-time-wait -- Observe late forbidden shortcut deliveries from the separate Electron worker.
     await new Promise((resolve) => setTimeout(resolve, 500))

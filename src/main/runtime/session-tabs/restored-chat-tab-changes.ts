@@ -26,7 +26,7 @@ export function restoredChatTabChanges(
         tabId: chatTabId(session.sessionId)
       }
     })),
-    // A chat a newer Orca wrote is only unreadable here, so it keeps its tab.
+    // A chat a newer OCC wrote is only unreadable here, so it keeps its tab.
     (sessionId) =>
       !!host &&
       structuredSessionTabRetired(host, sessionId) &&

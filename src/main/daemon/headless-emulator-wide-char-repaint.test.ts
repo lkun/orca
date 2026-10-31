@@ -4,11 +4,11 @@ import type { Terminal } from '@xterm/headless'
 import { HeadlessEmulator } from './headless-emulator'
 import { WideCellGrid, readGridRows } from './__fixtures__/terminal-wide-cell-grid'
 
-const KO = '안녕하세요 오르카 테스트입니다.'
+const KO = '안녕하세요 OCC 테스트입니다.'
 const KO2 = '결론부터 말씀드리면 시각적 피로도'
 const LA = 'roadmap/complete-overhaul-backlog-history.md'
 // Whole-row repaint fixtures must fit one physical row because CR returns to that row’s start.
-const KO_ROW = '안녕하세요 오르카'
+const KO_ROW = '안녕하세요 OCC'
 const KO2_ROW = '테스트입니다.'
 const LA_ROW = 'complete-overhaul.md'
 const ROWS = 14

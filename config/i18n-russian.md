@@ -12,11 +12,11 @@ Translate complete phrases in context. Preserve product names, command syntax, p
 
 ## Glossary
 
-Use these renderings unless context clearly requires otherwise. Address the user as «вы» (lowercase mid-sentence). Buttons and commands use the infinitive («Создать», «Открыть»); instructions use the polite imperative («Выберите»). Use sentence case, «ёлочки» quotes, a single `…` character, and write «ё» consistently. Keep product names (Orca, Claude Code, Codex, GitHub, GitLab), commands, paths and placeholders in their original form.
+Use these renderings unless context clearly requires otherwise. Address the user as «вы» (lowercase mid-sentence). Buttons and commands use the infinitive («Создать», «Открыть»); instructions use the polite imperative («Выберите»). Use sentence case, «ёлочки» quotes, a single `…` character, and write «ё» consistently. Keep product names (OCC, Claude Code, Codex, GitHub, GitLab), commands, paths and placeholders in their original form.
 
 | English         | Russian                | Notes                                                                        |
 | --------------- | ---------------------- | ---------------------------------------------------------------------------- |
-| workspace       | рабочее пространство   | Сущность Orca, объединяющая рабочие инструменты                              |
+| workspace       | рабочее пространство   | Сущность OCC, объединяющая рабочие инструменты                              |
 | worktree        | рабочее дерево         | Git worktree; отличать от workspace. Мн. ч. «рабочие деревья»                |
 | agent           | агент                  | В действиях — «запустить агента», «остановить агента»                        |
 | repository      | репозиторий            | Также для сокращения repo                                                    |
@@ -46,7 +46,7 @@ Use these renderings unless context clearly requires otherwise. Address the user
 | push            | отправить              | Отправка коммитов в удалённый репозиторий                                    |
 | pull            | получить и слить       | При rebase — «Получить и перебазировать»                                     |
 | fetch           | получить изменения     | Получает данные из удалённого репозитория без слияния с текущей веткой       |
-| project         | проект                 | Название сущности Orca и проекта во внешнем трекере                          |
+| project         | проект                 | Название сущности OCC и проекта во внешнем трекере                          |
 | folder          | папка                  | Основной термин для файлового интерфейса и выбора расположения               |
 | file            | файл                   | Filename — «имя файла», file path — «путь к файлу»                           |
 | quota           | квота                  | «квота исчерпана», «остаток квоты»                                           |

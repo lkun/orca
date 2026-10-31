@@ -46,7 +46,7 @@ export function resolveWslHookRelayBundle(): WslHookRelayBundle | null {
   return null
 }
 
-// Versioned directories keep parallel Orca builds from overwriting each other.
+// Versioned directories keep parallel OCC builds from overwriting each other.
 function guestRelayDirExpr(version: string): string {
   return `$HOME/${WSL_HOOK_RELAY_DIR}/${version}`
 }

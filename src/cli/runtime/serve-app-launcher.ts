@@ -11,21 +11,21 @@ export function canStartOrcaServer(env: NodeJS.ProcessEnv): boolean {
   )
 }
 
-/** Linux installs the app's CLI as `orca-ide`: a bare `orca` there is often the screen reader. */
+/** Linux installs the app's CLI as `occ-ide`: a bare `occ` there is often the screen reader. */
 export function appCliName(platform: NodeJS.Platform): string {
-  return platform === 'linux' ? 'orca-ide' : 'orca'
+  return platform === 'linux' ? 'occ-ide' : 'occ'
 }
 
 const NOT_AN_APP_CLI =
-  "This `orca` command isn't running from an installed Orca app. On a host Orca reaches over SSH, it belongs to that connection's server and can't start one of its own."
+  "This `occ` command isn't running from an installed OCC app. On a host OCC reaches over SSH, it belongs to that connection's server and can't start one of its own."
 
 export function serverOnlyServeMessage(platform: NodeJS.Platform): string {
-  return `${NOT_AN_APP_CLI} Install the Orca app on this machine and run \`${appCliName(platform)} serve\` from a plain login shell, or set ORCA_APP_EXECUTABLE to the Orca app executable.`
+  return `${NOT_AN_APP_CLI} Install the OCC app on this machine and run \`${appCliName(platform)} serve\` from a plain login shell, or set ORCA_APP_EXECUTABLE to the OCC app executable.`
 }
 
 function serverOnlyServiceInstallMessage(platform: NodeJS.Platform): string {
   const name = appCliName(platform)
-  return `Could not find the installed Orca app's \`${name}\` command on PATH. ${NOT_AN_APP_CLI} Install the Orca app on this machine, then run \`${name} serve service install\` from a plain login shell so the service uses the app's own profile, or pass --command <absolute path to the app's ${name}>.`
+  return `Could not find the installed OCC app's \`${name}\` command on PATH. ${NOT_AN_APP_CLI} Install the OCC app on this machine, then run \`${name} serve service install\` from a plain login shell so the service uses the app's own profile, or pass --command <absolute path to the app's ${name}>.`
 }
 
 function isVersionScopedDir(dir: string, userData: string): boolean {
@@ -62,7 +62,7 @@ export function resolveServiceCommand(
     if (isVersionScopedDir(dirname(explicit), userData)) {
       throw new RuntimeClientError(
         'invalid_argument',
-        `--command points at a launcher tied to one Orca version, which the next update replaces: ${explicit}. Pass the installed Orca app's \`${appCliName(deps.platform)}\` instead.`
+        `--command points at a launcher tied to one OCC version, which the next update replaces: ${explicit}. Pass the installed OCC app's \`${appCliName(deps.platform)}\` instead.`
       )
     }
     return explicit
@@ -77,7 +77,7 @@ export function resolveServiceCommand(
   throw new RuntimeClientError(
     'cli_not_found',
     canStartOrcaServer(deps.env)
-      ? `Could not find the \`${name}\` command on PATH. Install it from Orca Settings, or pass --command <absolute path>.`
+      ? `Could not find the \`${name}\` command on PATH. Install it from OCC Settings, or pass --command <absolute path>.`
       : serverOnlyServiceInstallMessage(deps.platform)
   )
 }

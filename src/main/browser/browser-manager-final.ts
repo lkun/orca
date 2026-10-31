@@ -12,7 +12,7 @@ export abstract class BrowserManagerFinal extends BrowserManagerEventForwarding 
     if (!normalizedUrl || normalizedUrl === ORCA_BROWSER_BLANK_URL) {
       return false
     }
-    // The renderer owns Orca's tab model; forward the validated URL for materialization.
+    // The renderer owns OCC's tab model; forward the validated URL for materialization.
     renderer.send('browser:open-link-in-orca-tab', {
       browserPageId: browserTabId,
       url: normalizedUrl,

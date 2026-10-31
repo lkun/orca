@@ -81,7 +81,7 @@ export function RepoWslDistroStoppedIndicator({
             <div className="text-muted-foreground">
               {translate(
                 'auto.components.sidebar.RepoScanUnavailableIndicator.wslRetained',
-                'Showing the worktrees Orca already knew about. They refresh when Orca sees the distro running.'
+                'Showing the worktrees OCC already knew about. They refresh when OCC sees the distro running.'
               )}
             </div>
             <div className="text-muted-foreground">

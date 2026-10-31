@@ -12,7 +12,7 @@ export type AutomationHostRecoveryDeps = {
   openSettings: (target: SettingsNavigationTarget) => void
 }
 
-/** The Remote Orca Servers pane owns each runtime's version status and update action. */
+/** The Remote OCC Servers pane owns each runtime's version status and update action. */
 function versionSettingsTarget(entry: AutomationHostCatalogEntry): SettingsNavigationTarget {
   if (entry.stableRef.authority.kind === 'runtime') {
     return {

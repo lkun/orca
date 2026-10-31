@@ -95,7 +95,7 @@ export class SshConnection {
     generation: number
     sources: Promise<HostKeyTrustSources>
   } | null = null
-  /** Generation whose ssh2 attempt found an Orca-stored key for this endpoint. */
+  /** Generation whose ssh2 attempt found an OCC-stored key for this endpoint. */
   private orcaStorePinnedGeneration: number | null = null
   private systemSshControlMasterDisabledForSession = false
   private systemSshGssapiOnlyForSession = false

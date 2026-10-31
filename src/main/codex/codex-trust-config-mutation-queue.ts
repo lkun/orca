@@ -5,7 +5,7 @@ const tailByTomlPath = new Map<string, Promise<void>>()
 // Preserve lane ownership across awaits so nested installer calls cannot deadlock.
 const heldKeys = new AsyncLocalStorage<ReadonlySet<string>>()
 
-/** Serialize Orca mutations per config file; Codex grant RPCs hold no lane. */
+/** Serialize OCC mutations per config file; Codex grant RPCs hold no lane. */
 export function runExclusivelyForCodexTrustConfig<T>(
   tomlPath: string,
   run: () => Promise<T>

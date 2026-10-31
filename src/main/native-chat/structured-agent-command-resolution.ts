@@ -69,7 +69,7 @@ function resolveOverride(
     : null
 }
 
-// Extensionless commands cannot spawn on Windows; .cmd/.bat use Orca’s shim handling.
+// Extensionless commands cannot spawn on Windows; .cmd/.bat use OCC’s shim handling.
 function spawnableOn(platform: NodeJS.Platform, command: string): boolean {
   return platform !== 'win32' || /\.(exe|com|cmd|bat)$/i.test(command)
 }

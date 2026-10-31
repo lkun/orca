@@ -131,7 +131,7 @@ describe('SkillFreshnessNudge', () => {
     await renderNudge()
 
     expect(mocks.toastInfo).toHaveBeenCalledTimes(1)
-    expect(mocks.toastInfo.mock.calls[0]?.[0]).toBe('An installed Orca skill is out of date')
+    expect(mocks.toastInfo.mock.calls[0]?.[0]).toBe('An installed OCC skill is out of date')
     expect(mocks.toastInfo.mock.calls[0]?.[1].description).toContain('Update orca-cli so')
   })
 

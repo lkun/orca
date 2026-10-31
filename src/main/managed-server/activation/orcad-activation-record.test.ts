@@ -110,7 +110,7 @@ describe('orcad activation record', () => {
     expect(pinned).toEqual(['orcad-0.3.0+cc01'])
   })
 
-  it('records which Orca activated each version, and the build a rollback left', () => {
+  it('records which OCC activated each version, and the build a rollback left', () => {
     const first = withActivatedVersion(
       emptyOrcadActivationRecord(),
       '0.1.0+aa01',

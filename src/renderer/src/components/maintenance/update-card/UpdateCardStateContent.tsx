@@ -98,7 +98,7 @@ export function UpdateCardStateContent({
           <p className="text-sm text-muted-foreground">
             {translate(
               'updates.installBlock.preparingSummary',
-              'Checking running Orca instances before restarting.'
+              'Checking running OCC instances before restarting.'
             )}
           </p>
         </div>

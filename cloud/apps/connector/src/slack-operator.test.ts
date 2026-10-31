@@ -73,14 +73,14 @@ describe('Slack operator command', () => {
     expect(await installs.botToken(database, 'T1')).toBe('xoxb-1')
   })
 
-  it('keeps one Orca app per workspace, and never replaces an app’s secrets', async () => {
+  it('keeps one OCC app per workspace, and never replaces an app’s secrets', async () => {
     const { database, tokenKey, run } = await setup()
     await run(...REGISTER)
     await run(...INSTALL)
     await run('register-app', '--app-id', 'A2', '--client-id', '3.4')
     await expect(
       run('install', '--team', 'T1', '--bot-user', 'U2', '--app-id', 'A2')
-    ).rejects.toThrow('T1 already has another Orca app installed')
+    ).rejects.toThrow('T1 already has another OCC app installed')
     expect(await new SlackInstalls(tokenKey).find(database, 'T1')).toMatchObject({
       appId: 'A1',
       botUserId: 'UBOT'

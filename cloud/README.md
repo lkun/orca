@@ -1,12 +1,12 @@
-# Orca Relay
+# OCC Relay
 
-The relay that connects the Orca mobile app to a desktop host. Phones and
+The relay that connects the OCC mobile app to a desktop host. Phones and
 desktops never talk to each other directly: each opens an outbound WebSocket
 to a relay cell, the relay pairs the two sessions, and it splices frames
 between them. A director assigns hosts to cells and coordinates migrations;
 cells carry the user connections.
 
-This directory is an independent pnpm workspace inside the Orca monorepo. Run
+This directory is an independent pnpm workspace inside the OCC monorepo. Run
 its commands from `cloud/`, not the repository root. The source is covered by
 the repository's root [MIT license](../LICENSE).
 
@@ -29,14 +29,14 @@ the validation required before rolling out the updated images and host pins.
   the APNs key and sends to phones through APNs and FCM, and its wire contract.
   Deployment and operations are owned by the private `stablyai/orca-cloud` repository.
 - `apps/connector` and `packages/connector-contract`: the Slack connector service
-  (experimental). A signed-in Orca calls it with short-lived connector tokens
+  (experimental). A signed-in OCC calls it with short-lived connector tokens
   from the auth service, checked the way the relay checks relay tokens.
   Deployed like push from the private repository.
 
 ## Mobile push gateway
 
 `apps/push` is a separate Cloud Run service from the relay. Phones never hold an
-Orca credential for it: the desktop host authenticates with the same X25519
+OCC credential for it: the desktop host authenticates with the same X25519
 key it uses for the relay, answering an encrypted challenge to mint a 24 hour
 session, then registers each paired phone's native push token and asks the
 gateway to push. The gateway queues each event as its own notification,

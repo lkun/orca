@@ -12,7 +12,7 @@ export type PreambleParams = {
   coordinatorHandle: string
   workerHandle: string
   devMode?: boolean
-  // Packaged WSL uses orca-ide; other hosts retain their existing launcher.
+  // Packaged WSL uses occ-ide; other hosts retain their existing launcher.
   cliCommand?: OrchestrationCliCommand
   // Supply actual preflight drift only; spurious warnings train workers to ignore stale-base evidence.
   baseDrift?: {
@@ -33,23 +33,23 @@ function isSessionHandle(handle: string): boolean {
   return handle.startsWith(ORCA_SESSION_ADDRESS_PREFIX)
 }
 
-/** Terminal agents keep their handle's wording; only a session is named by its Orca session ID. */
+/** Terminal agents keep their handle's wording; only a session is named by its OCC session ID. */
 function dispatchIdentityLines(params: PreambleParams): string {
   return [
     isSessionHandle(params.coordinatorHandle)
-      ? `Your coordinator's Orca session ID is: ${params.coordinatorHandle}`
+      ? `Your coordinator's OCC session ID is: ${params.coordinatorHandle}`
       : `Your coordinator's terminal handle is: ${params.coordinatorHandle}`,
     `Your task ID is: ${params.taskId}`,
     ...(isSessionHandle(params.workerHandle)
-      ? [`Your Orca session ID is: ${params.workerHandle}`]
+      ? [`Your OCC session ID is: ${params.workerHandle}`]
       : [])
   ].join('\n')
 }
 
 // Place behavior rules beside CLI examples, where agent readers use them.
 export function buildDispatchPreamble(params: PreambleParams): string {
-  // Dev agents must reach the dev socket through orca-dev.
-  const cli = params.devMode ? 'orca-dev' : (params.cliCommand ?? 'orca')
+  // Dev agents must reach the dev socket through occ-dev.
+  const cli = params.devMode ? 'occ-dev' : (params.cliCommand ?? 'orca')
   const chat = isSessionHandle(params.workerHandle)
   const surface = chat ? 'chat' : 'terminal'
   const postDoneInstructions = buildPostWorkerDoneInstructions({
@@ -59,7 +59,7 @@ export function buildDispatchPreamble(params: PreambleParams): string {
   })
 
   // Use one-line recipes across POSIX/PowerShell/cmd; fence comments and use plain reasons to avoid misleading Chat rendering (STA-8200).
-  const header = `You are working inside Orca, a multi-agent IDE. You are a dispatched worker.
+  const header = `You are working inside OCC, a multi-agent IDE. You are a dispatched worker.
 ${dispatchIdentityLines(params)}
 
 The coordinator cannot see this ${surface}, so reach it only with the \`${cli} orchestration\`
@@ -70,7 +70,7 @@ Do only this task, yourself: no subagents or helper workers unless the task asks
 === CLI COMMANDS ===
 
 \`\`\`sh
-  # Ask the coordinator, then end your turn; Orca wakes you with the answer.
+  # Ask the coordinator, then end your turn; OCC wakes you with the answer.
   # Never use a local question prompt such as AskUserQuestion; the
   # coordinator cannot see or answer it.
   ${cli} orchestration ask --from ${params.workerHandle} --question "<your question>" --options "<optional,comma,separated>"
@@ -144,7 +144,7 @@ do NOT run a sleep/poll loop, and do NOT keep calling
 \`${cli} orchestration check\`.
 
 Exit the shell after completion. Bare-shell workers have no idle agent prompt
-for Orca to reuse.`
+for OCC to reuse.`
   }
 
   return `=== AFTER YOU SEND worker_done ===

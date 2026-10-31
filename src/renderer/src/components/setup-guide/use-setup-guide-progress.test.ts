@@ -117,7 +117,7 @@ describe('getComputerUsePermissionSetupState', () => {
     expect(
       getComputerUsePermissionSetupState({
         platform: 'darwin',
-        helperAppPath: '/Applications/Orca Helper.app',
+        helperAppPath: '/Applications/OCC Helper.app',
         helperUnavailableReason: null,
         permissions: [
           { id: 'accessibility', status: 'granted' },
@@ -179,7 +179,7 @@ describe('getSetupGuideProgressReady', () => {
     expect(
       getComputerUsePermissionSetupState({
         platform: 'darwin',
-        helperAppPath: '/Applications/Orca Helper.app',
+        helperAppPath: '/Applications/OCC Helper.app',
         helperUnavailableReason: null,
         permissions: [{ id: 'accessibility', status: 'not-granted' }]
       })

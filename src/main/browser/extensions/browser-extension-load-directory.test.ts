@@ -86,7 +86,7 @@ describe('extension load directories', () => {
     expect(readFileSync(join(directory, 'orca-extension-api.js'), 'utf8')).toBe('/* shim v2 */')
   })
 
-  it('loads an unpacked folder from a stable Orca copy and never touches the folder', async () => {
+  it('loads an unpacked folder from a stable OCC copy and never touches the folder', async () => {
     const source = join(mocks.userData, 'dev', 'my-extension')
     writeExtension(source, {
       manifest_version: 3,
@@ -120,7 +120,7 @@ describe('extension load directories', () => {
     expect(refreshed.directory).toBe(first.directory)
   })
 
-  it('runs Orca’s content script first in every isolated-world content script', async () => {
+  it('runs OCC’s content script first in every isolated-world content script', async () => {
     const source = join(mocks.userData, 'dev', 'content-scripts')
     const content_scripts = [
       { matches: ['https://github.com/*'], css: ['style.css'], js: ['content.js'] },
@@ -180,7 +180,7 @@ describe('extension load directories', () => {
     expect(existsSync(join(prepared.directory, 'orca-extension-api.js'))).toBe(false)
   })
 
-  it('refuses a package with its own file where Orca writes one', async () => {
+  it('refuses a package with its own file where OCC writes one', async () => {
     const source = join(mocks.userData, 'dev', 'named-like-orca')
     writeExtension(source, {
       manifest_version: 3,
@@ -191,7 +191,7 @@ describe('extension load directories', () => {
     writeFileSync(join(source, 'orca-background.js'), 'self.own = true')
     await expect(
       prepareBrowserExtensionDirectory({ source: 'unpacked', path: source })
-    ).rejects.toThrow('orca-background.js uses a name Orca reserves')
+    ).rejects.toThrow('orca-background.js uses a name OCC reserves')
   })
 
   it('never lists the worker token as web-accessible, in any spelling', async () => {

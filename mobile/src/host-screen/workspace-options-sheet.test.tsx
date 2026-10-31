@@ -142,7 +142,7 @@ describe('the phone Workspace options sheet', () => {
     expect(shown).not.toContain('Show properties')
     expect(shown).not.toContain('Except default branch')
     press('Card display')
-    expect(texts()).toContain('Orca CLI')
+    expect(texts()).toContain('OCC CLI')
     expect(texts()).toContain('Branch name')
     expect(texts()).not.toContain('Ports')
   })

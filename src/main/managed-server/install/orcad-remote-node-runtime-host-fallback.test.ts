@@ -32,7 +32,7 @@ vi.mock('./remote-install-transfers', () => ({
 const conn = unusedOrcadHostTransport()
 const host = getRemoteHostPlatform('linux-x64')
 const TARGET = 'linux-x64-glibc'
-const OFFLINE_PATH = '/Users/me/Library/Application Support/Orca/orcad-artifacts/node/archives/x'
+const OFFLINE_PATH = '/Users/me/Library/Application Support/OCC/orcad-artifacts/node/archives/x'
 const refused = (): Promise<string> => Promise.reject(new Error('net::ERR_CONNECTION_REFUSED'))
 
 afterEach(() => {

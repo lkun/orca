@@ -34,7 +34,7 @@ import { handleBrowserExtensionApiRequest } from './browser-extension-api-reques
 const tokenByExtensionId = new Map<string, string>()
 const extensionIdByToken = new Map<string, string>()
 
-/** Per app run; written into the extension's Orca-owned folder, where only it can read the file. */
+/** Per app run; written into the extension's OCC-owned folder, where only it can read the file. */
 export function getBrowserExtensionWorkerToken(extensionId: string): string {
   let token = tokenByExtensionId.get(extensionId)
   if (!token) {

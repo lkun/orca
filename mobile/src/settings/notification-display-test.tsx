@@ -82,7 +82,7 @@ export function NotificationDisplayTest({ onTroubleshoot }: { onTroubleshoot: ()
         liveFallback
           ? t(
               'settings.notificationDisplayTest.liveFallbackScheduled',
-              '{{reason}} Local test scheduled. Check for the notification. Live alerts are available while Orca is running and connected.',
+              '{{reason}} Local test scheduled. Check for the notification. Live alerts are available while OCC is running and connected.',
               { reason }
             )
           : t(
@@ -97,7 +97,7 @@ export function NotificationDisplayTest({ onTroubleshoot }: { onTroubleshoot: ()
         throw new Error(
           t(
             'settings.notificationDisplayTest.disabled',
-            'Notifications are turned off in Orca. Enable notifications and try again.'
+            'Notifications are turned off in OCC. Enable notifications and try again.'
           )
         )
       }
@@ -171,7 +171,7 @@ export function NotificationDisplayTest({ onTroubleshoot }: { onTroubleshoot: ()
           setMessage(
             t(
               'settings.notificationDisplayTest.accepted',
-              'Accepted by Orca’s push service. Check for the notification.'
+              'Accepted by OCC’s push service. Check for the notification.'
             )
           )
           return
@@ -191,7 +191,7 @@ export function NotificationDisplayTest({ onTroubleshoot }: { onTroubleshoot: ()
               )
             : t(
                 'settings.notificationDisplayTest.pushServiceFailed',
-                'Could not send through Orca’s push service. Try again.'
+                'Could not send through OCC’s push service. Try again.'
               )
         )
       }

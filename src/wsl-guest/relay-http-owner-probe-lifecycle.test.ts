@@ -26,7 +26,7 @@ it.each([false, true])(
       const { port, token } = server.getCoordinates()
       return fetch(`http://127.0.0.1:${port}/hook/${source}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+        headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
         body: JSON.stringify({
           paneKey,
           tabId: 'tab-1',

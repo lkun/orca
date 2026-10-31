@@ -19,7 +19,7 @@ const CardBodySchema = z.object({
   components: z.array(z.unknown()).optional()
 })
 
-// A prompt card with one button per option, the option id in its custom_id; null leaves it to Orca.
+// A prompt card with one button per option, the option id in its custom_id; null leaves it to OCC.
 export function discordCard(prompt: AnswerablePrompt): PostBody | null {
   const content = discordText.promptCard(prompt)
   const fits =

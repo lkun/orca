@@ -89,7 +89,7 @@ export function saveNativeChatProviderChoice({
 
 export type AgentOpensAs = {
   value: 'chat' | 'cli'
-  /** Chat runs from Orca's downloaded program, so there is no terminal to open. */
+  /** Chat runs from OCC's downloaded program, so there is no terminal to open. */
   cliMissing: boolean
   onChange: (value: 'chat' | 'cli') => void
 }

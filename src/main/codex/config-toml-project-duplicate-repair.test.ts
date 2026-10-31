@@ -26,7 +26,7 @@ afterEach(() => {
 })
 
 describe('repairing configs broken by #22592', () => {
-  it('removes the table Orca appended beside Codex quoted spelling and keeps a .bak', () => {
+  it('removes the table OCC appended beside Codex quoted spelling and keeps a .bak', () => {
     const projectPath = '/Users/me/Projects/agentic-WPS'
     const broken = [
       'model = "gpt-5.5"',
@@ -86,7 +86,7 @@ describe('repairing configs broken by #22592', () => {
     )
   })
 
-  it('removes the bare trust_level line Orca inserted under a quoted key', () => {
+  it('removes the bare trust_level line OCC inserted under a quoted key', () => {
     const broken = [
       '["projects"."/repo-c"]',
       'trust_level = "trusted"',

@@ -77,7 +77,7 @@ it('names a stopped WSL distro above the composer and offers Start', async () =>
   expect(reconnectHost).toHaveBeenCalledOnce()
   expect(reconnectHost).toHaveBeenCalledWith(
     'wsl:ubuntu',
-    'Couldn’t start Ubuntu. Check it in Settings → Remote Orca Servers.'
+    'Couldn’t start Ubuntu. Check it in Settings → Remote OCC Servers.'
   )
 
   setWslStatus('ready')

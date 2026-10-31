@@ -41,7 +41,7 @@ const { ELECTRON_RUN_AS_NODE: _runAsNode, ...env } = process.env
 const app = await electron.launch({ args: [main], env: { ...env, ORCA_BACKGROUND_LAUNCH: '1' } })
 const report = {
   scope:
-    'Production desktop message list renders actual OMP SessionManager transcripts read through Orca; hidden Electron fixture, no full shell or model turn.',
+    'Production desktop message list renders actual OMP SessionManager transcripts read through OCC; hidden Electron fixture, no full shell or model turn.',
   results: []
 }
 try {

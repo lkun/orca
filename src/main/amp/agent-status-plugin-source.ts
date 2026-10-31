@@ -1,5 +1,5 @@
 export const AMP_PLUGIN_FILE = 'orca-agent-status.ts'
-export const AMP_PLUGIN_MARKER = 'Managed by Orca. Do not edit; changes may be overwritten.'
+export const AMP_PLUGIN_MARKER = 'Managed by OCC. Do not edit; changes may be overwritten.'
 
 export function getAmpPluginSource(): string {
   return [
@@ -48,7 +48,7 @@ export function getAmpPluginSource(): string {
     '}',
     '',
     'function resolveHookCoords(): HookCoords {',
-    '  // Re-read endpoints per event because Amp sessions can outlive an Orca restart.',
+    '  // Re-read endpoints per event because Amp sessions can outlive an OCC restart.',
     '  const fileEnv = readEndpointFile() ?? {}',
     '  return {',
     '    port: fileEnv.port || process.env.ORCA_AGENT_HOOK_PORT,',
@@ -100,7 +100,7 @@ export function getAmpPluginSource(): string {
     '      signal: controller.signal,',
     '      headers: {',
     '        "Content-Type": "application/json",',
-    '        "X-Orca-Agent-Hook-Token": coords.token',
+    '        "X-OCC-Agent-Hook-Token": coords.token',
     '      },',
     '      body: JSON.stringify({',
     '        paneKey,',
@@ -142,7 +142,7 @@ export function getAmpPluginSource(): string {
     '  }',
     '}',
     'function enqueuePost(hookEventName: string, payload: Record<string, unknown>): void {',
-    '  // Bound queued payloads while a disconnected Orca makes each POST time out.',
+    '  // Bound queued payloads while a disconnected OCC makes each POST time out.',
     '  if (postQueue.length >= MAX_PENDING_POSTS) {',
     '    postQueue.shift()',
     '  }',

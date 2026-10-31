@@ -5,7 +5,7 @@ import { isWebviewDragPassthroughActive } from '../host-guest/webview-drag-passt
 
 export type BrowserDevToolsDockSnapshot = { url: string; width: number; height: number }
 
-/** Keeps docked DevTools, a native view painted above all HTML, over `placeholder`. While Orca
+/** Keeps docked DevTools, a native view painted above all HTML, over `placeholder`. While OCC
  *  UI is drawn over that area or a drag needs the pointer, the view hides and its last frame is
  *  returned for the placeholder to paint instead. */
 export function useBrowserDevToolsDockBounds(

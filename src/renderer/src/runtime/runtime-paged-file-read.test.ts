@@ -282,7 +282,7 @@ describe('remote saves larger than one request frame', () => {
   it('counts JSON escaping, not just characters', async () => {
     await expect(
       writeRuntimeFile(context, '/remote/repo/quotes.txt', '"'.repeat(400 * 1024))
-    ).rejects.toThrow('File is too large to save to a remote Orca server')
+    ).rejects.toThrow('File is too large to save to a remote OCC server')
     expect(runtimeEnvironmentCall).not.toHaveBeenCalled()
   })
 })

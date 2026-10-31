@@ -2,9 +2,9 @@ import type { TerminalPluginPalette } from './terminal-color-overrides'
 
 /** Appearance choices that come from plugins. */
 export type PluginAppearanceSettings = {
-  /** Plugin theme painted while Orca is light; null keeps the built-in colors. */
+  /** Plugin theme painted while OCC is light; null keeps the built-in colors. */
   pluginAppThemeLight?: `plugin:${string}` | null
-  /** Plugin theme painted while Orca is dark; null keeps the built-in colors. */
+  /** Plugin theme painted while OCC is dark; null keeps the built-in colors. */
   pluginAppThemeDark?: `plugin:${string}` | null
   /** Legacy single choice; moved into the slot of its theme's base once that theme loads. */
   pluginAppTheme?: `plugin:${string}` | null

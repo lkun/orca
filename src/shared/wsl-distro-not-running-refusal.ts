@@ -9,7 +9,7 @@ export function wslDistroStoppedMessage(distro: string, retryStartsIt = true): s
 }
 
 export function wslDistroUnverifiableMessage(distro: string): string {
-  return `WSL didn't answer whether '${distro}' is running, so Orca left it alone. Retry in a moment.`
+  return `WSL didn't answer whether '${distro}' is running, so OCC left it alone. Retry in a moment.`
 }
 
 // Any wording after the sentence counts, so callers that phrase the remedy differently still match.

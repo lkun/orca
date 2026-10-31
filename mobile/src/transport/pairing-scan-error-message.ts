@@ -31,5 +31,5 @@ export function getPairingScanErrorMessage(data: string, t: Translate): string {
         'app.pairScan.downloadQrCode',
         "That's the download code. Scan the pairing code in step 2 on your desktop."
       )
-    : t('app.pairScan.invalidQrCode', 'Not a valid Orca QR code')
+    : t('app.pairScan.invalidQrCode', 'Not a valid OCC QR code')
 }

@@ -7,25 +7,25 @@ export function nativeChatOrcaStopSay(t: Translate): NativeChatOrcaStopSay {
       update: () =>
         t(
           'chat.orcaStop.update',
-          'Orca on {{machine}} restarted for an update while this response was in progress.',
+          'OCC on {{machine}} restarted for an update while this response was in progress.',
           { machine }
         ),
       quit: () =>
         t(
           'chat.orcaStop.quit',
-          'Orca on {{machine}} was closed while this response was in progress.',
+          'OCC on {{machine}} was closed while this response was in progress.',
           { machine }
         ),
       crash: () =>
         t(
           'chat.orcaStop.crash',
-          'Orca on {{machine}} stopped unexpectedly while this response was in progress.',
+          'OCC on {{machine}} stopped unexpectedly while this response was in progress.',
           { machine }
         ),
       remote: () =>
         t(
           'chat.orcaStop.remote',
-          'Orca on {{machine}} stopped while this response was in progress.',
+          'OCC on {{machine}} stopped while this response was in progress.',
           { machine }
         ),
       canContinue: () => t('chat.orcaStop.canContinue', 'You can continue in this conversation.'),

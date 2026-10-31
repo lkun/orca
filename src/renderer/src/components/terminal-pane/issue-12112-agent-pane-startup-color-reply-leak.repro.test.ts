@@ -10,7 +10,7 @@ import type { PtyTransport } from './pty-transport-types'
 
 // opencode/OpenTUI's unconditional startup burst (BEL-terminated, not ST).
 const OPENCODE_STARTUP_QUERY_BURST = '\x1b]10;?\x07\x1b]11;?\x07\x1b]4;0;?\x07'
-// Orca's One Dark terminal theme — the values that appear in the leaked text.
+// OCC's One Dark terminal theme — the values that appear in the leaked text.
 const ORCA_TERMINAL_THEME = { foreground: '#ffffff', background: '#282c34' }
 const OSC10_REPLY = '\x1b]10;rgb:ffff/ffff/ffff\x1b\\'
 const OSC11_REPLY = '\x1b]11;rgb:2828/2c2c/3434\x1b\\'

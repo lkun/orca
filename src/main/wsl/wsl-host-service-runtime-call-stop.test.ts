@@ -109,7 +109,7 @@ describe('a runtime call that finds the WSL host stopped', () => {
     expect(refusal).not.toBeInstanceOf(RemoteRuntimeClientError)
     expect(refusal).toMatchObject({
       message:
-        'Ubuntu was stopped. Switch to one of its projects, or reconnect it in Settings → Remote Orca Servers, to start it again.'
+        'Ubuntu was stopped. Switch to one of its projects, or reconnect it in Settings → Remote OCC Servers, to start it again.'
     })
   })
 })

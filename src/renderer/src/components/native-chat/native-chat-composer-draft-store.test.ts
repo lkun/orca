@@ -105,14 +105,14 @@ describe('native-chat composer draft store', () => {
     const uncommitted = createMemoryNativeChatComposerDraftStorage()
     uncommitted.write = () => new Promise(() => {})
     const lost = await reload({ using: uncommitted })
-    lost.drafts.writeNativeChatDraftCache('tab-1:pane', 'typed, then Orca quit')
+    lost.drafts.writeNativeChatDraftCache('tab-1:pane', 'typed, then OCC quit')
     window.dispatchEvent(new Event('pagehide'))
     expect(uncommitted.drafts.size).toBe(0)
 
     const reloaded = await reload()
-    expect(reloaded.drafts.readNativeChatDraftCache('tab-1:pane')).toBe('typed, then Orca quit')
+    expect(reloaded.drafts.readNativeChatDraftCache('tab-1:pane')).toBe('typed, then OCC quit')
     await reloaded.store.nativeChatComposerDraftWritesSettled()
-    expect(storedDraft('tab-1:pane')?.text).toBe('typed, then Orca quit')
+    expect(storedDraft('tab-1:pane')?.text).toBe('typed, then OCC quit')
   })
 
   it('reports a scope’s writes settled only once storage completes them, and false when refused', async () => {
@@ -252,7 +252,7 @@ describe('native-chat composer draft store', () => {
     storage.drafts.set('agent-session:s1', { text: 'typed earlier', images: [], savedAt: 1 })
     const crashing = { ...storage, write: () => new Promise<void>(() => {}) }
     const crashed = await reload({ using: crashing })
-    // Stop gives a message back; its outbox entry is deleted right after, then Orca crashes.
+    // Stop gives a message back; its outbox entry is deleted right after, then OCC crashes.
     expect(crashed.drafts.appendNativeChatDraftCache('agent-session:s1', 'returned by Stop')).toBe(
       true
     )
@@ -354,7 +354,7 @@ describe('native-chat composer draft store', () => {
     ])
   })
 
-  it('saves a paste kept in Orca’s paste folder as the real image, but not one over SSH', async () => {
+  it('saves a paste kept in OCC’s paste folder as the real image, but not one over SSH', async () => {
     const kept = {
       id: 'p-1',
       path: '/Users/me/Library/Application Support/orca/native-chat-pastes/orca-paste-1-0f.png'

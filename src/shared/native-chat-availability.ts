@@ -9,7 +9,7 @@ import {
 /** Resolve launched/detected identity from the tab and status before applying this pure toggle policy. */
 export type NativeChatAvailabilityInput = {
   contentType: Tab['contentType']
-  /** The coding-agent Orca launched in this terminal, if any (from TerminalTab). */
+  /** The coding-agent OCC launched in this terminal, if any (from TerminalTab). */
   launchAgent?: TuiAgent | null
   /** Live identity for manually launched or resumed agents without launch metadata. */
   detectedAgent?: AgentType | null

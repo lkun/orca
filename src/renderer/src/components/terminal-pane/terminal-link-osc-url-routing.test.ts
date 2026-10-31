@@ -194,7 +194,7 @@ describe('handleOscLink', () => {
     expect(openUrlMock).not.toHaveBeenCalled()
   })
 
-  it('uses the system browser for shift+cmd/ctrl+click even when Orca browser tabs are enabled', () => {
+  it('uses the system browser for shift+cmd/ctrl+click even when OCC browser tabs are enabled', () => {
     setPlatform('Windows')
     storeState.settings = { openLinksInApp: true }
 
@@ -224,7 +224,7 @@ describe('handleOscLink', () => {
       'Click for actions, ⌘+click to open, or ⇧⌘+click for default app'
     )
     expect(getTerminalHtmlFileOpenHint({ primary: 'system', alternate: 'orca' })).toBe(
-      'Click for actions, ⌘+click to open, or ⇧⌘+click to open in Orca'
+      'Click for actions, ⌘+click to open, or ⇧⌘+click to open in OCC'
     )
     expect(getTerminalHtmlFileOpenHint({ primary: 'orca', alternate: 'system' })).toBe(
       'Click for actions, ⌘+click to open, or ⇧⌘+click for system browser'
@@ -238,7 +238,7 @@ describe('handleOscLink', () => {
       'Click for actions, Ctrl+click to open, or Shift+Ctrl+click for default app'
     )
     expect(getTerminalHtmlFileOpenHint({ primary: 'system', alternate: 'orca' })).toBe(
-      'Click for actions, Ctrl+click to open, or Shift+Ctrl+click to open in Orca'
+      'Click for actions, Ctrl+click to open, or Shift+Ctrl+click to open in OCC'
     )
     expect(getTerminalUrlOpenHint()).toBe(
       'Click for actions, Ctrl+click to open, or Shift+Ctrl+click for system browser'
@@ -249,7 +249,7 @@ describe('handleOscLink', () => {
     setPlatform('Macintosh')
     expect(getTerminalFileOpenHint(false)).toBe('⌘+click to open, or ⇧⌘+click for default app')
     expect(getTerminalHtmlFileOpenHint({ primary: 'system', alternate: 'orca' }, false)).toBe(
-      '⌘+click to open, or ⇧⌘+click to open in Orca'
+      '⌘+click to open, or ⇧⌘+click to open in OCC'
     )
     expect(getTerminalUrlOpenHint({ showActions: false })).toBe(
       '⌘+click to open, or ⇧⌘+click for system browser'

@@ -91,7 +91,7 @@ export function formatProfileStateStartupFailure(
         ),
         translate(
           'profileState.startupFailure.repairCommand',
-          'Stop Orca, then run `{{command}}` to replace only the damaged parts from backups and keep everything else. Orca keeps a copy of the damaged file.',
+          'Stop OCC, then run `{{command}}` to replace only the damaged parts from backups and keep everything else. OCC keeps a copy of the damaged file.',
           {
             command: `orca profile state rollback --repair --profile-id ${error.profileId}`
           }
@@ -110,7 +110,7 @@ export function formatProfileStateStartupFailure(
     return [
       translate(
         'profileState.startupFailure.sqliteUnreadable',
-        'Orca cannot safely open the active profile because its SQLite state is unreadable.'
+        'OCC cannot safely open the active profile because its SQLite state is unreadable.'
       ),
       translate('profileState.startupFailure.legacyJsonPath', 'Legacy JSON path: {{path}}', {
         path: error.dataFile
@@ -122,7 +122,7 @@ export function formatProfileStateStartupFailure(
       retainedExports,
       translate(
         'profileState.startupFailure.chooseRecoveryArtifact',
-        'Stop Orca, then run `{{command}}` and choose a known-good recovery artifact.',
+        'Stop OCC, then run `{{command}}` and choose a known-good recovery artifact.',
         { command: 'orca profile state exports' }
       ),
       translate(
@@ -140,7 +140,7 @@ export function formatProfileStateStartupFailure(
     return [
       translate(
         'profileState.startupFailure.authorityAmbiguous',
-        'Orca cannot safely choose a profile-state authority: {{detail}}',
+        'OCC cannot safely choose a profile-state authority: {{detail}}',
         { detail: error.message }
       ),
       translate(
@@ -149,7 +149,7 @@ export function formatProfileStateStartupFailure(
       ),
       translate(
         'profileState.startupFailure.authorityCopyFirst',
-        'Stop Orca and copy the profile directory before choosing which state to keep.'
+        'Stop OCC and copy the profile directory before choosing which state to keep.'
       ),
       translate(
         'profileState.startupFailure.authorityKeepJson',
@@ -184,19 +184,19 @@ export function formatProfileStateStartupFailure(
   if (failureClass === 'newer-schema') {
     return translate(
       'profileState.startupFailure.newerSchema',
-      'This profile was saved by a newer version of Orca. Open it with that version or a newer release. Your profile has not been changed.'
+      'This profile was saved by a newer version of OCC. Open it with that version or a newer release. Your profile has not been changed.'
     )
   }
   if (failureClass === 'revision-conflict') {
     return translate(
       'profileState.startupFailure.revisionConflict',
-      'The active profile changed while Orca was starting. Close other Orca processes using this profile, then restart Orca.'
+      'The active profile changed while OCC was starting. Close other OCC processes using this profile, then restart OCC.'
     )
   }
   if (failureClass === 'writer-unavailable') {
     return translate(
       'profileState.startupFailure.writerUnavailable',
-      'Orca could not start profile persistence. Restart Orca; if the problem continues, repair or reinstall this build.'
+      'OCC could not start profile persistence. Restart OCC; if the problem continues, repair or reinstall this build.'
     )
   }
 
@@ -211,16 +211,16 @@ export function profileStatePublicationFailureText(
   return [
     translate(
       'profileState.startupFailure.publicationUnavailable',
-      'Orca could not safely publish profile state in {{directory}}.',
+      'OCC could not safely publish profile state in {{directory}}.',
       { directory }
     ),
     translate(
       'profileState.startupFailure.publicationNeedsHardLinks',
-      'This location must support hard links, and Orca needs permission to create them.'
+      'This location must support hard links, and OCC needs permission to create them.'
     ),
     translate(
       'profileState.startupFailure.publicationMoveData',
-      'Close Orca and orcad before checking folder permissions or moving the complete Orca data directory to a writable local filesystem that supports hard links, such as APFS, NTFS, or ext4.'
+      'Close OCC and orcad before checking folder permissions or moving the complete OCC data directory to a writable local filesystem that supports hard links, such as APFS, NTFS, or ext4.'
     ),
     translate(
       'profileState.startupFailure.publicationKeepFiles',

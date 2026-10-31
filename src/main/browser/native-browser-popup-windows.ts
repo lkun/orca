@@ -1,6 +1,6 @@
 import type { BrowserWindow } from 'electron'
 
-// Window-wide menu and renderer routing must distinguish web popups from Orca renderers.
+// Window-wide menu and renderer routing must distinguish web popups from OCC renderers.
 const nativeBrowserPopupWindows = new WeakSet<BrowserWindow>()
 
 export function markNativeBrowserPopupWindow(window: BrowserWindow): void {

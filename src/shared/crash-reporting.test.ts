@@ -73,7 +73,7 @@ describe('crash-reporting shared helpers', () => {
         crashed: true,
         missing: null,
         error_stack: longStack,
-        minidumpPath: '/Users/alice/Library/Application Support/Orca/reports/abc.dmp',
+        minidumpPath: '/Users/alice/Library/Application Support/OCC/reports/abc.dmp',
         nested: { nope: true },
         infinite: Number.POSITIVE_INFINITY
       })
@@ -379,7 +379,7 @@ describe('crash-reporting shared helpers', () => {
     const note = [
       'On 8/16/2026 the app froze right after I opened a worktree.',
       'Steps: open View/Layout then Window/Zoom and it crashes on run 3/4.',
-      'The log is at /opt/orca/logs/app.log and the repo is /Users/alice/x but this survives.'
+      'The log is at /opt/occ/logs/app.log and the repo is /Users/alice/x but this survives.'
     ].join(' ')
 
     const text = formatCrashReportText(notesReport(), note)
@@ -389,14 +389,14 @@ describe('crash-reporting shared helpers', () => {
     expect(text).toContain(
       'The log is at [redacted-path] and the repo is [redacted-path] but this survives.'
     )
-    expect(text).not.toContain('/opt/orca/logs/app.log')
+    expect(text).not.toContain('/opt/occ/logs/app.log')
     expect(text).not.toContain('alice')
   })
 
   it.each([
     ['POSIX', '/home/alice/orca/app.log then recovered.'],
-    ['Windows', 'C:\\Users\\alice\\Orca\\app.log then recovered.'],
-    ['UNC', '\\\\server\\share\\Orca\\app.log then recovered.']
+    ['Windows', 'C:\\Users\\alice\\OCC\\app.log then recovered.'],
+    ['UNC', '\\\\server\\share\\OCC\\app.log then recovered.']
   ])('stops unquoted %s paths at prose boundaries', (_platform, value) => {
     expect(sanitizeCrashReportString(value)).toBe('[redacted-path] then recovered.')
   })

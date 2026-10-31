@@ -159,7 +159,7 @@ export async function refreshGitStatusForWorktree({
     )
     request?.onStatusAccepted?.(status)
     if (pushTarget) {
-      // Use Orca's explicit publish target for PR-created worktrees rather than Git's configured upstream.
+      // Use OCC's explicit publish target for PR-created worktrees rather than Git's configured upstream.
       const cachedUpstreamStatus = getCachedAutomaticPushTargetUpstreamStatus({
         target,
         worktreeId,
@@ -290,7 +290,7 @@ export async function refreshGitStatusForWorktreeStrict({
     ownerHostId
   )
   if (pushTarget) {
-    // Use Orca's explicit publish target for PR-created worktrees rather than Git's configured upstream.
+    // Use OCC's explicit publish target for PR-created worktrees rather than Git's configured upstream.
     const upstreamStatus = await getRuntimeGitUpstreamStatus(
       { target, worktreeId, worktreePath, connectionId },
       pushTarget

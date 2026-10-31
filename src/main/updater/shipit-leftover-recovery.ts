@@ -105,7 +105,7 @@ async function otherLiveOwners(deps: ShipItStagingDeps): Promise<number[]> {
   return live
 }
 
-/** Register this staging owner even when cleanup is skipped, so other Orca processes cannot clear its update. */
+/** Register this staging owner even when cleanup is skipped, so other OCC processes cannot clear its update. */
 export async function prepareShipItStaging(deps: ShipItStagingDeps): Promise<ShipItStagingResult> {
   if ((await leftoverNames(deps.cacheDir)).length === 0) {
     await registerOwner(deps)
@@ -133,7 +133,7 @@ async function recoverUnderLock(deps: ShipItStagingDeps): Promise<ShipItStagingR
   if (listing === null) {
     return { kind: 'skipped', reason: 'installer-unknown' }
   }
-  // All Orca copies share the bundle cache; other apps' ShipIt processes do not block it.
+  // All OCC copies share the bundle cache; other apps' ShipIt processes do not block it.
   if (isShipItRunningForBundleId(listing, deps.bundleId)) {
     return { kind: 'skipped', reason: 'installer-running' }
   }

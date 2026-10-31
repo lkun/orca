@@ -490,7 +490,7 @@ describe('reconcileCodexHooks', () => {
     mocks.deriveCodexHookHashes.mockResolvedValue({
       kind: 'refused',
       codexVersion: 'codex-cli 0.120.0',
-      failure: 'Codex 0.120.0 is too old for Orca status; update Codex'
+      failure: 'Codex 0.120.0 is too old for OCC status; update Codex'
     })
 
     await start()
@@ -506,11 +506,11 @@ describe('reconcileCodexHooks', () => {
 
     expect(existsSync(codexHome())).toBe(false)
     expect(readCurrentCodexHookStatus().detail).toBe(
-      `Orca could not find Codex at ${mocks.codexPath}`
+      `OCC could not find Codex at ${mocks.codexPath}`
     )
   })
 
-  it("leaves Orca's entry and approvals in ~/.codex as they are while Codex cannot be found", async () => {
+  it("leaves OCC's entry and approvals in ~/.codex as they are while Codex cannot be found", async () => {
     await start()
     writeHooks({ Stop: [olderBuildStop()] })
     const before = snapshot(codexHome())
@@ -580,7 +580,7 @@ describe('while the lookup is still asking Codex', () => {
       })
     )?.trustedHash
 
-  it("writes the entry with Orca's own hash within a launch's wait, then Codex's once it answers", async () => {
+  it("writes the entry with OCC's own hash within a launch's wait, then Codex's once it answers", async () => {
     enabled = false
     await start()
     enabled = true
@@ -616,7 +616,7 @@ describe('while the lookup is still asking Codex', () => {
   })
 })
 
-describe('a ~/.codex/hooks.json Orca cannot add to', () => {
+describe('a ~/.codex/hooks.json OCC cannot add to', () => {
   it.each([
     ['an unparseable file', '{ not json'],
     ['unknown top-level fields', JSON.stringify({ hooks: {}, _managed: true })],
@@ -633,7 +633,7 @@ describe('a ~/.codex/hooks.json Orca cannot add to', () => {
       expect(readFileSync(hooksPath(), 'utf-8')).toBe(content)
       expect(existsSync(tomlPath())).toBe(false)
       expect(readRealHomeHooksFileProblem()).toBe(
-        `Orca cannot add its hook to ${hooksPath()}, so Orca shows no status for ~/.codex`
+        `OCC cannot add its hook to ${hooksPath()}, so OCC shows no status for ~/.codex`
       )
 
       writeHooks({})
@@ -655,7 +655,7 @@ describe('a ~/.codex/hooks.json Orca cannot add to', () => {
     }
   )
 
-  it('is not the case after a write Orca could not make', async () => {
+  it('is not the case after a write OCC could not make', async () => {
     writeHooks({})
     writeFileSync(tomlPath(), 'model = "m"\nhooks = { state = {} }\n')
     vi.spyOn(console, 'warn').mockImplementation(() => {})
@@ -713,7 +713,7 @@ describe('an app start whose lookup has not answered within its wait', () => {
     expect(snapshot(codexHome())).toEqual(settled)
   })
 
-  it("keeps the approval main's grant recorded for Orca's entry", async () => {
+  it("keeps the approval main's grant recorded for OCC's entry", async () => {
     const stop = {
       sourcePath: hooksPath(),
       eventLabel: 'stop' as const,

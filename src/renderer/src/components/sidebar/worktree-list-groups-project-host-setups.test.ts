@@ -46,7 +46,7 @@ describe('buildRows with pinned worktrees', () => {
     )
 
     expect(rows).toMatchObject([
-      { type: 'header', key: 'project:github:stablyai/orca', label: 'Orca', count: 2 },
+      { type: 'header', key: 'project:github:stablyai/orca', label: 'OCC', count: 2 },
       { type: 'item', worktree: { id: worktree.id }, hostContextLabel: LOCAL_HOST_LABEL },
       { type: 'item', worktree: { id: remoteWorktree.id }, hostContextLabel: 'gpu-vm' }
     ])
@@ -97,10 +97,10 @@ describe('buildRows with pinned worktrees', () => {
     }
 
     expect(buildHeaders([], [])).toMatchObject([
-      { key: 'project:github:stablyai/orca', label: 'Orca' }
+      { key: 'project:github:stablyai/orca', label: 'OCC' }
     ])
     expect(buildHeaders([otherWorktree], [otherRepo])).toMatchObject([
-      { key: 'project:github:stablyai/orca', label: 'Orca' },
+      { key: 'project:github:stablyai/orca', label: 'OCC' },
       { key: 'repo:repo-other', label: 'design-assets' }
     ])
   })
@@ -681,7 +681,7 @@ describe('buildRows with pinned worktrees', () => {
     expect(headers).toHaveLength(1)
     expect(headers[0]).toMatchObject({
       key: 'project:github:stablyai/orca',
-      label: 'Orca',
+      label: 'OCC',
       count: 2
     })
   })
@@ -772,7 +772,7 @@ describe('buildRows with pinned worktrees', () => {
       headers.some((row) => row.key === 'project:github:stablyai/orca::setup:repo-runtime-b')
     ).toBe(false)
     expect(headers.find((row) => row.key === 'project:github:stablyai/orca')).toMatchObject({
-      label: 'Orca',
+      label: 'OCC',
       count: 1
     })
   })

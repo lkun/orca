@@ -53,7 +53,7 @@ export type SafariDraftFixture = {
 export async function ensureSafariDraftFixtureLaunched(): Promise<SafariDraftFixture> {
   await closeSafariDraftFixture()
   safariDraftTempDir = await mkdtemp(join(tmpdir(), 'orca-computer-safari-e2e-'))
-  safariDraftTitle = `Orca Computer Use Draft Fixture ${Date.now()}`
+  safariDraftTitle = `OCC Computer Use Draft Fixture ${Date.now()}`
   const filePath = join(safariDraftTempDir, 'index.html')
   await writeFile(filePath, safariDraftFixtureHtml(safariDraftTitle), 'utf8')
   await execFileAsync('open', ['-F', '-a', 'Safari', filePath])

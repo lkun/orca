@@ -168,7 +168,7 @@ describe('applyPluginAppTheme', () => {
     const [r = 0, g = 0, b = 0] = match.slice(1, 4).map((hex) => Number.parseInt(hex, 16))
     return [r, g, b, Number.parseInt(match[4] ?? 'ff', 16) / 255] as const
   }
-  // Orca's dark built-ins, as the document would report them.
+  // OCC's dark built-ins, as the document would report them.
   const darkBuiltIns = () => ({
     '--background': '#0a0a0a',
     '--foreground': '#fafafa',

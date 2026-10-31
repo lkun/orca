@@ -15,14 +15,14 @@ import {
   type PressAndHoldRecord
 } from './macos-press-and-hold-default'
 
-// Verify real defaults distinguishes absence from false using disposable Orca-prefixed domains.
+// Verify real defaults distinguishes absence from false using disposable OCC-prefixed domains.
 
 const domains: string[] = []
 
 const DEFAULTS_MISSING_EXIT_CODE = 1
 
 function throwawayDomain(): string {
-  const domain = `com.stablyai.orca.defaults-domain-test.${randomUUID()}`
+  const domain = `com.lkun.occ.defaults-domain-test.${randomUUID()}`
   domains.push(domain)
   return domain
 }

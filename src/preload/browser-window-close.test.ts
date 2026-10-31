@@ -11,7 +11,7 @@ describe('browser window close preload', () => {
     vi.unstubAllGlobals()
   })
 
-  it('replaces the native close with a non-replaceable request to Orca', () => {
+  it('replaces the native close with a non-replaceable request to OCC', () => {
     const nativeClose = vi.fn()
     const requestClose = vi.fn()
     vi.stubGlobal('window', { close: nativeClose })

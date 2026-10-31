@@ -20,7 +20,7 @@ export type AgentTrustLaunchContext = {
   wslDistro: string | null
   /** SSH connection that runs the agent; null means this machine. */
   connectionId: string | null
-  /** CODEX_HOME Orca injects after this step; the env does not carry it yet. */
+  /** CODEX_HOME OCC injects after this step; the env does not carry it yet. */
   codexHome?: string | null
 }
 

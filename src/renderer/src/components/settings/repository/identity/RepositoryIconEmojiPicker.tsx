@@ -18,7 +18,7 @@ export function RepositoryIconEmojiPicker({
 }: RepositoryIconEmojiPickerProps): React.JSX.Element {
   const settingsTheme = useAppStore((state) => state.settings?.theme ?? 'system')
   const systemPrefersDark = useSystemPrefersDark()
-  // Theme.AUTO only follows the OS setting, which can disagree with Orca's manual theme.
+  // Theme.AUTO only follows the OS setting, which can disagree with OCC's manual theme.
   const isDarkTheme = settingsTheme === 'dark' || (settingsTheme === 'system' && systemPrefersDark)
 
   const handleEmojiClick = (emojiData: EmojiClickData): void => {

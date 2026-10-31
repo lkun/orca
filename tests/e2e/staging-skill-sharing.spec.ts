@@ -255,7 +255,7 @@ test('publishes, updates, revokes, and deletes without losing local state', asyn
 function writeSkill(directory: string, version: string): void {
   writeFileSync(
     join(directory, 'SKILL.md'),
-    `---\nname: ${SKILL_NAME}\ndescription: Orca staging installation journey\n---\n\n# Staging journey\n\nversion: ${version}\n`
+    `---\nname: ${SKILL_NAME}\ndescription: OCC staging installation journey\n---\n\n# Staging journey\n\nversion: ${version}\n`
   )
 }
 

@@ -109,7 +109,7 @@ export function resolveOrchestrationCaller(
     if (params.requireStablePane) {
       throw new OrchestrationError(
         'stable_pane_required',
-        'The coordinator terminal has no stable pane identity. Run this command inside a live Orca terminal.'
+        'The coordinator terminal has no stable pane identity. Run this command inside a live OCC terminal.'
       )
     }
     return null

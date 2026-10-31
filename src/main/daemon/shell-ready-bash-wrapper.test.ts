@@ -67,7 +67,7 @@ describePosix('daemon shell-ready bash wrapper', () => {
     mkdirSync(cliBin, { recursive: true })
     mkdirSync(ambientBin)
     for (const bin of [cliBin, ambientBin]) {
-      const launcher = join(bin, 'orca-dev')
+      const launcher = join(bin, 'occ-dev')
       writeFileSync(launcher, '#!/bin/sh\nexit 0\n')
       chmodSync(launcher, 0o755)
     }
@@ -87,7 +87,7 @@ describePosix('daemon shell-ready bash wrapper', () => {
     )
     const rcfile = join(userDataPath, 'cli-path-rcfile')
     writeFileSync(rcfile, content())
-    const result = spawnSync('bash', ['-c', '. "$1"; command -v orca-dev', 'bash', rcfile], {
+    const result = spawnSync('bash', ['-c', '. "$1"; command -v occ-dev', 'bash', rcfile], {
       env,
       encoding: 'utf8',
       timeout: 5000
@@ -155,7 +155,7 @@ describePosix('daemon shell-ready bash wrapper', () => {
     'still emits 133;C when bash-preexec re-arms the DEBUG trap at first prompt',
     async () => {
       const { getDaemonBashShellReadyRcfileContent } = await importFreshDaemonBashRcfile()
-      // Simulate bash-preexec replacing Orca’s DEBUG trap at the first prompt.
+      // Simulate bash-preexec replacing OCC’s DEBUG trap at the first prompt.
       writeFileSync(
         join(userDataPath, '.bash_profile'),
         [
@@ -178,7 +178,7 @@ describePosix('daemon shell-ready bash wrapper', () => {
   )
 
   itWithBash(
-    'dispatches a non-empty preexec_functions against the real command, not Orca hooks',
+    'dispatches a non-empty preexec_functions against the real command, not OCC hooks',
     async () => {
       const { getDaemonBashShellReadyRcfileContent } = await importFreshDaemonBashRcfile()
       // A real callback verifies that chaining preserves the user’s preexec handler.
@@ -222,7 +222,7 @@ describePosix('daemon shell-ready bash wrapper', () => {
   // Profiles discard Bash's own prompt output the way attached ble.sh does (internal_suppress_bash_output).
   itWithBash('signals readiness at the first prompt once ble.sh attaches its decoder', async () => {
     const { getDaemonBashShellReadyRcfileContent } = await importFreshDaemonBashRcfile()
-    // Prompt-time ble-attach renders, running Orca's epilogue, before its decoder attaches.
+    // Prompt-time ble-attach renders, running OCC's epilogue, before its decoder attaches.
     writeFileSync(
       join(userDataPath, '.bash_profile'),
       [

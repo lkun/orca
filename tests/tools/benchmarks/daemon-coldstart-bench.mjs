@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Orca daemon cold-start benchmark (Windows-focused).
+ * OCC daemon cold-start benchmark (Windows-focused).
  *
  * Reproduces the "daemon was force-killed / machine rebooted" launch path:
  * every daemon pid file (current protocol + all legacy versions) is planted
@@ -13,7 +13,7 @@
  * Usage:
  *   node tests/tools/benchmarks/daemon-coldstart-bench.mjs --label baseline
  *     [--iterations 3] [--linger-ms 15000] [--timeout-ms 240000]
- *     [--exe <path-to-packaged-Orca.exe>]
+ *     [--exe <path-to-packaged-OCC.exe>]
  *
  * Prereq (when not using --exe): `pnpm build:electron-vite` so out/ exists.
  * Results: tests/tools/benchmarks/results/daemon-coldstart-<label>-<timestamp>.json

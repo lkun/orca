@@ -143,7 +143,7 @@ async function expectQuickOpenAndRuntimeHealthy(
     })
     await expect(loading).toHaveCount(0)
     await expect(dialog).not.toContainText('Outbound reply buffer overflow')
-    await expect(dialog).not.toContainText('Remote Orca runtime closed the connection')
+    await expect(dialog).not.toContainText('Remote OCC runtime closed the connection')
   }
 
   const { worktrees } = await callPairedRuntime<RuntimeWorktreeListResult>(

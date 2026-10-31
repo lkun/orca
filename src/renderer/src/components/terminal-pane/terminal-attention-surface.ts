@@ -56,7 +56,7 @@ export function createTerminalAttentionSurface(state: StoreSnapshot): AgentAtten
     admitSurface: (subject, liveness) => admitTerminalPane(state, subject, liveness),
     isSurfaceViewed: (subject) =>
       isViewedTerminalPane(state, subject.workspaceId, subject.surfaceKey),
-    // Why: in-app selection alone is not viewing — a backgrounded Orca, Settings or an away user still need unread.
+    // Why: in-app selection alone is not viewing — a backgrounded OCC, Settings or an away user still need unread.
     isWorkspaceViewed: (workspaceId) => isWorkspaceOnScreen(state, workspaceId),
     isWorkspaceActive: (workspaceId) => state.activeWorktreeId === workspaceId,
     isWorkspaceMuted: (workspaceId) =>

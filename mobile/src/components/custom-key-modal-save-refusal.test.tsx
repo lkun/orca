@@ -27,7 +27,7 @@ vi.mock('@react-native-async-storage/async-storage', () => ({
       store.writes += 1
       if (store.refuse) {
         throw new Error(
-          'Orca could not save orca:custom-accessory-keys: a stored value may be too large.'
+          'OCC could not save orca:custom-accessory-keys: a stored value may be too large.'
         )
       }
       store.raw = value

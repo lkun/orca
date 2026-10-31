@@ -42,7 +42,7 @@ type OrcaTestFixtures = {
   orcaAppExtraEnv: Record<string, string>
   // Prepend test-local Chromium switches before the app entry so they reach Chromium without leaking to later specs.
   orcaAppExtraArgs: string[]
-  // Keep PATH/token overrides fixture-owned so specs cannot alter the user’s shell or running Orca.
+  // Keep PATH/token overrides fixture-owned so specs cannot alter the user’s shell or running OCC.
   launchEnv: NodeJS.ProcessEnv
 }
 

@@ -47,7 +47,7 @@ export function pluginTrustWarnings(trust: PluginTrust): string[] {
     warnings.push(
       translate(
         'auto.components.settings.PluginConsentDialog.uiWarning',
-        "Runs the publisher's code inside Orca to draw its view. Orca shows what it can access and asks before enabling it."
+        "Runs the publisher's code inside OCC to draw its view. OCC shows what it can access and asks before enabling it."
       )
     )
   }

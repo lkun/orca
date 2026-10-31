@@ -247,7 +247,7 @@ describe('a turn a crash cut short mid-tool', () => {
     ).toEqual({ key: 'workedFor', duration: '27s' })
   })
 
-  it('ends at the pre-crash renewal when the child outlived Orca and recovery stopped it', async () => {
+  it('ends at the pre-crash renewal when the child outlived OCC and recovery stopped it', async () => {
     // Orphan output after host death cannot count as work the chat showed.
     let alive = true
     const probeOwner = async (): Promise<AgentSessionOwnerProbe> =>
@@ -404,7 +404,7 @@ describe('a turn a read reached before the reconcile proved its owner dead', () 
     expect(await host.journalSnapshot(SESSION)).toEqual(settled)
   })
 
-  it('ends it at the last renewal although recovery stops a child that outlived Orca later', async () => {
+  it('ends it at the last renewal although recovery stops a child that outlived OCC later', async () => {
     let alive = true
     const probeOwner = async (): Promise<AgentSessionOwnerProbe> =>
       alive

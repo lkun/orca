@@ -11,7 +11,7 @@ export type WslDriveUncConversionRequest = {
 export type WslDriveUncConversionBlocker =
   /** A conversion is waiting for the restart that runs it. */
   | { kind: 'conversion-pending' }
-  /** Not a UNC Windows-drive project Orca can convert in place (wsl-drive-unc-project-scope.ts). */
+  /** Not a UNC Windows-drive project OCC can convert in place (wsl-drive-unc-project-scope.ts). */
   | {
       kind: 'not-convertible'
       id: string

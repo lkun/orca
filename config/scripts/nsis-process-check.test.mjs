@@ -4,9 +4,9 @@ import { dirname, join } from 'node:path'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { runProcessSync } from '@orca/process-host'
 
-const hooks = readFileSync(new URL('../nsis/orca-installer-hooks.nsh', import.meta.url), 'utf8')
+const hooks = readFileSync(new URL('../nsis/occ-installer-hooks.nsh', import.meta.url), 'utf8')
 const processCheck = readFileSync(
-  new URL('../nsis/orca-process-check.nsh', import.meta.url),
+  new URL('../nsis/occ-process-check.nsh', import.meta.url),
   'utf8'
 )
 const require = createRequire(import.meta.url)
@@ -29,7 +29,7 @@ function readPowerShellProbe(source = processCheck) {
 
 describe('NSIS process-check integration', () => {
   it('loads the capability hook through the installer and uninstaller include', () => {
-    expect(hooks).toContain('!include "${__FILEDIR__}\\orca-process-check.nsh"')
+    expect(hooks).toContain('!include "${__FILEDIR__}\\occ-process-check.nsh"')
     expect(processCheck).toMatch(/!macro customCheckAppRunning\b/)
     expect(processCheck).toContain('!include "getProcessInfo.nsh"')
     expect(processCheck).toMatch(/^Var pid$/m)

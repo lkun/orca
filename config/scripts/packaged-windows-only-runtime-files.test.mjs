@@ -71,7 +71,7 @@ describe('Windows-only runtime files', () => {
   })
 
   it('fails a non-Windows package that ships a Windows executable under any name', async () => {
-    await withTempDir('orca-windows-exe-', async (resourcesDir) => {
+    await withTempDir('occ-windows-exe-', async (resourcesDir) => {
       const nested = join(resourcesDir, 'node_modules', 'some-dep', 'bin')
       await mkdir(nested, { recursive: true })
       await writeFile(join(nested, 'helper'), peImage())

@@ -125,7 +125,7 @@ export function addOrcaWslInteropEnv(env: Record<string, string>): void {
     ...(env.ORCA_CLAUDE_AGENT_VIEW_PLUGIN_DIR?.startsWith('/')
       ? ['ORCA_CLAUDE_AGENT_VIEW_PLUGIN_DIR/u', 'ORCA_CLAUDE_CONFIG_DIR/u']
       : []),
-    // Forward only Orca's clipboard marker; a host SSH session must not leak into bare guest shells.
+    // Forward only OCC's clipboard marker; a host SSH session must not leak into bare guest shells.
     ...(env.SSH_CONNECTION === CODEX_REMOTE_VIEWER_SSH_CONNECTION ? ['SSH_CONNECTION/u'] : []),
     `${PI_CLIPBOARD_OSC52_ENV}/u`,
     `${REMOTE_VIEWER_CLIPBOARD_ENV}/u`,

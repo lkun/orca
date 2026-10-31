@@ -15,7 +15,7 @@ it('dismissal provider payloads cannot display a new alert or play a sound', () 
       notificationEpoch: 'epoch',
       source: 'agent-task-complete',
       agentState: null,
-      title: 'Orca',
+      title: 'OCC',
       body: ''
     }
   })

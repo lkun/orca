@@ -113,7 +113,7 @@ describe('MessageRow control visibility', () => {
     })
   })
 
-  it('copies an assistant reply without its visual lines, which mean nothing outside Orca', async () => {
+  it('copies an assistant reply without its visual lines, which mean nothing outside OCC', async () => {
     const writeClipboardText = vi.fn().mockResolvedValue(undefined)
     Object.assign(window, { api: { ui: { writeClipboardText } } })
 

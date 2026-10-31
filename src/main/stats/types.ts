@@ -1,7 +1,7 @@
 export type StatsEventType =
   | 'agent_start' // agent reported working via its hooks
   | 'agent_stop' // agent left working (done/waiting/blocked) or its pane was torn down
-  | 'pr_created' // PR opened from an Orca worktree
+  | 'pr_created' // PR opened from an OCC worktree
 
 export type StatsEvent = {
   type: StatsEventType

@@ -65,14 +65,14 @@ export function pluginManifestWarnings(raw: unknown): string[] {
     return []
   }
   return [
-    `publisher is deprecated and ignored: Orca derives it from the repository owner, like a Go module path. Remove it once engines.orca is at least >=${PLUGIN_DERIVED_PUBLISHER_SINCE}; until then it must equal the repository owner`
+    `publisher is deprecated and ignored: OCC derives it from the repository owner, like a Go module path. Remove it once engines.orca is at least >=${PLUGIN_DERIVED_PUBLISHER_SINCE}; until then it must equal the repository owner`
   ]
 }
 
 // Why stablyai passes: install alone knows the catalog, and only the official one may use it.
 function reservedPublisherError(publisher: string): string | null {
   return isReservedPluginPublisher(publisher) && publisher !== OFFICIAL_PLUGIN_PUBLISHER
-    ? `"${publisher}" is reserved for official Orca plugins; use your own name`
+    ? `"${publisher}" is reserved for official OCC plugins; use your own name`
     : null
 }
 

@@ -23,7 +23,7 @@ export function closeSharedControlAfterError(args: {
       ? (args.onAuthenticationRejected?.() ?? null)
       : null
   const error = recovery
-    ? remoteRuntimeUnavailableError('Remote Orca runtime refused this pairing; pairing again.')
+    ? remoteRuntimeUnavailableError('Remote OCC runtime refused this pairing; pairing again.')
     : args.refused
   if (
     !args.generation.acceptClose({

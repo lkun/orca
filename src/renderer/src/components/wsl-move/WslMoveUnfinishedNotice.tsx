@@ -22,12 +22,12 @@ export function WslMoveUnfinishedNotice(): React.JSX.Element | null {
             {move.automationsPending.length === 1
               ? translate(
                   'wslMove.unfinished.one',
-                  'One automation moved to the {{distro}} host is still off. Orca keeps asking the host to turn it back on.',
+                  'One automation moved to the {{distro}} host is still off. OCC keeps asking the host to turn it back on.',
                   { distro: move.distro }
                 )
               : translate(
                   'wslMove.unfinished.many',
-                  '{{n}} automations moved to the {{distro}} host are still off. Orca keeps asking the host to turn them back on.',
+                  '{{n}} automations moved to the {{distro}} host are still off. OCC keeps asking the host to turn them back on.',
                   { n: move.automationsPending.length, distro: move.distro }
                 )}
           </span>

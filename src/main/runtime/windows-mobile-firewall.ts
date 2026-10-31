@@ -8,8 +8,8 @@ import type {
 import { quotePowerShellLiteral } from '../../shared/powershell-native-argument'
 import { hasSufficientWindowsFirewallRemoteScope } from './windows-firewall-remote-scope'
 
-const FIREWALL_RULE_NAME = 'Orca.MobilePairing'
-const FIREWALL_RULE_DISPLAY_NAME = 'Orca Mobile Pairing'
+const FIREWALL_RULE_NAME = 'OCC.MobilePairing'
+const FIREWALL_RULE_DISPLAY_NAME = 'OCC Mobile Pairing'
 const POWERSHELL_TIMEOUT_MS = 10_000
 const ELEVATION_TIMEOUT_MS = 5 * 60_000
 
@@ -217,7 +217,7 @@ foreach ($rule in $blockingRules) {
   }
 }
 Get-NetFirewallRule -Name ${quotePowerShellLiteral(FIREWALL_RULE_NAME)} -ErrorAction SilentlyContinue | Remove-NetFirewallRule
-New-NetFirewallRule -Name ${quotePowerShellLiteral(FIREWALL_RULE_NAME)} -DisplayName ${quotePowerShellLiteral(FIREWALL_RULE_DISPLAY_NAME)} -Description 'Allows Orca Mobile to connect to this Orca desktop on private networks.' -Direction Inbound -Action Allow -Enabled True -Profile Private -Protocol TCP -LocalPort ${port} -Program ${quotePowerShellLiteral(executablePath)} -EdgeTraversalPolicy Block | Out-Null`
+New-NetFirewallRule -Name ${quotePowerShellLiteral(FIREWALL_RULE_NAME)} -DisplayName ${quotePowerShellLiteral(FIREWALL_RULE_DISPLAY_NAME)} -Description 'Allows OCC Mobile to connect to this OCC desktop on private networks.' -Direction Inbound -Action Allow -Enabled True -Profile Private -Protocol TCP -LocalPort ${port} -Program ${quotePowerShellLiteral(executablePath)} -EdgeTraversalPolicy Block | Out-Null`
 }
 
 // Start-Process re-splits arguments and collapses path whitespace; base64 protects this elevated hop, while the direct Node argv path needs none.

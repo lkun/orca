@@ -34,7 +34,7 @@ describe('branch cleanup with real Git', () => {
     client = join(root, 'client')
     await mkdir(remote)
     await git(remote, ['init', '-q'])
-    await git(remote, ['config', 'user.name', 'Orca Test'])
+    await git(remote, ['config', 'user.name', 'OCC Test'])
     await git(remote, ['config', 'user.email', 'orca@example.invalid'])
     await git(remote, ['config', 'gc.auto', '0'])
     await commit(remote, 'base')

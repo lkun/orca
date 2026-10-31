@@ -166,8 +166,8 @@ describe("a paused pane's daemon history", () => {
     )
     expect(slept.buffers.size).toBe(0)
     expect(slept.problems).toEqual([
-      'saved terminal history Orca could not fully read for the tab "build watcher"',
-      'saved terminal history Orca could not fully read for the tab other'
+      'saved terminal history OCC could not fully read for the tab "build watcher"',
+      'saved terminal history OCC could not fully read for the tab other'
     ])
     slept.dispose()
   })

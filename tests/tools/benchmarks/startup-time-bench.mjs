@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Orca startup-time benchmark.
+ * OCC startup-time benchmark.
  *
  * Launches the built app (out/) against a synthetic userData fixture that
  * mimics a long-lived real profile (tens of thousands of Chromium cache
@@ -15,7 +15,7 @@
  *     [--ssh-unreachable-targets 1]
  *     [--github-repos 3] [--gh-hang-ms 30000]
  *     [--wait-for-event renderer-startup-hydration-done]
- *     [--exe <path-to-packaged-Orca>] [--timeout-ms 240000]
+ *     [--exe <path-to-packaged-OCC>] [--timeout-ms 240000]
  *
  * Issue #7225 freeze reproduction: `--github-repos N` seeds N git repos with
  * GitHub remotes and no configured username, so repo hydration reaches the
@@ -105,7 +105,7 @@ function parseArgs(argv) {
   return args
 }
 
-// Seed tiny Chromium/Orca cache files; count/tree shape drives icacls walk cost, contents do not.
+// Seed tiny Chromium/OCC cache files; count/tree shape drives icacls walk cost, contents do not.
 function ensureFixture(fixtureDir, options) {
   const { fileCount, stateProfile, sessionTabs, githubRepos, sshUnreachableTargets } = options
   const manifestPath = join(fixtureDir, 'bench-fixture-manifest.json')

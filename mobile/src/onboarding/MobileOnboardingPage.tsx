@@ -77,7 +77,7 @@ export function MobileOnboardingPage({
           <Text style={styles.disclosure}>
             {t(
               'onboarding.onboardingPage.notificationsDisclosure',
-              'Delivered through Orca’s push service after your desktop has been idle for 3 minutes. Change this anytime in Settings.'
+              'Delivered through OCC’s push service after your desktop has been idle for 3 minutes. Change this anytime in Settings.'
             )}
           </Text>
         ) : null}

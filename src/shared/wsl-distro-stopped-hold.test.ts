@@ -38,7 +38,7 @@ describe('a WSL hold named in text', () => {
         'Failed to create the startup terminal for /wt: terminal_held_wsl_distro_unverifiable:Debian'
       )
     ).toBe(
-      "Failed to create the startup terminal for /wt: Orca couldn't check whether the WSL distro Debian is running, so it didn't start this terminal. Start the distro, then try again."
+      "Failed to create the startup terminal for /wt: OCC couldn't check whether the WSL distro Debian is running, so it didn't start this terminal. Start the distro, then try again."
     )
     expect(readableWslDistroHoldText('spawn failed')).toBe('spawn failed')
   })

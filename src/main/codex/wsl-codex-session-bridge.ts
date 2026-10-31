@@ -49,7 +49,7 @@ export type WslCodexSessionBridgeSummary = {
 const WSL_INDEX_PENDING_DIR_NAME = '.orca-index-pending'
 
 // Why: app-server answers `initialize` only once Codex's startup backfill is
-// complete; on a home an older Orca filled before Codex ever opened it, that
+// complete; on a home an older OCC filled before Codex ever opened it, that
 // is the minutes-long backfill itself. Codex's own 30s gate bounds the case
 // where another process holds the backfill.
 const WSL_STATE_DB_OPEN_TIMEOUT_MS = 15 * 60_000

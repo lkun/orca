@@ -1,7 +1,7 @@
 # OMP owned-PTY close probe (#9530)
 
 This opt-in probe launches an actual installed OMP binary in disposable local PTYs
-and calls Orca's production `shutdownLocalPty` and `killAllLocalPtys` functions,
+and calls OCC's production `shutdownLocalPty` and `killAllLocalPtys` functions,
 or daemon `Session`, native subprocess handle, and `TerminalSessionTeardown`.
 It sets the same agent-session ownership flag that `activateLocalPtySession` sets
 for `launchAgent` / recognized startup commands, then repeats without that flag
@@ -31,7 +31,7 @@ time and group, then removes the temporary home.
 
 ## Observed on 2026-09-14
 
-At Orca base `93c370246388`, macOS arm64, installed `omp/18.1.18`:
+At OCC base `93c370246388`, macOS arm64, installed `omp/18.1.18`:
 
 - Explicit local close with the agent flag: shell and foreground OMP exited.
 - Explicit local close without the flag: shell and foreground OMP exited.
@@ -52,7 +52,7 @@ backend. Each mode tests both recognized and typed launches; these modes do not
 run the local-quit cases. The probe makes no model requests. Both OMP/PI profiles
 are cleared, and XDG data/cache/state roots are isolated alongside configuration.
 
-On macOS, installed Orca `1.4.202-hourly.202609132311` and OMP `18.1.18`, an actual
+On macOS, installed OCC `1.4.202-hourly.202609132311` and OMP `18.1.18`, an actual
 non-focus CLI-created terminal reproduced the detached-child leak: shell PID
 71632 and OMP PID 71667 exited after CLI close, but sleep PID 72125 (PGID 72125)
 remained after the grace window, reparented to PID 1. The owned survivor was
@@ -87,7 +87,7 @@ Windows retains its existing guarded job/tree termination; this probe skips it.
 
 ## Limits and next evidence
 
-Do not close #9530 from this probe. The original report did not identify Orca/OMP
+Do not close #9530 from this probe. The original report did not identify OCC/OMP
 versions or the exact close action. A tab can disappear without this termination
 entry point running, which this probe does not cover. It also does not exercise
 full app quit lifecycle, background/floating/mobile handle resolution, a busy

@@ -1,5 +1,5 @@
 import { installRealWorkerThreadChildProcesses } from '../worker-thread-child-process/worker-thread-child-process-real.test-fixtures'
-// Real Git may unregister before file deletion fails; retain leftovers as retryable Orca rows.
+// Real Git may unregister before file deletion fails; retain leftovers as retryable OCC rows.
 // macOS chflags uchg makes owner files undeletable; worktree-failed-removal.test.ts covers the same rules with mocked Git.
 import { execFile } from 'node:child_process'
 import { existsSync } from 'node:fs'
@@ -54,7 +54,7 @@ let worktreePath = ''
 let lockedFile = ''
 let worktreeId = ''
 let repo: Repo
-// Only Orca's follow-up delete names the locked file; Git's error names the checkout.
+// Only OCC's follow-up delete names the locked file; Git's error names the checkout.
 const LOCKED_FILE_ERROR = /LICENSE could not be deleted/
 
 async function git(args: string[], cwd = repoPath): Promise<string> {
@@ -89,7 +89,7 @@ function storeStub(pushTarget?: GitPushTarget) {
   }
 }
 
-/** A remote Orca added for a fork PR's push target, as worktree create does. */
+/** A remote OCC added for a fork PR's push target, as worktree create does. */
 async function addOrcaPushTargetRemote(): Promise<GitPushTarget> {
   const pushTarget = {
     remoteName: 'pr-contributor',
@@ -201,7 +201,7 @@ async function failInSession(): Promise<unknown> {
 
 describe.skipIf(process.platform !== 'darwin')('a worktree delete Git fails partway', () => {
   beforeEach(async () => {
-    // A git hook's GIT_DIR/GIT_INDEX_FILE would point the scratch repo's git, and Orca's, at the outer repo.
+    // A git hook's GIT_DIR/GIT_INDEX_FILE would point the scratch repo's git, and OCC's, at the outer repo.
     for (const key of Object.keys(process.env).filter((name) => name.startsWith('GIT_'))) {
       vi.stubEnv(key, undefined)
     }
@@ -242,7 +242,7 @@ describe.skipIf(process.platform !== 'darwin')('a worktree delete Git fails part
     const error = await failStartupFinish()
 
     expect(String(error)).toMatch(LOCKED_FILE_ERROR)
-    // Git removed registration and merged branch but left checkout files and Orca metadata.
+    // Git removed registration and merged branch but left checkout files and OCC metadata.
     expect(await isRegistered(worktreePath)).toBe(false)
     expect(existsSync(lockedFile)).toBe(true)
     expect(await git(['branch', '--list', 'feature'])).toBe('')
@@ -359,7 +359,7 @@ describe.skipIf(process.platform !== 'darwin')('a worktree delete Git fails part
     expect(await git(['status', '--porcelain'], other)).toBe('?? wip.txt\n')
   })
 
-  it('removes the push-target remote Orca added when a runtime delete fails', async () => {
+  it('removes the push-target remote OCC added when a runtime delete fails', async () => {
     const pushTarget = await addOrcaPushTargetRemote()
     const worktree = (await listWorktreesStrict(repoPath)).find((row) =>
       areWorktreePathsEqual(row.path, worktreePath)
@@ -400,7 +400,7 @@ describe.skipIf(process.platform !== 'darwin')('a worktree delete Git fails part
     expect(existsSync(lockedFile)).toBe(true)
   })
 
-  it('removes the push-target remote Orca added when the startup finish fails', async () => {
+  it('removes the push-target remote OCC added when the startup finish fails', async () => {
     const pushTarget = await addOrcaPushTargetRemote()
 
     expect(String(await finishAtStartup([], pushTarget))).toMatch(LOCKED_FILE_ERROR)

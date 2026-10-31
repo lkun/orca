@@ -233,7 +233,7 @@ describe('fetchAntigravityRateLimits', () => {
   })
 
   it('holds automated reads after agy\u2019s browser sign-in', async () => {
-    // Why pinned: agy 1.4.2 opens this OAuth page and waits 60 s, so Orca's 30 s kill lands first (#26484).
+    // Why pinned: agy 1.4.2 opens this OAuth page and waits 60 s, so OCC's 30 s kill lands first (#26484).
     const result = await harness({
       result: processResult({
         timedOut: true,

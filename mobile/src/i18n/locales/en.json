@@ -18,9 +18,9 @@
     "aboutScreen": {
       "title": "About",
       "tagline": "Open-source agent IDE for 100x builders",
-      "website": "Orca website",
-      "sourceCode": "Orca source code",
-      "socialProfile": "Orca on X",
+      "website": "OCC website",
+      "sourceCode": "OCC source code",
+      "socialProfile": "OCC on X",
       "openLinkFailed": "Could not open the link. Try again."
     },
     "appUpdateSettingsRows": {
@@ -35,14 +35,14 @@
       "lastCheckedHours_other": "Last checked {{count}}h ago",
       "lastCheckedDays_one": "Last checked {{count}}d ago",
       "lastCheckedDays_other": "Last checked {{count}}d ago",
-      "updateToVersion": "Update to Orca {{version}}",
+      "updateToVersion": "Update to OCC {{version}}",
       "update": "Update",
       "installedVersion": "Version {{version}}",
       "checkUpdatesStatus": "Check for updates, {{status}}",
       "checkUpdates": "Check for updates"
     },
     "browserSettingsScreen": {
-      "desktopBrowser": "Orca browser on desktop",
+      "desktopBrowser": "OCC browser on desktop",
       "desktopBrowserDescription": "Open in the streamed browser from your paired desktop.",
       "phoneBrowser": "Phone browser",
       "phoneBrowserDescription": "Open in Safari, Chrome, or another browser on this phone.",
@@ -81,9 +81,9 @@
       "pairDesktop": "Pair a desktop and try again.",
       "connectDesktop": "Connect a desktop and try again.",
       "desktopUnreachable": "Could not reach the desktop. Try again.",
-      "accepted": "Accepted by Orca’s push service. Check for the notification.",
+      "accepted": "Accepted by OCC’s push service. Check for the notification.",
       "rateLimited": "Too many notifications. Try again later.",
-      "pushServiceFailed": "Could not send through Orca’s push service. Try again.",
+      "pushServiceFailed": "Could not send through OCC’s push service. Try again.",
       "sendFailed": "Could not send push test.",
       "troubleReceivingAlerts": "Having trouble receiving alerts?",
       "description": "Test push delivery, or a local notification when push is unavailable.",
@@ -93,12 +93,12 @@
       "localTitle": "Test notification",
       "localBody": "Local notification test from this phone.",
       "localScheduled": "{{reason}} Local test scheduled. Check for the notification. This checks display only; it does not verify agent alert delivery.",
-      "disabled": "Notifications are turned off in Orca. Enable notifications and try again.",
+      "disabled": "Notifications are turned off in OCC. Enable notifications and try again.",
       "osDisabled": "Notifications are turned off in system settings. Allow notifications and try again.",
       "noToken": "No push token is available on this phone.",
       "unsupportedHost": "This desktop does not support push notifications. Update it to receive push.",
       "registrationPending": "Push registration is not ready on this desktop. Try again shortly.",
-      "liveFallbackScheduled": "{{reason}} Local test scheduled. Check for the notification. Live alerts are available while Orca is running and connected."
+      "liveFallbackScheduled": "{{reason}} Local test scheduled. Check for the notification. Live alerts are available while OCC is running and connected."
     },
     "notificationSettingsScreen": {
       "loadFailed": "Could not load notification settings. Try again.",
@@ -191,7 +191,7 @@
       "stepProgress": "Step {{step}} of {{total}}"
     },
     "notifications": {
-      "description": "Get agent alerts even when the app is closed. Delivered through Orca’s push service and Apple or Google."
+      "description": "Get agent alerts even when the app is closed. Delivered through OCC’s push service and Apple or Google."
     },
     "pairConfirm": {
       "connectTimedOut": "Couldn't connect within {{seconds}}s — see log below for where it stalled",
@@ -204,21 +204,21 @@
       "backToHome": "Back to home"
     },
     "pairScan": {
-      "invalidQrCode": "Not a valid Orca QR code",
+      "invalidQrCode": "Not a valid OCC QR code",
       "downloadQrCode": "That's the download code. Scan the pairing code in step 2 on your desktop.",
       "invalidPairingCode": "Not a valid pairing code — copy it from your computer and paste again",
       "connectTimedOut": "Couldn't connect within {{seconds}}s — see log below for where it stalled",
       "pairingFailed": "Pairing failed: {{error}}",
       "title": "Pair with desktop",
       "cameraDisabledTitle": "Camera Access Disabled",
-      "cameraPermissionDescription": "Scan the QR code from Orca on your desktop, or paste the pairing code instead.",
+      "cameraPermissionDescription": "Scan the QR code from OCC on your desktop, or paste the pairing code instead.",
       "cameraDisabledDescription": "Enable camera access in Settings, or paste the pairing code instead.",
       "openSettings": "Open Settings",
       "pasteInstead": "Paste code instead",
       "pasteCodeTitle": "Paste pairing code",
       "pasteCodeMessage": "Copy the code shown under the QR on your computer.",
-      "pasteCodePlaceholder": "orca://pair?code=... or paste the code",
-      "openDesktopStep": "Open Orca on your computer",
+      "pasteCodePlaceholder": "occ://pair?code=... or paste the code",
+      "openDesktopStep": "Open OCC on your computer",
       "openMobileSettingsStep": "Go to Settings → Mobile",
       "scanCodeStep": "Scan the QR code",
       "pastePairingCode": "Or paste pairing code",
@@ -244,7 +244,7 @@
       "restoreAfterSeconds_other": "After {{count}}s",
       "title": "Terminal",
       "leaveAppHeading": "WHEN YOU LEAVE THE APP",
-      "leaveAppDescription": "While you're using a terminal on your phone, Orca shrinks it to fit your screen. When you close the app or switch away, this controls whether it stays at phone size (so interactive CLI tools don't reflow) or resizes back to your desktop. You can always use Restore on the desktop banner to resize manually.",
+      "leaveAppDescription": "While you're using a terminal on your phone, OCC shrinks it to fit your screen. When you close the app or switch away, this controls whether it stays at phone size (so interactive CLI tools don't reflow) or resizes back to your desktop. You can always use Restore on the desktop banner to resize manually.",
       "noPairedDesktops": "No paired desktops yet. Pair one to control terminal behavior.",
       "textSizeHeading": "TEXT SIZE",
       "textSizeDescription": "Scale the terminal text. Smaller sizes fit more columns with side margins; larger sizes show fewer columns — drag sideways to pan. You can also pinch to zoom in the terminal itself, which updates this setting. Per-device display only; doesn't change the desktop terminal.",
@@ -297,7 +297,7 @@
       "title": "Agent Session History",
       "refreshSessions": "Refresh agent sessions",
       "unavailable": "Agent Session History Unavailable",
-      "updateHost": "Update Orca on this host to browse agent session history.",
+      "updateHost": "Update OCC on this host to browse agent session history.",
       "loadFailed": "Unable to Load",
       "placeholder": "Search sessions, repo:, path:",
       "skipped_one": "{{count}} transcript skipped",
@@ -340,7 +340,7 @@
       "sending": "Sending…",
       "sent": "Diagnostics sent",
       "retrySending": "Retry sending",
-      "sendDiagnostics": "Send diagnostics to Orca",
+      "sendDiagnostics": "Send diagnostics to OCC",
       "noEvents": "No connection events yet. Events appear as the app dials this host.",
       "noHosts": "No paired hosts."
     },
@@ -362,7 +362,7 @@
     },
     "troubleshootCommonIssues": {
       "notificationsTitle": "Push Notifications",
-      "allowNotifications": "Check that system settings allow Orca notifications and that Focus or Do Not Disturb is off.",
+      "allowNotifications": "Check that system settings allow OCC notifications and that Focus or Do Not Disturb is off.",
       "notificationNetwork": "Try cellular or another Wi-Fi network. If alerts arrive after switching, your network may be delaying delivery.",
       "wifiTitle": "Different WiFi Networks",
       "sameNetwork": "Both devices must be on the same LAN (unless connected through Tailscale).",
@@ -370,12 +370,12 @@
       "reconnectWifi": "Try reconnecting WiFi on both devices.",
       "firewallTitle": "Firewall Blocking Port {{port}}",
       "linuxFirewall": "Linux: sudo ufw allow {{port}}",
-      "macosFirewall": "macOS: System Settings → Network → Firewall — allow Orca.",
-      "windowsFirewall": "Windows: Defender Firewall → Allow app — enable Orca for Private networks.",
+      "macosFirewall": "macOS: System Settings → Network → Firewall — allow OCC.",
+      "windowsFirewall": "Windows: Defender Firewall → Allow app — enable OCC for Private networks.",
       "restrictedNetwork": "Corporate/school networks may block P2P — try a personal hotspot.",
       "desktopTitle": "Desktop App Not Running",
-      "openDesktop": "Orca must be open on your desktop to accept connections.",
-      "restartDesktop": "Try restarting Orca — the companion server starts on launch.",
+      "openDesktop": "OCC must be open on your desktop to accept connections.",
+      "restartDesktop": "Try restarting OCC — the companion server starts on launch.",
       "pairAfterUpdate": "After an update, you may need to re-pair via QR code.",
       "timeoutTitle": "Connection Timeout",
       "wifiSignal": "Check WiFi signal strength on your phone.",
@@ -462,11 +462,11 @@
   },
   "dictation": {
     "setup": {
-      "serverUpdateRequired": "Update Orca on this server to use voice dictation.",
+      "serverUpdateRequired": "Update OCC on this server to use voice dictation.",
       "alreadyActive": "Dictation is already in use on the computer or another phone.",
       "repairRequired": "Re-pair this phone with the computer to use dictation.",
       "sessionLost": "Dictation lost its connection to the computer. Try again.",
-      "desktopUpdateRequired": "Update the paired desktop Orca app to use mobile voice settings.",
+      "desktopUpdateRequired": "Update the paired desktop OCC app to use mobile voice settings.",
       "loadFailed": "Failed to load dictation models",
       "downloadFailed": "Failed to start download",
       "deleteFailed": "Failed to delete model",
@@ -476,10 +476,10 @@
   },
   "home": {
     "appUpdateCard": {
-      "title": "Orca {{version}} is available",
-      "updateAccessibilityLabel": "Orca {{version}} is available, tap to update",
+      "title": "OCC {{version}} is available",
+      "updateAccessibilityLabel": "OCC {{version}} is available, tap to update",
       "updateHint": "Tap to update",
-      "dismissAccessibilityLabel": "Dismiss Orca {{version}} update"
+      "dismissAccessibilityLabel": "Dismiss OCC {{version}} update"
     },
     "accountUsageCards": {
       "sectionHeading": "Account usage",
@@ -488,14 +488,14 @@
       "weeklyWindow": "7d"
     },
     "emptyState": {
-      "openDesktopTitle": "Open Orca desktop",
+      "openDesktopTitle": "Open OCC desktop",
       "openDesktopDescription": "Go to Settings → Mobile and generate a pairing QR code.",
       "scanCodeTitle": "Scan the code",
       "scanCodeDescription": "Tap the button above to open the scanner. Point at the QR code on your screen.",
       "connectedTitle": "You're connected",
       "connectedDescription": "Your desktop will appear here. Everything is encrypted end-to-end.",
       "title": "Connect your desktop",
-      "description": "Pair with Orca on your computer to check on your agents, jump into any terminal, and drive work from your phone.",
+      "description": "Pair with OCC on your computer to check on your agents, jump into any terminal, and drive work from your phone.",
       "pairDesktop": "Pair Desktop",
       "stepsHeading": "How it works"
     },
@@ -585,7 +585,7 @@
       "checksPassing": "Checks: Passing",
       "checksFailing": "Checks: Failing",
       "checksPending": "Checks: Pending",
-      "createdFromCli": "Created from Orca CLI",
+      "createdFromCli": "Created from OCC CLI",
       "createdByNamedAutomation": "Created by automation “{{name}}”",
       "createdByAutomation": "Created by automation",
       "openLinkWithTitle": "Open {{label}}, {{title}}",
@@ -699,7 +699,7 @@
       "footer": "Alert types follow each paired desktop’s notification settings. Notifications pause after 7 days without using this app; open it and reconnect to resume."
     },
     "desktopChannel": {
-      "silentName": "Orca silent notifications",
+      "silentName": "OCC silent notifications",
       "name": "Desktop Notifications"
     }
   },
@@ -709,7 +709,7 @@
       "notificationsTitle": "Don’t miss when an agent needs you",
       "sessionViewDescription": "Choose whether supported agent sessions open in the terminal or Chat UI on this device. Press and hold a session tab to switch its view, or change the default later in Settings.",
       "notificationsDescription": "Get a notification on this phone when an agent finishes or is waiting — even if you aren’t using the app.",
-      "notificationsDisclosure": "Delivered through Orca’s push service after your desktop has been idle for 3 minutes. Change this anytime in Settings.",
+      "notificationsDisclosure": "Delivered through OCC’s push service after your desktop has been idle for 3 minutes. Change this anytime in Settings.",
       "useChatUi": "Use Chat UI",
       "openInChatUi": "Open sessions in Chat UI",
       "keepTerminal": "Keep terminal",
@@ -730,9 +730,9 @@
   "connection": {
     "connectionHealth": {
       "signInRequired": "Sign-in required on {{host}}",
-      "signInDetail": "Sign in to Orca on your desktop to reconnect",
+      "signInDetail": "Sign in to OCC on your desktop to reconnect",
       "hostOffline": "{{host}} is offline",
-      "hostOfflineDetail": "Check it's awake, Orca is running, and you're signed in",
+      "hostOfflineDetail": "Check it's awake, OCC is running, and you're signed in",
       "relayAccessExpired": "Relay access expired for {{host}}",
       "rePairDetail": "Re-pair with your desktop",
       "relayUnreachable": "Can't reach Relay",
@@ -799,7 +799,7 @@
       "done": "Done"
     },
     "hostWorkspaceListStates": {
-      "checkHost": "Check that your computer is awake and Orca is running",
+      "checkHost": "Check that your computer is awake and OCC is running",
       "loadFailed": "Could not load workspaces from this host",
       "retrying": "worktree.ps failed ({{error}}) — retrying automatically",
       "noMatches": "No matching workspaces",
@@ -819,7 +819,7 @@
   },
   "components": {
     "agentLaunchNotice": {
-      "updateRequired": "Update Orca on your computer to start an agent from your phone.",
+      "updateRequired": "Update OCC on your computer to start an agent from your phone.",
       "statusUnreadable": "Could not read this host's status. Retrying…",
       "copyFailed": "Couldn't copy",
       "copyPrompt": "Copy prompt"
@@ -837,7 +837,7 @@
     },
     "authFailedBannerActions": {
       "repair": "Re-pair",
-      "webNote": "Reconnect or remove this host from the Orca app."
+      "webNote": "Reconnect or remove this host from the OCC app."
     },
     "codexResetCreditAction": {
       "earnedReset": "Earned Codex rate-limit reset",
@@ -886,10 +886,10 @@
       "dismissNotice": "Dismiss notice"
     },
     "jiraConnectPrompt": {
-      "updateDesktop": "Update Orca desktop",
+      "updateDesktop": "Update OCC desktop",
       "connectOnDesktop": "Connect Jira on your desktop",
       "credentialUnreadable": "Jira is saved but unreadable: {{credentialError}}",
-      "connectHint": "Add your Jira site in Orca desktop under Settings → Integrations, then check again.",
+      "connectHint": "Add your Jira site in OCC desktop under Settings → Integrations, then check again.",
       "checkAgain": "Check again"
     },
     "dictationSetupSheet": {
@@ -939,7 +939,7 @@
       "terminalLabel": "{{title}} ({{id}})",
       "terminal": "Terminal",
       "newAgentSession": "New Agent Session",
-      "updateRequired": "Update Orca on your computer",
+      "updateRequired": "Update OCC on your computer",
       "statusUnreadable": "Could not read this host's status. Retrying…",
       "copyNotes": "Copy Notes",
       "sendUnsentNotes": "Send Unsent Notes",
@@ -1039,7 +1039,7 @@
       "worktreeAccessibilitySummary": "{{summary}}, {{activeCount}} active",
       "pairingInvalid": "Pairing invalid",
       "pairingTemporarilyUnavailable": "Pairing temporarily unavailable",
-      "updateDesktopHint": "Update desktop Orca and sign in to connect from anywhere",
+      "updateDesktopHint": "Update desktop OCC and sign in to connect from anywhere",
       "repairHint": "Tap to re-pair with your desktop",
       "unlockHint": "Unlock your phone, then tap to retry",
       "openHost": "Open {{title}}",
@@ -1137,18 +1137,18 @@
       "selectRunTarget": "Select a run target"
     },
     "protocolBlockScreen": {
-      "updateMobileTitle": "Update Orca Mobile",
-      "updateDesktopTitle": "Update Orca on your computer",
+      "updateMobileTitle": "Update OCC Mobile",
+      "updateDesktopTitle": "Update OCC on your computer",
       "refreshWorkspaceTitle": "Refresh the mobile workspace",
       "refreshWorkspaceBody": "The workspace cached for this host is older than the desktop expects. Reconnect to this host to download the current one.",
-      "mobileTooOldAppStore": "This desktop needs a newer Orca Mobile app. Update Orca Mobile from the App Store, then try this host again.",
-      "mobileTooOldGitHubReleases": "This desktop needs a newer Orca Mobile app. Update Orca Mobile from GitHub Releases, then try this host again.",
-      "workspaceNeedsUpdateAppStore": "This desktop's mobile workspace needs a newer Orca Mobile app. Update Orca Mobile from the App Store, then try this host again.",
-      "workspaceNeedsUpdateGitHubReleases": "This desktop's mobile workspace needs a newer Orca Mobile app. Update Orca Mobile from GitHub Releases, then try this host again.",
-      "desktopTooOldBody": "This paired desktop app is too old for your current Orca Mobile app. Update Orca on your computer, then try this host again.",
+      "mobileTooOldAppStore": "This desktop needs a newer OCC Mobile app. Update OCC Mobile from the App Store, then try this host again.",
+      "mobileTooOldGitHubReleases": "This desktop needs a newer OCC Mobile app. Update OCC Mobile from GitHub Releases, then try this host again.",
+      "workspaceNeedsUpdateAppStore": "This desktop's mobile workspace needs a newer OCC Mobile app. Update OCC Mobile from the App Store, then try this host again.",
+      "workspaceNeedsUpdateGitHubReleases": "This desktop's mobile workspace needs a newer OCC Mobile app. Update OCC Mobile from GitHub Releases, then try this host again.",
+      "desktopTooOldBody": "This paired desktop app is too old for your current OCC Mobile app. Update OCC on your computer, then try this host again.",
       "openAppStore": "Open App Store",
       "openGitHubReleases": "Open GitHub Releases",
-      "getVersion": "Get Orca {{version}}",
+      "getVersion": "Get OCC {{version}}",
       "refreshRecoveryNote": "If this message stays, remove this host and pair it again.",
       "updateRecoveryNote": "Already updated? Go back to Hosts and refresh the connection. If this message stays, remove this host and pair it again.",
       "backToHosts": "Back to hosts"
@@ -1561,7 +1561,7 @@
       "newHint": "Create a new local branch",
       "newName": "New branch name",
       "automaticName": "Automatic name",
-      "hostUpdateRequired": "Update Orca on the workspace host to reuse a branch or explicitly create a separate branch."
+      "hostUpdateRequired": "Update OCC on the workspace host to reuse a branch or explicitly create a separate branch."
     }
   },
   "browser": {
@@ -1651,7 +1651,7 @@
     },
     "pdfPreview": {
       "openFailed": "Unable to open this PDF",
-      "updateRequired": "Update Orca Mobile to open PDFs",
+      "updateRequired": "Update OCC Mobile to open PDFs",
       "opening": "Opening PDF...",
       "open": "Open PDF"
     },
@@ -1888,7 +1888,7 @@
       "prompt": "Prompt",
       "commandText": "Command Text",
       "promptPlaceholder": "Ask the agent to investigate this workspace",
-      "olderHostPromptTooLong": "Too long for this host. Update Orca on the host to save longer prompts.",
+      "olderHostPromptTooLong": "Too long for this host. Update OCC on the host to save longer prompts.",
       "promptTooLong": "Too long to save.",
       "promptSizeKilobytes": "{{used}} KB / {{max}} KB",
       "promptSizeCharacters": "{{used}} / {{max}} characters",
@@ -2036,7 +2036,7 @@
     "diffReviewLoaders": {
       "committedChangesUnavailable": "Committed changes unavailable",
       "committedChangesFailed": "Committed changes failed",
-      "desktopUpdateRequired": "Update Orca desktop to review changes on mobile.",
+      "desktopUpdateRequired": "Update OCC desktop to review changes on mobile.",
       "changesLoadFailed": "Unable to load changes",
       "invalidSourceControlResponse": "Source control response was invalid",
       "reviewNotesLoadFailed": "Unable to load review notes",
@@ -2156,7 +2156,7 @@
     },
     "prAiTriageLaunch": {
       "promptNotSent": "The agent started, but the prompt wasn't sent.",
-      "updateRequired": "Update Orca on your computer to start an agent from your phone.",
+      "updateRequired": "Update OCC on your computer to start an agent from your phone.",
       "loadFailed": "Could not load the available agents.",
       "emptyPrompt": "This action's saved prompt is empty. Update Source Control AI settings on your computer.",
       "agentStartedIn": "Agent started in {{label}}",
@@ -2264,7 +2264,7 @@
       "copyNotesHint": "Copy notes instead"
     },
     "useStartup": {
-      "wakeAgents": "Open Orca on the host to wake sleeping agents."
+      "wakeAgents": "Open OCC on the host to wake sleeping agents."
     },
     "useTerminalInput": {
       "clearFailed": "Couldn't clear terminal",
@@ -2309,9 +2309,9 @@
       "backgroundTaskNotStopped": "The background task wasn't stopped.",
       "backgroundTasksNotStopped": "The background tasks weren't stopped.",
       "answerUnconfirmed": "Your answer was recorded but the agent did not confirm it.",
-      "hostFault": "Orca ran into a problem, so this didn't go through.",
-      "hostFaultTryAgain": "Orca ran into a problem, so this didn't go through. Try again.",
-      "hostStopped": "{{agent}} never finished starting, so Orca stopped it.",
+      "hostFault": "OCC ran into a problem, so this didn't go through.",
+      "hostFaultTryAgain": "OCC ran into a problem, so this didn't go through. Try again.",
+      "hostStopped": "{{agent}} never finished starting, so OCC stopped it.",
       "providerRateLimited": "{{agent}} is rate-limited and retrying.",
       "providerRetrying": "{{agent}} hit a temporary problem and is retrying.",
       "providerRetryingQuoted": "{{agent}} is retrying: {{detail}}.",
@@ -2350,10 +2350,10 @@
       "emptyMessage": "This message is empty, so it was not sent.",
       "commandUnavailable": "This command isn't available in {{agent}} chats, so it was not sent.",
       "queueFull": "Too many messages were waiting for the agent, so this one was not sent.",
-      "writeFailed": "Orca couldn't hand this message to the agent, so it was not sent.",
+      "writeFailed": "OCC couldn't hand this message to the agent, so it was not sent.",
       "cancelled": "This message was withdrawn before the agent started it.",
       "chatClosed": "The chat closed before this message was sent.",
-      "hostRestarted": "Orca restarted before this message was sent.",
+      "hostRestarted": "OCC restarted before this message was sent.",
       "notDelivered": "This message was not delivered.",
       "notDeliveredSendAgain": "This message was not delivered. Send it again to continue.",
       "commandRefused": "This command didn't run.",
@@ -2399,10 +2399,10 @@
       "historyInOtherAccount": "This chat's history is in another Claude account. Switch back to that account to continue it.",
       "claudeAccountFolderMissing": "The selected Claude account's folder is missing. Sign in to it again or choose another account.",
       "claudeAccountSetupFailed": "The selected Claude account could not be set up. Try again or choose another account.",
-      "agentCommandNotRunnable": "{{agent}}'s Command in Settings → Agents must be a program path or name Orca can find, with no arguments or variables. Change it or reset it.",
-      "runtimeNotInstalled": "{{agent}} isn't installed on the computer running this chat. Install it from the chat in a current version of Orca.",
+      "agentCommandNotRunnable": "{{agent}}'s Command in Settings → Agents must be a program path or name OCC can find, with no arguments or variables. Change it or reset it.",
+      "runtimeNotInstalled": "{{agent}} isn't installed on the computer running this chat. Install it from the chat in a current version of OCC.",
       "fullAccessAsRoot": "{{agent}} won't use Full access while it runs as root. Choose another permission for {{agent}} in Settings → Agents for the computer running this chat, then start a new chat.",
-      "launchPreparationFailed": "Orca couldn't prepare {{agent}} to start on the computer running this chat.",
+      "launchPreparationFailed": "OCC couldn't prepare {{agent}} to start on the computer running this chat.",
       "conversationOpenElsewhere": "Codex is still holding this conversation open. Try again in a moment, or close other Codex terminals.",
       "conversationOpenInTerminal": "{{agent}} is already running this conversation in another terminal. Quit {{agent}} there or close that terminal to continue here.",
       "chooseClaudeAccount": "Choose or add one in Claude Accounts settings.",
@@ -2423,24 +2423,24 @@
       "notDoneGoalChangeIncomplete": "Couldn't finish changing the goal. Check the chat.",
       "notDoneQueuedEdit": "Your edit wasn't saved.",
       "restartFailed": "The agent couldn't restart.",
-      "capacity": "Orca on the computer running this chat has hit a request limit. Update Orca there, then try again.",
-      "outcomeUnknown": "Orca couldn't confirm what happened. Check the chat.",
-      "sendOutcomeLost": "Orca couldn't confirm your message reached the agent. Check the chat, then send it again if needed.",
+      "capacity": "OCC on the computer running this chat has hit a request limit. Update OCC there, then try again.",
+      "outcomeUnknown": "OCC couldn't confirm what happened. Check the chat.",
+      "sendOutcomeLost": "OCC couldn't confirm your message reached the agent. Check the chat, then send it again if needed.",
       "continuationSuperseded": "This chat has moved on. Check the latest messages before continuing.",
       "questionChanged": "This question was already answered or has changed.",
       "cancelNotSaved": "Couldn't cancel this question or approval.",
-      "historyUnreadable": "Orca couldn't read this chat's saved history.",
+      "historyUnreadable": "OCC couldn't read this chat's saved history.",
       "historyUnusable": "Unable to load this chat.",
-      "historyUnavailable": "Orca couldn't open this chat's history right now.",
-      "savedByNewerOrca": "Chats were saved by a newer Orca.",
-      "updateOrcaToKeepUsing": "Update Orca to keep using them.",
-      "chatSavedByNewerOrca": "This chat was saved by a newer Orca.",
-      "updateOrcaToOpenChat": "Update Orca to open it.",
-      "unsupported": "This needs a newer Orca on the computer running this chat. Update Orca there, then try again.",
+      "historyUnavailable": "OCC couldn't open this chat's history right now.",
+      "savedByNewerOrca": "Chats were saved by a newer OCC.",
+      "updateOrcaToKeepUsing": "Update OCC to keep using them.",
+      "chatSavedByNewerOrca": "This chat was saved by a newer OCC.",
+      "updateOrcaToOpenChat": "Update OCC to open it.",
+      "unsupported": "This needs a newer OCC on the computer running this chat. Update OCC there, then try again.",
       "notAvailable": "This isn't available in this chat.",
-      "cannotRunHere": "Orca can't run this agent in a chat here.",
-      "unreachable": "Orca couldn't reach the agent.",
-      "recordFailed": "Orca couldn't save this to the chat's history.",
+      "cannotRunHere": "OCC can't run this agent in a chat here.",
+      "unreachable": "OCC couldn't reach the agent.",
+      "recordFailed": "OCC couldn't save this to the chat's history.",
       "attachmentExpired": "This attachment expired.",
       "reattachFile": "Remove it and attach it again.",
       "conversationCleared": "This conversation has been cleared.",
@@ -2479,10 +2479,10 @@
       "reopenChat": "Reopen the chat to check again.",
       "terminalAgentHoldsChat": "This chat is still open in a terminal agent.",
       "quitTerminalAgent": "Quit that agent to continue the chat here.",
-      "hostReconciling": "Orca is still checking on this chat after restarting.",
+      "hostReconciling": "OCC is still checking on this chat after restarting.",
       "waitMoment": "Wait a moment.",
-      "recordUnreadable": "Orca couldn't read this chat's saved state.",
-      "chatNotFound": "Orca can't find this chat.",
+      "recordUnreadable": "OCC couldn't read this chat's saved state.",
+      "chatNotFound": "OCC can't find this chat.",
       "startNewChat": "Start a new chat to continue.",
       "tryAgain": "Try again."
     },
@@ -2572,7 +2572,7 @@
       "reason": "Reason: ",
       "needsAccessTo": "Needs access to: ",
       "planFile": "Plan file: {{filePath}}",
-      "newerVersionRequired": "This request needs a newer version of Orca."
+      "newerVersionRequired": "This request needs a newer version of OCC."
     },
     "promptCard": {
       "terminalExplanation": "Answer this OMP question in the terminal.",
@@ -2759,10 +2759,10 @@
       "continuedOutsideRewound": "Continued outside this chat. Earlier replies above are no longer in this conversation's history."
     },
     "orcaStop": {
-      "update": "Orca on {{machine}} restarted for an update while this response was in progress.",
-      "quit": "Orca on {{machine}} was closed while this response was in progress.",
-      "crash": "Orca on {{machine}} stopped unexpectedly while this response was in progress.",
-      "remote": "Orca on {{machine}} stopped while this response was in progress.",
+      "update": "OCC on {{machine}} restarted for an update while this response was in progress.",
+      "quit": "OCC on {{machine}} was closed while this response was in progress.",
+      "crash": "OCC on {{machine}} stopped unexpectedly while this response was in progress.",
+      "remote": "OCC on {{machine}} stopped while this response was in progress.",
       "canContinue": "You can continue in this conversation.",
       "unnamedServer": "the remote server"
     },
@@ -2937,8 +2937,8 @@
       "notReady": "This branch is not ready for a {{reviewLabel}} yet.",
       "existingNumber": "{{titleLabel}} #{{number}} is already open.",
       "existing": "{{titleLabel}} is already open.",
-      "createdNotRefreshed": "{{titleLabel}} created, but Orca could not refresh it yet.",
-      "lookupUnconfirmed": "Orca could not confirm whether this branch already has a {{reviewLabel}}. Try again in a moment.",
+      "createdNotRefreshed": "{{titleLabel}} created, but OCC could not refresh it yet.",
+      "lookupUnconfirmed": "OCC could not confirm whether this branch already has a {{reviewLabel}}. Try again in a moment.",
       "dirty": "Commit changes before creating a {{reviewLabel}}.",
       "detachedHead": "Check out a branch before creating a {{reviewLabel}}.",
       "defaultBranch": "Switch to a feature branch before creating a {{reviewLabel}}.",
@@ -3279,7 +3279,7 @@
     "loaders": {
       "connectingToDesktop": "Connecting to desktop...",
       "waitingForDesktop": "Waiting for desktop...",
-      "updateDesktop": "Update Orca desktop to use Source Control on mobile.",
+      "updateDesktop": "Update OCC desktop to use Source Control on mobile.",
       "loadFailed": "Unable to load source control"
     },
     "openers": {
@@ -3299,7 +3299,7 @@
       "antigravityInvalidEvents": "Antigravity returned invalid JSON events.",
       "antigravityInvalidResult": "Antigravity returned an invalid result.",
       "antigravityNoFinalResult": "Antigravity returned no final result.",
-      "kimiUnreadableOutput": "Kimi returned output Orca couldn't read. Try again.",
+      "kimiUnreadableOutput": "Kimi returned output OCC couldn't read. Try again.",
       "kimiSessionOccupied": "Kimi couldn't use this session because it is active in another client. Stop the session there or exit that client, then try again.",
       "kimiInterrupted": "Kimi was interrupted before it finished generating text. Try again.",
       "kimiFailed": "Kimi couldn't finish generating text. Open Kimi on the execution host to check the failure before retrying.",
@@ -3334,7 +3334,7 @@
       "agentBinaryNotFound": "{{binary}} not found on PATH. Install {{label}} to use AI commit messages.",
       "timedOut": "Generation timed out after {{seconds}}s.",
       "outputTooLarge": "{{label}} CLI command produced too much output. Check the agent CLI configuration and try again.",
-      "windowsBatchUnsafeArguments": "{{label}} runs through a Windows batch script that cannot take the multi-line prompt as an argument. Point Settings at the agent's executable, or use a custom command without {prompt} so Orca sends the prompt on stdin.",
+      "windowsBatchUnsafeArguments": "{{label}} runs through a Windows batch script that cannot take the multi-line prompt as an argument. Point Settings at the agent's executable, or use a custom command without {prompt} so OCC sends the prompt on stdin.",
       "cliTerminated": "{{label}} CLI command was terminated before exiting.",
       "cliTerminatedWithDetail": "{{label}} CLI command was terminated before exiting: {{detail}}",
       "cliFailed": "{{label}} CLI command failed with code {{exitCode}}.",
@@ -3376,7 +3376,7 @@
     },
     "conflictActions": {
       "resolveFile": "{{action}}: {{path}}",
-      "needsNewerHost": "Update Orca on the computer running this workspace to resolve merge conflicts from your phone.",
+      "needsNewerHost": "Update OCC on the computer running this workspace to resolve merge conflicts from your phone.",
       "markResolved": "Mark as resolved",
       "keepFile": "Keep file",
       "keepDeletion": "Keep deletion",
@@ -3515,7 +3515,7 @@
       "noMoreProjects": "No more projects.",
       "chooseView": "Choose Project View",
       "view": "Project View",
-      "unsupportedLayout": "Orca doesn't support this GitHub Project layout yet.",
+      "unsupportedLayout": "OCC doesn't support this GitHub Project layout yet.",
       "sort": "Project Sort"
     },
     "githubViewControls": {
@@ -3611,7 +3611,7 @@
       "sortTasksTitle": "Sort Tasks"
     },
     "listSurface": {
-      "updateDesktopTitle": "Update Orca desktop",
+      "updateDesktopTitle": "Update OCC desktop",
       "updateDesktopMessage": "This mobile Tasks view needs a newer desktop runtime.",
       "jiraStatusFailed": "Failed to read Jira status",
       "connectLinearTitle": "Connect your Linear account",
@@ -3686,8 +3686,8 @@
       "reply": "Reply"
     },
     "projectDetailDrawer": {
-      "repositoryNotInOrca": "Repository not in Orca",
-      "addRepositoryFromDesktop": "{{repository}} is not added to Orca. Add this repository from the desktop app, then refresh mobile Tasks.",
+      "repositoryNotInOrca": "Repository not in OCC",
+      "addRepositoryFromDesktop": "{{repository}} is not added to OCC. Add this repository from the desktop app, then refresh mobile Tasks.",
       "openInGitHub": "Open in GitHub",
       "copyRepository": "Copy repository",
       "projectSubtitle": "GitHub Project · {{repository}}{{itemNumber}}",
@@ -3708,7 +3708,7 @@
       "reopenItem": "Reopen item",
       "closeItem": "Close item",
       "mergePullRequest": "Merge pull request",
-      "mergeRepositoryRequirement": "Merge requires this repository in Orca."
+      "mergeRepositoryRequirement": "Merge requires this repository in OCC."
     },
     "projectFieldEditors": {
       "projectFields": "Project fields",

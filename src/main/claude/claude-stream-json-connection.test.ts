@@ -240,7 +240,7 @@ describe('Claude stream-json connection', () => {
     expect(childEnv().ANTHROPIC_API_KEY).toBe('sk-ant-api03-0123456789abcdef-INTENDED')
   })
 
-  it("strips the launch's inherited keys after Orca's own env is merged in", async () => {
+  it("strips the launch's inherited keys after OCC's own env is merged in", async () => {
     vi.stubEnv('ORCA_PANE_KEY', 'tab-1:pane-1')
     vi.stubEnv('ORCA_AGENT_HOOK_PORT', '4242')
     vi.stubEnv('ORCA_CONNECTION_MARKER', 'inherited')
@@ -266,7 +266,7 @@ describe('Claude stream-json connection', () => {
     expect(childEnv().CLAUDE_CONFIG_DIR).toBeUndefined()
   })
 
-  it("drops a CLAUDE_CONFIG_DIR from Orca's own process env: only the launch may name a home", async () => {
+  it("drops a CLAUDE_CONFIG_DIR from OCC's own process env: only the launch may name a home", async () => {
     vi.stubEnv('CLAUDE_CONFIG_DIR', '/orca/process/claude')
     vi.stubEnv('ORCA_CONNECTION_MARKER', 'inherited')
     const scenario = scriptScenario([HOLD_OPEN])
@@ -501,7 +501,7 @@ describe('Claude stream-json connection', () => {
     expect(written.response.response).toMatchObject({ behavior: 'deny', message: 'No' })
   })
 
-  it('drives Orca control methods onto the SDK and times out with the init proof message', async () => {
+  it('drives OCC control methods onto the SDK and times out with the init proof message', async () => {
     const scenario = scriptScenario([HOLD_OPEN], {
       initialize: { models: [{ value: 'sonnet' }], account: { tokenSource: 'oauth' } },
       get_settings: { env: { ANTHROPIC_BASE_URL: 'https://settings.example.test' } }

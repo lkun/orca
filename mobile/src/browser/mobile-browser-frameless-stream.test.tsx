@@ -173,7 +173,7 @@ describe('MobileBrowserPane with a stream that reports ready but sends no frames
 
     expect(spinnerCount(renderer)).toBe(0)
     expect(errorMessages(renderer)).not.toContain(
-      'Update the Orca app to stream browser tabs here.'
+      'Update the OCC app to stream browser tabs here.'
     )
     const source = findAllByHostType(renderer.root, 'Image')
       .map((image) => (image.props.source as { uri?: string } | null)?.uri)
@@ -190,7 +190,7 @@ describe('MobileBrowserPane against a shell with no binary screencast lane', () 
       const { renderer, subscriptions } = await renderPane()
 
       expect(subscriptions).toEqual([])
-      expect(errorMessages(renderer)).toContain('Update the Orca app to stream browser tabs here.')
+      expect(errorMessages(renderer)).toContain('Update the OCC app to stream browser tabs here.')
     } finally {
       vi.mocked(useBrowserBinaryScreencastGrant).mockReturnValue(true)
     }

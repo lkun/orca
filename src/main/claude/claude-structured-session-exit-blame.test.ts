@@ -97,7 +97,7 @@ describe('what a started Claude session says ended it', () => {
     ).toMatchObject({ kind: 'cliMissing' })
   })
 
-  it('blames Orca when a journal fault makes Orca close the child', async () => {
+  it('blames OCC when a journal fault makes OCC close the child', async () => {
     const { connection, ended } = await startedClaude({
       appendItem: () => {},
       appendTombstone: () => {},

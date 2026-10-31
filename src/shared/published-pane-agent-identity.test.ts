@@ -64,7 +64,7 @@ describe('resolvePublishedPaneAgentIdentity', () => {
   })
 
   describe('identity must not depend on how the agent was started', () => {
-    // Shell-started agents lack Orca launch records, so identity must also work from hooks.
+    // Shell-started agents lack OCC launch records, so identity must also work from hooks.
     it('identifies a shell-started agent from its own hook report', () => {
       expect(resolve({ hookAgent: 'codex', hookIsLive: true })).toBe('codex')
     })

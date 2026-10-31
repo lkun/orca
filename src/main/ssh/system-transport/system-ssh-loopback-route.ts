@@ -58,7 +58,7 @@ export function shouldUseSystemSshLoopbackRoute(
     : Boolean(target.proxyCommand || target.jumpHost)
 }
 
-// Why: Orca dials manual targets by their stored endpoint; `ssh -G` ran on the label, not that host.
+// Why: OCC dials manual targets by their stored endpoint; `ssh -G` ran on the label, not that host.
 function configBackedResolution(
   target: SshTarget,
   resolved: SshResolvedConfig | null

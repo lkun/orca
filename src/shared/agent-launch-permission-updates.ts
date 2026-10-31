@@ -76,7 +76,7 @@ export function legacyPermissionsUpdates(
 
 /**
  * Arguments text from a client that sees the flag as part of it. Unchanged text changes nothing;
- * otherwise Orca's flag in it becomes the choice, and text without one means the agent's own.
+ * otherwise OCC's flag in it becomes the choice, and text without one means the agent's own.
  */
 export function legacyArgumentsUpdates(
   settings: AgentLaunchSettingsSource,

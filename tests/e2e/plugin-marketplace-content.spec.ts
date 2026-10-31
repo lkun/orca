@@ -60,7 +60,7 @@ async function createMarketplaceFixture(): Promise<MarketplaceFixture> {
     join(marketplaceRepository, 'orca-marketplace.json'),
     `${JSON.stringify(
       {
-        name: 'Orca Plugins',
+        name: 'OCC Plugins',
         owner: 'stablyai',
         plugins: [
           [FIXTURE_LANGUAGE_PLUGIN.pluginKey, FIXTURE_LANGUAGE_PLUGIN.repository, 'languages'],

@@ -196,7 +196,7 @@ function install(permissions: string[], nativeScripting = true) {
     }
   }
   const chrome = { runtime, scripting, tabs }
-  // `browser` shares chrome's namespace objects, as Orca's installer mirrors them.
+  // `browser` shares chrome's namespace objects, as OCC's installer mirrors them.
   const realm = {
     chrome: nativeScripting ? chrome : { runtime, tabs },
     browser: nativeScripting ? { scripting, tabs } : { tabs },
@@ -219,7 +219,7 @@ function install(permissions: string[], nativeScripting = true) {
   return { chrome, executeScript, insertCSS, sendMessage, calls, nativeListeners }
 }
 
-describe('Orca documentIds in native scripting targets', () => {
+describe('OCC documentIds in native scripting targets', () => {
   it.each([1, 2])(
     'rejects script navigation at discovery snapshot %i before executing user code',
     async (snapshot) => {
@@ -253,7 +253,7 @@ describe('Orca documentIds in native scripting targets', () => {
     }
   )
 
-  it("preserves a native document constraint for Orca's document ids", async () => {
+  it("preserves a native document constraint for OCC's document ids", async () => {
     const { chrome, executeScript, calls } = install(['webNavigation', 'scripting'])
     const results = await chrome.scripting.executeScript({
       target: { tabId: 3, documentIds: [ORCA_AD] },
@@ -323,7 +323,7 @@ describe('Orca documentIds in native scripting targets', () => {
     expect(nativeListeners.size).toBe(0)
   })
 
-  it('never labels an unexpected native document as the requested Orca document', async () => {
+  it('never labels an unexpected native document as the requested OCC document', async () => {
     const { chrome, executeScript } = install(['webNavigation', 'scripting'])
     executeScript.mockResolvedValueOnce([{ frameId: 0, documentId: CHROMIUM_TOP, result: 0 }])
     executeScript.mockResolvedValueOnce([

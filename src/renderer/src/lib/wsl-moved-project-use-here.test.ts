@@ -147,7 +147,7 @@ describe('bringWslMovedProjectBack', () => {
     for (const reason of ['host-unreachable', 'failed'] as const) {
       stubApi({ released: false, reason, detail: 'host-automations' })
       expect(await refusalShown()).toBe(
-        "Orca couldn't turn off this project's automations on the Ubuntu host, so they could run twice. Connect the host in Settings, then try again."
+        "OCC couldn't turn off this project's automations on the Ubuntu host, so they could run twice. Connect the host in Settings, then try again."
       )
     }
   })
@@ -155,7 +155,7 @@ describe('bringWslMovedProjectBack', () => {
   it('says a host still being removed is left alone', async () => {
     stubApi({ released: false, reason: 'failed', detail: 'host-removal-pending' })
     expect(await refusalShown()).toBe(
-      'The Ubuntu host is still being removed, so Orca leaves it alone. Finish removing it in Settings, then try again.'
+      'The Ubuntu host is still being removed, so OCC leaves it alone. Finish removing it in Settings, then try again.'
     )
   })
 
@@ -170,10 +170,10 @@ describe('bringWslMovedProjectBack', () => {
     )
   })
 
-  it('says a host removed here but kept for another Orca needs re-adding', async () => {
+  it('says a host removed here but kept for another OCC needs re-adding', async () => {
     stubApi({ released: false, reason: 'host-unreachable', detail: 'host-kept-for-peers' })
     expect(await refusalShown()).toBe(
-      'Repo 1 moved to the Ubuntu host, which is still running for another Orca. Re-add the host to use it here again.'
+      'Repo 1 moved to the Ubuntu host, which is still running for another OCC. Re-add the host to use it here again.'
     )
   })
 })

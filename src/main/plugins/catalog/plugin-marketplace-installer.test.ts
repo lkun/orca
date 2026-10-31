@@ -280,7 +280,7 @@ describe('PluginMarketplaceInstaller', () => {
     )
   })
 
-  it('lists a release for a newer Orca but refuses it before downloading', async () => {
+  it('lists a release for a newer OCC but refuses it before downloading', async () => {
     git.release = {
       version: '1.0.0',
       commit: git.commit,
@@ -293,7 +293,7 @@ describe('PluginMarketplaceInstaller', () => {
     await expect(marketplace.findPlugin(sourceId, 'community.notes')).resolves.toBeTruthy()
 
     await expect(installer.preview(sourceId, 'community.notes')).rejects.toThrow(
-      `requires Orca >=9.0.0 (this is ${PLUGIN_SCHEMA_NEWEST_SINCE})`
+      `requires OCC >=9.0.0 (this is ${PLUGIN_SCHEMA_NEWEST_SINCE})`
     )
     await expect(
       installer.install({
@@ -304,7 +304,7 @@ describe('PluginMarketplaceInstaller', () => {
       })
     ).resolves.toEqual({
       ok: false,
-      error: `requires Orca >=9.0.0 (this is ${PLUGIN_SCHEMA_NEWEST_SINCE})`
+      error: `requires OCC >=9.0.0 (this is ${PLUGIN_SCHEMA_NEWEST_SINCE})`
     })
     expect(git.checkout).not.toHaveBeenCalled()
   })

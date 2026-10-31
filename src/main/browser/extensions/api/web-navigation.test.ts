@@ -114,7 +114,7 @@ describe('webNavigation documentIds', () => {
         caller as unknown as BrowserExtensionCaller,
         args
       )
-    // The preload maps Orca's ids to frames for native scripting through this list.
+    // The preload maps OCC's ids to frames for native scripting through this list.
     expect(invoke('frames', [7], PRELOAD_DOCUMENT_TARGETS_NAMESPACE)).toEqual([
       { frameId: 0, documentId: firstDocument },
       { frameId: 11, documentId: subDocument }

@@ -5,7 +5,7 @@ import { pluginError, type PluginError } from './plugin-protocol'
 
 /**
  * The document channel of a custom editor frame, on the shared envelope. The frame only ever sees
- * the document's text, or its bytes for a binary editor: Orca keeps the buffer, dirty state, saving
+ * the document's text, or its bytes for a binary editor: OCC keeps the buffer, dirty state, saving
  * and the file's location, so the plugin never learns a path or touches a file system.
  */
 
@@ -26,7 +26,7 @@ export type CustomEditorContent =
 
 /** Payload of the `editor.document` event: `window.orca.document.get()` in the frame. */
 export type CustomEditorDocument = {
-  /** Rises each time Orca sends a document; an edit names the version it was made against. */
+  /** Rises each time OCC sends a document; an edit names the version it was made against. */
   version: number
   readOnly: boolean
   content: CustomEditorContent
@@ -62,7 +62,7 @@ export const CUSTOM_EDITOR_CONFLICT: PluginError = pluginError(
 
 export const CUSTOM_EDITOR_TOO_LARGE: PluginError = pluginError(
   'too_large',
-  'The edit is larger than Orca accepts; the file keeps its last accepted edit.'
+  'The edit is larger than OCC accepts; the file keeps its last accepted edit.'
 )
 
 export type CustomEditorKeyChord = {

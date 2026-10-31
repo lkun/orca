@@ -66,7 +66,7 @@ function hashBinary(binaryPath: string | null): string | null {
   }
 }
 
-/** Absolute path to Orca's own ripgrep for `platform`, or null when this install lacks it. */
+/** Absolute path to OCC's own ripgrep for `platform`, or null when this install lacks it. */
 export function resolveBundledRipgrepPath(platform: BundledRipgrepPlatform): string | null {
   if (!resolvedPaths.has(platform)) {
     const found = candidatePaths(platform).find((path) => existsSync(path))
@@ -91,7 +91,7 @@ export function bundledRipgrepCommand(options: { wsl?: boolean } = {}): string {
   return candidatePaths(platform ?? `${os}-${process.arch}`)[0] ?? PATH_RIPGREP_COMMAND
 }
 
-/** Guest uname selects Linux rg architecture, which can differ from Windows Orca; wslpath honors custom automount roots.
+/** Guest uname selects Linux rg architecture, which can differ from Windows OCC; wslpath honors custom automount roots.
  * Inaccessible installs follow missing-tool handling. */
 export function bundledRipgrepWslSpawnOptions(command: string): { wslShellCommand?: string } {
   const ripgrepRoot = command.replace(/[\\/][^\\/]+[\\/][^\\/]+$/, '')
@@ -119,6 +119,6 @@ export function resetBundledRipgrepPathCacheForTests(): void {
 // No git/readdir fallback: partial listings would hide damaged installs or security-software blocks.
 export function bundledRipgrepUnavailableError(): Error {
   return new Error(
-    "Orca's bundled search tool (ripgrep) could not start. Reinstall Orca, or allow it in your security software."
+    "OCC's bundled search tool (ripgrep) could not start. Reinstall OCC, or allow it in your security software."
   )
 }

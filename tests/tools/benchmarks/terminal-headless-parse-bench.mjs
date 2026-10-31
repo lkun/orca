@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Feed pipeline-bench fixtures to bare @xterm/headless to separate parser/buffer cost from Orca delivery/scanning/paint.
-// Compare with plain-text rate; matching parser throughput places the pipeline gap in Orca layers.
+// Feed pipeline-bench fixtures to bare @xterm/headless to separate parser/buffer cost from OCC delivery/scanning/paint.
+// Compare with plain-text rate; matching parser throughput places the pipeline gap in OCC layers.
 // Usage: node tests/tools/benchmarks/terminal-headless-parse-bench.mjs [--size-mb 10] [--cols 114] [--rows 85] [--scrollback 5000]
 import { performance } from 'node:perf_hooks'
 import xterm from '@xterm/headless'

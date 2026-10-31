@@ -90,7 +90,7 @@ function applyWindowUpdate(
   info: z.infer<typeof updateInfoSchema>
 ): void {
   const { window } = entry
-  // Why: extensions may focus Orca's main window but never move, resize or minimize it.
+  // Why: extensions may focus OCC's main window but never move, resize or minimize it.
   if (!entry.isMain) {
     if (info.state === 'minimized') {
       window.minimize()
@@ -178,7 +178,7 @@ export function registerWindowsNamespace(): void {
       remove: defineBrowserExtensionMethod(z.tuple([windowIdSchema]), (caller, windowId) => {
         const entry = requireWindow(caller, windowId)
         if (entry.isMain) {
-          throw new BrowserExtensionApiError("Extensions cannot close Orca's main window")
+          throw new BrowserExtensionApiError("Extensions cannot close OCC's main window")
         }
         entry.window.close()
       })

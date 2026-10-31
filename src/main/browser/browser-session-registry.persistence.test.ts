@@ -60,7 +60,7 @@ describe('BrowserSessionRegistry persistence', () => {
     expect(fsState.present.has(legacyPath)).toBe(false)
   })
 
-  it('persists new browser session profiles under the active Orca profile directory', async () => {
+  it('persists new browser session profiles under the active OCC profile directory', async () => {
     const fsState = createFsState()
     const profileMetaPath = '/user-data/profiles/local-work/browser-session-meta.json'
 
@@ -289,7 +289,7 @@ describe('BrowserSessionRegistry persistence', () => {
     expect(permissionCallback).toHaveBeenLastCalledWith(true)
     expect(checkHandler(null, 'storage-access', '')).toBe(true)
 
-    // Related Website Sets gate top-level storage access; Orca has no such data source.
+    // Related Website Sets gate top-level storage access; OCC has no such data source.
     requestHandler(guestWc, 'top-level-storage-access', permissionCallback, {})
     expect(permissionCallback).toHaveBeenLastCalledWith(false)
     expect(checkHandler(null, 'top-level-storage-access', '')).toBe(false)

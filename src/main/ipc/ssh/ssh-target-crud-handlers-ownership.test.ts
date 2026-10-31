@@ -84,21 +84,21 @@ describe('SSH target CRUD against managed orcad targets', () => {
 
   it('refuses to remove a managed host, pointing at Stop instead', async () => {
     await expect(handler('ssh:removeTarget')(null, { id: 'ssh-1' })).rejects.toThrow(
-      'Settings › Orca on your SSH hosts'
+      'Settings › OCC on your SSH hosts'
     )
     mocks.state.target = {
       ...target,
       orcadProvisioning: { requestId: 'request-1', name: 'Managed' }
     }
     await expect(handler('ssh:removeTarget')(null, { id: 'ssh-1' })).rejects.toThrow(
-      'Orca runs on this host'
+      'OCC runs on this host'
     )
     expect(mocks.remove).not.toHaveBeenCalled()
   })
 
   it('gives paired clients the same rules: a managed host is refused there too', async () => {
     const mutations = mocks.setMutations.mock.calls.at(-1)?.[0]
-    await expect(mutations.remove('ssh-1')).rejects.toThrow('Settings › Orca on your SSH hosts')
+    await expect(mutations.remove('ssh-1')).rejects.toThrow('Settings › OCC on your SSH hosts')
     mutations.update('ssh-1', { host: 'elsewhere', generation: 9 })
     expect(mocks.updateTarget).toHaveBeenCalledWith('ssh-1', { host: 'elsewhere' })
     expect(mocks.remove).not.toHaveBeenCalled()

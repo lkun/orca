@@ -57,7 +57,7 @@ export function watchRuntimeEnvironmentPreference(
   }
   // Reconcile changes made while the native watch was being installed.
   const initialCheck = setImmediate(repairPreference)
-  // Watch the file: macOS directory watches recursively stream Orca's own userData writes.
+  // Watch the file: macOS directory watches recursively stream OCC's own userData writes.
   const registryWatch = watchFileAcrossReplacement(
     getEnvironmentStorePath(userDataPath),
     () => {

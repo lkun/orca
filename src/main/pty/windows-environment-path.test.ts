@@ -513,7 +513,7 @@ describe('mergePersistedWindowsPath', () => {
         [
           '',
           'HKEY_CURRENT_USER\\Environment',
-          '    Path    REG_EXPAND_SZ    C:\\Users\\me\\AppData\\Local\\Orca\\bin;C:\\Existing',
+          '    Path    REG_EXPAND_SZ    C:\\Users\\me\\AppData\\Local\\OCC\\bin;C:\\Existing',
           ''
         ].join('\r\n')
       )
@@ -522,7 +522,7 @@ describe('mergePersistedWindowsPath', () => {
     mergePersistedWindowsPath(env, { platform: 'win32', execFileSync })
 
     expect(env.Path).toBe(
-      'C:\\Windows\\System32;C:\\Existing;C:\\Users\\me\\AppData\\Local\\Orca\\bin'
+      'C:\\Windows\\System32;C:\\Existing;C:\\Users\\me\\AppData\\Local\\OCC\\bin'
     )
   })
 
@@ -588,7 +588,7 @@ describe('mergePersistedWindowsPath', () => {
   })
 
   it('keeps injected entries ahead of the persisted PATH', () => {
-    const injected = 'C:\\Users\\me\\AppData\\Local\\Orca\\resources\\bin'
+    const injected = 'C:\\Users\\me\\AppData\\Local\\OCC\\resources\\bin'
     const python = 'C:\\Users\\me\\AppData\\Local\\Programs\\Python\\Python314\\'
     const windowsApps = 'C:\\Users\\me\\AppData\\Local\\Microsoft\\WindowsApps'
     const execFileSync = vi

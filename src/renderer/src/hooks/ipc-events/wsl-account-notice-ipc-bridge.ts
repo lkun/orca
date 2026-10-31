@@ -14,7 +14,7 @@ export function showWslAccountNotAppliedNotice({ distro }: WslOrcadAccountNotApp
       id: `wsl-account-not-applied:${distro.toLowerCase()}`,
       description: translate(
         'accounts.wslAccountNotApplied.description',
-        "Agents there use the distro's default Claude and Codex accounts until Orca in WSL is updated."
+        "Agents there use the distro's default Claude and Codex accounts until OCC in WSL is updated."
       )
     }
   )

@@ -68,26 +68,26 @@ describe('acquireSingleInstanceLock', () => {
 
     const [registered] = fake.listeners['second-instance'] ?? []
     expect(registered).toBeDefined()
-    registered?.({}, ['/opt/orca/orca-linux.AppImage', '--serve'], '/home/orca')
+    registered?.({}, ['/opt/occ/occ-linux.AppImage', '--serve'], '/home/orca')
 
     expect(onSecondInstance).toHaveBeenCalledTimes(1)
-    expect(onSecondInstance).toHaveBeenCalledWith(['/opt/orca/orca-linux.AppImage', '--serve'])
+    expect(onSecondInstance).toHaveBeenCalledWith(['/opt/occ/occ-linux.AppImage', '--serve'])
   })
 })
 
 describe('shouldActivateDesktopForSecondInstance', () => {
   it('ignores a duplicate serve launch but still activates for a desktop launch', () => {
     // Supervisor serve restarts must not open desktop windows on displayless hosts (#11935).
-    const serveArgv = ['/opt/orca/orca-linux.AppImage', '--serve']
+    const serveArgv = ['/opt/occ/occ-linux.AppImage', '--serve']
     expect(shouldActivateDesktopForSecondInstance(serveArgv)).toBe(false)
-    expect(shouldActivateDesktopForSecondInstance(['/Applications/Orca.app/orca'])).toBe(true)
+    expect(shouldActivateDesktopForSecondInstance(['/Applications/OCC.app/orca'])).toBe(true)
   })
 
   it('ignores a duplicate CLI-form serve launch the CLI redirect never rewrote', () => {
     // Systemd uses CLI-form serve argv; flag-only detection would activate a headless server.
     expect(
       shouldActivateDesktopForSecondInstance([
-        '/opt/orca/squashfs-root/orca-ide',
+        '/opt/occ/squashfs-root/occ-ide',
         'serve',
         '--port',
         '6768',
@@ -96,7 +96,7 @@ describe('shouldActivateDesktopForSecondInstance', () => {
       ])
     ).toBe(false)
     expect(
-      shouldActivateDesktopForSecondInstance(['/opt/orca/orca-ide', '/home/u/serve-repo'])
+      shouldActivateDesktopForSecondInstance(['/opt/occ/occ-ide', '/home/u/serve-repo'])
     ).toBe(true)
   })
 
@@ -147,7 +147,7 @@ describe('logSingleInstanceLockFailure', () => {
 
   it('tells a second dev launch which profile is taken and how to run another copy', () => {
     const write = vi.fn()
-    const userDataPath = '/Users/dev/Library/Application Support/orca-dev'
+    const userDataPath = '/Users/dev/Library/Application Support/occ-dev'
 
     logSingleInstanceLockFailure({ isDevDesktop: true, userDataPath }, write)
 

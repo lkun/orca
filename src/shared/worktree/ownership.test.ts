@@ -97,7 +97,7 @@ function makeSettings(overrides: Partial<GlobalSettings> = {}): GlobalSettings {
 }
 
 describe('worktree ownership classification', () => {
-  it('does not treat generic discovery metadata on nested workspace paths as Orca-managed', () => {
+  it('does not treat generic discovery metadata on nested workspace paths as OCC-managed', () => {
     const repo = makeRepo({ externalWorktreeVisibility: 'hide' })
     const settings = makeSettings()
     const detected = toDetectedWorktree({
@@ -271,7 +271,7 @@ describe('external worktree visibility policy', () => {
 describe('agent scratch worktrees', () => {
   const scratchPath = '/repos/app/.claude/worktrees/agent-a04ccaaa55ddadb91'
 
-  it('keeps strong Orca metadata authoritative over the scratch path match', () => {
+  it('keeps strong OCC metadata authoritative over the scratch path match', () => {
     const repo = makeRepo()
     const settings = makeSettings()
     expect(

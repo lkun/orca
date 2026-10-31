@@ -101,7 +101,7 @@ describe('skills get host-capability gating', () => {
   it.each<[string, Host]>([
     ['publishing is off', { settings: { artifactSharingEnabled: false } }],
     ['the host omits the settings (headless or older)', { settings: {} }],
-    ['the host is unreachable', { settings: new Error('Orca is not running') }]
+    ['the host is unreachable', { settings: new Error('OCC is not running') }]
   ])('withholds publishing from every guide shape when %s', async (_label, host) => {
     const guide = await skillsGet([], host)
     const full = await skillsGet(['--full'], host)

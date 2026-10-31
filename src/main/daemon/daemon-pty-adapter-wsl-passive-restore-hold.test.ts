@@ -72,7 +72,7 @@ describe('a passive restore of a WSL bridge pane (E9)', () => {
   it('holds when the read cannot tell, too', async () => {
     readState.mockResolvedValue('unverifiable')
     const error = await restore({ wslPassiveRestore: true }).catch((caught: unknown) => caught)
-    // Named as such, so the card says Orca couldn't check rather than that the distro stopped.
+    // Named as such, so the card says OCC couldn't check rather than that the distro stopped.
     expect(error instanceof Error ? parseWslDistroHold(error.message) : null).toEqual({
       distro: 'Ubuntu',
       state: 'unverifiable'

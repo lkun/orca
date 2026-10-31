@@ -1,7 +1,7 @@
 import { MAX_PROGRAM_SIZE } from './regex-piece'
 import { translateRe2 } from './regex-translation'
 
-// regexFilter support. Chromium compiles these with RE2 under a 2KB program limit; Orca runs a
+// regexFilter support. Chromium compiles these with RE2 under a 2KB program limit; OCC runs a
 // JS RegExp translated from the same pattern and caps size with an estimate of RE2's program.
 // Matching runs synchronously on every request, so it must stay linear-time like RE2.
 

@@ -42,7 +42,7 @@ export function scanResidentExecutables(
       }
     } catch (error) {
       // Exited processes cannot be resident; non-dumpable processes can deny /proc access.
-      // Orca is dumpable and holds leases; unexpected errors could hide a resident.
+      // OCC is dumpable and holds leases; unexpected errors could hide a resident.
       if (!['ENOENT', 'ESRCH', 'EACCES', 'EPERM'].some((code) => hasErrorCode(error, code))) {
         unreadablePid = pid
       }

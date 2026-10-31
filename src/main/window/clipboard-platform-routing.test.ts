@@ -27,7 +27,7 @@ beforeEach(() => {
   vi.clearAllMocks()
   vi.stubEnv('WAYLAND_DISPLAY', 'wayland-1')
   vi.stubEnv('XDG_SESSION_TYPE', 'wayland')
-  vi.stubEnv('APPIMAGE', '/tmp/Orca.AppImage')
+  vi.stubEnv('APPIMAGE', '/tmp/OCC.AppImage')
   vi.stubEnv('APPDIR', '/tmp/.mount_Orca')
   let contents = ''
   mocks.writeText.mockImplementation((text: string) => {

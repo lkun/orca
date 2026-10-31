@@ -17,9 +17,9 @@ export function resolveOrcaCliCommand({ env = process.env, platform = process.pl
     return env.ORCA_CLI_COMMAND.trim()
   }
   if (env.ORCA_DEV_REPO_ROOT) {
-    return 'orca-dev'
+    return 'occ-dev'
   }
-  return platform === 'linux' ? 'orca-ide' : 'orca'
+  return platform === 'linux' ? 'occ-ide' : 'orca'
 }
 
 export function resolveOrcaCliInvocation({
@@ -32,11 +32,11 @@ export function resolveOrcaCliInvocation({
   if (
     platform === 'win32' &&
     env.ORCA_DEV_REPO_ROOT &&
-    (commandName === 'orca-dev' || commandName === 'orca-dev.cmd')
+    (commandName === 'occ-dev' || commandName === 'occ-dev.cmd')
   ) {
     const defaultUserDataPath = path.win32.join(
       env.APPDATA ?? path.win32.join(env.USERPROFILE ?? '', 'AppData', 'Roaming'),
-      'orca-dev'
+      'occ-dev'
     )
     return {
       command: nodeExecutable,

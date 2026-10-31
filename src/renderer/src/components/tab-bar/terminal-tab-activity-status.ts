@@ -68,7 +68,7 @@ function getTerminalTabActivityFlags(
     }
     // Apply sidebar freshness rules so abandoned/slept panes cannot keep tab spinners alive.
     if (!isExplicitAgentStatusFresh(entry, now, AGENT_STATUS_STALE_AFTER_MS)) {
-      // Stale identity suppresses Orca's one-shot permission label without suppressing native titles.
+      // Stale identity suppresses OCC's one-shot permission label without suppressing native titles.
       getOrCreateTerminalTabActivityFlags(flagsByTabId, identity.tabId).stalePaneIds.add(
         identity.paneId
       )

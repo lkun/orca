@@ -88,7 +88,7 @@ beforeEach(() => {
   mocks.state.popup = ''
   mocks.grant.mockClear()
   mocks.emitted.length = 0
-  // Orca's main window shows profile B's tab.
+  // OCC's main window shows profile B's tab.
   contents(22, profileB, true)
   mocks.state.activeTabId = 22
 })

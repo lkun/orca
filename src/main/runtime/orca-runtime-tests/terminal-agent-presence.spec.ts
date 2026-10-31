@@ -19,7 +19,7 @@ describe('terminal agent presence', () => {
       title: 'worker'
     })
     // Claude answered over OSC 7501 paints no title glyph.
-    runtime.onPtyData('pty-claude', '\x1b]0;Orca worker dispatch task ok\x07', 1)
+    runtime.onPtyData('pty-claude', '\x1b]0;OCC worker dispatch task ok\x07', 1)
 
     await expect(runtime.isTerminalRunningAgent(handle)).resolves.toBe(true)
   })

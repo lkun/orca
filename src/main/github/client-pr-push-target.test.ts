@@ -205,10 +205,10 @@ describe('getPRForBranch', () => {
   })
 
   it('does not treat a same-repository upstream remote as a fork', async () => {
-    getOwnerRepoMock.mockResolvedValue({ owner: 'StablyAI', repo: 'Orca' })
+    getOwnerRepoMock.mockResolvedValue({ owner: 'StablyAI', repo: 'OCC' })
     getOwnerRepoForRemoteMock.mockImplementation(async (_repoPath: string, remoteName: string) =>
       remoteName === 'origin'
-        ? { owner: 'StablyAI', repo: 'Orca' }
+        ? { owner: 'StablyAI', repo: 'OCC' }
         : { owner: 'stablyai', repo: 'orca' }
     )
     ghExecFileAsyncMock.mockResolvedValueOnce({
@@ -219,7 +219,7 @@ describe('getPRForBranch', () => {
 
     expect(ghExecFileAsyncMock).toHaveBeenCalledWith(
       // Explicit positional host prevents ambient GH_HOST redirection.
-      ['repo', 'view', 'github.com/StablyAI/Orca', '--json', 'isFork,parent'],
+      ['repo', 'view', 'github.com/StablyAI/OCC', '--json', 'isFork,parent'],
       { cwd: '/repo-root', host: 'github.com', timeout: 10_000 }
     )
   })

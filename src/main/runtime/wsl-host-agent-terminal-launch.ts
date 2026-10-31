@@ -112,7 +112,7 @@ function resolveWslHostStockProgram(
       throw windowsOnlyRefusal(required, name, agent)
     }
   }
-  // Wrapper launches (Agent Teams runs Orca's CLI as `orca` or `orca-ide`) keep their command.
+  // Wrapper launches (Agent Teams runs OCC's CLI as `orca` or `occ-ide`) keep their command.
   if (
     program !== config.detectCmd ||
     getTuiAgentDetectCommands(config).includes(getOrcaCliCommandNameForPlatform(platform))

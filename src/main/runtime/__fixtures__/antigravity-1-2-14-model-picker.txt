@@ -28,7 +28,7 @@
 [28C[2mGemini 3.8 Flash · high[m[2A[2C[?25h[?25l/mod
 
 [94m> /model[26X[26C[m  [2mSet a model, or run a single prompt on another model[m[K
-  /remote-client-runtime-debugging  [2mDiagnose and verify Orca paired web/mobile remote-client runtime parity bugs.[m[K
+  /remote-client-runtime-debugging  [2mDiagnose and verify OCC paired web/mobile remote-client runtime parity bugs.[m[K
   /memory-leak-audit[16X[16C[2mAudit code for memory leaks and disposable issues.[m[K
   /telemetry-product-gate           [2mAdd or review product telemetry with a strict product-decision, dashboard-worthi...[m[K
 [K

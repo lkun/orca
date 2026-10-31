@@ -25,7 +25,7 @@ export type StartupCommandStaging = {
   failure?: string
 }
 
-// Only these shells preserve Orca’s portable quoting directly. Other shells use /bin/sh for nonplain Orca-built lines;
+// Only these shells preserve OCC’s portable quoting directly. Other shells use /bin/sh for nonplain OCC-built lines;
 // user-authored commands retain their target shell’s syntax.
 const STAGING_SHELLS = new Set(['bash', 'zsh', 'sh', 'dash', 'fish', 'ksh', 'mksh'])
 
@@ -47,7 +47,7 @@ export function shouldStageStartupCommand(args: {
   command: string
   shellPath: string | undefined
   platform: NodeJS.Platform
-  /** An agent launch line Orca built with POSIX quoting, which sh can run in any shell. */
+  /** An agent launch line OCC built with POSIX quoting, which sh can run in any shell. */
   orcaBuiltLine?: boolean
 }): boolean {
   if (args.platform === 'win32') {

@@ -750,7 +750,7 @@ describe('account CLI handlers', () => {
       })
 
       await expect(ACCOUNT_HANDLERS['account add'](context(agent))).rejects.toThrow(
-        'The running Orca runtime is too old to add accounts from the CLI.'
+        'The running OCC runtime is too old to add accounts from the CLI.'
       )
       expect(callMock).toHaveBeenCalledOnce()
       expect(callMock).toHaveBeenCalledWith('status.get')
@@ -881,7 +881,7 @@ describe('account CLI handlers', () => {
 
     expect(logSpy).toHaveBeenCalledWith(
       expect.stringContaining(
-        '  old@example.com (active) (sign in again in Orca Settings > AI Provider Accounts)\n  ok@example.com\n'
+        '  old@example.com (active) (sign in again in OCC Settings > AI Provider Accounts)\n  ok@example.com\n'
       )
     )
   })

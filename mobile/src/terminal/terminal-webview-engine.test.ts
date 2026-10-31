@@ -108,7 +108,7 @@ describe('terminal WebView bundled engine', () => {
     )
     expect(XTERM_HTML).toContain(`<style>${TERMINAL_NERD_FONT_CSS}</style>`)
     expect(XTERM_HTML).toContain(
-      '"Liberation Mono", "Orca Nerd Font Symbols", "Symbols Nerd Font Mono"'
+      '"Liberation Mono", "OCC Nerd Font Symbols", "Symbols Nerd Font Mono"'
     )
     expect(TERMINAL_NERD_FONT_CSS).not.toMatch(/<\/style/i)
   })

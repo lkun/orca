@@ -94,7 +94,7 @@ export function formatBrowserLoadFailureText(
       failure.host || failure.kind !== 'other'
         ? render(copy.title, { host })
         : render('otherTitleWithoutHost', { host }),
-    // Why: code 0 carries Orca's own message (bad address, workspace doc, remote browser).
+    // Why: code 0 carries OCC's own message (bad address, workspace doc, remote browser).
     description:
       loadError.code === 0
         ? loadError.description
@@ -197,7 +197,7 @@ export function isBrowserLoadBlockedByExtension(loadError: BrowserLoadError): bo
   return loadError.code === BLOCKED_BY_EXTENSION
 }
 
-/** Chromium's net errors run from -1 to -999; certificate errors and Orca's own codes have their own pages. */
+/** Chromium's net errors run from -1 to -999; certificate errors and OCC's own codes have their own pages. */
 export function isBrowserNetworkLoadFailure(loadError: BrowserLoadError): boolean {
   return (
     loadError.code < 0 && loadError.code > -1000 && !isChromiumCertificateErrorCode(loadError.code)

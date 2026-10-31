@@ -13,7 +13,7 @@ export function installOrcadEmulatorBridge(
 ): void {
   const bridge = new EmulatorBridge()
   runtime.setEmulatorBridge(bridge)
-  // Like desktop quit: stop the helpers and devices Orca started.
+  // Like desktop quit: stop the helpers and devices OCC started.
   registerCleanup(() =>
     withTimeout(bridge.destroyAllSessions(), EMULATOR_TEARDOWN_BUDGET_MS, undefined)
   )

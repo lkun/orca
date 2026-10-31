@@ -30,7 +30,7 @@ function makeProvisionedRuntime(projectRoot: string) {
       updatedAt: 1,
       recipeResult: {
         schemaVersion: 1 as const,
-        pairingCode: 'orca://pair?code=test',
+        pairingCode: 'occ://pair?code=test',
         projectRoot
       }
     }

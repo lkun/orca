@@ -36,7 +36,7 @@ describe('Claude owed task notification expiry on the relay', () => {
       const post = (payload: Record<string, unknown>) =>
         fetch(`http://127.0.0.1:${port}/hook/claude`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+          headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
           body: JSON.stringify({
             paneKey: PANE_KEY,
             tabId: 'tab-1',

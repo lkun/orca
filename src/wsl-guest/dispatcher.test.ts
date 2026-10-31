@@ -424,7 +424,7 @@ describe('RelayDispatcher', () => {
       const detachListener = vi.fn()
       detachDispatcher.onClientDetached(detachListener)
 
-      // A frame the owning Orca must not silently miss (e.g. a pane exit).
+      // A frame the owning OCC must not silently miss (e.g. a pane exit).
       throwOnWrite = true
       detachDispatcher.notify('pty.exit', { id: 'pty-1', code: 0 })
 

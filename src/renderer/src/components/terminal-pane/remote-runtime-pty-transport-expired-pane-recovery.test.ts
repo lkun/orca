@@ -256,7 +256,7 @@ describe('createRemoteRuntimePtyTransport', () => {
 
     await vi.waitFor(() =>
       expect(onError).toHaveBeenCalledWith(
-        "The WSL distro Ubuntu is stopped, so Orca didn't start this terminal. Start the distro, then try again."
+        "The WSL distro Ubuntu is stopped, so OCC didn't start this terminal. Start the distro, then try again."
       )
     )
   })

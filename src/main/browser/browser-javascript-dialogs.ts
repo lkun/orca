@@ -79,8 +79,8 @@ function parseAnswer(value: unknown): BrowserJavaScriptDialogAnswer | undefined 
 }
 
 /**
- * Electron's own `-run-dialog` listener shows a sheet over the whole Orca window and refuses
- * prompts; agents answered the same dialog over CDP, which left that sheet stuck. Orca owns it
+ * Electron's own `-run-dialog` listener shows a sheet over the whole OCC window and refuses
+ * prompts; agents answered the same dialog over CDP, which left that sheet stuck. OCC owns it
  * instead, and every answer goes through it: a CDP close event can't say which dialog closed.
  */
 export function installBrowserJavaScriptDialogs(

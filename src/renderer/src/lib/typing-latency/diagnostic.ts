@@ -82,7 +82,7 @@ function cacheAppVersion(): void {
     .catch(() => undefined)
 }
 
-/** Composition-end events are synthesized by Orca, so their timestamps say nothing about queueing. */
+/** Composition-end events are synthesized by OCC, so their timestamps say nothing about queueing. */
 function readTrustedEventTime(event: Event, handledAt: number): number | null {
   const at = event.timeStamp
   return event.isTrusted && Number.isFinite(at) && at > 0 && at <= handledAt ? at : null

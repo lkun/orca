@@ -56,7 +56,7 @@ export function normalizeNodeDistMirrorUrl(value: unknown): NodeDistMirrorValida
   return { ok: true, value: `${parsed.origin}${parsed.pathname}`.replace(/\/+$/u, '') }
 }
 
-/** The first valid mirror among Orca's setting and the conventional environment variables. */
+/** The first valid mirror among OCC's setting and the conventional environment variables. */
 export function resolveNodeDistMirror(
   setting: string | undefined,
   env: Record<string, string | undefined>

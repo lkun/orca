@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * A/B benchmark for worktree deletion against real Orca dev instances.
+ * A/B benchmark for worktree deletion against real OCC dev instances.
  *
  * Usage:
  *   pnpm bench:worktree-deletion -- --instance baseline=/path/to/main \
@@ -117,8 +117,8 @@ function createFixture(instanceLabel) {
   // Git 2.25 lacks `git init --initial-branch`; rename after the first commit below.
   run('git', ['init'], repoPath)
   run('git', ['config', 'user.email', 'worktree-delete-bench@orca.invalid'], repoPath)
-  run('git', ['config', 'user.name', 'Orca Worktree Delete Bench'], repoPath)
-  writeFileSync(path.join(repoPath, 'README.md'), '# Orca worktree deletion benchmark\n')
+  run('git', ['config', 'user.name', 'OCC Worktree Delete Bench'], repoPath)
+  writeFileSync(path.join(repoPath, 'README.md'), '# OCC worktree deletion benchmark\n')
   run('git', ['add', 'README.md'], repoPath)
   run('git', ['commit', '-m', 'Initialize benchmark fixture', '--no-gpg-sign'], repoPath)
   run('git', ['branch', '-m', 'main'], repoPath)
@@ -202,7 +202,7 @@ async function findOrcaPage(browser) {
     }
     await delay(250)
   }
-  throw new Error('Orca renderer with window.__store was not found')
+  throw new Error('OCC renderer with window.__store was not found')
 }
 
 async function addFixtureRepo(page, repoPath) {

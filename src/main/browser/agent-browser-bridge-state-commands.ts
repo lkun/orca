@@ -104,7 +104,7 @@ export abstract class AgentBrowserBridgeStateCommands extends AgentBrowserBridge
         throw new BrowserError('browser_error', 'Debugger not attached')
       }
 
-      // agent-browser lacks a mobile viewport flag; apply Orca's emulation through CDP.
+      // agent-browser lacks a mobile viewport flag; apply OCC's emulation through CDP.
       await sendGuestCdpCommand(wc, 'Emulation.setDeviceMetricsOverride', {
         width,
         height,
@@ -263,7 +263,7 @@ export abstract class AgentBrowserBridgeStateCommands extends AgentBrowserBridge
   }
 
   async exec(command: string, worktreeId?: string, browserPageId?: string): Promise<unknown> {
-    // Passthrough arguments must not override Orca's selected page or CDP proxy.
+    // Passthrough arguments must not override OCC's selected page or CDP proxy.
     const args = stripAgentBrowserTargetArgs(parseShellArgs(command.trim()))
     return this.enqueueTargetedCommand(
       worktreeId,

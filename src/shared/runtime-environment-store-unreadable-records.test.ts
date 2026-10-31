@@ -125,7 +125,7 @@ describe('runtime environment store with records this build cannot read', () => 
         version: 1,
         environments: [...store.environments, { ...alpha, id: futureKind.id, name: 'Other' }]
       })
-    ).toThrow('newer version of Orca')
+    ).toThrow('newer version of OCC')
     expect(readJson(getEnvironmentStorePath(userDataPath)).environments).toContainEqual(futureKind)
   })
 
@@ -186,7 +186,7 @@ describe('runtime environment store with records this build cannot read', () => 
         })
       ).toThrow('Unknown environment')
       expect(() => readCurrentRuntimeEnvironmentSidecarEntry(userDataPath, pinned)).toThrow(
-        'newer version of Orca'
+        'newer version of OCC'
       )
       expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('Hiding 1 server'))
     })
@@ -207,7 +207,7 @@ describe('runtime environment store with records this build cannot read', () => 
       const storeBefore = readFileSync(getEnvironmentStorePath(userDataPath), 'utf8')
 
       expect(() => removeManagedOrcadEnvironment(userDataPath, pinned.id)).toThrow(
-        'newer version of Orca'
+        'newer version of OCC'
       )
       expect(readFileSync(getEnvironmentStorePath(userDataPath), 'utf8')).toBe(storeBefore)
       expect(() =>
@@ -217,7 +217,7 @@ describe('runtime environment store with records this build cannot read', () => 
           pinned,
           null
         )
-      ).toThrow('newer version of Orca')
+      ).toThrow('newer version of OCC')
 
       removeEnvironment(userDataPath, other.id)
       expect(readJson(sidecarPath).entries?.pinned).toEqual(unreadableEntry)

@@ -10,7 +10,7 @@ function key(profileId: string, extensionId: string): string {
 
 function errorMessage(error: unknown): string {
   const message = error instanceof Error && error.message ? error.message : String(error)
-  // Why: Electron prefixes Orca's internal copy path, which means nothing to the user.
+  // Why: Electron prefixes OCC's internal copy path, which means nothing to the user.
   return message.replace(/^Loading extension at .+? failed with: /, '')
 }
 

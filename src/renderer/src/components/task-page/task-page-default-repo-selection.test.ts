@@ -116,7 +116,7 @@ describe('getDefaultTaskRepoSelection', () => {
     const selection = getDefaultTaskRepoSelection([
       repo({
         id: 'local-orca',
-        upstream: { owner: 'StablyAI', repo: 'Orca' }
+        upstream: { owner: 'StablyAI', repo: 'OCC' }
       }),
       repo({
         id: 'ssh-orca',
@@ -135,7 +135,7 @@ describe('getDefaultTaskRepoSelection', () => {
   it('keeps GitHub grouping intact while a pending-identity repo joins as its own project', () => {
     const selection = getDefaultTaskRepoSelection(
       getTaskEligibleRepos([
-        repo({ id: 'local-orca', upstream: { owner: 'StablyAI', repo: 'Orca' } }),
+        repo({ id: 'local-orca', upstream: { owner: 'StablyAI', repo: 'OCC' } }),
         repo({
           id: 'ssh-orca',
           connectionId: 'builder',

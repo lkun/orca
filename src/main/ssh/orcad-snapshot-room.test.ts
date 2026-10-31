@@ -118,7 +118,7 @@ describe('an update on a host without room for its snapshot (#30491)', () => {
     answerRoom(400_000, 300_000, 1_000)
 
     expect(JSON.stringify(await deploy())).toMatch(
-      /has 1000 KB free \(plus 293\.0 MB Orca would reclaim from earlier snapshots\)/u
+      /has 1000 KB free \(plus 293\.0 MB OCC would reclaim from earlier snapshots\)/u
     )
   })
 

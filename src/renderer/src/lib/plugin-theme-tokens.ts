@@ -22,14 +22,14 @@ const CONTRAST_PAIRS: readonly (readonly [string, string])[] = [
   ['--worktree-sidebar-accent', '--worktree-sidebar-accent-foreground']
 ]
 const MIN_TEXT_CONTRAST = 4.5
-// Why 2:1, not WCAG's 3:1: Orca's own light ring is 2.6:1; the goal is a ring that never vanishes.
+// Why 2:1, not WCAG's 3:1: OCC's own light ring is 2.6:1; the goal is a ring that never vanishes.
 const RINGS: readonly (readonly [string, string])[] = [
   ['--ring', '--background'],
   ['--sidebar-ring', '--sidebar'],
   ['--worktree-sidebar-ring', '--worktree-sidebar']
 ]
 const MIN_RING_CONTRAST = 2
-// Why a floor, not opaque: Orca's own dark borders are 7% white; 0 or near-0 alpha hides them.
+// Why a floor, not opaque: OCC's own dark borders are 7% white; 0 or near-0 alpha hides them.
 const BORDERS = ['--border', '--input', '--sidebar-border', '--worktree-sidebar-border']
 const MIN_BORDER_ALPHA = 0.05
 

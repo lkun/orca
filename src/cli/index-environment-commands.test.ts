@@ -83,13 +83,13 @@ describe('orca cli worktree awareness', () => {
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 
     await main(
-      ['environment', 'add', '--name', 'desk', '--pairing-code', 'orca://pair#abc', '--json'],
+      ['environment', 'add', '--name', 'desk', '--pairing-code', 'occ://pair#abc', '--json'],
       '/tmp/repo'
     )
 
     expect(addEnvironmentFromPairingCodeMock).toHaveBeenCalledWith('/tmp/orca-user-data', {
       name: 'desk',
-      pairingCode: 'orca://pair#abc'
+      pairingCode: 'occ://pair#abc'
     })
     expect(callMock).not.toHaveBeenCalled()
     expect(JSON.parse(String(logSpy.mock.calls[0]?.[0]))).toMatchObject({

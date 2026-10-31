@@ -61,7 +61,7 @@ describe('OpenCodeHookService.refreshInstalledPlugins (app start)', () => {
   it('upgrades an existing install, TUI copy included, so a running service reloads it', () => {
     const pluginsDir = join(resolveOpenCodeConfigDirectory(), 'plugins')
     mkdirSync(pluginsDir, { recursive: true })
-    writeFileSync(join(pluginsDir, PLUGIN), '// plugin from the previous Orca release')
+    writeFileSync(join(pluginsDir, PLUGIN), '// plugin from the previous OCC release')
 
     openCode2HookService.refreshInstalledPlugins()
 
@@ -91,13 +91,13 @@ describe('OpenCodeHookService.refreshInstalledPlugins (app start)', () => {
     expect(statSync(join(pluginsDir, TUI_ENTRY)).mtimeMs).toBe(past.getTime())
   })
 
-  it('upgrades existing source overlays and skips overlays without Orca plugin', () => {
+  it('upgrades existing source overlays and skips overlays without OCC plugin', () => {
     const overlays = join(userDataDir, 'opencode2-config-overlays')
     const stale = join(overlays, 'stale', 'plugins')
     const foreign = join(overlays, 'foreign', 'plugins')
     mkdirSync(stale, { recursive: true })
     mkdirSync(foreign, { recursive: true })
-    writeFileSync(join(stale, PLUGIN), '// plugin from the previous Orca release')
+    writeFileSync(join(stale, PLUGIN), '// plugin from the previous OCC release')
 
     openCode2HookService.refreshInstalledPlugins()
 

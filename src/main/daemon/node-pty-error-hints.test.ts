@@ -14,7 +14,7 @@ describe('node-pty diagnostic error hints', () => {
 
     expect(parseNodePtyDiagnostic(message)).toEqual({ step: 'posix_spawn', errno: 2 })
     expect(addNodePtyRecoveryHint(message)).toBe(
-      `Daemon's node-pty install is gone (worktree deleted?). Restart Orca. ${message}`
+      `Daemon's node-pty install is gone (worktree deleted?). Restart OCC. ${message}`
     )
   })
 

@@ -129,7 +129,7 @@ describe('buildSkillDeletePlan placement enumeration', () => {
   it.skipIf(WINDOWS)(
     'deletes the links of a repo skill whose content lives outside every root',
     async () => {
-      // Remove Orca-owned links into tool-managed content while preserving external bytes.
+      // Remove OCC-owned links into tool-managed content while preserving external bytes.
       const { home } = await fixture()
       const repo = join(home, 'projects', 'app')
       const managedElsewhere = join(home, '.local', 'share', 'devex', 'skills', 'demo')

@@ -52,7 +52,7 @@ export function installAppKeyboardRouter(target: Window = window): void {
   installedOn = target
 }
 
-/** Runs a key that reached Orca outside this window (a focused page) through every app owner. */
+/** Runs a key that reached OCC outside this window (a focused page) through every app owner. */
 export function replayAppKeyDown(event: KeyboardEvent): void {
   dispatch('keydown', event)
 }

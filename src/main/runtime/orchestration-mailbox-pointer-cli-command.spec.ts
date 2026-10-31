@@ -19,7 +19,7 @@ describe('orchestration mailbox pointer CLI command', () => {
   })
 
   it.each([
-    ['dev WSL', { isWsl: true }, 'orca-dev'],
+    ['dev WSL', { isWsl: true }, 'occ-dev'],
     ['SSH', { connectionId: 'ssh-target', isWsl: true }, 'orca']
   ])('renders the %s CLI command in a mailbox pointer', async (_name, options, command) => {
     vi.useFakeTimers()

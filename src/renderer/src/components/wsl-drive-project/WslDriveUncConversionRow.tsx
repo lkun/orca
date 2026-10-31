@@ -15,9 +15,9 @@ type Step =
   | { kind: 'problem'; messages: string[] }
 
 /**
- * A project Orca opens through WSL's view of a Windows drive (`\\wsl.localhost\<d>\mnt\c\x`): Git
- * there is ~300x slower than Git for Windows, so Orca offers to reopen it at its drive path, with
- * terminals and agents still in the distro. Converting restarts Orca.
+ * A project OCC opens through WSL's view of a Windows drive (`\\wsl.localhost\<d>\mnt\c\x`): Git
+ * there is ~300x slower than Git for Windows, so OCC offers to reopen it at its drive path, with
+ * terminals and agents still in the distro. Converting restarts OCC.
  */
 export function WslDriveUncConversionRow({
   repo
@@ -37,11 +37,11 @@ export function WslDriveUncConversionRow({
       result = await window.api.wslDriveUnc.convert({ distro, repoIds: [repo.id] })
     } catch {
       setStep({ kind: 'idle' })
-      toast.error(translate('wslDriveUnc.failed', 'Orca could not convert this project.'))
+      toast.error(translate('wslDriveUnc.failed', 'OCC could not convert this project.'))
       return
     }
     if (result.outcome === 'restarting') {
-      toast(translate('wslDriveUnc.restarting', 'Restarting Orca to convert this project…'))
+      toast(translate('wslDriveUnc.restarting', 'Restarting OCC to convert this project…'))
       return
     }
     setStep({ kind: 'problem', messages: wslDriveUncConversionMessages(result, drivePath) })
@@ -53,7 +53,7 @@ export function WslDriveUncConversionRow({
         alignTop
         description={translate(
           'wslDriveUnc.description',
-          'Orca opens this project through WSL. Open it at {{drivePath}} instead: Git runs on Windows, which is much faster here, and terminals and agents stay in {{distro}}.',
+          'OCC opens this project through WSL. Open it at {{drivePath}} instead: Git runs on Windows, which is much faster here, and terminals and agents stay in {{distro}}.',
           { drivePath, distro }
         )}
         control={
@@ -81,7 +81,7 @@ export function WslDriveUncConversionRow({
           <p className="text-xs text-muted-foreground">
             {translate(
               'wslDriveUnc.review',
-              'Orca pauses this project’s terminals, restarts, and reopens it at {{drivePath}}. Tabs, terminals with their history, chats and settings come along, and paused terminals pick up where they were.',
+              'OCC pauses this project’s terminals, restarts, and reopens it at {{drivePath}}. Tabs, terminals with their history, chats and settings come along, and paused terminals pick up where they were.',
               { drivePath }
             )}
           </p>

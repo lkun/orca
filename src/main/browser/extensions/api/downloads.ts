@@ -77,7 +77,7 @@ function describeItem(id: number, item: Electron.DownloadItem, extensionId: stri
   }
 }
 
-/** Why a tab: Orca's download UI belongs to a page, so a worker's download lands on the active tab. */
+/** Why a tab: OCC's download UI belongs to a page, so a worker's download lands on the active tab. */
 function downloadOwner(caller: BrowserExtensionCaller): Electron.WebContents {
   const own = caller.webContents
   if (own && !own.isDestroyed() && browserManager.getTabIdForWebContentsId(own.id)) {
@@ -133,7 +133,7 @@ function track(caller: BrowserExtensionCaller, id: number, item: Electron.Downlo
   })
 }
 
-/** Chrome's rule: relative to Downloads, no back-references. Orca keeps only the last segment. */
+/** Chrome's rule: relative to Downloads, no back-references. OCC keeps only the last segment. */
 function requestedFilename(raw: string | undefined): string | undefined {
   if (raw === undefined) {
     return undefined
@@ -208,12 +208,12 @@ async function download(
   options: z.infer<typeof optionsSchema>
 ): Promise<number> {
   if (options.method === 'POST') {
-    throw new BrowserExtensionApiError('Orca downloads only with GET')
+    throw new BrowserExtensionApiError('OCC downloads only with GET')
   }
   const saveAs = options.saveAs === true
   // Why only without saveAs: the save dialog asks before replacing a file itself.
   if (!saveAs && options.conflictAction !== undefined && options.conflictAction !== 'uniquify') {
-    throw new BrowserExtensionApiError('Orca saves downloads only with conflictAction "uniquify"')
+    throw new BrowserExtensionApiError('OCC saves downloads only with conflictAction "uniquify"')
   }
   const filename = requestedFilename(options.filename)
   const url = resolveDownloadUrl(caller, options.url)

@@ -339,7 +339,7 @@ describe('WorktreeVisibilityDialog', () => {
     await renderDialog()
 
     expect(document.body.textContent).toContain('Hidden worktrees (0)')
-    expect(document.body.textContent).toContain('No non-Orca worktrees found')
+    expect(document.body.textContent).toContain('No non-OCC worktrees found')
   })
 
   it('says it is checking instead of claiming nothing is hidden on a fallback snapshot', async () => {
@@ -582,7 +582,7 @@ describe('WorktreeVisibilityDialog', () => {
     await click(sourceSwitch())
 
     expect(document.querySelector('[role="alert"]')?.textContent).toContain(
-      "This host doesn't support source-specific worktree visibility. Update Orca on the host to change this setting."
+      "This host doesn't support source-specific worktree visibility. Update OCC on the host to change this setting."
     )
     expect(document.querySelector('[role="alert"]')?.textContent).not.toContain('Try again')
     expect(mocks.state.fetchWorktrees).not.toHaveBeenCalled()
@@ -707,7 +707,7 @@ describe('WorktreeVisibilityDialog', () => {
     })
   })
 
-  it('keeps ordinary non-Orca visibility on its own source row', async () => {
+  it('keeps ordinary non-OCC visibility on its own source row', async () => {
     mocks.state.repos = [makeRepo({ externalWorktreeVisibility: 'show' })]
     // Global must also show so hiding creates an override rather than reverting to inheritance.
     mocks.state.settings = { worktreeVisibilityDefaults: { external: 'show' } }

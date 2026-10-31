@@ -444,7 +444,7 @@ describe('runner execFile timeout handling', () => {
       expect(execFileMock).toHaveBeenCalledWith(
         'wsl.exe',
         ['-d', 'Ubuntu', '--exec', 'sh', '-lc', expect.any(String)],
-        // Use a stable Win32 cwd instead of inheriting Orca's deletable UNC cwd.
+        // Use a stable Win32 cwd instead of inheriting OCC's deletable UNC cwd.
         expect.objectContaining({ cwd: expect.any(String) }),
         expect.any(Function)
       )
@@ -478,7 +478,7 @@ describe('runner execFile timeout handling', () => {
       expect(execFileMock).toHaveBeenCalledWith(
         'wsl.exe',
         ['-d', 'Ubuntu', '--exec', 'bash', '-c', expect.any(String)],
-        // Use a stable Win32 cwd instead of inheriting Orca's deletable UNC cwd.
+        // Use a stable Win32 cwd instead of inheriting OCC's deletable UNC cwd.
         expect.objectContaining({ cwd: expect.any(String) }),
         expect.any(Function)
       )

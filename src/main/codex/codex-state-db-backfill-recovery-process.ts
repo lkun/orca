@@ -46,7 +46,7 @@ export function spawnCodexBackfillRecoveryProcess(
     return { child, supervised: false }
   }
   const command = resolveCommand()
-  // The POSIX supervisor stops this long-lived child even if Orca crashes.
+  // The POSIX supervisor stops this long-lived child even if OCC crashes.
   const spawnSpec = createProviderSpawnSpec(
     { command, args: [...CODEX_READ_ONLY_APP_SERVER_ARGS], cwd: codexHomePath },
     withCliRuntimeOnPath(command, {

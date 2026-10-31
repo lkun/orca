@@ -239,7 +239,7 @@ export function PluginInstallDialog({
                 <p className="text-xs leading-5 text-muted-foreground">
                   {translate(
                     'auto.components.settings.PluginInstallDialog.gitHelp',
-                    'Paste a repository, release, or tag link. Without #tag or #commit, Orca uses the latest version tag.'
+                    'Paste a repository, release, or tag link. Without #tag or #commit, OCC uses the latest version tag.'
                   )}
                 </p>
               )}

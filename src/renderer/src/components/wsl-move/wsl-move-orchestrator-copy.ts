@@ -68,7 +68,7 @@ export function wslMoveOrchestratorLine(
         kind: 'stuck',
         text: translate(
           'wslMove.orchestrator.finishPending',
-          'An earlier move to the {{distro}} host is done there. Orca finishes it here when it restarts, or now with Check again.',
+          'An earlier move to the {{distro}} host is done there. OCC finishes it here when it restarts, or now with Check again.',
           { distro: record.distro }
         )
       }

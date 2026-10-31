@@ -308,7 +308,7 @@ describe('repo slice runtime routing', () => {
   })
 
   const SERVER_SSH_REFUSAL =
-    "This Orca server can't add projects on its SSH hosts. Add the SSH host on your computer to open its projects."
+    "This OCC server can't add projects on its SSH hosts. Add the SSH host on your computer to open its projects."
 
   it.each([
     ['folder', null],

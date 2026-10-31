@@ -328,7 +328,7 @@ describe("a card's own Cancel, as its provider answers it", () => {
     return { result, routes, answerPrompt, dismissPrompt, card }
   }
 
-  describe('on an approval whose subject a newer Orca wrote, which only its Cancel answers', () => {
+  describe('on an approval whose subject a newer OCC wrote, which only its Cancel answers', () => {
     const NEWER_SUBJECT: AgentJournalApprovalSubject = JSON.parse('{"kind":"diff","path":"a.ts"}')
 
     it('has Claude decline the request, the turn going on, and keeps the subject as it was', async () => {

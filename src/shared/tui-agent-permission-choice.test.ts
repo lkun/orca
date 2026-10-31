@@ -61,7 +61,7 @@ describe('one-time move of permission flags out of Arguments', () => {
           claude: '--model opus --dangerously-skip-permissions',
           codex: '--approve-for-me -c model_reasoning_effort="high"',
           gemini: '',
-          // Not one of Orca's flags: left whole, and Orca adds nothing.
+          // Not one of OCC's flags: left whole, and OCC adds nothing.
           grok: '--permission-mode plan'
         },
         { goose: { goose_mode: 'auto', OTHER: '1' } }
@@ -139,7 +139,7 @@ describe('terminal launch composes the stored choice', () => {
     agentDefaultArgs: { claude: '--model opus', codex: '--search', grok: '--permission-mode plan' }
   } as const
 
-  it('adds Orca’s flag ahead of the user’s text, nothing for own or text that sets permissions', () => {
+  it('adds OCC’s flag ahead of the user’s text, nothing for own or text that sets permissions', () => {
     expect(resolveTuiAgentLaunchArgs('claude', typed)).toBe(
       '--permission-mode default --model opus'
     )

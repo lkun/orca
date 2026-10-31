@@ -101,7 +101,7 @@ describe('ZCodeHookService', () => {
     expect(() => JSON.parse(readFileSync(getZCodeConfigPath(), 'utf-8'))).not.toThrow()
   })
 
-  it('removes only Orca-managed entries and leaves the user their hooks', () => {
+  it('removes only OCC-managed entries and leaves the user their hooks', () => {
     const configPath = getZCodeConfigPath()
     mkdirSync(join(hoisted.home, '.zcode', 'cli'), { recursive: true })
     writeFileSync(
@@ -126,7 +126,7 @@ describe('ZCodeHookService', () => {
   it('leaves an unrelated empty event key alone while removing its own', () => {
     const configPath = getZCodeConfigPath()
     mkdirSync(join(hoisted.home, '.zcode', 'cli'), { recursive: true })
-    // Keep unrelated empty Notification entries; Orca never owned them.
+    // Keep unrelated empty Notification entries; OCC never owned them.
     writeFileSync(
       configPath,
       JSON.stringify({ hooks: { enabled: true, events: { Notification: [] } } })

@@ -26,7 +26,7 @@ function chat(orcaSessionId: OrcaSessionId) {
   return { terminalHandle: null, paneKey: null, orcaSessionId }
 }
 
-describe('Run binding by Orca session id', () => {
+describe('Run binding by OCC session id', () => {
   let db: OrchestrationDb
 
   afterEach(() => {
@@ -82,7 +82,7 @@ describe('Run binding by Orca session id', () => {
     return message.id
   }
 
-  it('binds a handle-less session by its Orca session id and remembers its session address', () => {
+  it('binds a handle-less session by its OCC session id and remembers its session address', () => {
     db = new OrchestrationDb(':memory:')
     const run = createChatRun(CHAT_X_ID)
 
@@ -136,7 +136,7 @@ describe('Run binding by Orca session id', () => {
     expect(db.getMessageById(pending.id)?.to_handle).toBe(`run:${xFirst.id}`)
   })
 
-  it('stops counting an Orca session id once a binary without the column rebinds the Run to a terminal', () => {
+  it('stops counting an OCC session id once a binary without the column rebinds the Run to a terminal', () => {
     db = new OrchestrationDb(':memory:')
     const run = createChatRun(CHAT_X_ID)
     olderBinaryRebind(run.id, 'term_taker', PTY_PANE)
@@ -169,7 +169,7 @@ describe('Run binding by Orca session id', () => {
     expect(db.getCurrentRunForCoordinator(chat(CHAT_X_ID))?.id).toBe(next.id)
   })
 
-  it("stops counting a structured worker's Orca session id once an older binary unbinds its Run", () => {
+  it("stops counting a structured worker's OCC session id once an older binary unbinds its Run", () => {
     db = new OrchestrationDb(':memory:')
     const worker = structuredWorker()
     const run = db.createRun({
@@ -223,7 +223,7 @@ describe('Run binding by Orca session id', () => {
     expect(db.getRunMailboxOwnerIdsForHandle(CHAT_Y)).toEqual([run.id])
   })
 
-  it('rebinding the same session is not a new consumer, and fills a missing Orca session id in place', () => {
+  it('rebinding the same session is not a new consumer, and fills a missing OCC session id in place', () => {
     db = new OrchestrationDb(':memory:')
     const worker = structuredWorker()
     const run = db.createRun({
@@ -300,14 +300,14 @@ describe('Run binding by Orca session id', () => {
   })
 })
 
-describe('Dispatch Orca session ids recorded by every writer', () => {
+describe('Dispatch OCC session ids recorded by every writer', () => {
   let db: OrchestrationDb
 
   afterEach(() => {
     db?.close()
   })
 
-  it('records the assignee Orca session id from a structured incarnation and a creator one', () => {
+  it('records the assignee OCC session id from a structured incarnation and a creator one', () => {
     db = new OrchestrationDb(':memory:')
     const run = db.createRun({
       objective: 'r',
@@ -342,7 +342,7 @@ describe('Dispatch Orca session ids recorded by every writer', () => {
     expect(pty).toMatchObject({ assignee_orca_session_id: null, creator_orca_session_id: null })
   })
 
-  it('nests under the Dispatch a handle-less creator is assigned by its Orca session id', () => {
+  it('nests under the Dispatch a handle-less creator is assigned by its OCC session id', () => {
     db = new OrchestrationDb(':memory:')
     const run = db.createRun({
       objective: 'r',

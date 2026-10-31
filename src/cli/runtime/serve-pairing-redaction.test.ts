@@ -10,13 +10,13 @@ import {
 } from './serve-pairing-redaction'
 
 const READY = [
-  'Orca server ready',
+  'OCC server ready',
   'Bound endpoint: ws://0.0.0.0:6768',
   'Web client URL: https://host/web#pairing=secret',
   'Mobile pairing QR:',
   '█▀▀▀▀▀█ secret-qr',
   '█ ███ █',
-  'Pairing URL: orca://pair?code=secret',
+  'Pairing URL: occ://pair?code=secret',
   '[serve] later log line'
 ]
 
@@ -27,7 +27,7 @@ describe('supervised pairing redaction', () => {
     const redact = createPairingRedactor()
     const kept = READY.map(redact).filter((line) => line !== null)
     expect(kept).toEqual([
-      'Orca server ready',
+      'OCC server ready',
       'Bound endpoint: ws://0.0.0.0:6768',
       PAIRING_HIDDEN_LINE,
       '[serve] later log line'
@@ -39,7 +39,7 @@ describe('supervised pairing redaction', () => {
     const line = JSON.stringify({
       type: 'orca_server_ready',
       endpoint: 'ws://x',
-      pairing: { available: true, url: 'orca://pair?code=secret' }
+      pairing: { available: true, url: 'occ://pair?code=secret' }
     })
     const kept = createPairingRedactor()(line)
     expect(kept).not.toContain('secret')

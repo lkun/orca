@@ -15,7 +15,7 @@ export type ManagedRuntimeInstallView = {
   menuAction: ManagedRuntimeInstallAction | null
   /** The action is the first step to using the agent, so Settings draws it as a button. */
   prominent: boolean
-  /** Settings may offer to delete the copy Orca installed: one is there and nothing runs. */
+  /** Settings may offer to delete the copy OCC installed: one is there and nothing runs. */
   removable: boolean
   removing: boolean
   note: string | null
@@ -98,7 +98,7 @@ function settledView(state: ManagedRuntimeInstallState, agent: string): ManagedR
     note
   })
   const install = translate('components.managed-runtime.installShort', 'Install')
-  // A copy found outside Orca already runs; Orca's own, once installed, runs first.
+  // A copy found outside OCC already runs; OCC's own, once installed, runs first.
   if (state.source === 'external') {
     return view(
       translate(
@@ -107,7 +107,7 @@ function settledView(state: ManagedRuntimeInstallState, agent: string): ManagedR
         { agent }
       ),
       state.available
-        ? translate('components.managed-runtime.installManaged', "Install Orca's copy")
+        ? translate('components.managed-runtime.installManaged', "Install OCC's copy")
         : null
     )
   }

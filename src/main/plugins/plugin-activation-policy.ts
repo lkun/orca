@@ -49,11 +49,11 @@ export function livePluginActivationState(
   )
 }
 
-/** Why the plugin may not run despite consent: Orca's safety list. Full access needs only consent. */
+/** Why the plugin may not run despite consent: OCC's safety list. Full access needs only consent. */
 export function pluginPolicyBlockError(
   source: PluginPolicySource,
   pluginKey: string
 ): string | null {
   const blocked = source.getPluginKillListEntry?.(pluginKey)
-  return blocked ? `Blocked by Orca's plugin safety list: ${blocked.reason}` : null
+  return blocked ? `Blocked by OCC's plugin safety list: ${blocked.reason}` : null
 }

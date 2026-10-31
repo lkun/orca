@@ -79,7 +79,7 @@ describe('orcadCodexAccountHomes', () => {
     expect(prepareHooks.mock.calls[0]?.[2]).toBe(false)
   })
 
-  it('leaves a launch without an Orca account home alone', async () => {
+  it('leaves a launch without an OCC account home alone', async () => {
     const homes = orcadCodexAccountHomes(() => settings({}), noCleanup)
     await expect(
       homes.selectLaunchHome(undefined, { CODEX_HOME: '/home/u/my-codex' })

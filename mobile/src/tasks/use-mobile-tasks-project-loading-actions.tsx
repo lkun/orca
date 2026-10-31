@@ -201,7 +201,7 @@ export function useMobileTasksProjectLoadingActions(model: TaskPaginationActions
           return
         }
         if (explicitView && explicitView.layout !== 'TABLE_LAYOUT') {
-          throw new Error("Orca doesn't support this GitHub Project layout yet.")
+          throw new Error("OCC doesn't support this GitHub Project layout yet.")
         }
         if (!explicitView && !rememberedView) {
           // Ask for the first Project view; do not silently choose the first table.

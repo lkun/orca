@@ -4,7 +4,7 @@ import { extractIpcErrorMessage } from './ipc-error'
 const homeUnavailable = (): string =>
   translate(
     'auto.lib.bundled.skill.install.error.message.homeUnavailable',
-    'Orca could not find the home folder to install the skills into.'
+    'OCC could not find the home folder to install the skills into.'
   )
 
 const KNOWN_FAILURE_MESSAGES: ReadonlyMap<string, () => string> = new Map([
@@ -13,7 +13,7 @@ const KNOWN_FAILURE_MESSAGES: ReadonlyMap<string, () => string> = new Map([
     () =>
       translate(
         'auto.lib.bundled.skill.install.error.message.wslUnavailable',
-        'WSL is not available on this machine, so Orca could not install the skills there.'
+        'WSL is not available on this machine, so OCC could not install the skills there.'
       )
   ],
   [
@@ -29,7 +29,7 @@ const KNOWN_FAILURE_MESSAGES: ReadonlyMap<string, () => string> = new Map([
     () =>
       translate(
         'auto.lib.bundled.skill.install.error.message.wslDetectionFailed',
-        'Orca could not check which agents are installed in WSL. Make sure the distro starts, then retry.'
+        'OCC could not check which agents are installed in WSL. Make sure the distro starts, then retry.'
       )
   ],
   ['skill-install-wsl-home-unavailable', homeUnavailable],
@@ -39,7 +39,7 @@ const KNOWN_FAILURE_MESSAGES: ReadonlyMap<string, () => string> = new Map([
 export function bundledSkillInstallErrorMessage(error: unknown): string {
   const fallback = translate(
     'auto.lib.bundled.skill.install.error.message.unknown',
-    'Orca could not install the skills.'
+    'OCC could not install the skills.'
   )
   const detail = extractIpcErrorMessage(error, fallback)
   const known = KNOWN_FAILURE_MESSAGES.get(detail)

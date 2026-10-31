@@ -140,7 +140,7 @@ export function writeAiVaultSessionDragData(
   }
   activeAiVaultSessionDragPayload = { ...payload }
   dataTransfer.effectAllowed = 'copy'
-  // Avoid text/plain so native terminal drops cannot paste the resume command before Orca handles it.
+  // Avoid text/plain so native terminal drops cannot paste the resume command before OCC handles it.
   dataTransfer.setData(AI_VAULT_SESSION_DRAG_TYPE, serialized)
 }
 

@@ -16,7 +16,7 @@ import {
 
 const require = createRequire(import.meta.url)
 
-/** A real loadable addon, so the OS holds the same lock a running Orca holds. */
+/** A real loadable addon, so the OS holds the same lock a running OCC holds. */
 function repoAddonPath() {
   try {
     const entry = require.resolve('@vscode/windows-process-tree')
@@ -27,7 +27,7 @@ function repoAddonPath() {
   }
 }
 
-// Keep stale addon loaded as running Orca does; append flagged import to real patched build as loadable PE overlay.
+// Keep stale addon loaded as running OCC does; append flagged import to real patched build as loadable PE overlay.
 async function stageLoadedStaleAddon(projectDir) {
   const source = repoAddonPath()
   const releaseDir = join(
@@ -55,7 +55,7 @@ async function stageLoadedStaleAddon(projectDir) {
   return holder
 }
 
-// Run whole script: EPERM guard used to throw outside existing lock classifier’s try, bypassing close-Orca message.
+// Run whole script: EPERM guard used to throw outside existing lock classifier’s try, bypassing close-OCC message.
 describe.runIf(process.platform === 'win32')('rebuild-native-deps stale addon under lock', () => {
   it.skipIf(!repoAddonPath())(
     'reports a locked stale addon as a Windows file lock instead of an EPERM stack',
@@ -81,7 +81,7 @@ describe.runIf(process.platform === 'win32')('rebuild-native-deps stale addon un
         )
 
         expect(result.stderr).toContain(
-          'Close running Orca/Electron/dev processes for this worktree'
+          'Close running OCC/Electron/dev processes for this worktree'
         )
         // Non-strict postinstall soft-exits on a lock; the next dev/start re-checks.
         expect(result.status, result.stderr).toBe(0)

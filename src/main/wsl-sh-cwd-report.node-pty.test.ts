@@ -181,7 +181,7 @@ describe.skipIf(process.platform === 'win32')('the WSL bridge sh ENV file', () =
   })
 
   it.each(DASH ? ['/bin/sh', DASH] : ['/bin/sh'])(
-    '%s starts quietly when the file is gone (Orca updated away or uninstalled)',
+    '%s starts quietly when the file is gone (OCC updated away or uninstalled)',
     (shell) => {
       const out = execFileSync(shell, ['-i'], {
         encoding: 'utf8',

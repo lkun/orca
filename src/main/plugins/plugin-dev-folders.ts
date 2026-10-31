@@ -42,10 +42,10 @@ function assertPluginSystemEnabled(service: PluginDevFolderService): void {
   if (!service.options.isPluginSystemEnabled()) {
     throw new PluginCliError(
       PLUGIN_SYSTEM_DISABLED_CODE,
-      'Plugins are turned off on this Orca host.',
+      'Plugins are turned off on this OCC host.',
       {
         nextSteps: [
-          'Ask the user to open Orca Settings → Plugins and click "Turn on plugins", then run the command again.'
+          'Ask the user to open OCC Settings → Plugins and click "Turn on plugins", then run the command again.'
         ]
       }
     )
@@ -61,16 +61,16 @@ async function resolveDevFolder(path: string): Promise<string> {
   if (!isAbsolute(path)) {
     throw new PluginCliError(
       'invalid_argument',
-      `${path} is not an absolute path on the Orca host.`,
+      `${path} is not an absolute path on the OCC host.`,
       {
-        nextSteps: ['Pass the plugin folder as an absolute path on the machine that runs Orca.']
+        nextSteps: ['Pass the plugin folder as an absolute path on the machine that runs OCC.']
       }
     )
   }
   const real = await realpath(path).catch(() => null)
   if (!real || !(await stat(real)).isDirectory()) {
-    throw new PluginCliError('invalid_argument', `${path} is not a folder on the Orca host.`, {
-      nextSteps: ['Check the path; development folders must be on the machine that runs Orca.']
+    throw new PluginCliError('invalid_argument', `${path} is not a folder on the OCC host.`, {
+      nextSteps: ['Check the path; development folders must be on the machine that runs OCC.']
     })
   }
   return real

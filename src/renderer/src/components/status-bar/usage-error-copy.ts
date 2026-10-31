@@ -117,7 +117,7 @@ export function getProviderUsageStatusLabel(p: ProviderRateLimits): string {
           'auto.components.status.bar.tooltip.claude.waiting.label',
           'Updates when Claude runs'
         )
-      // Why: Orca never refreshes a Claude login; only an older host that still does reports these.
+      // Why: OCC never refreshes a Claude login; only an older host that still does reports these.
       case 'refreshable-credentials-without-token':
       case 'delegated-refresh-required':
         return translate('auto.components.status.bar.tooltip.1804cd8c3f', 'Refreshing sign-in')
@@ -147,7 +147,7 @@ export function getProviderUsageStatusLabel(p: ProviderRateLimits): string {
   if (p.provider === 'minimax' && p.usageMetadata?.failureKind === 'stale-token') {
     return translate('auto.components.status.bar.tooltip.minimax.expired.label', 'Sign-in expired')
   }
-  // Cursor-agent owns token rotation; signing into its CLI repairs expiry, not another Orca fetch.
+  // Cursor-agent owns token rotation; signing into its CLI repairs expiry, not another OCC fetch.
   if (p.provider === 'cursor' && p.usageMetadata?.failureKind === 'stale-token') {
     return translate('auto.components.status.bar.tooltip.cursor.expired.label', 'Sign-in expired')
   }
@@ -183,19 +183,19 @@ export function getProviderUsageErrorMessage(p: ProviderRateLimits): string {
   if (delegatedCliProvider === 'grok') {
     return translate(
       'auto.components.status.bar.tooltip.d1b7f509ac',
-      'Run grok in a terminal on the computer running Orca and wait for it to start. If prompted, complete sign-in, then retry usage. You do not need to send a chat message.'
+      'Run grok in a terminal on the computer running OCC and wait for it to start. If prompted, complete sign-in, then retry usage. You do not need to send a chat message.'
     )
   }
   if (delegatedCliProvider === 'kimi') {
     return translate(
       'auto.components.status.bar.tooltip.a37e8c15d4',
-      'Run kimi in a terminal on the computer running Orca and wait for it to start, then retry usage.'
+      'Run kimi in a terminal on the computer running OCC and wait for it to start, then retry usage.'
     )
   }
   if (p.provider === 'cursor' && p.usageMetadata?.failureKind === 'stale-token') {
     return translate(
       'auto.components.status.bar.tooltip.cursor.expired.message',
-      'Run cursor-agent login in a terminal on the computer running Orca, then retry usage.'
+      'Run cursor-agent login in a terminal on the computer running OCC, then retry usage.'
     )
   }
   if (p.provider === 'claude') {

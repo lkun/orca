@@ -96,13 +96,13 @@ export function getRemoteServerManualUpdateHelp(entry: RemoteServerUpdateEntry):
   if (entry.managedOverSsh) {
     return translate(
       'auto.components.settings.RemoteServerUpdateStatus.managedOverSshHelp',
-      'This desktop updates this server over SSH. Use Update on its row in Remote Orca Servers.'
+      'This desktop updates this server over SSH. Use Update on its row in Remote OCC Servers.'
     )
   }
   if (entry.support?.reason === 'manual-service-update-required') {
     return translate(
       'auto.components.settings.RemoteServerUpdateStatus.serviceManagerHelp',
-      'Update Orca on the server host — through its system package manager if it was installed from a .deb or .rpm, otherwise through the service manager that starts it.'
+      'Update OCC on the server host — through its system package manager if it was installed from a .deb or .rpm, otherwise through the service manager that starts it.'
     )
   }
   if (entry.support?.reason === 'unpackaged-build') {
@@ -113,6 +113,6 @@ export function getRemoteServerManualUpdateHelp(entry: RemoteServerUpdateEntry):
   }
   return translate(
     'auto.components.settings.RemoteServerUpdateStatus.legacyHelp',
-    'Remote updates are unavailable for this server. Update Orca on the server host.'
+    'Remote updates are unavailable for this server. Update OCC on the server host.'
   )
 }

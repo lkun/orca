@@ -19,7 +19,7 @@ const markerPolls = new Set<string>()
 
 /**
  * Codex's elevated setup grants its sandbox group read on every USERPROFILE child, so ~/.codex is
- * readable; Orca's managed home sits under a protected userData DACL and never gets that ACE.
+ * readable; OCC's managed home sits under a protected userData DACL and never gets that ACE.
  */
 export async function grantCodexSandboxReadOnManagedHome(codexHome: string): Promise<void> {
   if (process.platform !== 'win32') {
@@ -137,7 +137,7 @@ async function hasCompletedGrant(icacls: string, dir: string): Promise<boolean> 
 async function runIcaclsGrant(dir: string): Promise<boolean> {
   const icacls = getSystem32ExePath('icacls.exe')
   try {
-    // A repeat grant would re-propagate through the whole tree on every Orca start.
+    // A repeat grant would re-propagate through the whole tree on every OCC start.
     if (await hasCompletedGrant(icacls, dir)) {
       return true
     }

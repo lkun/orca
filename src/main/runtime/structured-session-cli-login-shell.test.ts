@@ -1,4 +1,4 @@
-/** Login profiles can put global Orca ahead on PATH; absolute ORCA_CLI_COMMAND must still reach this app. zsh runs in the real-shell lane. */
+/** Login profiles can put global OCC ahead on PATH; absolute ORCA_CLI_COMMAND must still reach this app. zsh runs in the real-shell lane. */
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import {

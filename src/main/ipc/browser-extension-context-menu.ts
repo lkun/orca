@@ -19,7 +19,7 @@ const actionMenuArgs = z.object({
   browserPageId: z.string().min(1).optional()
 })
 
-/** Extension items in Orca's page and toolbar-button menus; main owns what was clicked on. */
+/** Extension items in OCC's page and toolbar-button menus; main owns what was clicked on. */
 export function registerBrowserExtensionContextMenuHandlers(): void {
   ipcMain.removeHandler(CLICK_CHANNEL)
   ipcMain.removeHandler(ACTION_MENU_CHANNEL)

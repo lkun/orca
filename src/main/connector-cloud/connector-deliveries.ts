@@ -23,7 +23,7 @@ export function connectorReplyInstructions(source: ConnectorSource): string {
 
 export type DispatchedDelivery = {
   deliveryId: string
-  /** False when this Orca refused it without calling the seam; only done is sent then. */
+  /** False when this OCC refused it without calling the seam; only done is sent then. */
   received: boolean
   done: Promise<ConnectorDeliveryResult>
 }

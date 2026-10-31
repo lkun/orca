@@ -338,7 +338,7 @@ describe('createBrowserSlice runtime guard', () => {
 
       expect(warningToastMock).toHaveBeenCalledTimes(1)
       expect(warningToastMock).toHaveBeenCalledWith(
-        "Orca couldn't read 3 of Google Chrome's encrypted cookies because secret-tool isn't installed. Install libsecret-tools (or your distribution's equivalent) and import again. 2 more cookies could not be decrypted for another reason."
+        "OCC couldn't read 3 of Google Chrome's encrypted cookies because secret-tool isn't installed. Install libsecret-tools (or your distribution's equivalent) and import again. 2 more cookies could not be decrypted for another reason."
       )
       expect(successToastMock).not.toHaveBeenCalled()
     }

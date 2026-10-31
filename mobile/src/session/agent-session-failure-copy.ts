@@ -79,19 +79,19 @@ const COPY: Record<AgentSessionFailureCopyId, (values: AgentSessionFailureCopyVa
   hostFault: (values) =>
     translate(
       'session.failure.hostFault',
-      "Orca ran into a problem, so this didn't go through.",
+      "OCC ran into a problem, so this didn't go through.",
       values
     ),
   hostFaultTryAgain: (values) =>
     translate(
       'session.failure.hostFaultTryAgain',
-      "Orca ran into a problem, so this didn't go through. Try again.",
+      "OCC ran into a problem, so this didn't go through. Try again.",
       values
     ),
   hostStopped: (values) =>
     translate(
       'session.failure.hostStopped',
-      '{{agent}} never finished starting, so Orca stopped it.',
+      '{{agent}} never finished starting, so OCC stopped it.',
       values
     ),
   providerRateLimited: (values) =>

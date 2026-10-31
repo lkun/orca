@@ -114,7 +114,7 @@ export class CodexAccountRegistration {
     await this.loginThroughStagingHome(managedHomePath, account.id)
     const identity = this.dependencies.readIdentityFromHome(managedHomePath, account.id)
     if (!identity.email) {
-      throw new Error('Codex login completed, but Orca could not resolve the account email.')
+      throw new Error('Codex login completed, but OCC could not resolve the account email.')
     }
 
     const settings = this.dependencies.store.getSettings()
@@ -193,7 +193,7 @@ export class CodexAccountRegistration {
   ): Promise<CodexRateLimitAccountsState> {
     const identity = this.dependencies.readIdentityFromHome(managedHome.managedHomePath, accountId)
     if (!identity.email) {
-      throw new Error('Codex login completed, but Orca could not resolve the account email.')
+      throw new Error('Codex login completed, but OCC could not resolve the account email.')
     }
     const now = Date.now()
     const account: CodexManagedAccount = {

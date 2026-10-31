@@ -23,7 +23,7 @@ declare module 'monaco-editor/esm/vs/basic-languages/cpp/cpp.js' {
   export const language: languages.IMonarchLanguage
 }
 
-// Monaco contributions lack public types; declare only Orca’s paste-override surface.
+// Monaco contributions lack public types; declare only OCC’s paste-override surface.
 declare module 'monaco-editor/esm/vs/editor/contrib/clipboard/browser/clipboard.js' {
   type PasteImplementation = () => boolean | Promise<unknown>
   export const PasteAction:

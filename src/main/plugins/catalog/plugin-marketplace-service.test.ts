@@ -143,7 +143,7 @@ describe('PluginMarketplaceService', () => {
     })
 
     await expect(service.addSource(source())).rejects.toThrow(
-      "community.orca-secrets uses a name reserved for official Orca plugins; only Orca's official catalog may list it"
+      "community.orca-secrets uses a name reserved for official OCC plugins; only OCC's official catalog may list it"
     )
     await expect(service.listSources()).resolves.toEqual([])
   })
@@ -157,12 +157,12 @@ describe('PluginMarketplaceService', () => {
         )
     })
 
-    await expect(service.addSource(source())).rejects.toThrow('reserved for official Orca plugins')
+    await expect(service.addSource(source())).rejects.toThrow('reserved for official OCC plugins')
   })
 
   it('derives the Official badge only from the canonical marketplace and source organization', async () => {
     const officialMarketplace: PluginMarketplace = {
-      name: 'Orca Plugins',
+      name: 'OCC Plugins',
       owner: 'stablyai',
       plugins: [
         {
@@ -227,7 +227,7 @@ describe('PluginMarketplaceService', () => {
   it('seeds the official marketplace once and keeps it configured across restarts', async () => {
     const root = await tempRoot()
     const officialMarketplace = marketplace(
-      'Orca Plugins',
+      'OCC Plugins',
       'stablyai.orca-notes',
       'https://github.com/stablyai/orca-notes.git'
     )
@@ -237,7 +237,7 @@ describe('PluginMarketplaceService', () => {
 
     await expect(first.seedOfficialSource()).resolves.toMatchObject({
       official: true,
-      marketplace: { name: 'Orca Plugins' }
+      marketplace: { name: 'OCC Plugins' }
     })
     await expect(first.seedOfficialSource()).resolves.toMatchObject({ official: true })
     expect(fetcher).toHaveBeenCalledTimes(1)
@@ -270,7 +270,7 @@ describe('PluginMarketplaceService', () => {
       addedAt: 1
     }
     const officialMarketplace = marketplace(
-      'Orca Plugins',
+      'OCC Plugins',
       'stablyai.orca-notes',
       'https://github.com/stablyai/orca-notes.git'
     )
@@ -301,7 +301,7 @@ describe('PluginMarketplaceService', () => {
       expect.objectContaining({ id: registered.id, official: true })
     ])
     await expect(service.seedOfficialSource()).resolves.toMatchObject({
-      marketplace: { name: 'Orca Plugins' },
+      marketplace: { name: 'OCC Plugins' },
       official: true
     })
   })
@@ -315,7 +315,7 @@ describe('PluginMarketplaceService', () => {
       )
     )
     const officialMarketplace = marketplace(
-      'Orca Plugins',
+      'OCC Plugins',
       'stablyai.orca-notes',
       'https://github.com/stablyai/orca-notes.git'
     )
@@ -335,7 +335,7 @@ describe('PluginMarketplaceService', () => {
   })
 
   const communityMarketplace = (): PluginMarketplace => ({
-    ...marketplace('Orca Community Plugins', 'acme.dusk', 'https://github.com/acme/dusk.git'),
+    ...marketplace('OCC Community Plugins', 'acme.dusk', 'https://github.com/acme/dusk.git'),
     owner: 'stablyai'
   })
 

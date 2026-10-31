@@ -92,7 +92,7 @@ describe('structured OpenCode account binding', () => {
     ).toEqual(baseEnvironment)
   })
 
-  it("undoes Orca's inherited managed overlay before passing the environment through", () => {
+  it("undoes OCC's inherited managed overlay before passing the environment through", () => {
     const accounts = managedAccounts()
     accounts.select(null)
     const environment = environmentForStructuredOpenCodeAccountHome(

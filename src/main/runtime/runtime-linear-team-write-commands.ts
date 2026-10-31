@@ -157,7 +157,7 @@ export class RuntimeLinearTeamWriteCommands extends RuntimeLinearDedupeCommands 
     }
     if (teams.length === 0 && (getLinearStatus().workspaces?.length ?? 0) === 0) {
       throw linearError('linear_not_connected', 'Linear is not connected.', {
-        nextSteps: ['Connect Linear from Orca settings, then retry the issue create.']
+        nextSteps: ['Connect Linear from OCC settings, then retry the issue create.']
       })
     }
     const matches = teams.filter(
@@ -257,7 +257,7 @@ export class RuntimeLinearTeamWriteCommands extends RuntimeLinearDedupeCommands 
       if (!worktree) {
         throw new LinearAgentAccessError(
           'linear_issue_required',
-          'Run --current from inside an Orca-managed worktree or pass an issue id.'
+          'Run --current from inside an OCC-managed worktree or pass an issue id.'
         )
       }
     }
@@ -265,7 +265,7 @@ export class RuntimeLinearTeamWriteCommands extends RuntimeLinearDedupeCommands 
     if (!worktree) {
       throw new LinearAgentAccessError(
         'linear_issue_required',
-        'Run --current from inside an Orca-managed worktree or pass an issue id.'
+        'Run --current from inside an OCC-managed worktree or pass an issue id.'
       )
     }
 

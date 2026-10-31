@@ -46,7 +46,7 @@ async function withManagedCli(
     wsl([
       'sh',
       '-c',
-      'for file in "$HOME/.profile" "$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.zshrc" "$HOME/.zprofile" "$HOME/.zshenv" "$HOME/.local/bin/orca" "$HOME/.local/bin/orca-ide" "$HOME/.local/bin/orca-dev" "$HOME/.local/share/orca/orca-wsl-bridge.ps1"; do if [ -f "$file" ]; then sha256sum "$file"; fi; done; printf "PATH=%s\\n" "$PATH"'
+      'for file in "$HOME/.profile" "$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.zshrc" "$HOME/.zprofile" "$HOME/.zshenv" "$HOME/.local/bin/occ" "$HOME/.local/bin/occ-ide" "$HOME/.local/bin/occ-dev" "$HOME/.local/share/orca/orca-wsl-bridge.ps1"; do if [ -f "$file" ]; then sha256sum "$file"; fi; done; printf "PATH=%s\\n" "$PATH"'
     ])
   try {
     const before = await snapshot()
@@ -64,7 +64,7 @@ async function withManagedCli(
     expect(directory).not.toBeNull()
     Object.assign(env, {
       ORCA_WSL_CLI_DIR: directory ?? '',
-      ORCA_CLI_COMMAND: 'orca-dev',
+      ORCA_CLI_COMMAND: 'occ-dev',
       ORCA_TERMINAL_HANDLE: 'term_managed_fixture'
     })
     addOrcaWslInteropEnv(env)
@@ -92,13 +92,13 @@ it.skipIf(!enabled)(
           command
         ])
 
-      const result = await shell('orca-dev "two words" "literal $" | cat')
+      const result = await shell('occ-dev "two words" "literal $" | cat')
       expect(result.code, result.stderr).toBe(0)
       expect(result.stderr).toContain('bridge stderr')
       expect(result.stdout).toContain('"argv":["two words","literal $"]')
       expect(result.stdout).toContain(JSON.stringify(userDataPath))
       expect(result.stdout).toContain('"handle":"term_managed_fixture"')
-      expect((await shell('orca-dev --exit')).code).toBe(23)
+      expect((await shell('occ-dev --exit')).code).toBe(23)
 
       env.ORCA_WSL_CLI_DIR = join(root, 'missing-cli')
       const missing = await shell('echo SHELL_CONTINUED')
@@ -129,7 +129,7 @@ it.skipIf(!enabled)(
           'zsh -l',
           '/dev/null'
         ],
-        `orca-dev "two words" > "$HOME/zsh-out"; print -r -- "path=$PATH" >> "$HOME/zsh-out"; exit\n`
+        `occ-dev "two words" > "$HOME/zsh-out"; print -r -- "path=$PATH" >> "$HOME/zsh-out"; exit\n`
       )
       expect(result.code, result.stderr).toBe(0)
       const output = await wsl(['cat', `${guestRoot}/zsh-out`])

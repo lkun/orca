@@ -41,7 +41,7 @@ function naming(rename: Rename) {
   return { queue, warn }
 }
 
-it("never pushes a name Orca chose, or one for a chat that hasn't started its agent", async () => {
+it("never pushes a name OCC chose, or one for a chat that hasn't started its agent", async () => {
   const rename = vi.fn<Rename>(async () => {})
   let record = chat({ conversationNameSource: undefined })
   const { queue } = naming(rename)

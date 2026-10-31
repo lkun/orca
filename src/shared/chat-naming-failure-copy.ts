@@ -1,7 +1,7 @@
-// One English table for Orca-authored chat auto-name failures: main builds the wire `message`, the renderer translates by code.
+// One English table for OCC-authored chat auto-name failures: main builds the wire `message`, the renderer translates by code.
 export const CHAT_NAMING_FAILURE_COPY = {
   noName: 'The chat-name agent returned no name.',
-  agentNotRun: 'Orca could not run the chat-name agent.',
+  agentNotRun: 'OCC could not run the chat-name agent.',
   noAgentAvailable: 'No chat-name agent can run in this workspace.',
   grokFailed: 'Grok could not name this chat. Try generating the name again.',
   antigravityFailed: 'Antigravity could not name this chat. Try generating the name again.'

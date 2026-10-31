@@ -262,9 +262,9 @@ describe('orca search over the runtime RPC', () => {
   it('propagates a transport failure instead of calling it unavailable', async () => {
     await expect(
       runSearch([['query', 'q']], {
-        error: new RuntimeClientError('runtime_unavailable', 'Orca is not running.')
+        error: new RuntimeClientError('runtime_unavailable', 'OCC is not running.')
       })
-    ).rejects.toThrow('Orca is not running.')
+    ).rejects.toThrow('OCC is not running.')
   })
 
   it('applies the paired-client exposure policy for a remote runtime', async () => {

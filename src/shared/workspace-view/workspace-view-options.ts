@@ -75,7 +75,7 @@ export const WORKSPACE_CARD_DISPLAY_CHOICES = [
   { id: 'jira-issue', label: 'Jira issues' },
   { id: 'comment', label: 'Notes' },
   { id: 'automation', label: 'Automation' },
-  { id: 'cli', label: 'Orca CLI' },
+  { id: 'cli', label: 'OCC CLI' },
   { id: 'ports', label: 'Ports' },
   { id: 'inline-agents', label: 'Agent statuses' },
   { id: 'host', label: 'Host' },

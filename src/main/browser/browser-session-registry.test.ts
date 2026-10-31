@@ -39,7 +39,7 @@ vi.mock('./browser-process-user-agent', () => ({
   getBrowserProcessUserAgentIdentity: () => ({
     mode: processUserAgentMode.value,
     userAgent: 'Mozilla/5.0 Chrome/150.0.0.0 Safari/537.36',
-    electronUserAgent: 'Mozilla/5.0 Orca/1.0.0 Chrome/150.0.0.0 Electron/43.0.0 Safari/537.36'
+    electronUserAgent: 'Mozilla/5.0 OCC/1.0.0 Chrome/150.0.0.0 Electron/43.0.0 Safari/537.36'
   })
 }))
 
@@ -579,7 +579,7 @@ describe('BrowserSessionRegistry', () => {
     expect(webAuthnCallback).toHaveBeenCalledWith('credential-1')
   })
 
-  it('uses profile-owned partitions for non-default Orca profiles', async () => {
+  it('uses profile-owned partitions for non-default OCC profiles', async () => {
     const orcaProfileId = 'local-work'
     browserSessionRegistry.configureForOrcaProfile({
       orcaProfileId,

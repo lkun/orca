@@ -44,7 +44,7 @@ function finalAgentStartAnswer(error: Error): boolean {
   )
 }
 
-/** Only positive provider evidence retries; an Orca fault or a typed refusal stays final. */
+/** Only positive provider evidence retries; an OCC fault or a typed refusal stays final. */
 export function retryableStructuredAgentSessionStart(error: unknown): boolean {
   if (
     providerRequestTimeoutOf(error) ||

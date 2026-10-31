@@ -184,14 +184,14 @@ export function resolveEnvironment(selector: string): StoredWebRuntimeEnvironmen
   if (environment.compatibleEnvironmentIds?.includes(selector)) {
     return environment
   }
-  throw new Error(`Unknown Orca runtime environment: ${selector}`)
+  throw new Error(`Unknown OCC runtime environment: ${selector}`)
 }
 
 export function requireActiveEnvironment(): StoredWebRuntimeEnvironment {
   webRuntimeState.activeEnvironment =
     webRuntimeState.activeEnvironment ?? readStoredWebRuntimeEnvironment()
   if (!webRuntimeState.activeEnvironment) {
-    throw new Error('Pair this web client with an Orca server first.')
+    throw new Error('Pair this web client with an OCC server first.')
   }
   return webRuntimeState.activeEnvironment
 }
@@ -202,7 +202,7 @@ export function requireActiveEnvironmentOrNull(): StoredWebRuntimeEnvironment | 
   return webRuntimeState.activeEnvironment
 }
 
-const PAIRING_CHANGED_MESSAGE = 'The paired Orca server changed while the request was in progress.'
+const PAIRING_CHANGED_MESSAGE = 'The paired OCC server changed while the request was in progress.'
 
 export function assertActiveEnvironment(environmentId: string): void {
   if (requireActiveEnvironment().id !== environmentId) {

@@ -53,7 +53,7 @@ describe('RelayAgentHookServer Claude session continuation', () => {
     const { port, token } = server.getCoordinates()
     const response = await fetch(`http://127.0.0.1:${port}/hook/claude`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+      headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
       body: JSON.stringify({
         paneKey: PANE_KEY,
         tabId: 'tab-1',

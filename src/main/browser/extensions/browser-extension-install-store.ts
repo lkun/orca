@@ -26,7 +26,7 @@ const installedExtensionSchema = z.object({
 /**
  * The installed list, shared by every local browser profile. Store installs live under
  * `<root>/<id>/<version>/`; unpacked extensions are referenced where the user keeps them and
- * loaded from Orca's copy under `<root>/unpacked/`.
+ * loaded from OCC's copy under `<root>/unpacked/`.
  */
 export class BrowserExtensionInstallStore {
   private cache: Map<string, InstalledBrowserExtension> | null = null
@@ -46,7 +46,7 @@ export class BrowserExtensionInstallStore {
     return join(this.rootDirectory, extensionId, version)
   }
 
-  /** Orca's copy of an unpacked folder, stable per folder so its id survives restarts. */
+  /** OCC's copy of an unpacked folder, stable per folder so its id survives restarts. */
   unpackedCopyDirectory(sourceDirectory: string): string {
     const digest = createHash('sha256').update(resolve(sourceDirectory)).digest('hex')
     return join(this.rootDirectory, 'unpacked', digest.slice(0, 32))
@@ -60,7 +60,7 @@ export class BrowserExtensionInstallStore {
     return this.load().get(extensionId) ?? null
   }
 
-  /** Monotonic uninstall markers survive reinstall and are shared by every Orca profile. */
+  /** Monotonic uninstall markers survive reinstall and are shared by every OCC profile. */
   removalGenerations(): ReadonlyMap<string, number> {
     if (!this.removals) {
       const entries = new Map<string, number>()
@@ -100,7 +100,7 @@ export class BrowserExtensionInstallStore {
     return installed
   }
 
-  /** Forgets the extension and deletes the folders Orca owns (never the user's unpacked folder). */
+  /** Forgets the extension and deletes the folders OCC owns (never the user's unpacked folder). */
   async remove(extensionId: string): Promise<InstalledBrowserExtension | null> {
     const entries = this.load()
     const existing = entries.get(extensionId)

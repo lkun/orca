@@ -59,7 +59,7 @@ describe('crossKindNextSteps', () => {
     const steps = crossKindNextSteps('awin', alternatives, 'ssh')
 
     expect(steps.join('\n')).toContain('--environment awin')
-    expect(steps.join('\n')).toContain('is a paired Orca server')
+    expect(steps.join('\n')).toContain('is a paired OCC server')
   })
 
   it('says nothing when the name exists on neither axis', () => {
@@ -104,7 +104,7 @@ describe('resolveSshHostTargetId', () => {
       resolveSshHostTargetId(clientReturning([]), 'openclaw', ENVIRONMENTS)
     ).rejects.toMatchObject({
       code: 'invalid_argument',
-      data: { nextSteps: expect.arrayContaining(['This Orca host has no SSH targets registered.']) }
+      data: { nextSteps: expect.arrayContaining(['This OCC host has no SSH targets registered.']) }
     })
   })
 })

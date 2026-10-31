@@ -41,7 +41,7 @@ it('verifies a host-served bundle over a 20 KiB/s link including incompressible 
   const root = join(scratch, 'out', 'mobile-web')
   mkdirSync(join(root, 'assets'), { recursive: true })
   const files = new Map([
-    ['index.html', Buffer.from('<html>Orca</html>')],
+    ['index.html', Buffer.from('<html>OCC</html>')],
     ['assets/font.woff2', randomBytes(800 * 1024)]
   ])
   const assets = [...files]

@@ -32,7 +32,7 @@ async function chatImageReadable(target: string): Promise<boolean> {
 
 describe('isInsideNativeChatPasteFolder', () => {
   const posixFolder = '/data/native-chat-pastes'
-  const winFolder = 'C:\\Users\\Me\\AppData\\Roaming\\Orca\\native-chat-pastes'
+  const winFolder = 'C:\\Users\\Me\\AppData\\Roaming\\OCC\\native-chat-pastes'
 
   it.each([
     ['a file inside', `${posixFolder}/orca-paste-1.png`, true],

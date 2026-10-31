@@ -37,8 +37,8 @@ export async function prepareOrcadCliLauncher(): Promise<void> {
   }
   const script = buildUnixCliLauncher(process.execPath, entry, userDataPath, 'node')
   await mkdir(binDir, { recursive: true })
-  // Older clients type the Linux desktop `orca-ide claude-teams` into server terminals.
-  const names = process.platform === 'linux' ? ['orca', 'orca-ide'] : ['orca']
+  // Older clients type the Linux desktop `occ-ide claude-teams` into server terminals.
+  const names = process.platform === 'linux' ? ['orca', 'occ-ide'] : ['orca']
   for (const name of names) {
     const path = join(binDir, name)
     const current = await readFile(path, 'utf8').catch(() => null)

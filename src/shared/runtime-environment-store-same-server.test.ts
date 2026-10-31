@@ -73,7 +73,7 @@ describe('pairing a server that is already saved', () => {
         pairingCode: pairingCode('ws://192.0.2.10:6768', 'second-token')
       })
     ).toThrow(
-      'This server is already paired as "Studio". To update its connection, add it again under Settings > Remote Orca Servers.'
+      'This server is already paired as "Studio". To update its connection, add it again under Settings > Remote OCC Servers.'
     )
     expect(listEnvironments(userDataPath)).toEqual([first])
   })
@@ -157,7 +157,7 @@ describe('pairing a server that is already saved', () => {
     expect(outcome.environment.connectionDependency).toBeUndefined()
   })
 
-  it('refuses, naming the saved entry, when Orca manages that server over SSH', () => {
+  it('refuses, naming the saved entry, when OCC manages that server over SSH', () => {
     const managed = addManagedOrcadEnvironment(userDataPath, {
       id: 'managed',
       name: 'Managed box',
@@ -183,7 +183,7 @@ describe('pairing a server that is already saved', () => {
     // The English message keeps its wording; the code lets clients translate it.
     expect(refusal).toMatchObject({
       message: expect.stringMatching(
-        /^This server is already paired as "Managed box"\. Orca runs this server on an SSH host for you;/
+        /^This server is already paired as "Managed box"\. OCC runs this server on an SSH host for you;/
       ),
       pairingFailure: {
         errorCode: 'alreadyPairedManagedDeployment',

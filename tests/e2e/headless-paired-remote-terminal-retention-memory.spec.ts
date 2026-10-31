@@ -4,7 +4,7 @@ import { launchPairedWebClient, type PairedWebClient } from './helpers/paired-el
 import { runPairedTerminalColdActivationOracle } from './helpers/paired-terminal-cold-activation-oracle'
 import { runPairedTerminalParkingOracle } from './helpers/paired-terminal-parking-oracle'
 
-test('ordinary-parks paired terminals against an isolated headless Orca host', async ({
+test('ordinary-parks paired terminals against an isolated headless OCC host', async ({
   testRepoPath
 }) => {
   test.setTimeout(240_000)

@@ -3,7 +3,7 @@ import { isNativeBrowserPopupWindow } from '../browser/native-browser-popup-wind
 
 export type AppMenuSelectionAction = 'copy' | 'select-all'
 
-/** Native pages/popups own Edit actions; null leaves renderer surfaces to Orca. */
+/** Native pages/popups own Edit actions; null leaves renderer surfaces to OCC. */
 export function resolveNativeEditTarget(
   focusedWindow: Electron.BrowserWindow
 ): Electron.WebContents | null {

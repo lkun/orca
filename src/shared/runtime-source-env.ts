@@ -1,4 +1,4 @@
-// Which Orca runtime launched a process. Kept separate from the orchestration compatibility stamp,
+// Which OCC runtime launched a process. Kept separate from the orchestration compatibility stamp,
 // whose WSL/SSH union carries caller attestation and must stay untouched.
 export const RUNTIME_SOURCE_ID_ENV = 'ORCA_RUNTIME_SOURCE_ID'
 export const RUNTIME_SOURCE_INCARNATION_ENV = 'ORCA_RUNTIME_SOURCE_INCARNATION'
@@ -32,7 +32,7 @@ export function readRuntimeSourceStamp(
   return profilePath ? { sourceId, incarnation, profilePath } : { sourceId, incarnation }
 }
 
-/** Replaces any inherited stamp, so a nested Orca never passes on its parent's source. */
+/** Replaces any inherited stamp, so a nested OCC never passes on its parent's source. */
 export function stampRuntimeSourceEnv(
   env: Record<string, string | undefined>,
   stamp: RuntimeSourceStamp | null

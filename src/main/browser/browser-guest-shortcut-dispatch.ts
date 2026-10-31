@@ -50,7 +50,7 @@ export function forwardGuestShortcutInput(
     if (
       (action?.type === 'dictationKeyDown' && shouldForwardDictationShortcut?.()) ||
       action?.type === 'deleteCurrentWorkspace' ||
-      // Why: Orca claims a held tab chord on every repeat but acts once, so repeats never reach the page.
+      // Why: OCC claims a held tab chord on every repeat but acts once, so repeats never reach the page.
       matchesGuestTabShortcut(
         input,
         process.platform,
@@ -172,7 +172,7 @@ export function forwardGuestShortcutInput(
       isMobileEmulatorEnabled?.() ?? true
     )
   ) {
-    // Why: replay into the renderer's own tab-shortcut handler so a page answers tab chords exactly as the rest of Orca does.
+    // Why: replay into the renderer's own tab-shortcut handler so a page answers tab chords exactly as the rest of OCC does.
     const { key, code, alt, meta, control, shift, doubleTapModifier } = input
     const shortcut: BrowserPageTabShortcut = {
       key,

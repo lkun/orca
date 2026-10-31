@@ -124,7 +124,7 @@ describe('Claude structured dispatch attachment rejections', () => {
     }
   })
 
-  it('does not blame an attachment for a message no Orca client sends', async () => {
+  it('does not blame an attachment for a message no OCC client sends', async () => {
     const session = sessionFor()
     await expect(
       dispatchClaudeTurn(session, {
@@ -143,7 +143,7 @@ describe('Claude structured dispatch attachment rejections', () => {
       })
     ).resolves.toEqual({
       state: 'rejected',
-      reason: "Orca ran into a problem, so this didn't go through. Try again.",
+      reason: "OCC ran into a problem, so this didn't go through. Try again.",
       rejection: { kind: 'hostFault' }
     })
     expect(session.connection.send).not.toHaveBeenCalled()

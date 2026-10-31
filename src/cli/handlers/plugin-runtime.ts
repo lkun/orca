@@ -37,7 +37,7 @@ export function approvalRerunCommand(rawArgs: readonly string[], fingerprint: st
     }
     kept.push(arg)
   }
-  return ['orca', ...kept, '--approve', fingerprint].map(quoteCliCommandArgument).join(' ')
+  return ['occ', ...kept, '--approve', fingerprint].map(quoteCliCommandArgument).join(' ')
 }
 
 function approvalFingerprintOf(data: unknown): string | null {
@@ -66,8 +66,8 @@ function translatePluginRpcError(ctx: HandlerContext, method: string, error: unk
   if (code === 'method_not_found') {
     return new RuntimeClientError(
       'runtime_unsupported',
-      `The Orca host this command reached is too old for \`${method}\`.`,
-      { nextSteps: ['Update Orca on that host, then run the command again.'] }
+      `The OCC host this command reached is too old for \`${method}\`.`,
+      { nextSteps: ['Update OCC on that host, then run the command again.'] }
     )
   }
   const fingerprint = approvalFingerprintOf(data)
@@ -89,12 +89,12 @@ async function callPlugins<T>(ctx: HandlerContext, method: string, params?: unkn
   }
 }
 
-/** Development folders are paths on the Orca host, which may not be this machine. */
+/** Development folders are paths on the OCC host, which may not be this machine. */
 function resolveHostPluginPath(ctx: HandlerContext, value: string): string {
   if (process.env.ORCA_CLI_CWD) {
     throw new RuntimeClientError(
       'invalid_environment',
-      'This shell forwards orca to an Orca host on another machine, which cannot read this folder. Run the command on the machine that runs Orca, or pass --environment for an Orca server that has the folder.'
+      'This shell forwards occ to an OCC host on another machine, which cannot read this folder. Run the command on the machine that runs OCC, or pass --environment for an OCC server that has the folder.'
     )
   }
   if (isAbsolute(value)) {
@@ -103,7 +103,7 @@ function resolveHostPluginPath(ctx: HandlerContext, value: string): string {
   if (ctx.client.isRemote) {
     throw new RuntimeClientError(
       'invalid_argument',
-      'Pass an absolute path on the Orca server; a relative path names a folder on this machine.'
+      'Pass an absolute path on the OCC server; a relative path names a folder on this machine.'
     )
   }
   return resolve(ctx.cwd, value)
@@ -124,7 +124,7 @@ function formatDevLoad(result: DevLoadResult): string {
   return [
     `${result.added ? 'Loaded' : 'Reloaded'} ${result.pluginKey} from ${result.path} (${how}).`,
     result.plugin ? formatPluginRow(result.plugin) : '',
-    'Orca reloads it when its files change; `orca plugin logs` shows what it printed.'
+    'OCC reloads it when its files change; `occ plugin logs` shows what it printed.'
   ]
     .filter(Boolean)
     .join('\n')
@@ -143,7 +143,7 @@ function requirePluginKey(ctx: HandlerContext): string {
   if (!key || !isQualifiedPluginKey(key)) {
     throw new RuntimeClientError(
       'invalid_argument',
-      'Pass a plugin key such as acme.dusk; `orca plugin list` shows them.'
+      'Pass a plugin key such as acme.dusk; `occ plugin list` shows them.'
     )
   }
   return key

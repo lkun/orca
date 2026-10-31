@@ -37,8 +37,8 @@ export function validatePluginManifestV2Rules(manifest: V2RuleSubject, ctx: Refi
   })
 }
 
-/** Why authoring only: Orca before PLUGIN_DERIVED_PUBLISHER_SINCE requires `publisher`, so a
- *  manifest without it must say "requires Orca X" there instead of failing to parse. */
+/** Why authoring only: OCC before PLUGIN_DERIVED_PUBLISHER_SINCE requires `publisher`, so a
+ *  manifest without it must say "requires OCC X" there instead of failing to parse. */
 export function validateOmittedPublisherFloor(
   manifest: { publisher?: string; engines: { orca: string } },
   ctx: RefinementCtx
@@ -53,6 +53,6 @@ export function validateOmittedPublisherFloor(
   ctx.addIssue({
     code: 'custom',
     path: ['engines', 'orca'],
-    message: `must be at least >=${PLUGIN_DERIVED_PUBLISHER_SINCE} when publisher is left out, because older Orca requires publisher`
+    message: `must be at least >=${PLUGIN_DERIVED_PUBLISHER_SINCE} when publisher is left out, because older OCC requires publisher`
   })
 }

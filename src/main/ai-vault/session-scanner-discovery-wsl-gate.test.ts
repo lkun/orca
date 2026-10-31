@@ -19,7 +19,7 @@ import {
 import { discoverFiles, walkSessionFiles } from './session-scanner-discovery'
 
 const SLOW_MESSAGE =
-  'WSL transcript files are temporarily unavailable because filesystem access is taking too long. Try again shortly or restart Orca if the issue continues.'
+  'WSL transcript files are temporarily unavailable because filesystem access is taking too long. Try again shortly or restart OCC if the issue continues.'
 
 // UNC child serialization reads every Dirent kind flag.
 function dirent(name: string): Dirent {

@@ -2,7 +2,7 @@ import { app } from 'electron'
 import { createWslDistroHolder, type WslDistroHolder } from '../wsl/wsl-distro-holder'
 import { ensureWindowsAppDataPath } from './windows-app-data-path'
 
-/** The NSIS uninstaller's flag (config/nsis/orca-installer-hooks.nsh); keep the two in sync. */
+/** The NSIS uninstaller's flag (config/nsis/occ-installer-hooks.nsh); keep the two in sync. */
 export const WSL_HOLDER_UNINSTALL_FLAG = '--orca-uninstall-release-wsl-holders'
 
 // Uninstall must finish even if the process table never answers.

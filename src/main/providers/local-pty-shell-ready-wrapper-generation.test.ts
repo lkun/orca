@@ -198,7 +198,7 @@ describePosix('local PTY shell-ready launch config', () => {
   })
 
   it('falls back to HOME for ORCA_ORIG_ZDOTDIR when inherited ZDOTDIR points at a wrapper dir', async () => {
-    // Nested Orca launches must not inherit wrapper ZDOTDIR and recurse.
+    // Nested OCC launches must not inherit wrapper ZDOTDIR and recurse.
     const previousZdotdir = process.env.ZDOTDIR
     const previousHome = process.env.HOME
     process.env.ZDOTDIR = '/some/other/orca/shell-ready/zsh'
@@ -259,7 +259,7 @@ describePosix('local PTY shell-ready launch config', () => {
     const zshenv = readFileSync(join(getShellReadyWrapperRoot(), 'zsh', '.zshenv'), 'utf8')
     expect(zshenv).toContain('builtin export ZDOTDIR="$ORCA_ORIG_ZDOTDIR"')
     expect(zshenv).toContain('printf "\\033]777;orca-shell-start:%s\\007" "$$"')
-    // Clear handback state before nested Orca or /etc/zshrc can mistake it for user configuration.
+    // Clear handback state before nested OCC or /etc/zshrc can mistake it for user configuration.
     expect(zshenv).toContain('builtin unset ORCA_ORIG_ZDOTDIR ORCA_ZSHENV_SOURCE_DIR')
     expect(zshenv.indexOf('builtin export ZDOTDIR=')).toBeLessThan(
       zshenv.indexOf('builtin source -- "$_orca_user_zshenv"')
@@ -283,7 +283,7 @@ describePosix('local PTY shell-ready launch config', () => {
     expect(zshenv).toContain('printf "\\033]777;orca-shell-ready\\007"')
     // Why: add-zle-hook-widget aborts its chain on a non-zero earlier hook (e.g. oh-my-zsh vi-mode); don't register the marker through it.
     expect(zshenv).not.toContain('add-zle-hook-widget line-init')
-    // Re-sourcing must preserve the original widget chain instead of capturing Orca itself.
+    // Re-sourcing must preserve the original widget chain instead of capturing OCC itself.
     expect(zshenv).toContain('== "user:__orca_prompt_mark"')
     expect(zshenv).toContain('__orca_deferred_init')
   })

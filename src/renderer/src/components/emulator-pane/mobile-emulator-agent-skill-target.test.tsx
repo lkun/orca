@@ -144,7 +144,7 @@ for (const surface of ['guide', 'settings'] as const) {
         'orca-cli',
         expect.objectContaining({ runtimeTarget: { kind: 'environment', environmentId: 'paired' } })
       )
-      await screen.findByText('Update Orca on the server to install its skills.')
+      await screen.findByText('Update OCC on the server to install its skills.')
       expect(screen.queryByRole('button', { name: 'Install' })).toBeNull()
       expect(mocks.plan).toHaveBeenCalledWith(
         { kind: 'environment', environmentId: 'paired' },

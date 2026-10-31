@@ -36,7 +36,7 @@ class TaskContractTests(unittest.TestCase):
     def test_completion_requires_exact_raw_text_and_unchanged_decoy(self):
         final = {**initial_state("targeted_type"), "text": MARKER}
         self.assertTrue(completed(final, "targeted_type"))
-        for text in ("q" + MARKER, MARKER + "q", "Orca qcafé Ω", ""):
+        for text in ("q" + MARKER, MARKER + "q", "OCC qcafé Ω", ""):
             with self.subTest(text=text):
                 self.assertFalse(completed({**final, "text": text}, "targeted_type"))
         self.assertFalse(completed({**final, "decoyText": DECOY + MARKER}, "targeted_type"))

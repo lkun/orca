@@ -43,7 +43,7 @@ test('refreshes the visible tree after external Windows file changes', async ({ 
     await expect(row('README.md')).toBeVisible({ timeout: 10_000 })
     await orcaPage.waitForTimeout(2_000)
 
-    writeFileSync(originalPath, 'created outside Orca\n')
+    writeFileSync(originalPath, 'created outside OCC\n')
     await expect(row(originalName)).toBeVisible({ timeout: 10_000 })
 
     renameSync(originalPath, renamedPath)

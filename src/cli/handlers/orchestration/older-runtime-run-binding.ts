@@ -26,7 +26,7 @@ export async function explainOlderRuntimeRunRequired(
   return older
     ? new RuntimeClientError(
         'incompatible_runtime',
-        `This Orca server is an older version and needs a Run first. Run \`${resolveOrchestrationCliExecutable()} orchestration run-create --objective "<goal>" --json\`, then run this worker-start again.`
+        `This OCC server is an older version and needs a Run first. Run \`${resolveOrchestrationCliExecutable()} orchestration run-create --objective "<goal>" --json\`, then run this worker-start again.`
       )
     : error
 }
@@ -46,5 +46,5 @@ export async function findRunOlderRuntimeWillUnbind(
 }
 
 export function olderRuntimeUnboundRunNext(runId: string): string {
-  return `This Orca server is an older version and keeps one Run per coordinator; ${runId} is no longer bound to you. Switch back with \`${resolveOrchestrationCliExecutable()} orchestration run-use --id ${runId} --json\`.`
+  return `This OCC server is an older version and keeps one Run per coordinator; ${runId} is no longer bound to you. Switch back with \`${resolveOrchestrationCliExecutable()} orchestration run-use --id ${runId} --json\`.`
 }

@@ -1,4 +1,4 @@
-// Run against an isolated Orca dev instance with Pi and pi-ui-prompt-extension.mjs loaded.
+// Run against an isolated OCC dev instance with Pi and pi-ui-prompt-extension.mjs loaded.
 // Usage: node tests/tools/pi-ui-prompt-cdp-smoke.mjs http://127.0.0.1:9333 /path/to/proof
 import assert from 'node:assert/strict'
 import { mkdir } from 'node:fs/promises'
@@ -12,7 +12,7 @@ await mkdir(output, { recursive: true })
 const browser = await chromium.connectOverCDP(endpoint)
 try {
   const page = browser.contexts().flatMap((context) => context.pages())[0]
-  assert.ok(page, 'Orca renderer must be open')
+  assert.ok(page, 'OCC renderer must be open')
   const identity = await page.evaluate(() => window.api.app.getIdentity())
   assert.equal(identity.isDev, true, 'Use an isolated development instance')
   console.log(JSON.stringify(identity))

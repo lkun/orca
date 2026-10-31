@@ -1,4 +1,4 @@
-/** Classify legacy relay installs (≤1.4.224) left by older clients; Orca no longer builds/deploys them. Retire this inventory with the host census. */
+/** Classify legacy relay installs (≤1.4.224) left by older clients; OCC no longer builds/deploys them. Retire this inventory with the host census. */
 import { ORCAD_WINDOWS_PROCESS_TREE_FILENAME } from '../../shared/orcad-artifacts'
 import { OPENCODE_SQLITE_READER_FILENAME } from '../../shared/remote-bundle-artifacts'
 

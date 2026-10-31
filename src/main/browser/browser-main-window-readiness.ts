@@ -9,7 +9,7 @@ let readyWindow: BrowserWindow | null = null
 const waiters = new Set<(window: BrowserWindow | null) => void>()
 
 /**
- * Follows whether Orca's main window can take browser tab requests. Extensions open tabs from
+ * Follows whether OCC's main window can take browser tab requests. Extensions open tabs from
  * the moment they load, and agent commands wake hidden tabs right after a reload, before the
  * renderer listens or has restored its tabs; a request sent then is dropped and times out. Each
  * renderer document says it is ready once, so a reload resets this.

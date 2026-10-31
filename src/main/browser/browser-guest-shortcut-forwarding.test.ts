@@ -220,7 +220,7 @@ describe('setupGuestShortcutForwarding', () => {
     }
   })
 
-  // Why: Orca claims these on every repeat but acts once, so a held chord's repeats never reach the page.
+  // Why: OCC claims these on every repeat but acts once, so a held chord's repeats never reach the page.
   it.each([
     ['workspace delete', { code: 'Backspace', key: 'Backspace' }],
     ['next tab', { code: 'BracketRight', key: '}' }]

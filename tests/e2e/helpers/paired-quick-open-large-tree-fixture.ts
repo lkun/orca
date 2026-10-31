@@ -79,7 +79,7 @@ export function createPairedQuickOpenLargeTreeFixture(): PairedQuickOpenLargeTre
       'git',
       [
         '-c',
-        'user.name=Orca E2E',
+        'user.name=OCC E2E',
         '-c',
         'user.email=orca-e2e@example.invalid',
         'commit',

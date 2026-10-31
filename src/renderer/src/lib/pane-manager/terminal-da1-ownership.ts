@@ -5,7 +5,7 @@ type Da1OwnerTerminal = Pick<Terminal, 'cols' | 'rows' | 'element' | 'options'>
 
 const owners = new WeakMap<Da1OwnerTerminal, { refresh: () => void }>()
 
-/** Keep Orca's replay-aware DA1 responder after subsequently attached addons. */
+/** Keep OCC's replay-aware DA1 responder after subsequently attached addons. */
 export function registerTerminalDa1Owner(
   terminal: Da1OwnerTerminal,
   register: () => IDisposable

@@ -284,7 +284,7 @@ describe('orchestration RPC methods', () => {
 
       expect(result).toMatchObject({
         state: 'ready',
-        next: "Orca wakes you when workers report; end your turn when you're done.",
+        next: "OCC wakes you when workers report; end your turn when you're done.",
         launch: {
           requested: { agent: 'claude', model: 'aws-bedrock-opus-5', effort: 'high' },
           effective: { agent: 'claude', model: 'aws-bedrock-opus-5', effort: 'high' }

@@ -118,7 +118,7 @@ describe('the host records the legacy restores it refuses', () => {
       rows: 24,
       streamClient: { onData: vi.fn(), onExit: vi.fn() }
     })
-    await expect(restore('agent-b')).rejects.toThrow('as many terminals as Orca allows')
+    await expect(restore('agent-b')).rejects.toThrow('as many terminals as OCC allows')
     expect(records.list()).toMatchObject([{ sessionId: 'agent-b', reason: 'host_cap' }])
   })
 
@@ -137,7 +137,7 @@ describe('the host records the legacy restores it refuses', () => {
         rows: 24,
         streamClient: { onData: vi.fn(), onExit: vi.fn() }
       })
-    ).rejects.toThrow('as many terminals as Orca allows')
+    ).rejects.toThrow('as many terminals as OCC allows')
     await expect(restore('agent-c', 'automatic-restore')).rejects.toThrow('live_cap')
     expect(records.list()).toEqual([])
   })

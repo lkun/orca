@@ -118,7 +118,7 @@ try {
         messages: session.messages.length,
         posts,
         scope:
-          'Actual OMP SDK session, extension loader, registered generated Orca command and OMP setModel; runner actions bound as in OMP ExtensionUIController, synthetic credentials, no model generation'
+          'Actual OMP SDK session, extension loader, registered generated OCC command and OMP setModel; runner actions bound as in OMP ExtensionUIController, synthetic credentials, no model generation'
       },
       null,
       2

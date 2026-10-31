@@ -15,7 +15,7 @@ export function setAntigravityNativeCredentialChangeListener(listener: () => voi
   credentialChangeListener = listener
 }
 
-// The first read is a baseline: what agy held before Orca looked is unknown.
+// The first read is a baseline: what agy held before OCC looked is unknown.
 function reportingCredentialChanges(
   backend: AntigravityCredentialBackend
 ): AntigravityCredentialBackend {

@@ -32,7 +32,7 @@ function eventTitle(event: PluginEventName): string {
   }
 }
 
-/** One event subscription, in plain words; nothing to click, Orca delivers it on its own. */
+/** One event subscription, in plain words; nothing to click, OCC delivers it on its own. */
 export function PluginContributionEventRow({
   event
 }: {

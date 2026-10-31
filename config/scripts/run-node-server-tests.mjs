@@ -102,7 +102,7 @@ function defaultTestArgs() {
     .sort()
 }
 
-/** The server's own CLI must plan an install of Orca's bundled skills, offline and npx-free. */
+/** The server's own CLI must plan an install of OCC's bundled skills, offline and npx-free. */
 function assertBundledCliPlansSkillInstall() {
   // Why the real path: the planner reports real paths, and macOS tmpdir is a /var symlink.
   const home = realpathSync(mkdtempSync(join(tmpdir(), 'orcad-skills-home-')))

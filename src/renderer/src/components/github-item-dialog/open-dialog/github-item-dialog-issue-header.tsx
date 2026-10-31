@@ -145,7 +145,7 @@ export function GitHubItemDialogIssueHeader({
             <span className="ml-2 font-light text-muted-foreground">#{workItem.number}</span>
           </h1>
           <div className="flex shrink-0 items-center gap-2">
-            {/* Keep Orca’s primary workspace action prominent. */}
+            {/* Keep OCC’s primary workspace action prominent. */}
             {issueAttachedWorkspace ? (
               <DropdownMenu modal={false}>
                 <ButtonGroup>

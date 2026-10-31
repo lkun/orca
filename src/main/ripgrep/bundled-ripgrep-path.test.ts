@@ -79,10 +79,10 @@ describe('bundled ripgrep path', () => {
 
   it('picks the distro-arch Linux build and fails closed when its drive is unavailable', () => {
     const { wslShellCommand } = bundledRipgrepWslSpawnOptions(
-      'C:\\Program Files\\Orca\\resources\\ripgrep\\linux-x64\\rg'
+      'C:\\Program Files\\OCC\\resources\\ripgrep\\linux-x64\\rg'
     )
 
-    expect(wslShellCommand).toContain(`wslpath -u 'C:\\Program Files\\Orca\\resources\\ripgrep'`)
+    expect(wslShellCommand).toContain(`wslpath -u 'C:\\Program Files\\OCC\\resources\\ripgrep'`)
     expect(wslShellCommand).toContain('aarch64|arm64) a=linux-arm64')
     expect(wslShellCommand).toContain('printf %s "$d/$a/rg"')
     expect(wslShellCommand).toContain('else printf /dev/null/orca-ripgrep-unavailable')
@@ -94,7 +94,7 @@ describe('bundled ripgrep path', () => {
     'never executes a PATH ripgrep when WSL cannot translate the install drive',
     async () => {
       const { wslShellCommand } = bundledRipgrepWslSpawnOptions(
-        'C:\\Orca\\resources\\ripgrep\\linux-x64\\rg'
+        'C:\\OCC\\resources\\ripgrep\\linux-x64\\rg'
       )
       const result = await runProcess({
         program: '/bin/bash',

@@ -67,7 +67,7 @@ describe('createFilePathLinkProvider range bounds', () => {
     expect(pkg!.range.end.x).toBe(pkgStartIndex + 'package.json'.length)
   })
 
-  it('shows the Orca plus default-app hint for local file link hover', async () => {
+  it('shows the OCC plus default-app hint for local file link hover', async () => {
     setPlatform('Macintosh')
     const { provider, linkTooltip } = createProviderSetup([makeBufferLine('CLAUDE.md')])
 
@@ -121,7 +121,7 @@ describe('createFilePathLinkProvider range bounds', () => {
     expect(window.api.shell.pathExists).not.toHaveBeenCalled()
   })
 
-  it('shows the Orca hint for SSH file link hover', async () => {
+  it('shows the OCC hint for SSH file link hover', async () => {
     setPlatform('Macintosh')
     vi.mocked(getConnectionId).mockReturnValue('ssh-1')
     const { provider, linkTooltip } = createProviderSetup([makeBufferLine('CLAUDE.md')])
@@ -133,7 +133,7 @@ describe('createFilePathLinkProvider range bounds', () => {
     links[0]!.hover?.({} as MouseEvent, links[0]!.text)
 
     expect(linkTooltip.textContent).toBe(
-      '/repo/CLAUDE.md (Click for actions or ⌘+click to open in Orca)'
+      '/repo/CLAUDE.md (Click for actions or ⌘+click to open in OCC)'
     )
   })
 

@@ -19,7 +19,7 @@ type TomlTable = {
 const ORCA_TRUST_LINE = 'trust_level = "trusted"'
 const loggedRefusals = new Set<string>()
 
-/** Repair known Orca trust duplicates while preserving user tables; refuse ambiguous repairs. */
+/** Repair known OCC trust duplicates while preserving user tables; refuse ambiguous repairs. */
 export function repairOrcaDuplicateTrustTables(content: string): string {
   const lines = content.split('\n')
   const groups = new Map<string, TomlTable[]>()
@@ -113,7 +113,7 @@ function getTrustTableKind(table: TomlTable): TrustTableKind | null {
   return segments.length === 2 ? 'hook-state-parent' : segments.length === 3 ? 'hook-state' : null
 }
 
-// Only exact Orca-written shapes can be removed automatically.
+// Only exact OCC-written shapes can be removed automatically.
 function isOrcaWrittenTable(lines: string[], table: TomlTable): boolean {
   const header = stripCr(lines[table.headerLine])
   const body = lines
@@ -143,7 +143,7 @@ function isOrcaWrittenTable(lines: string[], table: TomlTable): boolean {
   }
 }
 
-// Older Orca inserted a bare line under the header when it missed a quoted key.
+// Older OCC inserted a bare line under the header when it missed a quoted key.
 function findOrcaInsertedTrustLine(lines: string[], table: TomlTable): number | 'unsafe' | null {
   const body = lines.slice(table.headerLine + 1, table.endLine).join('\n')
   const entries = findProjectTrustLevelEntries(body)

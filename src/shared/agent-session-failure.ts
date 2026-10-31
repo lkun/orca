@@ -25,7 +25,7 @@ import {
 export const AGENT_SESSION_FAILURE_KINDS = [
   /** Only an observed exit: the provider stopped while starting. */
   'providerStartFailed',
-  /** A start that did not land, with no one to blame: Orca's fault, a failed spawn, a close. */
+  /** A start that did not land, with no one to blame: OCC's fault, a failed spawn, a close. */
   'startFailed',
   'notSignedIn',
   /** The agent's CLI is not installed where the chat runs: its spawn found no such file. */
@@ -42,7 +42,7 @@ export const AGENT_SESSION_FAILURE_KINDS = [
   'runtimeNotInstalled',
   /** The agent refuses Full access while it runs as root. */
   'fullAccessAsRoot',
-  /** Orca's own launch preparation on the host failed before any agent process was spawned. */
+  /** OCC's own launch preparation on the host failed before any agent process was spawned. */
   'launchPreparationFailed',
   'conversationOpenInTerminal',
   'conversationOpenElsewhere',
@@ -69,13 +69,13 @@ export const AGENT_SESSION_FAILURE_KINDS = [
   'cancelUnconfirmed',
   /** A Stop naming no turn reached the agent, which ended nothing while the chat read working. */
   'stopRefused',
-  /** A Stop Orca could not save: only a refusal says it. */
+  /** A Stop OCC could not save: only a refusal says it. */
   'stopFailed',
   /** A background-task Stop the agent answered with the task still running. */
   'backgroundTaskNotStopped',
   'answerUnconfirmed',
   'hostFault',
-  /** Orca stopped an agent whose start never finished. */
+  /** OCC stopped an agent whose start never finished. */
   'hostStopped',
   /** The provider is retrying a request its API refused; not a failure yet. */
   'providerRetrying',
@@ -132,7 +132,7 @@ export type ProviderDiagnostic = {
 /** Bound stderr dumps to the lease exit-reason cap so diagnostics always fit the record. */
 export const MAX_PROVIDER_DIAGNOSTIC_CHARS = 512
 
-/** Which of Orca's checks an image failed. A new one needs a sentence before it compiles. */
+/** Which of OCC's checks an image failed. A new one needs a sentence before it compiles. */
 export const AGENT_SESSION_ATTACHMENT_PROBLEM_REASONS = [
   'empty',
   'tooLarge',
@@ -168,7 +168,7 @@ export type AgentSessionProviderRetry = {
 export type AgentSessionFailureFact = {
   kind: AgentSessionFailureKind
   account?: AgentSessionAccountKind
-  /** Provider diagnostic, the rejected model ID on `modelUnavailable`, or the host error on `launchPreparationFailed`; never Orca's sentence. */
+  /** Provider diagnostic, the rejected model ID on `modelUnavailable`, or the host error on `launchPreparationFailed`; never OCC's sentence. */
   detail?: ProviderDiagnostic
   /** On `restartFailed` and `startFailed`: the refusal that kept the agent from starting. On
    *  `commandRefused`: the refusal that kept the command from running. */
@@ -179,13 +179,13 @@ export type AgentSessionFailureFact = {
   retry?: AgentSessionProviderRetry
   /** On `usageLimitReached`: which limit, and when it resets. */
   usageLimit?: AgentSessionUsageLimit
-  /** A safe option name from Orca's saved Arguments parser, never an error message. */
+  /** A safe option name from OCC's saved Arguments parser, never an error message. */
   argumentProblem?: AgentSessionArgumentProblem
   /** Host-only proof the provider never received the message: Stop owes stopped history and a refused carrier owes history again. Absence means unknown; clients read kind. */
   neverReachedAgent?: true
   /** On `backgroundTaskNotStopped`: one named task, or every task the Stop reached. */
   backgroundStop?: AgentSessionBackgroundStop
-  /** On `startFailed`: the provider request that got no answer before Orca's deadline. */
+  /** On `startFailed`: the provider request that got no answer before OCC's deadline. */
   requestTimeout?: AgentSessionRequestTimeout
 }
 
@@ -362,7 +362,7 @@ function providerDiagnosticWithin(error: unknown, start: number): ProviderDiagno
   return undefined
 }
 
-/** Attaches the provider's words to the error Orca built around them. */
+/** Attaches the provider's words to the error OCC built around them. */
 export function withProviderDiagnostic<TError extends Error>(
   error: TError,
   diagnostic: ProviderDiagnostic | undefined

@@ -67,7 +67,7 @@ test('idle Claude keeps chat, mobile transcript, and return identity through nes
   const post = async (source: string, hook_event_name: string) => {
     const response = await fetch(`http://127.0.0.1:${endpoint.port}/hook/${source}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': endpoint.token },
+      headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': endpoint.token },
       body: JSON.stringify({
         ...descriptor,
         tabId,
@@ -154,7 +154,7 @@ test('idle Claude keeps chat, mobile transcript, and return identity through nes
   await orcaPage.getByRole('button', { name: 'Show terminal', exact: true }).click()
   await expect(chat).toHaveCount(0)
   await expect(
-    orcaPage.getByText('Orca could not verify the originating Codex session file', { exact: false })
+    orcaPage.getByText('OCC could not verify the originating Codex session file', { exact: false })
   ).toHaveCount(0)
   expect(
     await orcaPage.evaluate(

@@ -75,8 +75,8 @@ export function createDiscordEdge(deps: {
       )
   }
 
-  // A message's thread: a mention in a thread, a top-level mention (its thread is made on Orca's
-  // first post), or a follow-up in a thread Orca already has; null for anything else.
+  // A message's thread: a mention in a thread, a top-level mention (its thread is made on OCC's
+  // first post), or a follow-up in a thread OCC already has; null for anything else.
   async function placeOf(
     transaction: CloudDatabase,
     message: DiscordGatewayMessage

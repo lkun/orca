@@ -42,7 +42,7 @@ describe('toWslHostStatus', () => {
         terminals: 'unverifiable'
       })
     ).toMatchObject({
-      detail: 'The distro is running but didn’t answer Orca’s check.',
+      detail: 'The distro is running but didn’t answer OCC’s check.',
       detailCode: 'guestUnanswered'
     })
     const failed = toWslHostStatus(record, {

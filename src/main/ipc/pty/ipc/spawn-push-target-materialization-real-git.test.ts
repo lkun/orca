@@ -30,7 +30,7 @@ async function git(args: string[], cwd: string): Promise<string> {
 }
 
 async function setIdentity(cwd: string): Promise<void> {
-  await git(['config', 'user.name', 'Orca Test'], cwd)
+  await git(['config', 'user.name', 'OCC Test'], cwd)
   await git(['config', 'user.email', 'orca@example.test'], cwd)
   await git(['config', 'commit.gpgSign', 'false'], cwd)
 }

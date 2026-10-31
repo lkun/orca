@@ -72,7 +72,7 @@ describe('readShellStartupEnvVar', () => {
   }
 
   // #1534: GUI env lacks rc-only exports; static discovery must preserve the user overlay source.
-  it('mirrors the user scenario: GUI-launched Orca discovers .zshrc-only export', () => {
+  it('mirrors the user scenario: GUI-launched OCC discovers .zshrc-only export', () => {
     mockStartupFiles({
       '.zshrc': 'export OPENCODE_CONFIG_DIR="$HOME/.config/opencode"\n'
     })
@@ -249,7 +249,7 @@ describe('readShellStartupEnvVar', () => {
   })
 
   it('does not scan .bashrc for bash shells', () => {
-    // Orca's login Bash wrapper does not force .bashrc; discovery must match.
+    // OCC's login Bash wrapper does not force .bashrc; discovery must match.
     process.env.SHELL = '/bin/bash'
     mockStartupFiles({ '.bashrc': 'export OPENCODE_CONFIG_DIR=/from/bashrc\n' })
     expect(readShellStartupEnvVar('OPENCODE_CONFIG_DIR', '/home/alice')).toBeUndefined()

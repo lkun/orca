@@ -89,7 +89,7 @@ describe('SshConnection', () => {
     )
   })
 
-  it('allows concurrent exec commands for system SSH with an Orca ControlMaster socket', async () => {
+  it('allows concurrent exec commands for system SSH with an OCC ControlMaster socket', async () => {
     getOrcaControlSocketPathMock.mockReturnValue('/tmp/orca-ssh-501/live-socket')
     vi.mocked(resolveWithSshG).mockResolvedValueOnce(createResolvedConfig())
     const conn = new SshConnection(createTarget({ configHost: 'fdpass-host' }), createCallbacks())
@@ -370,7 +370,7 @@ describe('SshConnection', () => {
     expect(conn.usesSystemSshTransport()).toBe(false)
   })
 
-  it('keeps a host pinned in the Orca key store on ssh2 when negotiation fails', async () => {
+  it('keeps a host pinned in the OCC key store on ssh2 when negotiation fails', async () => {
     const storeDir = mkdtempSync(join(tmpdir(), 'orca-ssh-pinned-store-'))
     try {
       initSshHostKeyStoreFile(join(storeDir, 'orca.json'))

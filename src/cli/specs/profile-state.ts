@@ -5,7 +5,7 @@ export const PROFILE_STATE_COMMAND_SPECS: CommandSpec[] = [
   {
     path: ['profile', 'state', 'exports'],
     summary: 'List retained SQLite backups and JSON exports for profile-state recovery',
-    usage: 'orca profile state exports [--profile-id <id>] [--json]',
+    usage: 'occ profile state exports [--profile-id <id>] [--json]',
     allowedFlags: [...LOCAL_COMMAND_FLAGS, 'profile-id']
   },
   {
@@ -14,7 +14,7 @@ export const PROFILE_STATE_COMMAND_SPECS: CommandSpec[] = [
     summary:
       'Repair damaged sections, restore a SQLite backup or retained JSON export, or keep the current JSON or SQLite profile',
     usage:
-      'orca profile state rollback (--repair | --backup <id> | --revision <revision> | --current-json | --current-sqlite | --latest-json) [--profile-id <id>] [--json]',
+      'occ profile state rollback (--repair | --backup <id> | --revision <revision> | --current-json | --current-sqlite | --latest-json) [--profile-id <id>] [--json]',
     allowedFlags: [
       ...LOCAL_COMMAND_FLAGS,
       'repair',
@@ -27,7 +27,7 @@ export const PROFILE_STATE_COMMAND_SPECS: CommandSpec[] = [
     ],
     notes: [
       '--profile-id selects another profile without changing the active profile. Prepare each profile before installing a JSON-only build.',
-      'Orca must be stopped. Recovery validates the selected artifact and archives the current database family, JSON, and retained recovery artifacts before replacing state.',
+      'OCC must be stopped. Recovery validates the selected artifact and archives the current database family, JSON, and retained recovery artifacts before replacing state.',
       '--repair replaces only the damaged sections of the SQLite profile, each from the newest backup with a readable copy, and keeps everything else. A copy of the damaged database is archived first.',
       '--backup restores SQLite authority; --revision restores a JSON export for an older compatible runtime.',
       '--latest-json exports the latest SQLite state and restores it as JSON before launching an older JSON-only build. The current database and recovery artifacts are archived.',
@@ -35,13 +35,13 @@ export const PROFILE_STATE_COMMAND_SPECS: CommandSpec[] = [
       '--current-sqlite keeps the current SQLite state and discards JSON edits from an older build. The JSON is archived, then rewritten from SQLite.'
     ],
     examples: [
-      'orca profile state exports',
-      'orca profile state rollback --repair',
-      'orca profile state rollback --backup <id>',
-      'orca profile state rollback --revision 1',
-      'orca profile state rollback --latest-json',
-      'orca profile state rollback --current-json',
-      'orca profile state rollback --current-sqlite'
+      'occ profile state exports',
+      'occ profile state rollback --repair',
+      'occ profile state rollback --backup <id>',
+      'occ profile state rollback --revision 1',
+      'occ profile state rollback --latest-json',
+      'occ profile state rollback --current-json',
+      'occ profile state rollback --current-sqlite'
     ]
   }
 ]

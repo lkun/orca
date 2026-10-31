@@ -1,6 +1,6 @@
 import type { WebContents } from 'electron'
 
-// Orca owns these frame-input sessions; hide their traffic from the agent's CDP client.
+// OCC owns these frame-input sessions; hide their traffic from the agent's CDP client.
 
 export type GuestSessionCdpSender = (
   method: string,
@@ -77,7 +77,7 @@ export async function settleWithin<T>(request: Promise<T>, fallback: T): Promise
   return settled.outcome === 'ok' ? settled.value : fallback
 }
 
-/** Hide Orca-owned session traffic that the agent's client did not request. */
+/** Hide OCC-owned session traffic that the agent's client did not request. */
 export function isOrcaFrameSessionTraffic(
   webContents: WebContents,
   method: string,

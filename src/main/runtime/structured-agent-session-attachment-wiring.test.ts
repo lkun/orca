@@ -30,7 +30,7 @@ function install(directory = stateDirectory): void {
     getRecord: () => null,
     isSessionUnreadable: () => false
   }
-  // Written by a newer Orca: the sweep reads no claims, so nothing here touches the connection.
+  // Written by a newer OCC: the sweep reads no claims, so nothing here touches the connection.
   const journal: Pick<JournalHostDatabase, 'readOnly' | 'isClosed' | 'db' | 'writeAutocommit'> = {
     writeAutocommit: () => {
       throw new Error('not opened in this test')

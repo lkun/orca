@@ -14,7 +14,7 @@ export type BrowserExtensionCaller = {
   frame?: Electron.WebFrameMain
   /** Captured by the isolated preload when the page invokes the bridge. */
   userGesture?: boolean
-  /** Set for calls from Orca's worker shim (the extension's service worker). */
+  /** Set for calls from OCC's worker shim (the extension's service worker). */
   fromWorker?: boolean
 }
 

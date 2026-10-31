@@ -96,7 +96,7 @@ beforeAll(async () => {
     join(extensionDir, 'manifest.json'),
     JSON.stringify({
       manifest_version: 3,
-      name: 'Orca toolbar probe',
+      name: 'OCC toolbar probe',
       version: '1.0.0',
       permissions: ['tabs'],
       background: { service_worker: 'worker.js' },
@@ -219,7 +219,7 @@ describe('extension toolbar, action popup and tab activation in a real Electron 
       profileId: 'default',
       actions: [
         expect.objectContaining({
-          name: 'Orca toolbar probe',
+          name: 'OCC toolbar probe',
           title: 'Probe title',
           badgeText: '7',
           badgeBackgroundColor: 'rgba(255, 0, 0, 1)',

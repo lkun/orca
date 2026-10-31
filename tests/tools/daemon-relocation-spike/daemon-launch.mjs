@@ -1,4 +1,4 @@
-// Launch copied Orca.exe as run-as-node daemon with production detached/IPC/userData options, awaiting ready.
+// Launch copied OCC.exe as run-as-node daemon with production detached/IPC/userData options, awaiting ready.
 
 import { spawn } from 'node:child_process'
 import { createWriteStream } from 'node:fs'

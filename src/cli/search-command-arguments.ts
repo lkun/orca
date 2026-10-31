@@ -104,7 +104,7 @@ function readQuery(flags: Map<string, string | boolean>): string {
   if (query === undefined) {
     throw new RuntimeClientError(
       'invalid_argument',
-      'Missing a search query. Pass it as `orca search "<query>"` or --query "<query>", or ask for the index report with --index-status.'
+      'Missing a search query. Pass it as `occ search "<query>"` or --query "<query>", or ask for the index report with --index-status.'
     )
   }
   return query

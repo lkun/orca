@@ -72,7 +72,7 @@ export function RuntimePairingGeneratorForm({
       ),
       description: translate(
         'auto.components.settings.RuntimePairingUrlGenerator.localOnlyHelp',
-        'A browser or Orca client on this computer'
+        'A browser or OCC client on this computer'
       )
     },
     {
@@ -141,7 +141,7 @@ export function RuntimePairingGeneratorForm({
             <p className="mt-1 text-muted-foreground">
               {translate(
                 'auto.components.settings.RuntimePairingUrlGenerator.localLinkHelp',
-                'This link only works in a browser or Orca client running on this computer.'
+                'This link only works in a browser or OCC client running on this computer.'
               )}
             </p>
             <div className="mt-2 font-mono">{loopbackAddress}</div>
@@ -335,7 +335,7 @@ export function RuntimePairingGeneratorForm({
           )}
           description={translate(
             'auto.components.settings.RuntimePairingUrlGenerator.f7cafdc9f3',
-            'Browser link unavailable in this build. The pairing URL still works for Orca clients.'
+            'Browser link unavailable in this build. The pairing URL still works for OCC clients.'
           )}
         />
       ) : null}
@@ -348,7 +348,7 @@ export function RuntimePairingGeneratorForm({
           )}
           description={translate(
             'auto.components.settings.RuntimePairingUrlGenerator.accessLinkHelp',
-            'Paste this into Add server on the other Orca.'
+            'Paste this into Add server on the other OCC.'
           )}
           value={runtimePairingUrl}
           copied={copiedTarget === 'pairing'}

@@ -1,4 +1,4 @@
-/** R39: a WSL host's server lives in the Linux login's ~/.orca, so another Orca on this computer may share it. */
+/** R39: a WSL host's server lives in the Linux login's ~/.orca, so another OCC on this computer may share it. */
 import { z } from 'zod'
 import { ORCAD_PEER_DESKTOPS_RUNTIME_CAPABILITY } from '../../shared/orcad-runtime-capabilities'
 import {
@@ -16,7 +16,7 @@ export type WslHostPeerDesktops =
 const StatusCapabilitiesSchema = z.looseObject({ capabilities: z.array(z.string()).optional() })
 
 /**
- * Another Orca counts only while its control socket is open on the server right now; a closed one
+ * Another OCC counts only while its control socket is open on the server right now; a closed one
  * isn't protected. Throws when the server can't answer, so the caller refuses the teardown.
  */
 export async function readWslHostPeerDesktops(

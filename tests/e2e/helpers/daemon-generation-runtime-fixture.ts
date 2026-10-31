@@ -55,23 +55,23 @@ function knownOrcaUserDataDirs(): string[] {
     const appSupport = path.join(homedir(), 'Library', 'Application Support')
     return [
       path.join(appSupport, 'orca'),
-      path.join(appSupport, 'orca-dev'),
-      path.join(appSupport, 'orca-dev-wt')
+      path.join(appSupport, 'occ-dev'),
+      path.join(appSupport, 'occ-dev-wt')
     ]
   }
   if (process.platform === 'win32') {
     const roaming = process.env.APPDATA ?? path.join(homedir(), 'AppData', 'Roaming')
     return [
       path.join(roaming, 'orca'),
-      path.join(roaming, 'orca-dev'),
-      path.join(roaming, 'orca-dev-wt')
+      path.join(roaming, 'occ-dev'),
+      path.join(roaming, 'occ-dev-wt')
     ]
   }
   const config = process.env.XDG_CONFIG_HOME ?? path.join(homedir(), '.config')
   return [
     path.join(config, 'orca'),
-    path.join(config, 'orca-dev'),
-    path.join(config, 'orca-dev-wt')
+    path.join(config, 'occ-dev'),
+    path.join(config, 'occ-dev-wt')
   ]
 }
 
@@ -85,7 +85,7 @@ function assertDisposableRoot(rootDir: string): void {
   }
   for (const userDataDir of knownOrcaUserDataDirs()) {
     if (isEqualToOrInside(rootDir, userDataDir)) {
-      throw new Error('Refusing daemon-generation fixture inside real Orca user data')
+      throw new Error('Refusing daemon-generation fixture inside real OCC user data')
     }
   }
 }

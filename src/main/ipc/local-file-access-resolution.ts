@@ -232,7 +232,7 @@ function declaredKindRule(
     case 'project-folder-link':
       return operation === 'list'
         ? (targetPath) =>
-            // Why project roots only: Orca's floating folder is not a project a link can lead out of.
+            // Why project roots only: OCC's floating folder is not a project a link can lead out of.
             resolveProjectFolderLinkPath(targetPath, (path) => resolveAuthorizedPath(path, store))
         : undefined
   }

@@ -17,7 +17,7 @@ const METHOD_NOT_FOUND = -32601
 const OWNER_RETRY_BUDGET_MS = 35_000
 
 export const REMOTE_CLI_UNAVAILABLE =
-  'This terminal was started by an older version of Orca, so orca commands are unavailable ' +
+  'This terminal was started by an older version of OCC, so orca commands are unavailable ' +
   'in it. Run them in a new terminal on this host.'
 
 export type LegacyRelayOwnerClaim = { ownerGeneration: number; ownerLease: string }
@@ -45,7 +45,7 @@ type LegacyRelayClientOptions = {
 export class LegacyRelayOwnerHeldError extends Error {
   readonly code = 'legacy_relay_owner_held'
   constructor() {
-    super('Another Orca client is attached to this relay')
+    super('Another OCC client is attached to this relay')
   }
 }
 

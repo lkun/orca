@@ -4,7 +4,7 @@
 export const DAEMON_ADOPTED_APP_VERSION_MATCH = ['same', 'different', 'unknown'] as const
 export type DaemonAdoptedAppVersionMatch = (typeof DAEMON_ADOPTED_APP_VERSION_MATCH)[number]
 
-/** Spawner location: updater-cache is Squirrel ShipIt staging (#17696); stable-copy is Orca’s signed launchd bundle (#25848). */
+/** Spawner location: updater-cache is Squirrel ShipIt staging (#17696); stable-copy is OCC’s signed launchd bundle (#25848). */
 export const DAEMON_SPAWNER_PATH_CLASSES = [
   'applications',
   'stable-copy',

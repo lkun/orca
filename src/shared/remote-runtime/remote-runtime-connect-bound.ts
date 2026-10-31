@@ -9,7 +9,7 @@ export const REMOTE_RUNTIME_CONNECT_TIMEOUT_MS = 12_000
 export const WS_HANDSHAKE_TIMEOUT_MESSAGE = 'Opening handshake has timed out'
 
 /** Keep this phrase: code-less subscribe IPC relies on RECOVERABLE_MESSAGE_FRAGMENTS and REMOTE_RUNTIME_UNREACHABLE_RE. */
-export const REMOTE_RUNTIME_CONNECT_FAILURE_PHRASE = 'Could not connect to the remote Orca runtime'
+export const REMOTE_RUNTIME_CONNECT_FAILURE_PHRASE = 'Could not connect to the remote OCC runtime'
 
 export function remoteRuntimeConnectOptions<TOptions extends ClientOptions>(
   options?: TOptions,

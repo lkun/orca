@@ -87,7 +87,7 @@ describe('orca emulator CLI handlers', () => {
     )
   })
 
-  it('uses the folder workspace exported by the current Orca terminal', async () => {
+  it('uses the folder workspace exported by the current OCC terminal', async () => {
     process.env.ORCA_WORKSPACE_ID = 'folder:folder-1'
     delete process.env.ORCA_WORKTREE_ID
     callMock.mockResolvedValue(
@@ -107,7 +107,7 @@ describe('orca emulator CLI handlers', () => {
     )
   })
 
-  it('uses the current git worktree exported by the Orca terminal', async () => {
+  it('uses the current git worktree exported by the OCC terminal', async () => {
     process.env.ORCA_WORKSPACE_ID = 'folder:stale-parent'
     process.env.ORCA_WORKTREE_ID = 'repo-1::/repo/project '
     callMock.mockResolvedValue(

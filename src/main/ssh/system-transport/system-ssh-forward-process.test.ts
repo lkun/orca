@@ -265,7 +265,7 @@ describe('system SSH forward process', () => {
     expect(spawnMock).not.toHaveBeenCalled()
   })
 
-  it('stops a forward an earlier Orca orphaned on the port, then binds it', async () => {
+  it('stops a forward an earlier OCC orphaned on the port, then binds it', async () => {
     const busy = createFakeServer()
     busy.listen.mockImplementation(() => {
       queueMicrotask(() =>
@@ -285,7 +285,7 @@ describe('system SSH forward process', () => {
     expect(spawnMock).toHaveBeenCalledOnce()
   })
 
-  it('keeps the port error when nothing Orca orphaned holds the port', async () => {
+  it('keeps the port error when nothing OCC orphaned holds the port', async () => {
     const server = createFakeServer()
     server.listen.mockImplementation(() => {
       queueMicrotask(() =>

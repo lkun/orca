@@ -3,7 +3,7 @@
 // v53 rolls the daemon-side terminal fixes since v1.4.241 (foreground confirmation for chat continuation, ConPTY reflow, WSL malloc tunables) into a fresh daemon.
 // v52 rolls the daemon-side terminal fixes since v1.4.240 (ConPTY, teardown, spawn pane keys) into a fresh daemon.
 // v51 checks terminal identity, ownership and attachments before reserving teardown.
-// v50 makes the `codex` function keep Orca's terminal identity under a filtering shell_environment_policy.
+// v50 makes the `codex` function keep OCC's terminal identity under a filtering shell_environment_policy.
 // v49 makes the `claude` function follow the selection over the user's own CLAUDE_CONFIG_DIR.
 // v48 skips v47, which the 1.4.227 release (1.4.224 plus picks) took; its daemon is adopted as previous.
 // v46 starts each new Linux terminal in its own systemd scope beside the daemon's.
@@ -16,7 +16,7 @@ export const PROTOCOL_VERSION = 54
 export const FENCED_TERMINATION_PROTOCOL_VERSION = 51
 export const CLAUDE_ACCOUNT_FUNCTION_DAEMON_PROTOCOL_VERSION = 42
 export const CLAUDE_ACCOUNT_FUNCTION_REVERTED_DAEMON_PROTOCOL_VERSION = 43
-// v39 gives plain fish panes Orca's codex function through XDG_DATA_DIRS.
+// v39 gives plain fish panes OCC's codex function through XDG_DATA_DIRS.
 export const CODEX_FISH_SHELL_FUNCTION_DAEMON_PROTOCOL_VERSION = 39
 // Why: older daemons reject `setColorQueryReplyColors` as an unknown request type.
 export const COLOR_QUERY_REPLY_COLORS_DAEMON_PROTOCOL_VERSION = 38

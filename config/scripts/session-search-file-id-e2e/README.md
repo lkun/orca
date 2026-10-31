@@ -72,7 +72,7 @@ clients. Profiles/DBs remain as evidence, not running services.
 
 ## Boundaries not exercised
 
-This is not a packaged/full Orca desktop launch. The host and scanner are bundled
+This is not a packaged/full OCC desktop launch. The host and scanner are bundled
 from production sources by this harness, not electron-vite's complete app build.
 The actual runtime authentication/metadata server, CLI routing, remote SSH/relay
 transport, and UI are not exercised. Named-pipe framing and dispatcher are real,

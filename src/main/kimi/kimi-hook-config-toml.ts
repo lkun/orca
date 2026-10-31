@@ -1,4 +1,4 @@
-// Preserve user TOML while managing marker blocks and positively recognized Orca hook tables.
+// Preserve user TOML while managing marker blocks and positively recognized OCC hook tables.
 
 import { MANAGED_HOOK_TIMEOUT_SECONDS } from '../agent-hooks/installer-utils'
 import {
@@ -22,7 +22,7 @@ export const KIMI_HOOK_EVENTS = [
 ] as const
 
 const MARKERS: ManagedTomlMarkers = {
-  startMarker: '# >>> orca-managed-kimi-hooks (managed by Orca; do not edit) >>>',
+  startMarker: '# >>> orca-managed-kimi-hooks (managed by OCC; do not edit) >>>',
   endMarker: '# <<< orca-managed-kimi-hooks <<<'
 }
 const HOOK_TABLE_HEADER = '[[hooks]]'

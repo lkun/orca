@@ -72,7 +72,7 @@ export async function healCodexAccountSessionIndex(
 
 /**
  * Indexes `pendingThreads` (thread id -> rollout timestamp), newest rollout
- * first, skipping threads that already failed in this home since Orca started.
+ * first, skipping threads that already failed in this home since OCC started.
  */
 export async function healPendingCodexAccountThreads(
   codexHomePath: string,

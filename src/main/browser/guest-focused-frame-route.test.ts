@@ -187,7 +187,7 @@ describe('resolveFocusedFrameRoute', () => {
 })
 
 describe('isOrcaFrameSessionTraffic', () => {
-  it('hides only the sessions Orca attached, and forgets them when they detach', async () => {
+  it('hides only the sessions OCC attached, and forgets them when they detach', async () => {
     const guest = fakeGuest()
     await resolveFocusedFrameRoute(
       guest,

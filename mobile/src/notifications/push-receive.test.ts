@@ -41,7 +41,7 @@ const otherHostFingerprint = Buffer.from(sha256(Buffer.alloc(32, 2)))
   .slice(0, 16)
 
 function apnsData(orca: Record<string, unknown>): unknown {
-  return { aps: { alert: { title: 'Orca', body: 'Agent needs input' } }, orca }
+  return { aps: { alert: { title: 'OCC', body: 'Agent needs input' } }, orca }
 }
 function fcmData(orca: Record<string, unknown>): unknown {
   return Object.fromEntries(Object.entries(orca).map(([key, value]) => [key, String(value)]))

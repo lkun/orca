@@ -3,7 +3,7 @@ import { storageCapacityErrorCode } from './storage-capacity-error'
 export const TERMINAL_SESSION_STATE_SAVE_FAILED_CODE = 'ORCA_TERMINAL_SESSION_STATE_SAVE_FAILED'
 
 export const TERMINAL_SESSION_STATE_SAVE_FAILED_MESSAGE =
-  'Orca could not save this terminal session.'
+  'OCC could not save this terminal session.'
 const CAPACITY_MARKER = '[storage-capacity-exhausted]'
 
 export function createTerminalSessionStateSaveFailureMessage(error?: unknown): string {

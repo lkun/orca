@@ -171,7 +171,7 @@ export function installPaneAgentIdentity(session: ConnectPanePtySession): void {
       session.clearStaleAgentTabTitleOnConfirmedShell()
       // Confirmed hard-kill exit must disarm leftover mouse/focus/Kitty modes; guard reset auto-replies from reaching the shell.
       session.writeInputModeGround(CONFIRMED_SHELL_MODE_RESET)
-      // Agents that leave their OSC title (grok, codex) never trip the title exit; Orca's own hibernation stop keeps its chat.
+      // Agents that leave their OSC title (grok, codex) never trip the title exit; OCC's own hibernation stop keeps its chat.
       if (!isHibernationWakeRecord) {
         session.deps.onAgentExitedRef.current(session.pane.leafId)
       }

@@ -131,7 +131,7 @@ function createFailureCopy(
       return detail(
         translate(
           'sourceControl.createReviewFailure.reviewLookupUnavailable',
-          'Orca could not confirm whether this branch already has a {{reviewLabel}}. Retry once the {{providerName}} lookup succeeds.',
+          'OCC could not confirm whether this branch already has a {{reviewLabel}}. Retry once the {{providerName}} lookup succeeds.',
           vars
         )
       )
@@ -220,7 +220,7 @@ function failureCopyFor(
   return copy ? { copy, shortLabel: labels.shortLabel } : null
 }
 
-/** The sentence for an Orca-authored create failure in the UI language, or null for an unknown reason. */
+/** The sentence for an OCC-authored create failure in the UI language, or null for an unknown reason. */
 export function hostedReviewCreateFailureMessage(
   reason: CreateHostedReviewFailureReason,
   provider: HostedReviewProvider,

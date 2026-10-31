@@ -36,18 +36,18 @@ describe('describeSshConnectFailure', () => {
 
   it('names a key that would not unlock, not the host, for a passphrase failure', () => {
     expect(describeSshConnectFailure(new Error('Cannot parse privateKey: bad decrypt'))).toMatch(
-      /^Orca couldn’t unlock the SSH key/
+      /^OCC couldn’t unlock the SSH key/
     )
   })
 
-  it('leaves a cancelled sign-in and Orca’s own host-key refusals as they are', () => {
+  it('leaves a cancelled sign-in and OCC’s own host-key refusals as they are', () => {
     const cancelled = Object.assign(
       new Error('Keyboard-interactive authentication cancelled for Box'),
       { level: 'client-authentication' }
     )
     expect(describeSshConnectFailure(cancelled)).toBe(cancelled.message)
     const refused = new HostKeyVerificationError(
-      'Host key verification failed for box. Remove its entry from the Orca host key store.',
+      'Host key verification failed for box. Remove its entry from the OCC host key store.',
       'mismatch'
     )
     expect(describeSshConnectFailure(refused)).toBe(refused.message)

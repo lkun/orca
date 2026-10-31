@@ -213,7 +213,7 @@ test('each serve host refuses a profile the other holds', async () => {
     })
     expect(refused.code).toBe(ORCAD_EXIT_CONFIGURATION)
     expect(refused.stdout).toBe('')
-    expect(refused.stderr).toContain('The Orca desktop app')
+    expect(refused.stderr).toContain('The OCC desktop app')
 
     await host.restartServeProcess({
       betweenProcesses: async () => {

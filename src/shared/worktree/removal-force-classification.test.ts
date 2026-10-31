@@ -24,9 +24,9 @@ describe('classifyWorktreeForceDeleteReason for unstopped PTYs', () => {
   // A timed-out sweep has no per-PTY verdict but needs the same explicit waiver affordance (#11960).
 })
 
-// Only Orca’s verdict may escalate the toast to killing live PTYs; user-chosen paths cannot supply it.
+// Only OCC’s verdict may escalate the toast to killing live PTYs; user-chosen paths cannot supply it.
 describe('isProvenLivePtyRemovalError', () => {
-  it('reads the verdict Orca actually recorded', () => {
+  it('reads the verdict OCC actually recorded', () => {
     expect(isProvenLivePtyRemovalError(liveError)).toBe(true)
     expect(isProvenLivePtyRemovalError(unverifiableError)).toBe(false)
   })

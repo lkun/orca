@@ -107,7 +107,7 @@ async function requireReference(
   if (markdown.trim().length === 0) {
     throw new RuntimeClientError(
       'invalid_argument',
-      `Reference "${requested}" for ${guide.name} is unavailable: the Orca feature it covers is turned off on this host.`
+      `Reference "${requested}" for ${guide.name} is unavailable: the OCC feature it covers is turned off on this host.`
     )
   }
   return { name: match.name, markdown }

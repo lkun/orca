@@ -45,7 +45,7 @@ export function agentInputLineCleared(screen: string | null | undefined): boolea
 
 /** Visual wrapping loses logical lines, so replace from the composer copy rather than trusting a screen match. */
 export function planNativeChatLaunchDraftSend(args: {
-  /** Text Orca injected into the TUI line, or null when nothing is parked there. */
+  /** Text OCC injected into the TUI line, or null when nothing is parked there. */
   seededText: string | null | undefined
 }): NativeChatLaunchDraftSendPlan {
   const seededText = args.seededText

@@ -9,7 +9,7 @@ import type { PluginMarketplaceStore } from './plugin-marketplace-store'
 const COMMUNITY_SEED_RETRY_MS = 10 * 60 * 1000
 
 /**
- * Adds the community catalog once, so Orca shows it by default. It stays non-official, so its
+ * Adds the community catalog once, so OCC shows it by default. It stays non-official, so its
  * plugins keep the publisher notice and install review; a user who removes it keeps it removed.
  */
 export class CommunityMarketplaceSeed {

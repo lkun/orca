@@ -123,7 +123,7 @@ describe('MobileNativeChatMessage status notices', () => {
     )
   }
 
-  it('names the Orca host an Orca stop came from, in desktop words', () => {
+  it('names the OCC host an OCC stop came from, in desktop words', () => {
     const text = renderNotice(
       {
         kind: 'status',
@@ -135,7 +135,7 @@ describe('MobileNativeChatMessage status notices', () => {
       { hostName: 'MacBook Pro' }
     )
     expect(text.props.children).toBe(
-      'Orca on MacBook Pro stopped while this response was in progress. You can continue in this conversation.'
+      'OCC on MacBook Pro stopped while this response was in progress. You can continue in this conversation.'
     )
   })
 

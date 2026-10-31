@@ -18,7 +18,7 @@ export type ParityTerminal = {
   serializeAddon: SerializeAddon
 }
 
-/** Match renderer buffer state: scrollback/Kitty options, Unicode11 and Orca ZWJ. Font/cursor/render options do not affect cells. */
+/** Match renderer buffer state: scrollback/Kitty options, Unicode11 and OCC ZWJ. Font/cursor/render options do not affect cells. */
 export function createRendererParityTerminal(dims: { cols: number; rows: number }): ParityTerminal {
   const terminal = new Terminal({
     cols: dims.cols,

@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process'
 const ONBOARDING_FLOW_VERSION = 4
 const ONBOARDING_FINAL_STEP = 5
 
-// Create init+commit checkout and return its persisted Repo record; Orca must recognize a real git project.
+// Create init+commit checkout and return its persisted Repo record; OCC must recognize a real git project.
 export function createSeededRepo(dir) {
   mkdirSync(dir, { recursive: true })
   const git = (...args) => execFileSync('git', args, { cwd: dir, stdio: 'ignore' })

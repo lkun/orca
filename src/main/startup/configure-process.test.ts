@@ -316,7 +316,7 @@ describe('configureDevUserDataPath', () => {
     const { app } = await import('electron')
     const { configureDevUserDataPath } = await import('./configure-process')
     const originalOverride = process.env.ORCA_DEV_USER_DATA_PATH
-    process.env.ORCA_DEV_USER_DATA_PATH = '/tmp/orca-dev-repro'
+    process.env.ORCA_DEV_USER_DATA_PATH = '/tmp/occ-dev-repro'
 
     try {
       configureDevUserDataPath(true)
@@ -328,17 +328,17 @@ describe('configureDevUserDataPath', () => {
       }
     }
 
-    expect(app.setPath).toHaveBeenCalledWith('userData', '/tmp/orca-dev-repro')
+    expect(app.setPath).toHaveBeenCalledWith('userData', '/tmp/occ-dev-repro')
   })
 
-  it('moves dev runs onto an orca-dev userData path', async () => {
+  it('moves dev runs onto an occ-dev userData path', async () => {
     const { app } = await import('electron')
     const { configureDevUserDataPath } = await import('./configure-process')
 
     delete process.env.ORCA_DEV_USER_DATA_PATH
     configureDevUserDataPath(true)
 
-    expect(app.setPath).toHaveBeenCalledWith('userData', join('/tmp/app-data', 'orca-dev'))
+    expect(app.setPath).toHaveBeenCalledWith('userData', join('/tmp/app-data', 'occ-dev'))
   })
 
   it('leaves packaged runs on the default userData path', async () => {
@@ -383,7 +383,7 @@ describe('configureOrcaUserDataPathEnv', () => {
     expect(configuredUserDataPath).toBe('/tmp/current-orca-user-data')
   })
 
-  it('drops a runtime source inherited from the Orca terminal that started this Orca', async () => {
+  it('drops a runtime source inherited from the OCC terminal that started this OCC', async () => {
     const { app } = await import('electron')
     const { configureOrcaUserDataPathEnv } = await import('./configure-process')
     const saved = { ...process.env }

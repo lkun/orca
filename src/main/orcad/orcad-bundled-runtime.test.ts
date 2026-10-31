@@ -71,7 +71,7 @@ afterEach(() => {
   vi.clearAllMocks()
 })
 
-describe('bundled Orca runtime handoff', () => {
+describe('bundled OCC runtime handoff', () => {
   it('leaves nonpackaged entries on their existing runtime', () => {
     fixture.exists.mockReturnValue(false)
     expect(handoffToBundledOrcad()).toBe(false)
@@ -80,7 +80,7 @@ describe('bundled Orca runtime handoff', () => {
 
   it('refuses a slot whose shared runtime is missing before starting a process', () => {
     fixture.exists.mockImplementation((path) => !path.includes(`node-${SHA}`))
-    expect(() => handoffToBundledOrcad()).toThrow('bundled Orca runtime is missing')
+    expect(() => handoffToBundledOrcad()).toThrow('bundled OCC runtime is missing')
     expect(fixture.spawn).not.toHaveBeenCalled()
   })
 
@@ -114,19 +114,19 @@ describe('bundled Orca runtime handoff', () => {
 
   it('refuses a slot without its runtime reference', () => {
     fixture.exists.mockImplementation((path) => !path.endsWith(ORCAD_NODE_RUNTIME_MARKER_FILENAME))
-    expect(() => handoffToBundledOrcad()).toThrow('bundled Orca runtime reference is missing')
+    expect(() => handoffToBundledOrcad()).toThrow('bundled OCC runtime reference is missing')
     expect(fixture.spawn).not.toHaveBeenCalled()
   })
 
   it('refuses a versioned slot missing both its runtime and target marker', () => {
     fixture.exists.mockImplementation((path) => path.endsWith(ORCAD_VERSION_FILENAME))
-    expect(() => handoffToBundledOrcad()).toThrow('bundled Orca runtime target is missing')
+    expect(() => handoffToBundledOrcad()).toThrow('bundled OCC runtime target is missing')
     expect(fixture.spawn).not.toHaveBeenCalled()
   })
 
   it('refuses a remaining runtime reference without its target marker', () => {
     fixture.exists.mockImplementation((path) => !path.endsWith(ORCAD_SERVER_TARGET_FILENAME))
-    expect(() => handoffToBundledOrcad()).toThrow('bundled Orca runtime target is missing')
+    expect(() => handoffToBundledOrcad()).toThrow('bundled OCC runtime target is missing')
     expect(fixture.realpath).toHaveBeenCalledExactlyOnceWith('/slot/orcad.js')
     expect(fixture.spawn).not.toHaveBeenCalled()
   })
@@ -261,7 +261,7 @@ describe('server runtime admission', () => {
 
   it('refuses host Node 24 for a packaged slot that owns a bundled runtime', () => {
     vi.spyOn(process, 'versions', 'get').mockReturnValue({ ...process.versions, node: '24.0.0' })
-    expect(() => assertOrcadServerRuntime()).toThrow('Start the Orca server with its bundled')
+    expect(() => assertOrcadServerRuntime()).toThrow('Start the OCC server with its bundled')
   })
 
   it('accepts the packaged runtime only at its pinned version', () => {

@@ -32,7 +32,7 @@ const CHANNELS = [
   'browserExtensions:reviewUpdate'
 ] as const
 
-/** Settings › Browser › Extensions; only the trusted Orca renderer may manage extensions. */
+/** Settings › Browser › Extensions; only the trusted OCC renderer may manage extensions. */
 export function registerBrowserExtensionHandlers(): void {
   for (const channel of CHANNELS) {
     ipcMain.removeHandler(channel)

@@ -1,11 +1,11 @@
 ---
 name: orchestration
 description: >-
-  Run work in separate Orca worker agents and get their results back. Use when
-  the user asks for Orca workers or supervision (monitor, task DAGs, ask/reply,
+  Run work in separate OCC worker agents and get their results back. Use when
+  the user asks for OCC workers or supervision (monitor, task DAGs, ask/reply,
   decision gates), or when the work needs something your own subagents cannot
-  give: a different agent (such as Codex from Claude) or its own Orca workspace.
-  "Have Codex (or Claude) review this and report back" means an Orca worker of
+  give: a different agent (such as Codex from Claude) or its own OCC workspace.
+  "Have Codex (or Claude) review this and report back" means an OCC worker of
   that agent, even when you have your own model subagents.
   Also use when you are a dispatched worker (a prompt with Task and Dispatch
   IDs: ask, worker_done). Otherwise prefer your own subagents,
@@ -15,11 +15,11 @@ description: >-
   management, and reading or waiting on terminals.
 ---
 
-# Orca orchestration
+# OCC orchestration
 
 If your prompt has a preamble with Task and Dispatch IDs, you are a worker:
 follow the preamble. To ask your coordinator, run `ask`, then end your turn;
-Orca wakes you with the answer. To hand work off with nothing back, use `orca-cli`.
+OCC wakes you with the answer. To hand work off with nothing back, use `orca-cli`.
 
 ## Recipe
 
@@ -31,9 +31,9 @@ ORCA orchestration worker-start --spec "<task>" --worktree current --agent codex
 ```
 
 - Start every independent worker, then **end your turn**. "Report back" and
-  "tell me when it's done" still mean end your turn; Orca wakes you and you
+  "tell me when it's done" still mean end your turn; OCC wakes you and you
   report then.
-- If a receipt has `next`, follow it. When Orca has nothing for you, end your
+- If a receipt has `next`, follow it. When OCC has nothing for you, end your
   turn.
 - `--worktree current` uses your workspace. Use a new one only when the user
   asks or sharing would conflict:
@@ -48,11 +48,11 @@ ORCA orchestration worker-start --spec "<task>" --worktree current --agent codex
 Never:
 
 - Poll or run watch scripts: a script's plain `check` takes your mail, so it is
-  hidden from you and Orca has nothing to wake you with. Orca wakes you.
+  hidden from you and OCC has nothing to wake you with. OCC wakes you.
 - Steer through a worker's terminal; use `send`.
 - Make checkouts yourself; let `worker-start` create a worker's workspace.
 
-## When Orca wakes you
+## When OCC wakes you
 
 - Run the `check` command the wake gives you. Answer each `question` with
   `ORCA orchestration reply --id <message_id> --body "<answer>" --json`.

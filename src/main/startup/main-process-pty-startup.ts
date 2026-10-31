@@ -175,7 +175,7 @@ export function startTerminalRuntimeStartupServices(): WindowsDesktopStartupServ
       await agentHookServer.start({
         statusHooksEnabled: isAgentStatusHooksEnabled(settings),
         env: app.isPackaged ? 'production' : 'development',
-        // Hooks read this file at invocation to reach the new process after restart; namespace dev worktrees sharing orca-dev.
+        // Hooks read this file at invocation to reach the new process after restart; namespace dev worktrees sharing occ-dev.
         userDataPath: app.getPath('userData'),
         endpointNamespace: state.devAgentHookEndpointNamespace
       })

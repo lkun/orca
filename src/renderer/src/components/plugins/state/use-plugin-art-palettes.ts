@@ -7,7 +7,7 @@ type CatalogThemePreview = NonNullable<
   NonNullable<PluginMarketplaceHostListing['release']>['themePreview']
 >
 
-/** A theme plugin's own colours: what Orca registered once installed, else the catalog's preview. */
+/** A theme plugin's own colours: what OCC registered once installed, else the catalog's preview. */
 export function usePluginArtPalettes(
   pluginKey: string,
   themePreview: CatalogThemePreview | undefined

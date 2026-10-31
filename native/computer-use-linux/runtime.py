@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Orca Linux computer-use bridge.
+"""OCC Linux computer-use bridge.
 
-The Node sidecar owns Orca's public API. This process is intentionally a small
+The Node sidecar owns OCC's public API. This process is intentionally a small
 AT-SPI adapter: read one JSON operation file, execute it in the user's desktop
 session, and print one JSON response.
 """

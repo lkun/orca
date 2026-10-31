@@ -18,7 +18,7 @@ import {
   isUnblockedAfter
 } from './agent-state-rules/blocked-text-layer'
 
-// Include Orca ready titles and agents that state rest in words.
+// Include OCC ready titles and agents that state rest in words.
 const EXPLICIT_IDLE_TITLE_RE = /(^|\s)(ready|idle|done)(\s|$|[.!?])/i
 
 function computeExplicitIdleStatusFromTitle(title: string): AgentStatus | null {

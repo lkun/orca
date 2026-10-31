@@ -45,7 +45,7 @@ describe('details markdown html', () => {
     '<details id="keep">',
     '<details class="custom">',
     '<details class="ORCA-DETAILS">',
-    "<details CLASS='Orca-Details'>",
+    "<details CLASS='OCC-Details'>",
     '<details Class=ORCA-DETAILS>',
     '<details data-orca-toggle="heading-6">',
     '<details open="false">',
@@ -57,7 +57,7 @@ describe('details markdown html', () => {
     expect(normalizeDetailsOpeningTag(fragment)).toBe(fragment)
   })
 
-  it.each(['ORCA-DETAILS', 'Orca-Details'])(
+  it.each(['ORCA-DETAILS', 'OCC-Details'])(
     'keeps case-sensitive class %s out of editable details nodes',
     (className) => {
       expect(

@@ -33,7 +33,7 @@ const PATTERN_NAMES: readonly (readonly [RegExp, TerminalAgent])[] = [
   [HERMES_AGENT_NAME_RE, 'hermes']
 ]
 
-/** Catalog labels known to be emitted as terminal titles, not merely presented in Orca's UI. */
+/** Catalog labels known to be emitted as terminal titles, not merely presented in OCC's UI. */
 const EMITTED_DISPLAY_LABEL_AGENTS = [
   'claude-agent-teams',
   'mimo-code',

@@ -16,7 +16,7 @@ export type ServeServiceSpec = {
 export type ServeServiceInput = {
   platform: NodeJS.Platform
   homeDir: string
-  /** Absolute path of the stable `orca` launcher, never a version-specific executable. */
+  /** Absolute path of the stable `occ` launcher, never a version-specific executable. */
   command: string
   userDataPath: string
   /** The profile's userData when no override is set; that profile gets the plain name. */
@@ -60,7 +60,7 @@ export function renderServeService(input: ServeServiceInput): ServeServiceSpec {
   const argv = [input.command, ...serveServiceArgs(input)]
   if (manager === 'launchd') {
     const name = suffix ? `${SERVE_LAUNCHD_LABEL_PREFIX}.${suffix}` : SERVE_LAUNCHD_LABEL_PREFIX
-    const logPath = join(input.homeDir, 'Library', 'Logs', 'Orca', `${name}.log`)
+    const logPath = join(input.homeDir, 'Library', 'Logs', 'OCC', `${name}.log`)
     return {
       manager,
       name,
@@ -147,7 +147,7 @@ function renderSystemdUnit(argv: string[], env: Record<string, string>): string 
     .join('\n')
   // Kill only the supervisor: it stops its server while the terminal daemon survives.
   return `[Unit]
-Description=Orca server (orca serve --supervise)
+Description=OCC server (occ serve --supervise)
 StartLimitIntervalSec=900
 StartLimitBurst=5
 

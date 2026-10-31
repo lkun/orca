@@ -88,7 +88,7 @@ describe('buildNativeChatVisualDocument', () => {
     const baseAt = document.indexOf('<base href="about:srcdoc">')
     expect(baseAt).toBeGreaterThan(0)
     expect(baseAt).toBeLessThan(document.indexOf('http-equiv="Content-Security-Policy"'))
-    // A srcdoc page otherwise resolves '#x' against Orca's own URL and navigates away.
+    // A srcdoc page otherwise resolves '#x' against OCC's own URL and navigates away.
     expect(new URL('#overview', 'about:srcdoc').href).toBe('about:srcdoc#overview')
     expect(() => new URL('page-2.html', 'about:srcdoc')).toThrow()
   })

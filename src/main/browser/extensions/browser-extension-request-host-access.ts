@@ -46,7 +46,7 @@ export type ExtensionRequestTarget = {
 /**
  * WebRequestPermissions::CanExtensionAccessURL with REQUIRE_HOST_PERMISSION_FOR_URL_AND_INITIATOR,
  * shared by webRequest and declarativeNetRequest. `hostAllowed` is the extension's host grants;
- * an activeTab grant adds only its tab's page origin. Orca has no runtime host withholding, so
+ * an activeTab grant adds only its tab's page origin. OCC has no runtime host withholding, so
  * access is allowed or denied, never withheld.
  */
 export function canExtensionAccessRequest(

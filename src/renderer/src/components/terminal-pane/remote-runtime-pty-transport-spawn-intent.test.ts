@@ -124,7 +124,7 @@ describe('createRemoteRuntimePtyTransport: restore spawn intent', () => {
         }
         if (args.method === 'terminal.ensureAgentSession' && attempts++ === 0) {
           capabilities = [...capabilities, 'agent-session.saved-resume-origin.v1']
-          throw Object.assign(new Error('Timed out waiting for the remote Orca runtime.'), {
+          throw Object.assign(new Error('Timed out waiting for the remote OCC runtime.'), {
             code: 'runtime_timeout'
           })
         }

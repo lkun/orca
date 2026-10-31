@@ -20,7 +20,7 @@ export function getGrokManagedScriptPath(): string {
 }
 
 export function getGrokManagedCommand(scriptPath: string): string {
-  // POSIX can gate before spawning because Orca injects ORCA_PANE_KEY only into panes it owns.
+  // POSIX can gate before spawning because OCC injects ORCA_PANE_KEY only into panes it owns.
   return process.platform === 'win32'
     ? wrapWindowsBatchHookCommand(scriptPath)
     : wrapPosixHookCommand(scriptPath, {}, { requiredEnvVar: 'ORCA_PANE_KEY' })
@@ -49,7 +49,7 @@ export function getGrokManagedScript(target: 'local' | 'posix' = 'local'): strin
     `printf '%s' "$payload" | ${posixCurlCommand()} -sS -X POST "http://127.0.0.1:\${ORCA_AGENT_HOOK_PORT}/hook/grok" \\`,
     '  --connect-timeout 0.5 --max-time 1.5 \\',
     '  -H "Content-Type: application/x-www-form-urlencoded" \\',
-    '  -H "X-Orca-Agent-Hook-Token: ${ORCA_AGENT_HOOK_TOKEN}" \\',
+    '  -H "X-OCC-Agent-Hook-Token: ${ORCA_AGENT_HOOK_TOKEN}" \\',
     '  --data-urlencode "paneKey=${ORCA_PANE_KEY}" \\',
     '  --data-urlencode "tabId=${ORCA_TAB_ID}" \\',
     '  --data-urlencode "launchToken=${ORCA_AGENT_LAUNCH_TOKEN}" \\',

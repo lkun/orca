@@ -93,7 +93,7 @@ export function buildWindowsEnvironmentBlock(
 }
 
 /**
- * Detached, stdio-ignoring spawn whose child inherits none of Orca's handles on Windows.
+ * Detached, stdio-ignoring spawn whose child inherits none of OCC's handles on Windows.
  * Falls back to spawnProcess off Windows, without an installed spawner, or for programs that need
  * cmd.exe or a relative-path lookup.
  */

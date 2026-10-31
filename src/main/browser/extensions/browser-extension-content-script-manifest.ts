@@ -15,8 +15,8 @@ function runsInIsolatedWorld(entry: unknown): entry is ScriptEntry {
 }
 
 /**
- * Lists Orca's content script first in each manifest content script that runs in the extension's
- * isolated world, so Orca's content-script APIs exist before the extension's own scripts run at
+ * Lists OCC's content script first in each manifest content script that runs in the extension's
+ * isolated world, so OCC's content-script APIs exist before the extension's own scripts run at
  * that entry's run_at. MAIN-world scripts have no extension APIs to fix. Null when no content
  * script runs there.
  */

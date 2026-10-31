@@ -96,7 +96,7 @@ function fixture() {
   const setup = { calls: 0, fail: false, gate: Promise.resolve() }
   const router = new ClaudeWslProfileRouter({
     getSettings: () => settings,
-    dataRoot: join(root, 'orca-dev'),
+    dataRoot: join(root, 'occ-dev'),
     runSetup: async () => {
       setup.calls += 1
       await setup.gate
@@ -207,7 +207,7 @@ describe.skipIf(!posixHost)('ClaudeWslProfileRouter', () => {
     mkdirSync(f.profileHome, { recursive: true })
     const cutOff = new ClaudeWslProfileRouter({
       getSettings: () => f.settings,
-      dataRoot: join(guest.home, '..', 'orca-dev'),
+      dataRoot: join(guest.home, '..', 'occ-dev'),
       runSetup: async (distro, home, accountId) => {
         const { dataRoot, profile } = wslClaudeProfile(home, distro, accountId)
         prepareClaudeProfileDirectory(dataRoot, profile, home)

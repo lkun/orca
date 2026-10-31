@@ -44,7 +44,7 @@ async function dispatchCtrlCToActiveTerminalTextarea(
       return event
     }
 
-    // Electron can consume real Ctrl+C before xterm; synthetic events still exercise Orca’s installed boundary.
+    // Electron can consume real Ctrl+C before xterm; synthetic events still exercise OCC’s installed boundary.
     const keydown = createEvent('keydown', true)
     textarea.dispatchEvent(keydown)
     const keyup = createEvent('keyup', dispatchOptions.keyupCtrlKey !== false)

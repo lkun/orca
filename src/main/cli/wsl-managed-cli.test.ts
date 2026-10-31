@@ -23,7 +23,7 @@ describe('managed WSL CLI provisioning', () => {
   it('reuses a complete tree, repairs missing files, and isolates app identities and updates', () => {
     const host = fixture()
     const directory = getManagedWslCliDir(host) ?? ''
-    const launcher = join(directory, 'orca-ide')
+    const launcher = join(directory, 'occ-ide')
     const modified = statSync(launcher).mtimeMs
     expect(getManagedWslCliDir(host)).toBe(directory)
     expect(statSync(launcher).mtimeMs).toBe(modified)

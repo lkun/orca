@@ -27,7 +27,7 @@ export async function localBundledSkillInput(options: {
   destination: BundledSkillTargetRequest['destination']
   /** `--agent`; detected on this host when omitted. */
   agents?: readonly SkillInstallProviderId[]
-  /** Use the app account router when supplied; otherwise ignore CLAUDE_CONFIG_DIR injected by Orca managed-account terminals. */
+  /** Use the app account router when supplied; otherwise ignore CLAUDE_CONFIG_DIR injected by OCC managed-account terminals. */
   claudeConfigDirectory?: string | null
   selection: BundledSkillSelection
 }): Promise<BundledSkillServiceInput> {

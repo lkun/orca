@@ -18,7 +18,7 @@ export function startBrowserExtensionDocument(frameTreeNodeId: number): string {
   return id
 }
 
-/** The frame's current document; a frame Orca never saw commit (initial about:blank) gets one now. */
+/** The frame's current document; a frame OCC never saw commit (initial about:blank) gets one now. */
 export function getBrowserExtensionDocumentId(frameTreeNodeId: number): string {
   return (
     documentIdByFrameTreeNodeId.get(frameTreeNodeId) ??

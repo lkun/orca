@@ -139,7 +139,7 @@ export class TerminalRunFactsRegister {
     return this.lastInputAtByPtyId.get(ptyId) ?? null
   }
 
-  /** Like readLastInputAt, but only `driving` input, so Orca's own launch and orchestration writes don't count. */
+  /** Like readLastInputAt, but only `driving` input, so OCC's own launch and orchestration writes don't count. */
   readLastDrivingInputAt(ptyId: string): number | null {
     return this.lastDrivingInputAtByPtyId.get(ptyId) ?? null
   }

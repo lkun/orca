@@ -67,8 +67,8 @@ export class WslHostDeploymentStoreInvalidError extends Error {
   constructor(path: string, environmentId?: string) {
     super(
       environmentId === undefined
-        ? `Could not read Orca WSL host deployments at ${path}; the file is invalid.`
-        : `Could not read the Orca WSL host deployment for ${environmentId} at ${path}; it may need a newer version of Orca.`
+        ? `Could not read OCC WSL host deployments at ${path}; the file is invalid.`
+        : `Could not read the OCC WSL host deployment for ${environmentId} at ${path}; it may need a newer version of OCC.`
     )
     this.name = 'WslHostDeploymentStoreInvalidError'
   }
@@ -194,7 +194,7 @@ export function overlayWslHostDeployments(
   const hiddenIds = new Set(hidden.map((environment) => environment.id))
   if (hidden.length > 0) {
     warnUnreadableEnvironmentState(
-      `Hiding ${hidden.length} server(s) whose WSL deployment cannot be read (ids: ${hidden.map((environment) => environment.id).join(', ')}); they may need a newer version of Orca.`
+      `Hiding ${hidden.length} server(s) whose WSL deployment cannot be read (ids: ${hidden.map((environment) => environment.id).join(', ')}); they may need a newer version of OCC.`
     )
   }
   return environments

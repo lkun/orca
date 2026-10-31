@@ -207,7 +207,7 @@ export class RemoteRuntimeRequestConnection {
     const plaintext = handshake.channel.openText(frame)
     if (plaintext === null) {
       this.close(
-        invalidRemoteRuntimeResponseError('Remote Orca runtime returned an undecryptable frame.')
+        invalidRemoteRuntimeResponseError('Remote OCC runtime returned an undecryptable frame.')
       )
       return
     }

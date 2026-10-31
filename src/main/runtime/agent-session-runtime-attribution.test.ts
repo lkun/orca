@@ -69,7 +69,7 @@ async function restartEvidence() {
   return store.getRecord(SESSION)?.lease.deathEvidence ?? null
 }
 
-describe("an agent that died with Orca's previous runtime", () => {
+describe("an agent that died with OCC's previous runtime", () => {
   it('died in a crash when that runtime started and never ended', async () => {
     await seedHeldBy('runtime-a')
     recorded('runtime-a')

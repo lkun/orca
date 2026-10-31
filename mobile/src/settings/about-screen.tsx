@@ -61,7 +61,7 @@ export default function AboutScreen({
 
       <View style={styles.brand}>
         <OrcaLogo size={28} />
-        <Text style={styles.brandName}>Orca</Text>
+        <Text style={styles.brandName}>OCC</Text>
         <Text style={styles.brandSub}>
           {t('settings.aboutScreen.tagline', 'Open-source agent IDE for 100x builders')}
         </Text>
@@ -71,7 +71,7 @@ export default function AboutScreen({
         <Pressable
           style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
           accessibilityRole="button"
-          accessibilityLabel={t('settings.aboutScreen.website', 'Orca website')}
+          accessibilityLabel={t('settings.aboutScreen.website', 'OCC website')}
           onPress={() => openLink('https://onOrca.dev')}
         >
           <Globe size={16} color={colors.textSecondary} />
@@ -81,7 +81,7 @@ export default function AboutScreen({
         <Pressable
           style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
           accessibilityRole="button"
-          accessibilityLabel={t('settings.aboutScreen.sourceCode', 'Orca source code')}
+          accessibilityLabel={t('settings.aboutScreen.sourceCode', 'OCC source code')}
           onPress={() => openLink('https://github.com/stablyai/orca')}
         >
           <GithubIcon />
@@ -91,7 +91,7 @@ export default function AboutScreen({
         <Pressable
           style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
           accessibilityRole="button"
-          accessibilityLabel={t('settings.aboutScreen.socialProfile', 'Orca on X')}
+          accessibilityLabel={t('settings.aboutScreen.socialProfile', 'OCC on X')}
           onPress={() => openLink('https://x.com/orca_build')}
         >
           <XIcon />

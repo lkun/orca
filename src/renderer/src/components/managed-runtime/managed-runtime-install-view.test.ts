@@ -131,7 +131,7 @@ describe('managedRuntimeInstallView', () => {
     const external = { source: 'external' as const }
     expect(shown(external)).toEqual([
       'Uses the copy of Fake found on this host.',
-      "Install Orca's copy",
+      "Install OCC's copy",
       null,
       null
     ])

@@ -98,7 +98,7 @@ describe('ghExecFileAsync WSL fallback', () => {
         '-c',
         "cd '/home/jinwoo/stably/noqa' && 'gh' 'issue' 'list' '--repo' 'stablyhq/noqa' '--json' 'number,title'"
       ],
-      // Use a stable Win32 cwd instead of inheriting Orca's deletable UNC cwd.
+      // Use a stable Win32 cwd instead of inheriting OCC's deletable UNC cwd.
       expect.objectContaining({ cwd: expect.any(String) })
     )
     expect(spawnMock).toHaveBeenNthCalledWith(

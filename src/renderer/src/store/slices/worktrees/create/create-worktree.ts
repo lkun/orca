@@ -215,7 +215,7 @@ export function createCreateWorktree(
             : (await ensureLocalRuntimeCapabilities())?.includes(capability) === true
         if (!supported) {
           throw new Error(
-            'Update Orca on the workspace host to reuse a branch or explicitly create a separate branch.'
+            'Update OCC on the workspace host to reuse a branch or explicitly create a separate branch.'
           )
         }
         request.branchIntent = options.branchIntent

@@ -34,8 +34,8 @@ function residency(processes: Record<string, { uid: number; exe: string | Error 
 
 describe('AppImage generation residency', () => {
   it('is live while a same-user process runs from the generation', () => {
-    expect(residency({ '1': { uid: 1000, exe: `${ROOT}/orca-ide` } })).toEqual({ status: 'live' })
-    expect(residency({ '1': { uid: 1000, exe: `${ROOT}/orca-ide (deleted)` } })).toEqual({
+    expect(residency({ '1': { uid: 1000, exe: `${ROOT}/occ-ide` } })).toEqual({ status: 'live' })
+    expect(residency({ '1': { uid: 1000, exe: `${ROOT}/occ-ide (deleted)` } })).toEqual({
       status: 'live'
     })
   })
@@ -43,8 +43,8 @@ describe('AppImage generation residency', () => {
   it('is exited when only other users or other paths run', () => {
     expect(
       residency({
-        '1': { uid: 0, exe: `${ROOT}/orca-ide` },
-        '2': { uid: 1000, exe: `${ROOT}-other/orca-ide` },
+        '1': { uid: 0, exe: `${ROOT}/occ-ide` },
+        '2': { uid: 1000, exe: `${ROOT}-other/occ-ide` },
         '3': { uid: 1000, exe: errorWithCode('ENOENT') }
       })
     ).toEqual({ status: 'exited' })

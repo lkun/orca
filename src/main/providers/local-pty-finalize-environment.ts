@@ -77,7 +77,7 @@ export function finalizeLocalPtySpawnEnvironment(args: {
     }
     logHistoryInjection(worktreeId, historyResult)
   } else {
-    // History-off bypasses injectHistoryEnv, so clear inherited Orca history explicitly (#11146).
+    // History-off bypasses injectHistoryEnv, so clear inherited OCC history explicitly (#11146).
     delete env.ORCA_HISTFILE
     // Exported fish_history must not select the launching workspace history when isolation is off.
     dropInheritedOrcaFishHistory(env)
@@ -95,7 +95,7 @@ export function finalizeLocalPtySpawnEnvironment(args: {
         command: codexStartupCommand,
         startupCommandDelivery: spawn.startupCommandDelivery
       })
-    // Only this shell launch config may choose Orca-owned features.
+    // Only this shell launch config may choose OCC-owned features.
     delete env.ORCA_SHELL_FEATURES
     delete env[POSIX_SHELL_STARTUP_COMMAND_ENV]
     const userShellArgs = !spawn.command && !spawn.launchAgent ? spawn.terminalShellArgs : undefined

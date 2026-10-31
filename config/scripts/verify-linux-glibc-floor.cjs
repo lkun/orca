@@ -5,7 +5,7 @@ const { join, relative } = require('node:path')
 // Gate bundled Linux binaries against Ubuntu 20.04 symbol floors to prevent native load crashes (#9902); see docs/reference/linux-glibc-compatibility.md.
 const MIN_GLIBC = Object.freeze([2, 31])
 
-// Gate glibc plus system libstdc++ ABI families; Orca bundles no C++ runtime for desktop.
+// Gate glibc plus system libstdc++ ABI families; OCC bundles no C++ runtime for desktop.
 const VERSION_FLOORS = Object.freeze([
   Object.freeze({ prefix: 'GLIBC_', floor: MIN_GLIBC }),
   Object.freeze({ prefix: 'GLIBCXX_', floor: Object.freeze([3, 4, 28]) }),

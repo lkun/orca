@@ -125,7 +125,7 @@ export type RefreshAgentsResult = {
   pathFailureReason: ShellHydrationFailureReason
 }
 
-/** Refresh login-shell PATH so newly installed CLIs appear without restarting Orca. */
+/** Refresh login-shell PATH so newly installed CLIs appear without restarting OCC. */
 export async function refreshShellPathAndDetectAgents(
   context?: PreflightRuntimeContext,
   options?: InstalledAgentDetectionOptions

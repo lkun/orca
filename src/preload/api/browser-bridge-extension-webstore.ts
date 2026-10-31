@@ -8,7 +8,7 @@ import {
   type BrowserExtensionWebStoreInstallResult
 } from '../../shared/browser-extension-webstore'
 
-/** "Add from Chrome Web Store" and Orca's install/uninstall confirmation round trip. */
+/** "Add from Chrome Web Store" and OCC's install/uninstall confirmation round trip. */
 export const browserExtensionWebStoreApi = {
   extensionsInstallFromWebStore: (args: {
     profileId: string

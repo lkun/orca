@@ -235,7 +235,7 @@ describe('a worker result reaches the structured chat that coordinates it', () =
     expect(db.getUndeliveredUnreadMessages(`run:${runId}`, undefined, {})).toHaveLength(1)
   })
 
-  it('points a held pointer once more after Orca restarts, under a new id', async () => {
+  it('points a held pointer once more after OCC restarts, under a new id', async () => {
     observationClock.start()
     await openChat(COORDINATOR)
     const { runId, taskId } = await coordinatorRunAndTask()
@@ -480,7 +480,7 @@ describe('a worker result reaches the structured chat that coordinates it', () =
     expect(chat.steers).toHaveLength(1)
   })
 
-  // Consuming checks hand their batch over, so only an older Orca leaves one outstanding.
+  // Consuming checks hand their batch over, so only an older OCC leaves one outstanding.
   const holdOutstandingBatch = (runId: string): string => {
     const consumerGeneration = db.getRunRaw(runId)!.consumer_generation
     return db.getOrCreateRunDelivery({ runId, consumerGeneration })!.delivery.id

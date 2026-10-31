@@ -35,7 +35,7 @@ export function keybindingValidationFailure(errorCode: KeybindingReasonCode): {
   return { ok: false, error: KEYBINDING_REASON_COPY[errorCode], errorCode }
 }
 
-/** `reasonCode` names params.reason when it is one of Orca's sentences rather than verbatim text. */
+/** `reasonCode` names params.reason when it is one of OCC's sentences rather than verbatim text. */
 export function keybindingFileDiagnostic(
   base: Pick<KeybindingFileDiagnostic, 'severity' | 'section' | 'actionId' | 'actionIds'>,
   code: KeybindingDiagnosticCode,

@@ -190,7 +190,7 @@
         "Send test notification",
         "Send test notification",
         "Troubleshooting",
-        "Accepted by Orca’s push service. Check for the notification."
+        "Accepted by OCC’s push service. Check for the notification."
       ]
     },
     "401bb4233294": {
@@ -450,7 +450,7 @@
         "Send test notification",
         "Send test notification",
         "Troubleshooting",
-        "Could not send through Orca’s push service. Try again."
+        "Could not send through OCC’s push service. Try again."
       ]
     },
     "c37bd4097e53": {

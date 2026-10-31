@@ -19,18 +19,18 @@ export function requirePluginPathArg(ctx: HandlerContext, flag: string): string 
 
 /**
  * Authoring commands read and write the files of the machine that runs them. Why refuse a bridged
- * shell: there the CLI runs on the Orca host, so the caller's paths would name the wrong machine.
+ * shell: there the CLI runs on the OCC host, so the caller's paths would name the wrong machine.
  */
 export function resolveLocalPluginPath(
   ctx: HandlerContext,
   value: string,
   command: string
 ): string {
-  rejectRemoteSelectionFlags(ctx.flags, `orca plugin ${command}; it works on local files`)
+  rejectRemoteSelectionFlags(ctx.flags, `occ plugin ${command}; it works on local files`)
   if (process.env.ORCA_CLI_CWD) {
     throw new RuntimeClientError(
       'invalid_environment',
-      `orca plugin ${command} works on the files of the machine that runs it, but this shell forwards orca to the Orca host. Write and check the plugin files on this machine directly, or run the command on the Orca host.`
+      `occ plugin ${command} works on the files of the machine that runs it, but this shell forwards occ to the OCC host. Write and check the plugin files on this machine directly, or run the command on the OCC host.`
     )
   }
   return isAbsolute(value) ? value : resolve(ctx.cwd, value)

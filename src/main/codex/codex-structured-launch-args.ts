@@ -64,7 +64,7 @@ function isPermissionConfig(value: string): boolean {
   return CODEX_PERMISSION_CONFIG_ROOTS.some((root) => root === key)
 }
 
-/** Accept only root CLI options; Orca sets permissions on the thread RPC. */
+/** Accept only root CLI options; OCC sets permissions on the thread RPC. */
 export function codexStructuredLaunchArgs(tokens: readonly string[]): string[] {
   const args: string[] = []
   for (let index = 0; index < tokens.length; index += 1) {

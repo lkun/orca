@@ -1,4 +1,4 @@
-// Bridge bash reports no folder; a distro stopped while Orca was quit left the pane at its spawn folder.
+// Bridge bash reports no folder; a distro stopped while OCC was quit left the pane at its spawn folder.
 import './mock-descendant-sweep'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { join } from 'node:path'
@@ -100,7 +100,7 @@ describe('a bridge WSL pane keeps its shell folder across quit', () => {
     expect(checkpointCwd(id)).toBe(DEEP)
   })
 
-  it('reopens in that folder when the distro stopped while Orca was quit', async () => {
+  it('reopens in that folder when the distro stopped while OCC was quit', async () => {
     vi.spyOn(startupCwdProbe, 'probeRecoveredStartupCwdDirectory').mockResolvedValue(true)
     const app = launch()
     const { id } = await openBridgePane(app, 'repo::/repo@@terminated')

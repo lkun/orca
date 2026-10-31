@@ -125,7 +125,7 @@ export async function readRuntimeFileContent({
     }
     throw new Error(
       paged.kind === 'unsupported'
-        ? 'Remote file is larger than the 512 KB this Orca server can send. Update the server to open it.'
+        ? 'Remote file is larger than the 512 KB this OCC server can send. Update the server to open it.'
         : `Remote file is too large to open in the editor (${paged.size} bytes)`
     )
   }

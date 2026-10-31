@@ -25,7 +25,7 @@ async function openPluginPage(
 ) {
   await app.evaluate(({ app: electronApp }, link) => {
     electronApp.emit('open-url', { preventDefault: () => undefined }, link)
-  }, `orca://plugins/${pluginKey}?catalog=official`)
+  }, `occ://plugins/${pluginKey}?catalog=official`)
   await expect(page.getByRole('article').locator('#plugin-detail-heading')).toContainText(name, {
     timeout: 30_000
   })

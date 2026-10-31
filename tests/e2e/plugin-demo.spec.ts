@@ -32,11 +32,11 @@ async function openDemoPanel(page: Page): Promise<void> {
       state.toggleRightSidebar()
     }
   })
-  const panelButton = page.getByRole('button', { name: 'Hello Orca', exact: true })
+  const panelButton = page.getByRole('button', { name: 'Hello OCC', exact: true })
   await expect(panelButton).toBeVisible({ timeout: 15_000 })
   await panelButton.click()
-  const frame = page.frameLocator('iframe[title="Hello Orca"]')
-  await expect(frame.getByRole('heading', { name: 'Hello Orca 👋' })).toBeVisible()
+  const frame = page.frameLocator('iframe[title="Hello OCC"]')
+  await expect(frame.getByRole('heading', { name: 'Hello OCC 👋' })).toBeVisible()
   await expect(frame.locator('meta[http-equiv="Content-Security-Policy"]')).toHaveAttribute(
     'content',
     /default-src 'none'/
@@ -170,10 +170,10 @@ test('runs hello-orca panel, command, and event behind visible consent', async (
 
     const panelPath = join(pluginRoot, 'panel.html')
     const panelHtml = await readFile(panelPath, 'utf8')
-    await writeFile(panelPath, panelHtml.replace('Hello Orca 👋', 'Hello Orca reloaded'))
+    await writeFile(panelPath, panelHtml.replace('Hello OCC 👋', 'Hello OCC reloaded'))
     await expect(
-      orcaPage.frameLocator('iframe[title="Hello Orca"]').getByRole('heading', {
-        name: 'Hello Orca reloaded'
+      orcaPage.frameLocator('iframe[title="Hello OCC"]').getByRole('heading', {
+        name: 'Hello OCC reloaded'
       })
     ).toBeVisible({ timeout: 15_000 })
 

@@ -136,7 +136,7 @@ for (const recoveryRuntime of ['node', 'electron'] as const) {
       )
       expect(refused.code).toBe(1)
       expect(refused.stdout + refused.stderr).toContain(
-        recoveryRuntime === 'electron' ? 'Stop Orca' : 'in use'
+        recoveryRuntime === 'electron' ? 'Stop OCC' : 'in use'
       )
       expect(readSnapshot(databasePath)).toEqual(beforeRefusal)
       expect(readFileSync(backup.path).equals(backupBytes)).toBe(true)

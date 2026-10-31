@@ -35,7 +35,7 @@ const LAYOUT_OWNER_BUILD = existsSync(
   path.join(process.cwd(), 'out', 'main', 'ORCA_LAYOUT_OWNER_MAIN')
 )
 const NEWER_PROTOCOL = PROTOCOL_VERSION + 1
-const BANNER_TITLE = 'This terminal was opened in a newer version of Orca'
+const BANNER_TITLE = 'This terminal was opened in a newer version of OCC'
 
 const scratch = createRetentionFixtureDirectory()
 const fixturePath = writeRetentionFixture(scratch)

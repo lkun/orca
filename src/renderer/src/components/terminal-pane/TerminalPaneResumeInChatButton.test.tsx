@@ -72,7 +72,7 @@ it('keeps an older host visible but disabled, telling the user to update it', as
     </TooltipProvider>
   )
   const button = screen.getByRole('button', {
-    name: 'Continue in Chat UI. Update Orca on this host to continue in Chat UI.'
+    name: 'Continue in Chat UI. Update OCC on this host to continue in Chat UI.'
   })
   expect(button.hasAttribute('disabled')).toBe(true)
   const trigger = button.parentElement
@@ -80,7 +80,7 @@ it('keeps an older host visible but disabled, telling the user to update it', as
     fireEvent.focus(trigger)
   }
   expect(
-    (await screen.findAllByText('Update Orca on this host to continue in Chat UI.')).length
+    (await screen.findAllByText('Update OCC on this host to continue in Chat UI.')).length
   ).toBeGreaterThan(0)
   expect(mocks.run).not.toHaveBeenCalled()
 })

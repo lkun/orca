@@ -125,7 +125,7 @@ function createSourceRepo(): string {
   execFileSync('git', ['add', '.'], { cwd: repoPath })
   execFileSync(
     'git',
-    ['-c', 'user.name=Orca E2E', '-c', 'user.email=orca-e2e@example.com', 'commit', '-m', 'seed'],
+    ['-c', 'user.name=OCC E2E', '-c', 'user.email=orca-e2e@example.com', 'commit', '-m', 'seed'],
     { cwd: repoPath }
   )
   return repoPath

@@ -8,7 +8,7 @@ const FALLBACK_FONTS = [
   'Consolas',
   'DejaVu Sans Mono',
   'Liberation Mono',
-  'Orca Nerd Font Symbols',
+  'OCC Nerd Font Symbols',
   'Symbols Nerd Font Mono',
   'MesloLGS Nerd Font',
   'JetBrainsMono Nerd Font',

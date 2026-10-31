@@ -46,11 +46,11 @@ describe('OnboardingFlow', () => {
     })
 
     expect(html).toContain('Set up notifications')
-    expect(html).not.toContain('Set up Orca for agents')
-    expect(html).not.toContain('Explore Orca')
+    expect(html).not.toContain('Set up OCC for agents')
+    expect(html).not.toContain('Explore OCC')
     expect(html).not.toContain('Take the tour')
     expect(html).toContain('Add your first project')
-    expect(html).not.toContain('Point Orca at some code')
+    expect(html).not.toContain('Point OCC at some code')
   })
 
   it.each([
@@ -71,8 +71,8 @@ describe('OnboardingFlow', () => {
       })
 
       expect(html).toContain(title)
-      expect(html).not.toContain('Set up Orca for agents')
-      expect(html).not.toContain('Explore Orca')
+      expect(html).not.toContain('Set up OCC for agents')
+      expect(html).not.toContain('Explore OCC')
     }
   )
 
@@ -94,8 +94,8 @@ describe('OnboardingFlow', () => {
       })
 
       expect(html).toContain(title)
-      expect(html).not.toContain('Set up Orca for agents')
-      expect(html).not.toContain('Explore Orca')
+      expect(html).not.toContain('Set up OCC for agents')
+      expect(html).not.toContain('Explore OCC')
     }
   )
 
@@ -181,7 +181,7 @@ describe('OnboardingFlow', () => {
     expect(html).toContain('Add your first project')
     expect(html).not.toContain('Set up GitHub tasks')
     expect(html).not.toContain('Connect your task sources')
-    expect(html).not.toContain('Point Orca at some code')
+    expect(html).not.toContain('Point OCC at some code')
     // Installed gh and macOS skip Integrations/Windows terminal, leaving three visible steps.
     expect(html).toContain('3 of 3')
     expect(html).not.toContain('Integrations')

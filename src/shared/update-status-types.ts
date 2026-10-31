@@ -73,7 +73,7 @@ export type UpdateStatus = (
       releaseUrl?: string
       // Main always sets this: null means fetch failure/missing version, object enables rich mode. Avoid an undefined third state.
       changelog: ChangelogData | null
-      /** Linux only: a package manager owns this install, so Orca cannot apply the update itself.
+      /** Linux only: a package manager owns this install, so OCC cannot apply the update itself.
        *  Additive and optional — older clients simply keep offering their own download. */
       externallyManaged?: boolean
     }

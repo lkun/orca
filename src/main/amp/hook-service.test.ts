@@ -45,7 +45,7 @@ describe('AmpHookService', () => {
     expect(readFileSync(pluginPath, 'utf-8')).toBe('export default function userPlugin() {}\n')
   })
 
-  it('removes only Orca-managed Amp plugin files', () => {
+  it('removes only OCC-managed Amp plugin files', () => {
     const service = new AmpHookService()
     const installed = service.install()
     expect(existsSync(installed.configPath)).toBe(true)

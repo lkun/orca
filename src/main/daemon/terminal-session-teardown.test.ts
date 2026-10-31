@@ -244,7 +244,7 @@ describe('graceful close preserves shell jobs only for plain shells', () => {
 
   const cases: [string, TuiAgent | null, number[]][] = [
     ['plain shell', null, [20]],
-    ['Orca-launched agent', 'codex', [20, 30]]
+    ['OCC-launched agent', 'codex', [20, 30]]
   ]
   it.each(cases)('%s', async (_label, launchAgent, swept) => {
     const session = createPlainShellSession({ launchAgent })

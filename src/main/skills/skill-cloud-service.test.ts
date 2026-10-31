@@ -84,7 +84,7 @@ function publishRequest(archivePath: string, archiveSha256: string, compressedBy
 }
 
 describe('SkillCloudService bearer links', () => {
-  it('resolves and grants downloads without an Orca session', async () => {
+  it('resolves and grants downloads without an OCC session', async () => {
     const requests: RequestInit[] = []
     const version = publishedVersion('a'.repeat(64), 12)
     const grant = {

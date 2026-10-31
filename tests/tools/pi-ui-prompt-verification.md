@@ -2,10 +2,10 @@
 
 Use Pi 0.84.4 or newer. Older Pi does not emit `ui_prompt_start` / `ui_prompt_end`.
 The checked-in extension only opens dialogs; it does not call a model or send synthetic
-Orca hook events.
+OCC hook events.
 
-1. Launch an isolated Orca development instance with CDP using the Electron skill.
-2. Open one terminal in a git worktree or folder workspace. Start Pi with Orca's
+1. Launch an isolated OCC development instance with CDP using the Electron skill.
+2. Open one terminal in a git worktree or folder workspace. Start Pi with OCC's
    generated status extension and this additional extension:
 
    ```sh
@@ -13,9 +13,9 @@ Orca hook events.
    ```
 
    If launching Pi directly through `node` or disabling extension discovery, explicitly
-   load Orca's generated `orca-agent-status.ts` with another `-e` argument.
+   load OCC's generated `orca-agent-status.ts` with another `-e` argument.
 
-3. Leave Pi at its input editor, then run from the Orca repository:
+3. Leave Pi at its input editor, then run from the OCC repository:
 
    ```sh
    node tests/tools/pi-ui-prompt-cdp-smoke.mjs http://127.0.0.1:9333 /path/to/proof

@@ -15,7 +15,7 @@ function settled(dir: string) {
   return { dir, hasMarker: true, mtimeMs: NOW - IN_PROGRESS_WINDOW_MS * 2 }
 }
 
-function psLine(dir: string, appName = 'Orca: some-branch') {
+function psLine(dir: string, appName = 'OCC: some-branch') {
   return `${dir}/${appName}.app/Contents/MacOS/Electron --remote-debugging-port=9333`
 }
 
@@ -62,7 +62,7 @@ describe('dev-electron-bundle-cache', () => {
       selectStaleDevBundleDirs({
         bundles: [settled(spaced), settled(other)],
         currentDir: C,
-        processTable: psLine(spaced, 'Orca: my branch'),
+        processTable: psLine(spaced, 'OCC: my branch'),
         nowMs: NOW
       })
     ).toEqual([other])

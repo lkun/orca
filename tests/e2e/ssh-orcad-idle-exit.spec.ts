@@ -354,7 +354,7 @@ test('a new desktop on the same build starts a server that was killed with its d
     await deployer.close(app)
     app = null
 
-    // Killed outside Orca, as after a reboot: the activation record still names the slot.
+    // Killed outside OCC, as after a reboot: the activation record still names the slot.
     execDockerSshHostTargetCommand(target, "pkill -KILL -f '/root/[.]orca-remote/' || true")
     await expect.poll(() => runningOrcadPids(target), { timeout: 60_000 }).toEqual([])
 

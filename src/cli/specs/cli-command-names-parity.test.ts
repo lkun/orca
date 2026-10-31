@@ -17,8 +17,8 @@ describe('CLI launch redirect command names', () => {
     expect(roots.size).toBeGreaterThan(0)
 
     for (const root of roots) {
-      const argv = ['/opt/Orca/orca-ide', '--disable-gpu', root, '--json']
-      const cliArgs = getCliLaunchArgs(argv, '/opt/Orca/resources/cli/index.js', options)
+      const argv = ['/opt/OCC/occ-ide', '--disable-gpu', root, '--json']
+      const cliArgs = getCliLaunchArgs(argv, '/opt/OCC/resources/cli/index.js', options)
       if (root === 'serve') {
         expect(cliArgs, root).toBeNull()
         expect(getDirectServeLaunch(argv, options), root).toEqual({

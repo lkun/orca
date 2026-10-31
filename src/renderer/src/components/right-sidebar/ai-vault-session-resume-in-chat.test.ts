@@ -169,7 +169,7 @@ describe('workspace matching, which binds the agents that store conversations pe
   it('treats Windows spellings of one directory as the same workspace', () => {
     expect(
       eligibility({
-        session: session({ cwd: 'C:\\Users\\Dev\\repo\\Orca\\' }),
+        session: session({ cwd: 'C:\\Users\\Dev\\repo\\OCC\\' }),
         targetWorkspacePath: 'c:/users/dev/repo/orca'
       })
     ).toMatchObject({ available: true })

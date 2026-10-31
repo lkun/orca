@@ -133,7 +133,7 @@ async function refreshPlan(force: boolean): Promise<void> {
       publishSnapshot({
         ...IDLE,
         targetKey,
-        error: cause instanceof Error ? cause.message : 'Could not inspect Orca skills.'
+        error: cause instanceof Error ? cause.message : 'Could not inspect OCC skills.'
       })
     }
   }
@@ -228,7 +228,7 @@ function refreshSkillFreshnessAfterReenable(): Promise<void> {
   return pendingReenableRefresh
 }
 
-/** Plans `target`'s Orca skills; null (host unknown or not plannable) plans nothing. */
+/** Plans `target`'s OCC skills; null (host unknown or not plannable) plans nothing. */
 export function useSkillFreshness(target: BundledSkillTarget | null): SkillFreshnessState {
   const targetKey = target ? bundledSkillTargetKey(target) : null
   const previousKeyRef = useRef(targetKey)

@@ -25,7 +25,7 @@ const moveSchema = z
   .partial({ windowId: true })
   .loose()
 
-// Why its own world: the page's main world must never see (or tamper with) Orca's reads.
+// Why its own world: the page's main world must never see (or tamper with) OCC's reads.
 const DETECT_LANGUAGE_WORLD_ID = 1_998
 const READ_LANG_SCRIPT = "document.documentElement ? document.documentElement.lang : ''"
 
@@ -70,7 +70,7 @@ function languageFromLangAttribute(lang: unknown): string {
 }
 
 /**
- * Small tabs methods Orca answers without a Chrome equivalent underneath: tab order, discarding
+ * Small tabs methods OCC answers without a Chrome equivalent underneath: tab order, discarding
  * and language detection are approximations (see each), history navigation is real.
  */
 export const tabsPageMethods: Record<string, BrowserExtensionMethod> = {
@@ -80,7 +80,7 @@ export const tabsPageMethods: Record<string, BrowserExtensionMethod> = {
   goForward: defineBrowserExtensionMethod(optionalTabId, (caller, tabId) =>
     goInHistory(caller, tabId, false)
   ),
-  // Why unchanged: Orca's tab order lives in the renderer's workspace model, which main cannot reorder.
+  // Why unchanged: OCC's tab order lives in the renderer's workspace model, which main cannot reorder.
   move: defineBrowserExtensionMethod(
     z.tuple([z.union([tabIdSchema, z.array(tabIdSchema)]), moveSchema]),
     (caller, tabIds) => {
@@ -89,14 +89,14 @@ export const tabsPageMethods: Record<string, BrowserExtensionMethod> = {
       return Array.isArray(tabIds) ? tabIds.map(describe) : describe(tabIds)
     }
   ),
-  // Why a loaded tab stays loaded: Orca cannot unload a shown page; an unloaded one already is.
+  // Why a loaded tab stays loaded: OCC cannot unload a shown page; an unloaded one already is.
   discard: defineBrowserExtensionMethod(optionalTabId, (caller, tabId) => {
     const discarded = tabId == null ? null : findBrowserExtensionDiscardedTab(caller.session, tabId)
     return discarded
       ? describeBrowserExtensionDiscardedTab(caller.extension, discarded)
       : describeBrowserExtensionTab(caller.extension, requireTabOrActive(caller, tabId))
   }),
-  // Why the page's lang attribute: Chrome runs a text classifier Orca does not have.
+  // Why the page's lang attribute: Chrome runs a text classifier OCC does not have.
   detectLanguage: defineBrowserExtensionMethod(optionalTabId, async (caller, tabId) => {
     const { contents } = requireTabOrActive(caller, tabId)
     const lang: unknown = await contents

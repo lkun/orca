@@ -11,7 +11,7 @@ export function isInstalledOpenCodePluginCurrent(pluginPath: string, source: str
   }
 }
 
-// Overlay variant: a symlink there mirrors a user entry, never Orca's file, even when the bytes match.
+// Overlay variant: a symlink there mirrors a user entry, never OCC's file, even when the bytes match.
 export function isOverlayOpenCodePluginCurrent(pluginPath: string, source: string): boolean {
   try {
     return lstatSync(pluginPath).isFile() && nodeFileContentsEqualSync(pluginPath, source)

@@ -91,7 +91,7 @@ export function suggestCommands(specs: CommandSpec[], commandPath: string[]): st
 export function unknownCommandData(specs: CommandSpec[], commandPath: string[]): CommandErrorData {
   const suggestions = suggestCommands(specs, commandPath)
   const nextSteps = suggestions.length
-    ? [`Did you mean: ${suggestions.map((path) => `orca ${path}`).join(', ')}`]
+    ? [`Did you mean: ${suggestions.map((path) => `occ ${path}`).join(', ')}`]
     : []
   return { suggestions, nextSteps }
 }

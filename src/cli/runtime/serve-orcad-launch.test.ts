@@ -17,8 +17,8 @@ function answering(stdout: string, code = 0): RunProcess {
 }
 
 const options = {
-  executable: '/Applications/Orca.app/Contents/MacOS/Orca',
-  appRoot: '/Applications/Orca.app/Contents/Resources/app.asar',
+  executable: '/Applications/OCC.app/Contents/MacOS/OCC',
+  appRoot: '/Applications/OCC.app/Contents/Resources/app.asar',
   userDataPath: '/Users/u/Library/Application Support/orca',
   usesMacUpdateHandoff: false
 }
@@ -104,14 +104,14 @@ describe('orca serve asking the app which host to run', () => {
 
   it("hands orcad the app's browser client directory when the app has one", () => {
     expect(
-      orcadServeArgs({ port: '6768' }, '/opt/Orca/resources/app.asar.unpacked/out/web')
+      orcadServeArgs({ port: '6768' }, '/opt/OCC/resources/app.asar.unpacked/out/web')
     ).toEqual([
       '--bind',
       '0.0.0.0',
       '--port',
       '6768',
       '--web-client-root',
-      '/opt/Orca/resources/app.asar.unpacked/out/web'
+      '/opt/OCC/resources/app.asar.unpacked/out/web'
     ])
   })
 

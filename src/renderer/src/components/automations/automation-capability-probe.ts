@@ -149,7 +149,7 @@ export async function assertAutomationCreateIdempotencySupported(
     AUTOMATION_CREATE_IDEMPOTENCY_RUNTIME_CAPABILITY,
     translate(
       'auto.components.automations.capabilityProbe.createIdempotencyUpdateRequired',
-      'Moving automations to this host requires a newer Orca server. Update the HUB and try again.'
+      'Moving automations to this host requires a newer OCC server. Update the HUB and try again.'
     )
   )
 }
@@ -220,7 +220,7 @@ export async function prepareAutomationLaunchSetup<
   }
   if (launchSetupPatch.surface === 'chat') {
     throw new AutomationHostScopeUnsupportedError(
-      'Update Orca on this host to run automations in Chat.'
+      'Update OCC on this host to run automations in Chat.'
     )
   }
   const extraAgentArgs = launchSetupPatch.arguments?.value

@@ -18,7 +18,7 @@ import {
 const DEV_CLI_BIN_FIRST = /^[^:;]*[\\/]cli[\\/]bin[:;]/
 const DEV_CLI_BIN_DIR = /^[^:;]*[\\/]cli[\\/]bin$/
 // Absolute launchers survive login-shell PATH reordering.
-const DEV_CLI_LAUNCHER = /^[^:;]*[\\/]cli[\\/]bin[\\/]orca-dev$/
+const DEV_CLI_LAUNCHER = /^[^:;]*[\\/]cli[\\/]bin[\\/]occ-dev$/
 
 async function codexChildEnv(
   env: Record<string, string>,
@@ -188,7 +188,7 @@ describe('the spawned Codex child', () => {
     }
   )
 
-  it("runs with its own session id and this app's CLI, over an id inherited by Orca itself", async () => {
+  it("runs with its own session id and this app's CLI, over an id inherited by OCC itself", async () => {
     // Verify the actual child environment after the overlay merges with inherited process.env.
     vi.stubEnv('ORCA_AGENT_SESSION_ID', 'a0b1c2d3-0000-4000-8000-00000000abcd')
     vi.stubEnv('ORCA_ENVIRONMENT', 'stale-shell-selection')

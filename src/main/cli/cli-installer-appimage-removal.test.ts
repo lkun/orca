@@ -29,11 +29,11 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI removal', () => {
     async (removeCommandFirst) => {
       const root = await mkdtemp(join(tmpdir(), 'orca-appimage-cli-remove-'))
       created.push(root)
-      const appImagePath = join(root, 'Orca.AppImage')
+      const appImagePath = join(root, 'OCC.AppImage')
       const cacheRootPath = join(root, 'cache')
-      const commandPath = join(root, 'home', '.local', 'bin', 'orca-ide')
+      const commandPath = join(root, 'home', '.local', 'bin', 'occ-ide')
       const resourcesPath = join(root, 'mount', 'resources')
-      const liveLauncherPath = join(resourcesPath, 'bin', 'orca-ide')
+      const liveLauncherPath = join(resourcesPath, 'bin', 'occ-ide')
       await mkdir(join(resourcesPath, 'bin'), { recursive: true })
       await writeFile(appImagePath, '#!/usr/bin/env bash\n', { mode: 0o755 })
       await writeFile(liveLauncherPath, '#!/usr/bin/env bash\nprintf live', { mode: 0o755 })
@@ -46,7 +46,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI removal', () => {
         isPackaged: true,
         userDataPath: join(root, 'user-data'),
         resourcesPath,
-        execPath: join(root, 'mount', 'orca-ide'),
+        execPath: join(root, 'mount', 'occ-ide'),
         appPath: join(resourcesPath, 'app.asar'),
         homePath: join(root, 'home'),
         processPathEnv: join(root, 'home', '.local', 'bin'),
@@ -57,7 +57,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI removal', () => {
           const payloadDirectory = join(cwd, 'squashfs-root', 'resources', 'bin')
           await mkdir(payloadDirectory, { recursive: true })
           await writeFile(
-            join(payloadDirectory, 'orca-ide'),
+            join(payloadDirectory, 'occ-ide'),
             '#!/usr/bin/env bash\nprintf installed',
             {
               mode: 0o755
@@ -91,10 +91,10 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI removal', () => {
     const root = await mkdtemp(join(tmpdir(), 'orca-appimage-cli-siblings-'))
     created.push(root)
     const cacheRootPath = join(root, 'cache')
-    const commandPath = join(root, 'home', '.local', 'bin', 'orca-ide')
+    const commandPath = join(root, 'home', '.local', 'bin', 'occ-ide')
     const resourcesPath = join(root, 'mount', 'resources')
-    const firstAppImagePath = join(root, 'Orca-stable.AppImage')
-    const secondAppImagePath = join(root, 'Orca-nightly.AppImage')
+    const firstAppImagePath = join(root, 'OCC-stable.AppImage')
+    const secondAppImagePath = join(root, 'OCC-nightly.AppImage')
     await mkdir(join(resourcesPath, 'bin'), { recursive: true })
     await Promise.all([
       writeFile(firstAppImagePath, '#!/usr/bin/env bash\n', { mode: 0o755 }),
@@ -105,7 +105,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI removal', () => {
       isPackaged: true,
       userDataPath: join(root, 'user-data'),
       resourcesPath,
-      execPath: join(root, 'mount', 'orca-ide'),
+      execPath: join(root, 'mount', 'occ-ide'),
       appPath: join(resourcesPath, 'app.asar'),
       homePath: join(root, 'home'),
       processPathEnv: join(root, 'home', '.local', 'bin'),
@@ -115,7 +115,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI removal', () => {
       appImageExtractRunner: async (_path, cwd) => {
         const payloadDirectory = join(cwd, 'squashfs-root', 'resources', 'bin')
         await mkdir(payloadDirectory, { recursive: true })
-        await writeFile(join(payloadDirectory, 'orca-ide'), content, { mode: 0o755 })
+        await writeFile(join(payloadDirectory, 'occ-ide'), content, { mode: 0o755 })
       }
     })
     class HookedInstaller extends CliInstaller {

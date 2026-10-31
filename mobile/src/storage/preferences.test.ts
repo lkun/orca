@@ -528,7 +528,7 @@ describe('terminal link open mode preference', () => {
       })
   })
 
-  it('defaults to Orca browser when unset', async () => {
+  it('defaults to OCC browser when unset', async () => {
     vi.mocked(AsyncStorage.getItem).mockResolvedValue(null)
 
     await expect(loadTerminalLinkOpenMode()).resolves.toBe('orca-browser')
@@ -543,7 +543,7 @@ describe('terminal link open mode preference', () => {
     await expect(loadTerminalLinkOpenMode()).resolves.toBe('orca-browser')
   })
 
-  it('falls back to Orca browser when storage cannot be read', async () => {
+  it('falls back to OCC browser when storage cannot be read', async () => {
     vi.mocked(AsyncStorage.getItem).mockRejectedValue(new Error('storage unavailable'))
 
     await expect(loadTerminalLinkOpenMode()).resolves.toBe('orca-browser')

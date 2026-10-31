@@ -105,7 +105,7 @@ export function approvalsAtOrcaEntries(
   )
 }
 
-// Positional keys may hold removed user hooks' approvals; only recognize known Orca hashes.
+// Positional keys may hold removed user hooks' approvals; only recognize known OCC hashes.
 export function readKnownOrcaHashes(home: CodexHookHome, command: string): CodexHookHashes[] {
   return [
     computeOrcaCodexHookHashes(command),

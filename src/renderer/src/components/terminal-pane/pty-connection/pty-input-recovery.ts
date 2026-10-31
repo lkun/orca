@@ -260,7 +260,7 @@ export function installPtyInputRecovery(session: ConnectPanePtySession): void {
   )
 }
 
-/** COMPAT(legacy-relay-bridge, revisit 2027-01-15): a pane an older Orca's relay still runs. */
+/** COMPAT(legacy-relay-bridge, revisit 2027-01-15): a pane an older OCC's relay still runs. */
 function withLegacyRelayBridge(session: ConnectPanePtySession, inner: PtyTransport): PtyTransport {
   const leafId = session.deps.restoredLeafId ?? session.pane.leafId
   const ptyId = legacyRelayBridgePtyIdForPane({

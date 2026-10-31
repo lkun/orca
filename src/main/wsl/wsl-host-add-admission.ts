@@ -27,11 +27,11 @@ export function wslHostAddRefusal(
 export const WSL_HOST_REMOVING_MESSAGE = 'This WSL host is being removed.'
 
 export function wslHostNotConnectedMessage(distro: string): string {
-  return `The WSL host ${distro} isn’t connected. Open one of its projects or connect it in Settings → Remote Orca Servers.`
+  return `The WSL host ${distro} isn’t connected. Open one of its projects or connect it in Settings → Remote OCC Servers.`
 }
 
 export function wslHostStoppedMessage(distro: string): string {
-  return `${distro} was stopped. Switch to one of its projects, or reconnect it in Settings → Remote Orca Servers, to start it again.`
+  return `${distro} was stopped. Switch to one of its projects, or reconnect it in Settings → Remote OCC Servers, to start it again.`
 }
 
 /** Shown on a paired phone once a stop is confirmed: only the desktop starts a distro. */
@@ -50,7 +50,7 @@ export function wslHostUnavailableForPhoneMessage(distro: string): string {
 }
 
 export function wslHostRemovalPendingMessage(distro: string): string {
-  return `Orca didn’t finish removing the WSL host ${distro}. Remove it again in Settings → Remote Orca Servers, or connect it to keep it.`
+  return `OCC didn’t finish removing the WSL host ${distro}. Remove it again in Settings → Remote OCC Servers, or connect it to keep it.`
 }
 
 /** Why no WSL host may run at all right now; null when they may. */

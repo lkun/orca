@@ -12,7 +12,7 @@ import { Button } from '../ui/button'
 // Why module scope: "Not now" lasts for the session, across tabs and remounts.
 const hiddenThisSession = new Set<string>()
 
-/** Offers a catalog plugin for a file type Orca can't open or highlight, or (`editor`) a custom
+/** Offers a catalog plugin for a file type OCC can't open or highlight, or (`editor`) a custom
  *  editor for one it shows as text. Never installs. */
 export function PluginFileTypeSuggestion({
   filePath,

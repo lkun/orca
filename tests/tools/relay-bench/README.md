@@ -90,7 +90,7 @@ Sign in, then read the pairing offer out of the hidden renderer:
 node tests/tools/relay-bench/cdp-eval.mjs 9222 'window.api.mobile.getPairingQR({})'
 ```
 
-The `orca://pair?code=...` value in that output is the pairing link.
+The `occ://pair?code=...` value in that output is the pairing link.
 
 ## Commands
 
@@ -103,7 +103,7 @@ BENCH=tests/tools/relay-bench/relay-phone-connect-bench.mjs
 pbpaste | node $BENCH pair /tmp/relay-bench/state.json
 
 # Or from a file you protect yourself, which `pair` requires to be mode 0600:
-umask 077 && printf '%s' '<orca://pair?code=...>' > /tmp/relay-bench/pair.txt
+umask 077 && printf '%s' '<occ://pair?code=...>' > /tmp/relay-bench/pair.txt
 node $BENCH pair /tmp/relay-bench/state.json --pairing-url-file=/tmp/relay-bench/pair.txt
 rm /tmp/relay-bench/pair.txt
 

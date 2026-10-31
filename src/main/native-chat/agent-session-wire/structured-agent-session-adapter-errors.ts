@@ -69,7 +69,7 @@ export function isAgentSessionPreSpawnError(error: unknown): error is AgentSessi
   return error instanceof Error && error.name === 'AgentSessionPreSpawnError'
 }
 
-/** Orca's own launch preparation on the host failed; a refusal it already named keeps its reason. */
+/** OCC's own launch preparation on the host failed; a refusal it already named keeps its reason. */
 export function launchPreparationFailure(error: unknown): AgentSessionPreSpawnError {
   return isAgentSessionPreSpawnError(error) && error.reason
     ? error

@@ -1,7 +1,7 @@
 import { BrowserError } from './browser-error'
 
 // Why: agent-browser's `set media` matches the bare tokens dark/light/reduced-motion
-// anywhere in its args and silently ignores everything else, so map Orca's values here.
+// anywhere in its args and silently ignores everything else, so map OCC's values here.
 export function agentBrowserSetMediaArguments(
   colorScheme: unknown,
   reducedMotion: unknown

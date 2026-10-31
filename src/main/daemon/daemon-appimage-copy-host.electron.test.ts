@@ -61,7 +61,7 @@ function cacheRootOf(install: AppImageInstall): string {
 async function installAppImage(name: string): Promise<AppImageInstall> {
   const base = join(root, name)
   const install = {
-    appImagePath: join(base, 'Orca.AppImage'),
+    appImagePath: join(base, 'OCC.AppImage'),
     mountPath: join(base, 'mount'),
     cacheHome: join(base, 'cache')
   }
@@ -82,8 +82,8 @@ function extractCopy(install: AppImageInstall, version: string, withNode = true)
   })!.rootPath
   const resources = join(generation, 'resources')
   mkdirSync(join(resources, 'bin'), { recursive: true })
-  writeFileSync(join(resources, 'bin', 'orca-ide'), '#!/bin/sh\n')
-  chmodSync(join(resources, 'bin', 'orca-ide'), 0o755)
+  writeFileSync(join(resources, 'bin', 'occ-ide'), '#!/bin/sh\n')
+  chmodSync(join(resources, 'bin', 'occ-ide'), 0o755)
   cpSync(
     join(install.mountPath, 'resources', 'app.asar.unpacked'),
     join(resources, 'app.asar.unpacked'),

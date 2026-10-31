@@ -242,13 +242,13 @@ describe('createManagedCommandMatcher', () => {
 
   it('matches commands containing the agent-hooks/<scriptFileName> path', () => {
     expect(
-      match('/bin/sh "/Users/alice/Library/Application Support/Orca/agent-hooks/claude-hook.sh"')
+      match('/bin/sh "/Users/alice/Library/Application Support/OCC/agent-hooks/claude-hook.sh"')
     ).toBe(true)
     expect(match('/bin/sh "/some/other/location/agent-hooks/claude-hook.sh"')).toBe(true)
   })
 
   it('normalizes Windows backslashes so cmd-style paths still match', () => {
-    expect(match('C:\\Users\\alice\\AppData\\Roaming\\Orca\\agent-hooks\\claude-hook.sh')).toBe(
+    expect(match('C:\\Users\\alice\\AppData\\Roaming\\OCC\\agent-hooks\\claude-hook.sh')).toBe(
       true
     )
   })
@@ -268,7 +268,7 @@ describe('createManagedCommandMatcher', () => {
   it('matches the guarded launcher form so wrapped commands sweep correctly', () => {
     expect(
       match(
-        'if [ -x "/Users/alice/Library/Application Support/Orca/agent-hooks/claude-hook.sh" ]; then /bin/sh "/Users/alice/Library/Application Support/Orca/agent-hooks/claude-hook.sh"; fi'
+        'if [ -x "/Users/alice/Library/Application Support/OCC/agent-hooks/claude-hook.sh" ]; then /bin/sh "/Users/alice/Library/Application Support/OCC/agent-hooks/claude-hook.sh"; fi'
       )
     ).toBe(true)
   })
@@ -306,12 +306,12 @@ describe('removeManagedCommands', () => {
       [
         {
           type: 'command',
-          bash: '/bin/sh "/Users/alice/Orca/agent-hooks/copilot-hook.sh"',
+          bash: '/bin/sh "/Users/alice/OCC/agent-hooks/copilot-hook.sh"',
           timeoutSec: 5
         },
         {
           type: 'command',
-          powershell: "& 'C:\\Users\\alice\\Orca\\agent-hooks\\copilot-hook.sh'",
+          powershell: "& 'C:\\Users\\alice\\OCC\\agent-hooks\\copilot-hook.sh'",
           timeoutSec: 5
         },
         {
@@ -399,7 +399,7 @@ describe('hookDefinitionHasManagedCommand', () => {
 
     expect(
       hookDefinitionHasManagedCommand(
-        { bash: '/bin/sh "/Users/alice/Orca/agent-hooks/copilot-hook.sh"' },
+        { bash: '/bin/sh "/Users/alice/OCC/agent-hooks/copilot-hook.sh"' },
         match
       )
     ).toBe(true)
@@ -821,7 +821,7 @@ describe('buildWindowsAgentHookPostCommand', () => {
     expect(command).toContain('"%SystemRoot%\\System32\\curl.exe" -sS -X POST')
     expect(command).toContain('--connect-timeout 0.5 --max-time 1.5')
     expect(command).toContain('-H "Content-Type: application/x-www-form-urlencoded"')
-    expect(command).toContain('-H "X-Orca-Agent-Hook-Token: %ORCA_AGENT_HOOK_TOKEN%"')
+    expect(command).toContain('-H "X-OCC-Agent-Hook-Token: %ORCA_AGENT_HOOK_TOKEN%"')
     expect(command).toContain('--data-urlencode "paneKey=%ORCA_PANE_KEY%"')
     expect(command).toContain('--data-urlencode "payload@-"')
     expect(command).toContain('/hook/codex')
@@ -877,16 +877,16 @@ describe('buildPosixAgentHookPostCommand', () => {
       const args = readFileSync(argsPath, 'utf8').trimEnd().split('\n')
       expect(args).toContain(`Content-Type: ${contentType}`)
       expect(args).toContain('http://127.0.0.1:1234/hook/claude')
-      expect(args).toContain('X-Orca-Agent-Hook-Token: token')
+      expect(args).toContain('X-OCC-Agent-Hook-Token: token')
       const payloadFlagIndex = args.lastIndexOf(flag)
       expect(args.slice(payloadFlagIndex, payloadFlagIndex + 2)).toEqual([flag, value])
       expect(readFileSync(payloadPath, 'utf8')).toBe(payload)
       if (transport === 'raw-json-v1') {
         expect(args).not.toContain('--data-urlencode')
-        const metadata = args.find((arg) => arg.startsWith('X-Orca-Agent-Hook-Meta: '))
+        const metadata = args.find((arg) => arg.startsWith('X-OCC-Agent-Hook-Meta: '))
         expect(metadata).toBeDefined()
         expect(
-          Buffer.from(metadata!.slice('X-Orca-Agent-Hook-Meta: '.length), 'base64').toString()
+          Buffer.from(metadata!.slice('X-OCC-Agent-Hook-Meta: '.length), 'base64').toString()
         ).toBe('tab:leaf\x1ftab\x1flaunch\x1ffolder:/path & space\x1fprod\x1f1')
       } else {
         expect(args).not.toContain('--data-binary')
@@ -905,7 +905,7 @@ describe('buildWindowsAgentHookCurlPostCommand', () => {
     expect(command).toContain('%SystemRoot%\\System32\\curl.exe')
     expect(command).toContain('http://127.0.0.1:%ORCA_AGENT_HOOK_PORT%/hook/codex')
     expect(command).toContain('-H "Content-Type: application/x-www-form-urlencoded"')
-    expect(command).toContain('-H "X-Orca-Agent-Hook-Token: %ORCA_AGENT_HOOK_TOKEN%"')
+    expect(command).toContain('-H "X-OCC-Agent-Hook-Token: %ORCA_AGENT_HOOK_TOKEN%"')
     expect(command).toContain('--data-urlencode "paneKey=%ORCA_PANE_KEY%"')
     expect(command).toContain('--data-urlencode "worktreeId=%ORCA_WORKTREE_ID%"')
     // payload@- preserves stdin’s UTF-8 bytes without code-page conversion.

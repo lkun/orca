@@ -248,7 +248,7 @@ describe('terminal HTTP links on a direct SSH pane', () => {
 describe('terminal HTTP links on a local pane', () => {
   const baseDeps = { worktreeId: 'wt-1', worktreePath: '/tmp', startupCwd: '/tmp' }
 
-  it('still opens an OSC 8 hyperlink in an Orca browser tab', () => {
+  it('still opens an OSC 8 hyperlink in an OCC browser tab', () => {
     expect(handleOscLink(URL, clickEvent(), { ...baseDeps, runtimeEnvironmentId: null })).toBe(true)
 
     expect(openRuntimeBrowserTabMock).toHaveBeenCalledWith({
@@ -260,7 +260,7 @@ describe('terminal HTTP links on a local pane', () => {
     expect(openUrlMock).not.toHaveBeenCalled()
   })
 
-  it('still opens a click-fallback activation in an Orca browser tab', () => {
+  it('still opens a click-fallback activation in an OCC browser tab', () => {
     const { terminal, registrations } = makeTerminal()
     const disposable = installHttpLinkClickFallback(terminal, { worktreeId: 'wt-1' })
 

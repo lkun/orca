@@ -59,7 +59,7 @@ export function nativeChatNoticeLook(block: NativeChatTextBlock): NativeChatNoti
   if (presentation === NATIVE_CHAT_STOPPED_BEFORE_START_PRESENTATION) {
     return { kind: 'aside' }
   }
-  // Orca stopped the reply, not the agent: stored red for clients that predate it, read as a notice.
+  // OCC stopped the reply, not the agent: stored red for clients that predate it, read as a notice.
   if (presentation === AGENT_SESSION_ORCA_STOP_PRESENTATION) {
     return { kind: 'line', tone: 'notice' }
   }

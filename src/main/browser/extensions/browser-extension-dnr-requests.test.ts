@@ -134,7 +134,7 @@ function headersReceived(
 mocks.tabs.add(TAB)
 afterEach(() => setBrowserSessionRequestDecider(null))
 
-describe('declarativeNetRequest in Orca request handlers', () => {
+describe('declarativeNetRequest in OCC request handlers', () => {
   it('does no work in a session whose extensions have no rules', async () => {
     const { session, runtime } = await loadedSession(blocker([]))
     expect(runtime.inUse).toBe(false)
@@ -175,7 +175,7 @@ describe('declarativeNetRequest in Orca request handlers', () => {
     })
   })
 
-  it("leaves Orca's own requests, the Web Store and extension URLs alone", async () => {
+  it("leaves OCC's own requests, the Web Store and extension URLs alone", async () => {
     const { session } = await loadedSession(
       blocker([{ id: 1, condition: { urlFilter: '*' }, action: { type: 'block' } }])
     )
@@ -257,10 +257,10 @@ describe('declarativeNetRequest in Orca request handlers', () => {
     expect(session.webRequest.onHeadersReceived).toHaveBeenCalledOnce()
     const request = details('https://site.example/page', { resourceType: 'subFrame' })
     expect(decider.beforeRequest(session, request)).toBeNull()
-    const headers = { 'User-Agent': 'Orca', Accept: '*/*' }
+    const headers = { 'User-Agent': 'OCC', Accept: '*/*' }
     expect(
       decider.beforeSendHeaders(session, { ...request, requestHeaders: headers }, headers)
-    ).toEqual({ 'User-Agent': 'Orca', Accept: '*/*', 'x-blocker': 'on' })
+    ).toEqual({ 'User-Agent': 'OCC', Accept: '*/*', 'x-blocker': 'on' })
     expect(
       decider.headersReceived(
         session,

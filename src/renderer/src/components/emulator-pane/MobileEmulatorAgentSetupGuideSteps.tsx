@@ -18,7 +18,7 @@ export function MobileEmulatorAgentSetupGuideSteps({
       <p className="text-sm font-medium">
         {translate(
           'auto.components.emulator.pane.MobileEmulatorAgentSetupGuideSteps.21f5687c07',
-          'Orca CLI skill'
+          'OCC CLI skill'
         )}
       </p>
       <AgentSkillSetupPanel
@@ -27,7 +27,7 @@ export function MobileEmulatorAgentSetupGuideSteps({
         className="min-w-0"
         title={translate(
           'auto.components.emulator.pane.MobileEmulatorAgentSetupGuideSteps.21f5687c07',
-          'Orca CLI skill'
+          'OCC CLI skill'
         )}
         description={translate(
           'auto.components.emulator.pane.MobileEmulatorAgentSetupGuideSteps.64fb057667',

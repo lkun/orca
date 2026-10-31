@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { isPluginJsonObject } from '../manifest/plugin-json-object'
 
 /**
- * The one wire envelope between Orca and plugin code: worker fork channel, panel frames and custom
+ * The one wire envelope between OCC and plugin code: worker fork channel, panel frames and custom
  * editor frames. It is internal: frames talk through the shell's `window.orca`, workers through the
  * `orca` object handed to `activate`, so the envelope can change without breaking plugins.
  * Ids are per direction: a `res` answers the other side's `req` with the same id.

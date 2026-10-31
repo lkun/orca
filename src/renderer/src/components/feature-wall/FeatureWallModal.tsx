@@ -38,14 +38,14 @@ export default function FeatureWallModal(): JSX.Element | null {
           <DialogTitle className="text-lg">
             {translate(
               'auto.components.feature.wall.FeatureWallModal.3567e147c8',
-              'Get to know Orca'
+              'Get to know OCC'
             )}
           </DialogTitle>
           {/* Provide Radix’s accessible description without duplicating visible tour copy. */}
           <DialogDescription className="sr-only">
             {translate(
               'auto.components.feature.wall.FeatureWallModal.33dca8bbbe',
-              'A short, workflow-by-workflow tour of Orca.'
+              'A short, workflow-by-workflow tour of OCC.'
             )}
           </DialogDescription>
         </DialogHeader>

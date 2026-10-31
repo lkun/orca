@@ -22,7 +22,7 @@ import { quotePosixShellDoubleQuotedApostrophe } from '../../shared/shell-argume
 const DISPATCHER_MARKER = '# orca-serve-bare-orca-dispatcher'
 
 export type LinuxBareOrcaDispatcherOptions = {
-  /** Packaged app resources root; the bundled `orca-ide` launcher lives under it. */
+  /** Packaged app resources root; the bundled `occ-ide` launcher lives under it. */
   resourcesPath: string
   homePath?: string
   /** Trusted caller override; production requires the complete AppImage runtime identity. */
@@ -46,12 +46,12 @@ export type LinuxBareOrcaDispatcherResult = {
   target: string | null
 }
 
-// Team launchers invoke bare `orca`, and a login shell can drop Orca's PATH entry ahead of it.
+// Team launchers invoke bare `orca`, and a login shell can drop OCC's PATH entry ahead of it.
 // A regular file avoids the installer's legacy-symlink cleanup.
 export async function installLinuxBareOrcaDispatcher(
   options: LinuxBareOrcaDispatcherOptions
 ): Promise<LinuxBareOrcaDispatcherResult> {
-  const dispatcherPath = join(options.homePath ?? homedir(), '.local', 'bin', 'orca')
+  const dispatcherPath = join(options.homePath ?? homedir(), '.local', 'bin', 'occ')
   if (existsSync(dispatcherPath) && !(await isOwnedDispatcher(dispatcherPath))) {
     return { state: 'skipped-foreign', dispatcherPath, target: null }
   }
@@ -75,7 +75,7 @@ export function buildBareOrcaCliScript(launcherPath: string): string {
 }
 
 /**
- * Orca's own children reach this app's CLI, or a clear error once it is gone, never another `orca`
+ * OCC's own children reach this app's CLI, or a clear error once it is gone, never another `orca`
  * (GNOME's screen reader shares the name). Anyone else gets the next real `orca` on PATH first.
  */
 export function buildBareOrcaDispatcherScript(launcherPath: string): string {
@@ -83,21 +83,21 @@ export function buildBareOrcaDispatcherScript(launcherPath: string): string {
     '#!/usr/bin/env bash',
     `launcher=${quotePosixShellDoubleQuotedApostrophe(launcherPath)}`,
     'gone() {',
-    `  printf 'orca: Orca is no longer installed at %s. Remove %s to stop this message.\\n' "$launcher" "\${BASH_SOURCE[0]}" >&2`,
+    `  printf 'orca: OCC is no longer installed at %s. Remove %s to stop this message.\\n' "$launcher" "\${BASH_SOURCE[0]}" >&2`,
     '  exit 127',
     '}',
-    // An agent's `orca …` must never start a talking screen reader, even once Orca is gone.
+    // An agent's `orca …` must never start a talking screen reader, even once OCC is gone.
     'if [ -n "${ORCA_CLI_BIN_DIR-}${ORCA_PANE_KEY-}${ORCA_USER_DATA_PATH-}" ]; then',
     '  [ -x "$launcher" ] && exec "$launcher" "$@"',
     '  gone',
     'fi',
-    // Skip every Orca dispatcher, not just this one, so none can hand the call back to Orca;
+    // Skip every OCC dispatcher, not just this one, so none can hand the call back to OCC;
     // the real target runs with nothing added to its environment. Relative entries depend on the
     // caller's folder, so only absolute ones count.
     'IFS=: read -r -a path_dirs <<< "${PATH-}"',
     'for dir in "${path_dirs[@]}"; do',
     '  case "$dir" in /*) ;; *) continue ;; esac',
-    '  candidate="$dir/orca"',
+    '  candidate="$dir/occ"',
     '  if [ -f "$candidate" ] && [ -x "$candidate" ] && ! [ "$candidate" -ef "${BASH_SOURCE[0]}" ]; then',
     '    marker=""',
     '    { IFS= read -r _ && IFS= read -r marker; } < "$candidate" 2>/dev/null',
@@ -112,9 +112,9 @@ export function buildBareOrcaDispatcherScript(launcherPath: string): string {
   ].join('\n')
 }
 
-/** Removes only Orca's own dispatcher; a user's `orca` at that path is left alone. */
+/** Removes only OCC's own dispatcher; a user's `orca` at that path is left alone. */
 export async function removeLinuxBareOrcaDispatcher(homePath = homedir()): Promise<boolean> {
-  const dispatcherPath = join(homePath, '.local', 'bin', 'orca')
+  const dispatcherPath = join(homePath, '.local', 'bin', 'occ')
   if (!(await isOwnedDispatcher(dispatcherPath))) {
     return false
   }

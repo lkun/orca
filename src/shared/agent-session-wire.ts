@@ -264,7 +264,7 @@ export type AgentSessionStatusSummary = {
 export type AgentSessionNamingError = {
   message: string
   failedAt: number
-  /** Names Orca-authored copy; `message` stays English for older clients. */
+  /** Names OCC-authored copy; `message` stays English for older clients. */
   messageCode?: string
 }
 

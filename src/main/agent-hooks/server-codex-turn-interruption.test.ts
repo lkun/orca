@@ -51,7 +51,7 @@ describe('Codex recorded turn interruption', () => {
         headers: {
           'Content-Type': 'application/json',
           Connection: 'close',
-          'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+          'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
         },
         body: JSON.stringify({
           paneKey: PANE,
@@ -75,7 +75,7 @@ describe('Codex recorded turn interruption', () => {
             headers: {
               'Content-Type': 'application/json',
               Connection: 'close',
-              'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+              'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
             },
             body: JSON.stringify({
               paneKey: PANE,

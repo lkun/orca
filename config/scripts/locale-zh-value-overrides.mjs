@@ -128,12 +128,12 @@ export const ZH_VALUE_OVERRIDES = {
   'Reply in this review thread': '在此评审线程中回复',
   'Failed to add review comment.': '添加评审评论失败。',
   'Localhost Worktree Labels': 'localhost 工作树标签',
-  'Open workspace ports as worktree-specific Orca localhost URLs so browser tabs are easier to tell apart.':
-    '将工作区端口作为工作树专属的 Orca localhost URL 打开，便于区分浏览器标签页。',
+  'Open workspace ports as worktree-specific OCC localhost URLs so browser tabs are easier to tell apart.':
+    '将工作区端口作为工作树专属的 OCC localhost URL 打开，便于区分浏览器标签页。',
   'Permanently deletes the remote Git worktrees and their branches. Cannot be undone.':
     '永久删除远程 Git 工作树及其分支。此操作不可撤销。',
-  'Clears them from Orca only. Remote files, worktrees, and branches are left untouched.':
-    '仅从 Orca 中清除。远程文件、工作树和分支均不受影响。',
+  'Clears them from OCC only. Remote files, worktrees, and branches are left untouched.':
+    '仅从 OCC 中清除。远程文件、工作树和分支均不受影响。',
   'GitHub reports this pull request is blocked': 'GitHub 报告此拉取请求已被阻塞',
   'GitHub requires review approval before this pull request can merge':
     'GitHub 需要评审批准才能合并此拉取请求',
@@ -154,16 +154,16 @@ export const ZH_VALUE_OVERRIDES = {
     '编辑器打开时运行一次托管评审详情生成。',
   'Show local Markdown review notes controls in rich editor mode.':
     '在富文本编辑器模式下显示本地 Markdown 评审笔记控件。',
-  'Orca IDE': 'Orca IDE',
-  'Orca first': 'Orca 优先',
-  'Orca Mobile': 'Orca Mobile',
-  'Orca logo': 'Orca 标志',
-  'Enjoying Orca?': '喜欢 Orca 吗？',
-  'Get to know Orca': '了解 Orca',
-  'Expand Orca': '展开 Orca',
-  'Support Orca': '支持 Orca',
-  'Restarting Orca…': '正在重启 Orca…',
-  'Show Orca Mobile Button': '显示 Orca Mobile 按钮',
+  'OCC IDE': 'OCC IDE',
+  'OCC first': 'OCC 优先',
+  'OCC Mobile': 'OCC Mobile',
+  'OCC logo': 'OCC 标志',
+  'Enjoying OCC?': '喜欢 OCC 吗？',
+  'Get to know OCC': '了解 OCC',
+  'Expand OCC': '展开 OCC',
+  'Support OCC': '支持 OCC',
+  'Restarting OCC…': '正在重启 OCC…',
+  'Show OCC Mobile Button': '显示 OCC Mobile 按钮',
   'Codex Accounts': 'Codex 账户',
   'Codex Account': 'Codex 账户',
   'Active Codex Account': '活跃 Codex 账户',
@@ -201,8 +201,8 @@ export const ZH_VALUE_OVERRIDES = {
   'Leave empty to use system proxy settings and inherited proxy environment variables.':
     '留空以使用系统代理设置和继承的代理环境变量。',
   'Proxy Command': '代理命令',
-  "Give agents direct access to Orca's browser so they can test pages, capture screenshots, and act on what they see.":
-    '让智能体直接访问 Orca 的浏览器，以便测试页面、捕获屏幕截图并根据所见内容执行操作。',
+  "Give agents direct access to OCC's browser so they can test pages, capture screenshots, and act on what they see.":
+    '让智能体直接访问 OCC 的浏览器，以便测试页面、捕获屏幕截图并根据所见内容执行操作。',
   'X finishes, send it the review task.”': 'X 完成后，把评审任务发给它。”',
   'Branch naming, base refs, and Git AI Author.': '分支命名、基础引用和 Git AI Author。',
   'You have unsaved Git AI Author changes. Leaving will discard them.':
@@ -236,7 +236,7 @@ export const ZH_VALUE_OVERRIDES = {
     '显示提示词缓存到期倒计时的计时器（Claude 智能体）。',
   'Claude caches your conversation to reduce costs. When idle too long the cache expires and the next message resends full context at higher cost. This shows a countdown so you know when to resume.':
     'Claude 会缓存对话以降低成本。空闲过久后缓存会过期，下一条消息将以更高成本重新发送完整上下文。此倒计时可帮助您了解何时继续。',
-  'from Orca. It is still on your disk.': '来自 Orca。它仍保留在您的磁盘上。',
+  'from OCC. It is still on your disk.': '来自 OCC。它仍保留在您的磁盘上。',
   'Pull request reopened': '拉取请求已重新打开',
   'Reopen PR': '重新打开 PR',
   'Reopened MR !{{value0}}': '已重新打开 MR !{{value0}}',

@@ -55,7 +55,7 @@ export function ensureBrowserPageWebview({
   webview = document.createElement('webview') as Electron.WebviewTag
   webview.setAttribute('partition', webviewPartition)
   webview.setAttribute('allowpopups', '')
-  // Electron spreads webpreferences verbatim; retain camelCase for fullscreen containment and keep the page canvas opaque over Orca’s themed host.
+  // Electron spreads webpreferences verbatim; retain camelCase for fullscreen containment and keep the page canvas opaque over OCC’s themed host.
   webview.setAttribute('webpreferences', ORCA_BROWSER_PAGE_GUEST_WEB_PREFERENCES_ATTRIBUTE)
   webview.style.display = 'flex'
   webview.style.flex = '1'

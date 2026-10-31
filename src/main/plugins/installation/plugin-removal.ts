@@ -22,7 +22,7 @@ export async function removeInstalledPlugin(input: {
   })
 }
 
-/** Removes a bundled install this Orca release no longer ships; any other source is left alone. */
+/** Removes a bundled install this OCC release no longer ships; any other source is left alone. */
 export async function retireBundledPlugin(input: {
   pluginsDir: string
   pluginsDataDir: string

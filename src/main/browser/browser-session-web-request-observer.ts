@@ -1,7 +1,7 @@
 /**
  * Electron allows one session.webRequest listener per event, and any listener at all turns off
  * extensions' own chrome.webRequest for the whole session (electron_browser_client.cc
- * WillCreateURLLoaderFactory checks HasListener). Orca's handlers report what they see here so
+ * WillCreateURLLoaderFactory checks HasListener). OCC's handlers report what they see here so
  * browser extensions can still observe requests (browser-extension-web-request.ts).
  */
 
@@ -47,7 +47,7 @@ export function setBrowserSessionWebRequestObserver(next: Observer): void {
   observer = next
 }
 
-/** Called by every Orca session.webRequest handler on browser sessions; must stay cheap. */
+/** Called by every OCC session.webRequest handler on browser sessions; must stay cheap. */
 export function reportBrowserSessionWebRequest(
   session: Electron.Session,
   event: ObservedWebRequestEvent,

@@ -22,7 +22,7 @@ import { getRemoteHostPlatform } from '../../ssh/ssh-remote-platform'
 // Pairing tokens in readiness require owner-only launch artifacts even under login umask 022.
 
 const posix = getRemoteHostPlatform('linux-x64')
-const READY_LINE = '{"type":"orca_server_ready","pairing":{"url":"orca://pair#token"}}'
+const READY_LINE = '{"type":"orca_server_ready","pairing":{"url":"occ://pair#token"}}'
 
 let home: string
 let baseDir: string

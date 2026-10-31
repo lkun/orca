@@ -20,7 +20,7 @@ async function makeFixture(): Promise<{ userDataPath: string; resourcesPath: str
   created.push(root)
   const resourcesPath = join(root, 'resources')
   mkdirSync(join(resourcesPath, 'bin'), { recursive: true })
-  writeFileSync(join(resourcesPath, 'bin', 'orca-ide'), '#!/usr/bin/env bash\n', 'utf8')
+  writeFileSync(join(resourcesPath, 'bin', 'occ-ide'), '#!/usr/bin/env bash\n', 'utf8')
   return { userDataPath: join(root, 'user-data'), resourcesPath }
 }
 
@@ -57,7 +57,7 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
     })
     expect(healed).not.toBeNull()
     const healedPath = join(healed!, 'orca')
-    expect(readFileSync(healedPath, 'utf8')).toContain('orca-ide')
+    expect(readFileSync(healedPath, 'utf8')).toContain('occ-ide')
     expect(statSync(healedPath).mode & 0o111).not.toBe(0)
   })
 
@@ -65,11 +65,11 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
     'routes first-use AppImage terminals through a fenced current mount without a live endpoint',
     async () => {
       const { userDataPath, resourcesPath } = await makeFixture()
-      const appImagePath = join(userDataPath, 'Orca.AppImage')
+      const appImagePath = join(userDataPath, 'OCC.AppImage')
       await mkdir(userDataPath, { recursive: true })
       await writeFile(appImagePath, '#!/usr/bin/env bash\n', { encoding: 'utf8', mode: 0o755 })
       const cacheRootPath = join(userDataPath, 'cache')
-      const liveLauncherPath = join(resourcesPath, 'bin', 'orca-ide')
+      const liveLauncherPath = join(resourcesPath, 'bin', 'occ-ide')
       writeFileSync(liveLauncherPath, '#!/usr/bin/env bash\nprintf live', 'utf8')
       chmodSync(liveLauncherPath, 0o755)
       const shimDir = ensureLinuxTerminalOrcaCliShimDir({
@@ -94,11 +94,11 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
     'refreshes restored terminals to the current AppImage mount',
     async () => {
       const { userDataPath, resourcesPath } = await makeFixture()
-      const appImagePath = join(userDataPath, 'Orca.AppImage')
+      const appImagePath = join(userDataPath, 'OCC.AppImage')
       await mkdir(userDataPath, { recursive: true })
       await writeFile(appImagePath, '#!/usr/bin/env bash\n', { encoding: 'utf8', mode: 0o755 })
       const cacheRootPath = join(userDataPath, 'cache')
-      const firstLauncher = join(resourcesPath, 'bin', 'orca-ide')
+      const firstLauncher = join(resourcesPath, 'bin', 'occ-ide')
       writeFileSync(firstLauncher, '#!/usr/bin/env bash\nprintf first', 'utf8')
       chmodSync(firstLauncher, 0o755)
       const options = {
@@ -112,7 +112,7 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
       const originalShim = readFileSync(shimPath, 'utf8')
 
       const nextResourcesPath = join(userDataPath, 'next-mount', 'resources')
-      const nextLauncher = join(nextResourcesPath, 'bin', 'orca-ide')
+      const nextLauncher = join(nextResourcesPath, 'bin', 'occ-ide')
       await mkdir(join(nextResourcesPath, 'bin'), { recursive: true })
       await writeFile(nextLauncher, '#!/usr/bin/env bash\nprintf next', { mode: 0o755 })
       await rm(firstLauncher)
@@ -134,11 +134,11 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
     'rejects a stale shim when its mount path is removed and reused',
     async () => {
       const { userDataPath, resourcesPath } = await makeFixture()
-      const appImagePath = join(userDataPath, 'Orca.AppImage')
+      const appImagePath = join(userDataPath, 'OCC.AppImage')
       const cacheRootPath = join(userDataPath, 'cache')
       await mkdir(userDataPath, { recursive: true })
       await writeFile(appImagePath, '#!/usr/bin/env bash\n', { mode: 0o755 })
-      const liveLauncher = join(resourcesPath, 'bin', 'orca-ide')
+      const liveLauncher = join(resourcesPath, 'bin', 'occ-ide')
       writeFileSync(liveLauncher, '#!/usr/bin/env bash\nprintf original', { mode: 0o755 })
       const shimDir = ensureLinuxTerminalOrcaCliShimDir({
         userDataPath,

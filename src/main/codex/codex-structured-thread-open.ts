@@ -34,7 +34,7 @@ function isCodexNoRolloutError(error: unknown, threadId: string): boolean {
   )
 }
 
-/** Set keys merge after Codex's inheritance filter, preserving Orca identity under inherit = core. */
+/** Set keys merge after Codex's inheritance filter, preserving OCC identity under inherit = core. */
 function shellEnvironmentSetConfig(
   env: Record<string, string> | undefined
 ): Record<string, string> {
@@ -147,7 +147,7 @@ export async function openCodexThread(
   }
 }
 
-/** Unrecognized policies remain the agent's settings rather than a guessed Orca mode. */
+/** Unrecognized policies remain the agent's settings rather than a guessed OCC mode. */
 export function reportedCodexPermissionMode(reply: Record<string, unknown>): string | null {
   const approval = reply.approvalPolicy ?? reply.approval_policy
   const reviewer = reply.approvalsReviewer ?? reply.approvals_reviewer

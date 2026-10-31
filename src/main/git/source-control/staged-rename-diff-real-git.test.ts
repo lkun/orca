@@ -24,7 +24,7 @@ describe('staged rename diffs with real Git', () => {
     repo = await mkdtemp(path.join(tmpdir(), 'orca-staged-rename-'))
     await git(['init'])
     await git(['config', 'user.email', 'test@example.invalid'])
-    await git(['config', 'user.name', 'Orca Test'])
+    await git(['config', 'user.name', 'OCC Test'])
     await writeFile(path.join(repo, OLD_PATH), ORIGINAL)
     await git(['add', '--all'])
     await git([

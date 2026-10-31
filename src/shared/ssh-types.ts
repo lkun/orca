@@ -14,10 +14,10 @@ export type SshRemoteRuntime = (typeof SSH_REMOTE_RUNTIMES)[number]
 export const SSH_REMOTE_RUNTIME_RUNGS = ['A', 'B', 'C', 'D', 'legacy'] as const
 export type SshRemoteRuntimeRung = (typeof SSH_REMOTE_RUNTIME_RUNGS)[number]
 
-/** Main-owned ladder cache; changes to glibc, pinned-runtime hash or Orca major invalidate it. */
+/** Main-owned ladder cache; changes to glibc, pinned-runtime hash or OCC major invalidate it. */
 export type SshRemoteRuntimeResolution = {
   rung: SshRemoteRuntimeRung
-  /** The classified refusal that stepped off Orca's pinned Node, when one did. */
+  /** The classified refusal that stepped off OCC's pinned Node, when one did. */
   pinnedRefusal?: string
   /** Epoch ms the refusal was proved; a refusal the host can lose expires from it. */
   refusedAt?: number
@@ -162,7 +162,7 @@ export type SshConfigHostSummary = {
   identityFile?: string
   proxyCommand?: string
   jumpHost?: string
-  /** True when an Orca SSH target already uses this config alias. */
+  /** True when an OCC SSH target already uses this config alias. */
   alreadyInOrca: boolean
   /** Deleted alias remains explicitly selectable; passive/Add all import excludes it until re-adoption or save. */
   previouslyRemoved?: boolean
@@ -245,7 +245,7 @@ export type SshConnectionState = {
   supportsFolderDownload?: boolean
   /** Remote OS detected by the SSH relay once available. */
   remotePlatform?: SshRemotePlatform
-  /** Set while connected without the Orca remote server (runtime ladder rung D). */
+  /** Set while connected without the OCC remote server (runtime ladder rung D). */
   plainSsh?: SshPlainSshMode
   /** Set while the relay runs on the opt-in host-Node runtime, an unsupported configuration. */
   hostNodeRuntime?: boolean
@@ -325,7 +325,7 @@ export type SshManagedServerStatus =
       detail?: string
       /** Relay terminals still running, when that is what keeps the host on the relay. */
       terminals?: number
-      /** Those terminals belong to another Orca desktop or session, so this one offers no move. */
+      /** Those terminals belong to another OCC desktop or session, so this one offers no move. */
       terminalsElsewhere?: boolean
       /** The refusal is only saved state the user may leave on this desktop ("Move anyway"). */
       canLeaveBehind?: true

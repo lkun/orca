@@ -633,7 +633,7 @@ describe('createDetectedAgentsSlice remote detection', () => {
 
   it('re-runs runtime detection after an empty result instead of pinning it', async () => {
     const store = createTestStore()
-    // Runtime Orca-serve path must retry empty detection after install/PATH fixes too, independently of SSH.
+    // Runtime OCC-serve path must retry empty detection after install/PATH fixes too, independently of SSH.
     let detectCalls = 0
     runtimeEnvironmentCall.mockImplementation(({ method }: { method: string }) => {
       let result: unknown

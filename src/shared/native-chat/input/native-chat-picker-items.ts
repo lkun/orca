@@ -103,7 +103,7 @@ export function buildNativeChatPickerItems(
         (sharedSigil && command.kindUnspecified && skillNames.has(command.name))
       )
   )
-  // Orca runs its own rows whatever the skills are called, so a namesake skill keeps its row.
+  // OCC runs its own rows whatever the skills are called, so a namesake skill keeps its row.
   const commandNames = new Set(
     resolvedCommands.filter((command) => !command.orcaOwned).map((command) => command.name)
   )

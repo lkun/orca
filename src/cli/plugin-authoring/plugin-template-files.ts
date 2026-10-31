@@ -1,4 +1,4 @@
-/** File helpers shared by the `orca plugin create` templates. */
+/** File helpers shared by the `occ plugin create` templates. */
 
 export type PluginTemplateInput = { publisher: string; id: string; name: string }
 
@@ -26,7 +26,7 @@ export function manifest(
     name: input.name,
     version: '0.1.0',
     description,
-    engines: { orca: ENGINE },
+    engines: { occ: ENGINE },
     ...fields
   })
 }
@@ -39,10 +39,10 @@ ${body}
 ## Develop
 
 \`\`\`sh
-orca plugin validate .
-orca plugin dev load .     # loads this folder into the running Orca; edits reload automatically
-orca plugin logs ${input.publisher}.${input.id}
-orca plugin dev unload .
+occ plugin validate .
+occ plugin dev load .     # loads this folder into the running OCC; edits reload automatically
+occ plugin logs ${input.publisher}.${input.id}
+occ plugin dev unload .
 \`\`\`
 
 Set \`publisher\` to the GitHub or GitLab user or organization that owns the repository before

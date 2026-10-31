@@ -4,7 +4,7 @@ set -uo pipefail
 
 case_name=${1:?launch case is required}
 extracted_root=${ORCA_TEST_EXTRACTED_ROOT:-/artifacts/squashfs-root}
-launcher="$extracted_root/resources/bin/orca-ide"
+launcher="$extracted_root/resources/bin/occ-ide"
 command_timeout_seconds=${ORCA_TEST_COMMAND_TIMEOUT_SECONDS:-60}
 
 if ((EUID == 0)); then
@@ -39,13 +39,13 @@ case "$case_name" in
   nofuse-userns-bundled-worktree) command=("$launcher" worktree list) ;;
   # Direct binaries must hand off before Ozone initializes.
   nofuse-nosandbox-direct-binary-skills)
-    command=("$extracted_root/orca-ide" --no-sandbox skills --help)
+    command=("$extracted_root/occ-ide" --no-sandbox skills --help)
     ;;
   nofuse-nosandbox-direct-binary-gui)
-    command=("$extracted_root/orca-ide" --no-sandbox)
+    command=("$extracted_root/occ-ide" --no-sandbox)
     ;;
   stale-display-nosandbox-direct-binary-gui)
-    command=("$extracted_root/orca-ide" --no-sandbox)
+    command=("$extracted_root/occ-ide" --no-sandbox)
     ;;
   *)
     echo "UNKNOWN_CASE $case_name"

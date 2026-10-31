@@ -38,7 +38,7 @@ export function dismissRememberedPushNotifications(
   })
 }
 
-// Pushes shown while Orca was closed are absent from the local scheduling registry.
+// Pushes shown while OCC was closed are absent from the local scheduling registry.
 export async function dismissPresentedPushNotification(
   notificationId: string,
   hostFingerprint: string,

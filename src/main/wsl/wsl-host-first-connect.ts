@@ -55,7 +55,7 @@ export async function connectForWslHostAdd(
   return { connection }
 }
 
-/** A distro Orca can't run in reads apart from a connect that may work on retry. */
+/** A distro OCC can't run in reads apart from a connect that may work on retry. */
 function connectFailureKind(error: unknown): WslHostAddRefusal['kind'] {
   return error instanceof OrcadHostUnsupportedError ||
     error instanceof RemoteNodeRuntimeSelfTestError

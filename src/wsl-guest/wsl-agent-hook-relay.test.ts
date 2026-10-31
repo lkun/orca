@@ -132,7 +132,7 @@ describe('RelayAgentHookServer host-given coordinates (WSL relay)', () => {
 
     const rejected = await fetch(`http://127.0.0.1:${port}/hook/claude`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': 'wrong-token' },
+      headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': 'wrong-token' },
       body: '{}'
     })
     expect(rejected.status).toBe(403)
@@ -142,7 +142,7 @@ describe('RelayAgentHookServer host-given coordinates (WSL relay)', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Orca-Agent-Hook-Token': 'host-issued-token'
+        'X-OCC-Agent-Hook-Token': 'host-issued-token'
       },
       body: JSON.stringify({
         paneKey: PANE_KEY,

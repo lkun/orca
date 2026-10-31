@@ -104,7 +104,7 @@ ORCA_BACKGROUND_LAUNCH=1 pnpm test tests/e2e/cross-version-wire/release-source-c
 
 ## P3 remains an experiment
 
-P3 shares the tracked source of new Orca worktrees. It requires independent writable files,
+P3 shares the tracked source of new OCC worktrees. It requires independent writable files,
 Git indexes, and matching checkout settings, and has more compatibility risk than P2's
 immutable test source. The APFS experiment demonstrated substantial storage savings but
 variable creation time and stays out of this change. Its code, measurements, and design notes

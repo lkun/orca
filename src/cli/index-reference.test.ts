@@ -414,7 +414,7 @@ describe('reference CLI', () => {
       error: {
         code: 'incompatible_runtime',
         message:
-          'This Orca host does not support reference commands yet. Update Orca on the execution host.'
+          'This OCC host does not support reference commands yet. Update OCC on the execution host.'
       }
     })
     expect(process.exitCode).toBe(1)

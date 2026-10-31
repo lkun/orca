@@ -254,7 +254,7 @@ export function registerPtyConnectionCommandFinishedCleanupTests(): void {
 
     it.each([
       ['clears stale sleeping identity after a confirmed return to shell', false],
-      // Hibernation records resume before kill; the exposed shell is Orca’s own stop rather than an independent agent exit.
+      // Hibernation records resume before kill; the exposed shell is OCC’s own stop rather than an independent agent exit.
       ['keeps sleeping identity when the shell surfaces during an intentional stop', true]
     ])('%s', async (_label, stoppingOnPurpose) => {
       vi.useFakeTimers()

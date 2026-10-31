@@ -34,7 +34,7 @@ export function upgradePluginManifestV1Names(raw: unknown): unknown {
   if (!isRecord(raw.contributes)) {
     return { ...raw, capabilities }
   }
-  // Why drop agents: format 1 accepted entries Orca never read, so they stay inert forever.
+  // Why drop agents: format 1 accepted entries OCC never read, so they stay inert forever.
   const {
     agents: _inert,
     panels,

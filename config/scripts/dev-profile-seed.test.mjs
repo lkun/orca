@@ -83,7 +83,7 @@ describe('seedDevProfile', () => {
       )
     ).toBe('{"ciphertext":"x"}')
     expect(readdirSync(target).sort()).toEqual([
-      'orca-dev-seed.json',
+      'occ-dev-seed.json',
       'orca-profile-index.json',
       'profiles'
     ])

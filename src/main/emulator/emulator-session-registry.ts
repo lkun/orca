@@ -75,7 +75,7 @@ export class EmulatorSessionRegistry {
     }
   }
 
-  /** Drop managed records whose device stopped outside Orca; true while any managed device still runs. */
+  /** Drop managed records whose device stopped outside OCC; true while any managed device still runs. */
   async pruneGoneManagedSessions(
     backendForKind: (
       kind: EmulatorBackendKind

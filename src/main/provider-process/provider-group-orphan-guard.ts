@@ -3,7 +3,7 @@ import { recordSelfInitiatedTreeKill } from '../crash-reporting/self-initiated-t
 import { setTimeout as delay } from 'node:timers/promises'
 import { readPosixProcessRow, type ProcessRowRead } from './provider-process-row-read'
 
-// POSIX supervisor SIGKILL can orphan its detached provider group; Orca must finish the stop.
+// POSIX supervisor SIGKILL can orphan its detached provider group; OCC must finish the stop.
 
 // The supervisor disconnects right after reporting, so this bounds only a wedged channel.
 const REPORT_END_WAIT_MS = 1_000

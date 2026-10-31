@@ -13,7 +13,7 @@ function issue(overrides: Partial<JiraIssue> = {}): JiraIssue {
     siteId: 'cloud',
     title: 'Link Jira',
     url: 'https://company.atlassian.net/browse/ORCA-123',
-    project: { id: '10', key: 'ORCA', name: 'Orca' },
+    project: { id: '10', key: 'ORCA', name: 'OCC' },
     issueType: { id: '1', name: 'Task' },
     status: { id: '1', name: 'Open', categoryKey: 'new', categoryName: 'To Do' },
     labels: [],

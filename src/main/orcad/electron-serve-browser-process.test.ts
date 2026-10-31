@@ -49,7 +49,7 @@ import {
 } from '../runtime/runtime-browser-commands-factory'
 
 vi.mock('./orcad-browser-provider', () => ({ resolveOrcadBrowserProvider: vi.fn() }))
-// The fixture's /Applications/Orca.app path would open a real macOS install park.
+// The fixture's /Applications/OCC.app path would open a real macOS install park.
 vi.mock('./orcad-browser-install-park', () => ({ openOrcadBrowserInstallPark: () => null }))
 
 vi.mock('electron', () => ({ app: { getPath: () => harnessRoot }, ipcMain: {} }))
@@ -64,7 +64,7 @@ import { browserProfileRpcFixture } from '../runtime/browser/browser-profile-rpc
 const actual = await vi.importActual<typeof OrcadBrowserProviderModule>('./orcad-browser-provider')
 
 const FAKE_SIDECAR = join(import.meta.dirname, '__fixtures__', 'fake-orcad-electron-sidecar.cjs')
-const INSTALLED_EXECUTABLE = join('/Applications', 'Orca.app', 'Contents', 'MacOS', 'Orca')
+const INSTALLED_EXECUTABLE = join('/Applications', 'OCC.app', 'Contents', 'MacOS', 'OCC')
 
 const AGENT_BROWSER_ENVIRONMENT_KEYS = [
   'AGENT_BROWSER_ARGS',

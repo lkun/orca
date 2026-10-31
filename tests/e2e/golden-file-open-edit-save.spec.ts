@@ -42,7 +42,7 @@ test('@golden opens, edits, saves, and reopens a tracked file', async ({
   })
   const editor = orcaPage.locator('.rich-markdown-editor')
   await expect(editor).toBeVisible({ timeout: 25_000 })
-  await expect(editor).toContainText('Orca E2E Test Repo')
+  await expect(editor).toContainText('OCC E2E Test Repo')
   await editor.click()
   await orcaPage.keyboard.press('ControlOrMeta+End')
   await orcaPage.keyboard.press('Enter')

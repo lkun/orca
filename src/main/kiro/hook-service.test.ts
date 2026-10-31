@@ -8,7 +8,7 @@ import { wrapWindowsBatchHookCommand } from '../agent-hooks/windows-direct-cmd-h
 import { KiroHookService } from './hook-service'
 import { getKiroManagedCommandMatcher, KIRO_HOOK_EVENTS } from './hook-settings'
 
-// Isolate HOME and USERPROFILE so tests cannot write real Kiro or Orca configs on any OS.
+// Isolate HOME and USERPROFILE so tests cannot write real Kiro or OCC configs on any OS.
 let home: string
 let originalHome: string | undefined
 let originalUserProfile: string | undefined
@@ -126,7 +126,7 @@ describe('KiroHookService', () => {
 
     const result = service.getStatus()
     expect(result.state).toBe('partial')
-    expect(result.detail).toContain('later.json has no Orca hooks')
+    expect(result.detail).toContain('later.json has no OCC hooks')
   })
 
   it('reports a missing launcher as partial instead of installed', () => {

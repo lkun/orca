@@ -176,7 +176,7 @@ describe('folder-workspace host attribution', () => {
 })
 
 const AMBIGUOUS_REFUSAL =
-  'The automation workspace spans more than one host, so Orca cannot tell which one to run it on.'
+  'The automation workspace spans more than one host, so OCC cannot tell which one to run it on.'
 
 /** Create through Store so normalization cannot invalidate the seeded setup before the ambiguity check. */
 async function ambiguousStore() {

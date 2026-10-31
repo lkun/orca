@@ -172,7 +172,7 @@ export function mapGhosttyToOrca(
       return { key: 'terminalPaddingY', value: num }
     },
 
-    // Pixel offsets need rendered cell height; accept percentages only within Orca's [1, 3] line-height range.
+    // Pixel offsets need rendered cell height; accept percentages only within OCC's [1, 3] line-height range.
     'adjust-cell-height': (v) => {
       const match = /^\+?(\d+(?:\.\d+)?)%$/.exec(v.trim())
       if (!match) {
@@ -293,7 +293,7 @@ export function mapGhosttyToOrca(
       continue
     }
 
-    // Orca preserves only whether blur is enabled; report radius loss only for nonzero values.
+    // OCC preserves only whether blur is enabled; report radius loss only for nonzero values.
     if (
       key === 'background-blur-radius' &&
       !Array.isArray(result) &&

@@ -160,7 +160,7 @@ export async function fastForwardLocalBaseBranch(
     }
     return { status: 'updated', ...owner }
   } catch (error) {
-    // A concurrent pull/Orca update may already have moved local.
+    // A concurrent pull/OCC update may already have moved local.
     if (await localContains(git, repoPath, fullRef, remoteOid)) {
       return { status: 'updated', ...owner }
     }

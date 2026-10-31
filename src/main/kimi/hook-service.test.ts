@@ -98,7 +98,7 @@ describe('KimiHookService', () => {
       writeFileSync(configPath(), `${userConfig}\n${buildManagedKimiHooksBlock(legacyCommand)}\n`)
 
       const service = new KimiHookService()
-      // The stale entry is still Orca's, so status must not claim nothing is installed.
+      // The stale entry is still OCC's, so status must not claim nothing is installed.
       expect(service.getStatus().state).toBe('installed')
       expect(service.install().state).toBe('installed')
 

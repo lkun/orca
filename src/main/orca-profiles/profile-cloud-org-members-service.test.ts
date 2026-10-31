@@ -82,7 +82,7 @@ const roster: OrcaOrgMembersRoster = {
   canManageMembers: true
 }
 
-describe('Orca cloud org members service (configured)', () => {
+describe('OCC cloud org members service (configured)', () => {
   beforeEach(() => {
     userDataPath = mkdtempSync(join(tmpdir(), 'orca-org-members-'))
     runWithFreshOrcaCloudSessionMock.mockReset()
@@ -181,7 +181,7 @@ describe('Orca cloud org members service (configured)', () => {
   })
 })
 
-describe('Orca cloud org members service (dev auth)', () => {
+describe('OCC cloud org members service (dev auth)', () => {
   beforeEach(() => {
     userDataPath = mkdtempSync(join(tmpdir(), 'orca-org-members-dev-'))
     runWithFreshOrcaCloudSessionMock.mockReset()

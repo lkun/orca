@@ -85,7 +85,7 @@ describe('declarativeNetRequest frame state', () => {
       resolved++
       return registered ? 11 : -1
     })
-    // A restored tab's first requests come before Orca's window lists it.
+    // A restored tab's first requests come before OCC's window lists it.
     expect(tracker.tabIdFor(11)).toBe(-1)
     registered = true
     resolved = 0

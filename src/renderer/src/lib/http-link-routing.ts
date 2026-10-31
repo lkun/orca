@@ -37,7 +37,7 @@ export type OpenHttpLinkOptions = {
   allowClientBrowserFallback?: boolean
   /** Unconditional: always use the system browser regardless of settings. */
   forceSystemBrowser?: boolean
-  /** Unconditional for local sources: open inside Orca regardless of settings. */
+  /** Unconditional for local sources: open inside OCC regardless of settings. */
   forceInApp?: boolean
   /** The Shift escape-hatch modifier was held; resolveModifierRouting decides what it means. */
   modifierHeld?: boolean

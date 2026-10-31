@@ -45,7 +45,7 @@ describe('Hermes captured hook readiness', () => {
   describe('Hermes TUI readiness from a captured PTY', () => {
     it('settles tui-idle on a ready composer after the session-boundary hook', async () => {
       const { runtime, handle } = await readyPane()
-      // What Orca's own managed plugin sends for `on_session_start`.
+      // What OCC's own managed plugin sends for `on_session_start`.
       runtime.onPtyData(
         TRANSCRIPT_PANE_PTY_ID,
         status('on_session_start', { session_id: 's1' }),
@@ -328,7 +328,7 @@ describe('Canonical hook status readiness', () => {
 
     // Input starts a possible new turn, including typed agent restarts; prior done hooks cannot settle it.
     it.each([
-      ['a prompt Orca sent', 'next task\r'],
+      ['a prompt OCC sent', 'next task\r'],
       ['the user restarting the agent in the same shell', 'pi\r']
     ])('reads no done from before %s', async (_label, input) => {
       const before = Date.now() - 1000

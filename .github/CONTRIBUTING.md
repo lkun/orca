@@ -1,16 +1,16 @@
-# Contributing to Orca
+# Contributing to OCC
 
-Thanks for contributing to Orca.
+Thanks for contributing to OCC.
 
 ## Before You Start
 
 - Keep changes scoped to a clear user-facing improvement, bug fix, or refactor.
-- Orca targets macOS, Linux, and Windows. Every change must stay compatible with all three platforms unless the code is explicitly guarded by a runtime platform check.
+- OCC targets macOS, Linux, and Windows. Every change must stay compatible with all three platforms unless the code is explicitly guarded by a runtime platform check.
 - For keyboard shortcuts, use runtime platform checks in renderer code and `CmdOrCtrl` in Electron menu accelerators.
 - For shortcut labels, show `⌘` and `⇧` on macOS, and `Ctrl+` and `Shift+` on Linux and Windows.
 - For file paths, use Node or Electron path utilities such as `path.join`.
-- Orca must work against local repositories, remote servers, and SSH worktrees. Do not assume a process, file, credential, shell, or network path exists only on the local machine.
-- Orca supports many CLI agents, integrations, and git providers. Keep generic behavior provider-neutral; guard integration-specific logic behind explicit checks.
+- OCC must work against local repositories, remote servers, and SSH worktrees. Do not assume a process, file, credential, shell, or network path exists only on the local machine.
+- OCC supports many CLI agents, integrations, and git providers. Keep generic behavior provider-neutral; guard integration-specific logic behind explicit checks.
 - Keep changes well-engineered and performant: follow existing architecture, avoid unnecessary work in hot paths, clean up owned resources, and use concrete module names.
 - For UI work, follow [`docs/STYLEGUIDE.md`](../docs/STYLEGUIDE.md), use the tokens and shadcn primitives it specifies, and verify polished behavior across platforms, light/dark mode, and SSH latency.
 
@@ -66,33 +66,33 @@ pnpm -C mobile install --frozen-lockfile
 
 `pnpm dev` in a linked Git worktree uses its own userData profile, renderer port, and remote
 debugging (CDP) port, so dev instances in different worktrees run side by side. The main checkout
-keeps the shared `orca-dev` profile. Ports are derived from the worktree path and move to the next
+keeps the shared `occ-dev` profile. Ports are derived from the worktree path and move to the next
 free port when taken: renderer ports start at 15200 and CDP ports at 9333.
 
 On startup the runner prints one stdout line and writes the same JSON to `out/dev-instance.json`:
 
 ```text
-ORCA_DEV_INSTANCE {"userData":".../orca-dev-wt/1d3830d4d3","profile":"worktree","rendererPort":15339,"rendererUrl":"http://localhost:15339","cdpPort":9513,"cdpUrl":"http://127.0.0.1:9513","repoRoot":"...","runnerPid":4242}
+ORCA_DEV_INSTANCE {"userData":".../occ-dev-wt/1d3830d4d3","profile":"worktree","rendererPort":15339,"rendererUrl":"http://localhost:15339","cdpPort":9513,"cdpUrl":"http://127.0.0.1:9513","repoRoot":"...","runnerPid":4242}
 ```
 
 | Option                                                                  | Effect                                                     |
 | ----------------------------------------------------------------------- | ---------------------------------------------------------- |
-| `pnpm dev --shared-profile` or `ORCA_DEV_PROFILE=shared`                | Use the shared `orca-dev` profile                          |
+| `pnpm dev --shared-profile` or `ORCA_DEV_PROFILE=shared`                | Use the shared `occ-dev` profile                          |
 | `pnpm dev --worktree-profile` or `ORCA_DEV_PROFILE=worktree`            | Use a per-worktree profile, including in the main checkout |
 | `ORCA_DEV_USER_DATA_PATH=<dir>`                                         | Use an explicit profile directory                          |
 | `REMOTE_DEBUGGING_PORT=<port>`, `ORCA_DEV_RENDERER_PORT=<port>`         | Pin a port                                                 |
 | `pnpm dev --seed-profile[=<dir>]` or `ORCA_DEV_SEED_PROFILE=<dir or 1>` | Seed an empty profile on first launch                      |
 
-Per-worktree profiles live in `orca-dev-wt/<hash>` next to `orca-dev` (`~/Library/Application
+Per-worktree profiles live in `occ-dev-wt/<hash>` next to `occ-dev` (`~/Library/Application
 Support` on macOS, `%APPDATA%` on Windows, `$XDG_CONFIG_HOME` or `~/.config` on Linux). The
 automatic storage cleanup removes them once their worktree is gone and nothing still runs from
-them. `config/scripts/orca-dev.mjs` and the `orca-dev` terminal wrapper target the profile this
+them. `config/scripts/occ-dev.mjs` and the `occ-dev` terminal wrapper target the profile this
 checkout's `pnpm dev` used.
 
 Seeding copies a slim set of state from another profile: projects, workspaces, settings, SSH
-targets, and the Orca account session. Terminal sessions, PTY leases, automations, caches, logs,
+targets, and the OCC account session. Terminal sessions, PTY leases, automations, caches, logs,
 and lock files are not copied, and the source profile is only read. The default source is
-`orca-dev`, or the installed app's profile when `orca-dev` is empty. Seed from `orca-dev` when you
+`occ-dev`, or the installed app's profile when `occ-dev` is empty. Seed from `occ-dev` when you
 need the signed-in account session: dev builds cannot decrypt secrets the installed app encrypted.
 
 ```bash
@@ -284,6 +284,6 @@ Release candidates use a separate cask token:
 brew install --cask stablyai/orca/orca@rc
 ```
 
-The two casks conflict because both install `Orca.app`. Switch channels with a
+The two casks conflict because both install `OCC.app`. Switch channels with a
 normal `brew uninstall --cask` followed by the install for the other channel.
-Do not use `--zap` unless you intentionally want to remove local Orca state.
+Do not use `--zap` unless you intentionally want to remove local OCC state.

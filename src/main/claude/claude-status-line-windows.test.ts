@@ -114,7 +114,7 @@ describe.skipIf(process.platform !== 'win32')('Claude statusLine delivery on Win
     const listener = await startStatusLineListener()
     server = listener.server
     const baseEnv = Object.fromEntries(
-      // Isolate live Orca endpoints and inherited daemon-worker guards.
+      // Isolate live OCC endpoints and inherited daemon-worker guards.
       Object.entries(process.env).filter(([key]) => !/^(ORCA|CLAUDE)_/.test(key))
     )
     const run = (program: string, args: string[], paneId: number) =>

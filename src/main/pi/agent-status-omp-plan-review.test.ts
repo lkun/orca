@@ -48,7 +48,7 @@ function createPlanReviewContext(): {
 }
 
 describe('OMP plan review forwarding', () => {
-  it('posts the open review and answers it from the terminal input Orca writes', async () => {
+  it('posts the open review and answers it from the terminal input OCC writes', async () => {
     const harness = createAgentStatusExtensionHarness({ kind: 'omp' })
     const { ctx, resolvePlanReview, readInput } = createPlanReviewContext()
 

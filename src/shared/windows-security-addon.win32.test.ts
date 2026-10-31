@@ -19,7 +19,7 @@ import {
 const INHERITED_ACE = 0x10
 import { removeTreeSync } from './windows-transient-lock-removal'
 
-/** Verify Orca’s native addon against real NTFS DACLs; upstream tests cannot establish our secure-file assumptions. */
+/** Verify OCC’s native addon against real NTFS DACLs; upstream tests cannot establish our secure-file assumptions. */
 const describeOnWindows = process.platform === 'win32' ? describe : describe.skip
 
 describeOnWindows('native windows-security addon against a real filesystem', () => {
@@ -34,7 +34,7 @@ describeOnWindows('native windows-security addon against a real filesystem', () 
     }
     addon = loaded.addon
     sid = loaded.userSid
-    root = mkdtempSync(join(tmpdir(), 'orca-windows-security-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-windows-security-'))
   })
 
   afterAll(() => {

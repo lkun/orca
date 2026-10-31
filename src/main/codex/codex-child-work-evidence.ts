@@ -258,7 +258,7 @@ export class CodexChildWorkEvidence {
       ...(facts.totalTokens !== undefined ? { totalTokens: facts.totalTokens } : {}),
       ...(lastMessage ? { lastMessage } : {}),
       ...(spawner && spawner !== this.primaryThreadId ? { ownerId: spawner } : {}),
-      // `turn/interrupt` reaches a child thread's turn on every Codex Orca runs.
+      // `turn/interrupt` reaches a child thread's turn on every Codex OCC runs.
       stoppable: true
     }
   }

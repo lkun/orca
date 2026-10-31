@@ -182,7 +182,7 @@ describe('prepareAiVaultSessionForFork', () => {
     })
 
     await expect(prepareAiVaultSessionForFork(owned)).rejects.toThrow(
-      'Update Orca on the host that runs this chat to resume it in a new CLI.'
+      'Update OCC on the host that runs this chat to resume it in a new CLI.'
     )
   })
 })

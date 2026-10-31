@@ -11,7 +11,7 @@ import {
 /** Keep the per-chat path in the child environment rather than generated skill text. */
 export const NATIVE_CHAT_SCRATCH_DIR_ENV = 'ORCA_CHAT_SCRATCH_DIR'
 
-/** Strip the legacy name so launching Orca from a chat cannot leak that folder to new agents. */
+/** Strip the legacy name so launching OCC from a chat cannot leak that folder to new agents. */
 export const LEGACY_NATIVE_CHAT_VISUALS_DIR_ENV = 'ORCA_CHAT_VISUALS_DIR'
 
 export type NativeChatVisualsLaunch = {

@@ -1,7 +1,7 @@
 /**
  * When the E9 guard may re-issue `wsl --terminate`: a runner's terminate can fail to take, leaving
- * the distro listed with nothing from Orca launched since. Retrying then is safe; retrying after
- * any Orca wsl.exe launch, terminal spawn or UNC touch could hide the very boot the guard exists to catch.
+ * the distro listed with nothing from OCC launched since. Retrying then is safe; retrying after
+ * any OCC wsl.exe launch, terminal spawn or UNC touch could hide the very boot the guard exists to catch.
  */
 import { PTY_SPAWN, UNC_TOUCH, type DiagnosticRecord } from './wsl-boot-diagnostics-log'
 
@@ -14,7 +14,7 @@ export type TerminateRetryState = {
   retried: boolean
   confirmedStopped: boolean
   msSinceTerminate: number
-  /** Orca's spawn-log records since just before the first terminate. */
+  /** OCC's spawn-log records since just before the first terminate. */
   spawnsSinceTerminate: readonly DiagnosticRecord[]
 }
 
@@ -24,7 +24,7 @@ export function orcaWslLaunches(spawns: readonly DiagnosticRecord[]): Diagnostic
   )
 }
 
-/** One retry only, only while still listed, only once the first had time, only if Orca launched nothing. */
+/** One retry only, only while still listed, only once the first had time, only if OCC launched nothing. */
 export function shouldRetryTerminate(state: TerminateRetryState): boolean {
   return (
     !state.retried &&

@@ -95,12 +95,12 @@ function refreshFailureDescription(
     const explanation = worktreeName
       ? translate(
           'auto.store.slices.worktrees.localBaseRefShallowHistoryNamed',
-          '"{{value0}}" was created from {{value1}} and is unaffected. Orca could not also update your local {{value2}} branch because this clone only has recent history, so Git cannot confirm local {{value2}} is just behind. To fix this for every new workspace, run once:',
+          '"{{value0}}" was created from {{value1}} and is unaffected. OCC could not also update your local {{value2}} branch because this clone only has recent history, so Git cannot confirm local {{value2}} is just behind. To fix this for every new workspace, run once:',
           { value0: worktreeName, value1: result.baseRef, value2: result.localBranch }
         )
       : translate(
           'auto.store.slices.worktrees.localBaseRefShallowHistory',
-          'Your workspace was created from {{value0}} and is unaffected. Orca could not also update your local {{value1}} branch because this clone only has recent history, so Git cannot confirm local {{value1}} is just behind. To fix this for every new workspace, run once:',
+          'Your workspace was created from {{value0}} and is unaffected. OCC could not also update your local {{value1}} branch because this clone only has recent history, so Git cannot confirm local {{value1}} is just behind. To fix this for every new workspace, run once:',
           { value0: result.baseRef, value1: result.localBranch }
         )
     return (
@@ -116,7 +116,7 @@ function refreshFailureDescription(
   return worktreeName
     ? translate(
         'auto.store.slices.worktrees.localBaseRefRefreshFailedDescriptionNamed',
-        'Workspace "{{value0}}" was created from {{value1}}, but Orca could not fast-forward local {{value2}}. {{value3}}',
+        'Workspace "{{value0}}" was created from {{value1}}, but OCC could not fast-forward local {{value2}}. {{value3}}',
         {
           value0: worktreeName,
           value1: result.baseRef,
@@ -126,7 +126,7 @@ function refreshFailureDescription(
       )
     : translate(
         'auto.store.slices.worktrees.903b51c2ed',
-        'Workspace created from {{value0}}, but Orca could not fast-forward local {{value1}}. {{value2}}',
+        'Workspace created from {{value0}}, but OCC could not fast-forward local {{value1}}. {{value2}}',
         { value0: result.baseRef, value1: result.localBranch, value2: detail }
       )
 }
@@ -142,7 +142,7 @@ function stopRefreshingLocalBaseRef(
       toast.success(
         translate(
           'auto.store.slices.worktrees.localBaseRefRefreshTurnedOff',
-          'Orca will no longer update local {{value0}}',
+          'OCC will no longer update local {{value0}}',
           { value0: localBranch }
         ),
         {
@@ -261,7 +261,7 @@ export function showLocalBaseRefRefreshToast(
             <TooltipContent side="top" sideOffset={6} className="max-w-72">
               {translate(
                 'auto.store.slices.worktrees.localBaseRefRefreshTurnOffTooltip',
-                'Turns off the Orca setting {{value0}}. Orca will stop updating local {{value1}} when you create a workspace, and this warning will stop appearing. New workspaces are unaffected. Turn it back on anytime in Settings › Git.',
+                'Turns off the OCC setting {{value0}}. OCC will stop updating local {{value1}} when you create a workspace, and this warning will stop appearing. New workspaces are unaffected. Turn it back on anytime in Settings › Git.',
                 { value0: getKeepLocalMainUpToDateTitle(), value1: result.localBranch }
               )}
             </TooltipContent>

@@ -13,7 +13,7 @@ const ORCA_DISPATCH_TASK_ID_SCAN_LIMIT = 1024
 // Bound searches past multi-KB CLI preambles so malformed large prompts cannot force a full scan.
 const ORCA_DISPATCH_TASK_MARKER_SCAN_LIMIT = 32_768
 
-/** True when the live prompt is still an Orca dispatch turn (not sticky metadata alone). */
+/** True when the live prompt is still an OCC dispatch turn (not sticky metadata alone). */
 export function isOrcaDispatchPrompt(prompt: string): boolean {
   return findOrcaDispatchPreambleStart(prompt) !== -1
 }

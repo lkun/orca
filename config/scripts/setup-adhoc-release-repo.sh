@@ -25,7 +25,7 @@ else
   # --add-readme supplies the commit required to create a release tag in a new repo.
   gh repo create "$ADHOC_REPO" \
     --public \
-    --description "Adhoc macOS dev builds of Orca, cut from unlanded branches. Not a source repo." \
+    --description "Adhoc macOS dev builds of OCC, cut from unlanded branches. Not a source repo." \
     --add-readme \
     --disable-issues \
     --disable-wiki ||

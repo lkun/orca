@@ -71,11 +71,11 @@ export function getDeleteWorktreeToastCopy(
         description: isProvenLivePtyRemovalError(error)
           ? translate(
               'auto.components.sidebar.delete.worktree.toast.unstoppedPtyLive',
-              'This workspace still has running terminals, so Orca stopped before deleting any files. Force Delete will kill them and discard any uncommitted work they hold.'
+              'This workspace still has running terminals, so OCC stopped before deleting any files. Force Delete will kill them and discard any uncommitted work they hold.'
             )
           : translate(
               'auto.components.sidebar.delete.worktree.toast.unstoppedPty',
-              'Orca could not confirm every terminal in this workspace has exited, so it stopped before deleting any files. Use Force Delete to remove it anyway.'
+              'OCC could not confirm every terminal in this workspace has exited, so it stopped before deleting any files. Use Force Delete to remove it anyway.'
             ),
         isDestructive: false
       }
@@ -91,11 +91,11 @@ export function getDeleteWorktreeToastCopy(
         description: isProvenLiveStructuredSessionRemovalError(error)
           ? translate(
               'auto.components.sidebar.delete.worktree.toast.runningAgentSessionLive',
-              'This workspace still has running agent sessions that Orca could not close, so it stopped before deleting any files. Force Delete will discard any work they hold.'
+              'This workspace still has running agent sessions that OCC could not close, so it stopped before deleting any files. Force Delete will discard any work they hold.'
             )
           : translate(
               'auto.components.sidebar.delete.worktree.toast.runningAgentSession',
-              'Orca could not confirm every agent session in this workspace has closed, so it stopped before deleting any files. Use Force Delete to remove it anyway.'
+              'OCC could not confirm every agent session in this workspace has closed, so it stopped before deleting any files. Use Force Delete to remove it anyway.'
             ),
         isDestructive: false
       }
@@ -120,7 +120,7 @@ export function getDeleteWorktreeToastCopy(
         ),
         description: translate(
           'auto.components.sidebar.delete.worktree.toast.905fc8efac',
-          'Git already removed this workspace. Use Force Delete to clear it from Orca.'
+          'Git already removed this workspace. Use Force Delete to clear it from OCC.'
         ),
         isDestructive: false
       }

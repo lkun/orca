@@ -181,7 +181,7 @@ describe('[features].daemon_auto_start write-back promotion', () => {
     expect(readRuntimeConfig()).toContain('daemon_auto_start = false')
   })
 
-  it("never promotes Orca's own daemon socket override", () => {
+  it("never promotes OCC's own daemon socket override", () => {
     writeSystemConfig('model = "gpt-5"\n')
     syncSystemConfigIntoManagedCodexHome()
     rmSync(systemConfigPath())

@@ -89,7 +89,7 @@ describe('ConnectorTurnEvents', () => {
     ])
   })
 
-  it('offers a prompt too large for one event as one only Orca can answer', () => {
+  it('offers a prompt too large for one event as one only OCC can answer', () => {
     const events = new ConnectorTurnEvents(userDataPath, 'ada')
     const question = 'x'.repeat(CONNECTOR_CLIENT_LIMITS.maxEventBytes)
     events.observe({

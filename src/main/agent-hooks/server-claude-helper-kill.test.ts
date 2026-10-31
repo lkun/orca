@@ -86,7 +86,7 @@ async function host(kind: string, initial: Record<string, unknown>[] = []) {
         ? await postHookEvent(desktop, body(payload))
         : await fetch(`http://127.0.0.1:${port}/hook/claude`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+            headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
             body: JSON.stringify(body(payload))
           })
     expect(response.status).toBe(204)

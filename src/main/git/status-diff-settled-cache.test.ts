@@ -208,7 +208,7 @@ describe('settled diff cache', () => {
     })
   })
 
-  // Empty worktrees must not turn filesystem reads into paths relative to Orca's own checkout.
+  // Empty worktrees must not turn filesystem reads into paths relative to OCC's own checkout.
   it('reads nothing relative to the cwd when the worktree path has no host spelling', async () => {
     await getDiff('', FILE, false)
 

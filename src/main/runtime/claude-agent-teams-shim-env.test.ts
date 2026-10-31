@@ -22,7 +22,7 @@ afterEach(async () => {
 })
 
 describe('claude agent teams shim env', () => {
-  it('writes a private tmux shim that calls the Orca shim command', async () => {
+  it('writes a private tmux shim that calls the OCC shim command', async () => {
     const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-shim-'))
     roots.push(root)
 
@@ -36,7 +36,7 @@ describe('claude agent teams shim env', () => {
     roots.push(root)
     vi.stubEnv('HOME', root)
     vi.stubEnv('USERPROFILE', root)
-    const cliName = process.platform === 'win32' ? 'orca-dev.cmd' : 'orca-dev'
+    const cliName = process.platform === 'win32' ? 'occ-dev.cmd' : 'occ-dev'
     const cliPath = join(root, cliName)
     await writeFile(cliPath, '#!/usr/bin/env sh\n', 'utf8')
     if (process.platform !== 'win32') {
@@ -87,7 +87,7 @@ describe('claude agent teams shim env', () => {
   it('resolves the dev CLI wrapper for the tmux callback binary', async () => {
     const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-cli-'))
     roots.push(root)
-    const cliName = process.platform === 'win32' ? 'orca-dev.cmd' : 'orca-dev'
+    const cliName = process.platform === 'win32' ? 'occ-dev.cmd' : 'occ-dev'
     const cliPath = join(root, cliName)
     await writeFile(cliPath, '#!/usr/bin/env sh\n', 'utf8')
     if (process.platform !== 'win32') {
@@ -127,7 +127,7 @@ describe('claude agent teams shim env', () => {
   it('refuses to resolve a CLI through relative PATH entries or a bare override', async () => {
     const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-cli-'))
     roots.push(root)
-    for (const name of ['orca', 'orca-ide', 'orca.cmd']) {
+    for (const name of ['orca', 'occ-ide', 'occ.cmd']) {
       const path = join(root, name)
       await writeFile(path, '#!/usr/bin/env sh\n', 'utf8')
       if (process.platform !== 'win32') {
@@ -152,7 +152,7 @@ describe('claude agent teams shim env', () => {
     async () => {
       const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-cli-'))
       roots.push(root)
-      const cliPath = join(root, 'orca.cmd')
+      const cliPath = join(root, 'occ.cmd')
       await writeFile(cliPath, '@echo off\r\n', 'utf8')
 
       expect(resolveClaudeAgentTeamsShimBin({ Path: root })).toBe(cliPath)
@@ -186,7 +186,7 @@ describe('claude agent teams shim env', () => {
       const cwd = await mkdtemp(join(tmpdir(), 'orca-agent-teams-cwd-'))
       roots.push(cwd)
       const marker = join(cwd, 'hijacked')
-      for (const name of ['orca', 'orca-ide']) {
+      for (const name of ['orca', 'occ-ide']) {
         const decoy = join(cwd, name)
         await writeFile(decoy, `#!/usr/bin/env sh\ntouch ${JSON.stringify(marker)}\n`, 'utf8')
         await chmod(decoy, 0o755)

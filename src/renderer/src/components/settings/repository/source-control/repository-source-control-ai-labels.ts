@@ -96,7 +96,7 @@ export function commandTemplateStateLabel(args: {
     return 'Repository custom prompt'
   }
   return args.inheritedTemplate === DEFAULT_SOURCE_CONTROL_ACTION_COMMAND_TEMPLATES[args.actionId]
-    ? 'Orca default prompt'
+    ? 'OCC default prompt'
     : 'Global custom prompt'
 }
 

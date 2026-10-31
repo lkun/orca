@@ -137,7 +137,7 @@ describe('getLinuxRootPackageType', () => {
   })
 
   it('uses a legacy AppImage identity when its executable and resources are inside APPDIR', async () => {
-    process.env.APPIMAGE = '/opt/orca/orca.AppImage'
+    process.env.APPIMAGE = '/opt/occ/orca.AppImage'
     process.env.APPDIR = '/tmp/.mount_orca'
     setExecPath('/tmp/.mount_orca/orca')
     setResourcesPath('/tmp/.mount_orca/resources')
@@ -148,7 +148,7 @@ describe('getLinuxRootPackageType', () => {
 
   it.each([
     ['relative APPIMAGE', 'relative/orca.AppImage', '/tmp/.mount_orca'],
-    ['relative APPDIR', '/opt/orca/orca.AppImage', 'relative/.mount_orca']
+    ['relative APPDIR', '/opt/occ/orca.AppImage', 'relative/.mount_orca']
   ])('rejects a legacy identity with %s', async (_label, appImagePath, appDirPath) => {
     process.env.APPIMAGE = appImagePath
     process.env.APPDIR = appDirPath
@@ -165,7 +165,7 @@ describe('getLinuxRootPackageType', () => {
   ])(
     'rejects a prefix-collision outside APPDIR for %s',
     async (_label, execPath, resourcesPath) => {
-      process.env.APPIMAGE = '/opt/orca/orca.AppImage'
+      process.env.APPIMAGE = '/opt/occ/orca.AppImage'
       process.env.APPDIR = '/tmp/.mount_orca'
       setExecPath(execPath)
       setResourcesPath(resourcesPath)
@@ -178,7 +178,7 @@ describe('getLinuxRootPackageType', () => {
   it('rejects NULs in every legacy AppImage identity path', async () => {
     const { isLegacyAppImageRuntimeIdentity } = await loadPackageType()
     const identity = {
-      appImagePath: '/opt/orca/orca.AppImage',
+      appImagePath: '/opt/occ/orca.AppImage',
       appDirPath: '/tmp/.mount_orca',
       execPath: '/tmp/.mount_orca/orca',
       resourcesPath: '/tmp/.mount_orca/resources'
@@ -194,7 +194,7 @@ describe('getLinuxRootPackageType', () => {
   it('requires every legacy AppImage identity path to be absolute', async () => {
     const { isLegacyAppImageRuntimeIdentity } = await loadPackageType()
     const identity = {
-      appImagePath: '/opt/orca/orca.AppImage',
+      appImagePath: '/opt/occ/orca.AppImage',
       appDirPath: '/tmp/.mount_orca',
       execPath: '/tmp/.mount_orca/orca',
       resourcesPath: '/tmp/.mount_orca/resources'

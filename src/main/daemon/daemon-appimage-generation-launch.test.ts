@@ -19,7 +19,7 @@ let cacheRootPath = ''
 
 beforeEach(() => {
   root = mkdtempSync(join(tmpdir(), 'orca-generation-launch-'))
-  appImagePath = join(root, 'Orca.AppImage')
+  appImagePath = join(root, 'OCC.AppImage')
   cacheRootPath = join(root, 'cache')
   writeFileSync(appImagePath, 'appimage')
   resolveIdentity.mockReturnValue({ appImagePath })
@@ -41,7 +41,7 @@ function input(overrides: { appVersion?: string; environment?: NodeJS.ProcessEnv
 
 function extractGeneration(options: { node?: boolean; version?: string } = {}): string {
   const generation = resolveAppImageExtractedRoot({ appImagePath, cacheRootPath })!.rootPath
-  const launcher = join(generation, 'resources', 'bin', 'orca-ide')
+  const launcher = join(generation, 'resources', 'bin', 'occ-ide')
   mkdirSync(join(launcher, '..'), { recursive: true })
   writeFileSync(launcher, '#!/bin/sh\n')
   chmodSync(launcher, 0o755)
@@ -110,11 +110,11 @@ describe('buildAppImageGenerationDaemonCommand', () => {
         generationRoot: '/cache/ns/gen',
         nodePath: '/cache/ns/gen/resources/node-runtime/bin/node',
         entryPath: `/cache/ns/gen/${ENTRY_IN_APPDIR}`,
-        identityPath: `/apps/Orca.AppImage/${ENTRY_IN_APPDIR}`
+        identityPath: `/apps/OCC.AppImage/${ENTRY_IN_APPDIR}`
       }
       const command = buildAppImageGenerationDaemonCommand(launch, ['--socket', '/s'], {
         APPDIR,
-        APPIMAGE: '/apps/Orca.AppImage',
+        APPIMAGE: '/apps/OCC.AppImage',
         ELECTRON_RUN_AS_NODE: '1',
         PATH: `${APPDIR}/usr/bin:/usr/bin`,
         HOME: '/home/me'

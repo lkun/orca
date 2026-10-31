@@ -36,7 +36,7 @@ afterEach(() => {
 })
 
 {
-  // An approval whose subject a newer Orca wrote, with no detail to show.
+  // An approval whose subject a newer OCC wrote, with no detail to show.
   const NEWER_APPROVAL: AgentJournalRenderItem = JSON.parse(
     JSON.stringify({
       itemId: 'approval-item',
@@ -54,7 +54,7 @@ afterEach(() => {
     })
   )
 
-  it("hands the card a newer Orca's subject in a writable chat, and its cancel goes to the host with the card", () => {
+  it("hands the card a newer OCC's subject in a writable chat, and its cancel goes to the host with the card", () => {
     mocks.turnId = 'turn-1'
     mocks.promptItems = [NEWER_APPROVAL]
     render(

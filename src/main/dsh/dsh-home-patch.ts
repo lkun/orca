@@ -1,6 +1,6 @@
-/** Edit only Orca's marker-delimited region in the user-owned YAML patch layer. */
+/** Edit only OCC's marker-delimited region in the user-owned YAML patch layer. */
 
-const START_MARKER = '# >>> orca-managed-dsh-hooks (managed by Orca; do not edit) >>>'
+const START_MARKER = '# >>> orca-managed-dsh-hooks (managed by OCC; do not edit) >>>'
 const END_MARKER = '# <<< orca-managed-dsh-hooks <<<'
 
 /** DSH targets patch rows by ID, so keep this stable. */

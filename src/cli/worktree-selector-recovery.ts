@@ -45,10 +45,10 @@ export function worktreeSelectorRecovery(selector: string): WorktreeSelectorReco
     validSelectorForms: WORKTREE_SELECTOR_FORMS,
     suggestions,
     nextSteps: [
-      `No Orca workspace matched the worktree selector "${selector}".`,
+      `No OCC workspace matched the worktree selector "${selector}".`,
       ...(suggestions.length > 0 ? [`Did you mean: ${suggestions.join(', ')}`] : []),
       `Valid selector forms: ${WORKTREE_SELECTOR_FORMS.join(', ')}.`,
-      'List the exact values with `orca worktree list --json`; a bare repository id is not a worktree id.'
+      'List the exact values with `occ worktree list --json`; a bare repository id is not a worktree id.'
     ]
   }
 }
@@ -83,5 +83,5 @@ export async function withWorktreeSelectorRecovery<T>(
 }
 
 export const parentCwdNextSteps = (selector?: string): string[] => [
-  `The parent selector "${selector}" could not be resolved. Run from an Orca-managed worktree or pass an explicit parent selector.`
+  `The parent selector "${selector}" could not be resolved. Run from an OCC-managed worktree or pass an explicit parent selector.`
 ]

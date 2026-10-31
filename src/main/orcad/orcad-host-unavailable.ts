@@ -60,7 +60,7 @@ const UNAVAILABLE_BY_DEFERRAL_CODE: Record<string, OrcadHostUnavailableReason> =
   [ORCAD_WINDOWS_COMMAND_LINE_UNSAFE_CODE]: 'unsupported_host'
 }
 
-// Reprobed on every connect, so fixing or upgrading the host needs no new Orca version.
+// Reprobed on every connect, so fixing or upgrading the host needs no new OCC version.
 const FIXABLE_ON_HOST: ReadonlySet<string> = new Set<OrcadHostUnavailableReason>([
   'runtime_noexec',
   'windows_build_unsupported',

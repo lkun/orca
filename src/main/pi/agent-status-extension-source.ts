@@ -1,5 +1,5 @@
 import { getPiAgentStatusPostQueueSourceLines } from './agent-status-post-queue-source'
-// Pi has no settings hook surface; install a self-contained extension that posts through the pane's Orca endpoint.
+// Pi has no settings hook surface; install a self-contained extension that posts through the pane's OCC endpoint.
 import type { PiAgentKind } from '../../shared/pi-agent-kind'
 import { getPiAgentStatusHandlerSourceLines } from './agent-status-handler-source'
 import { getPiAgentStatusRuntimeDetectionSourceLines } from './agent-status-runtime-detection-source'
@@ -8,7 +8,7 @@ import { getPiSubagentSnapshotSourceLines } from './agent-status-subagent-roster
 
 export const ORCA_PI_AGENT_STATUS_EXTENSION_FILE = 'orca-agent-status.ts'
 
-/** Self-contained source runs inside Pi-family agents without Orca module imports. */
+/** Self-contained source runs inside Pi-family agents without OCC module imports. */
 export function getPiAgentStatusExtensionSource(kind: PiAgentKind = 'pi'): string {
   // OMP resumes by id; its persistent file path lets native chat skip discovery.
   const sessionMetadataSourceLines =
@@ -109,7 +109,7 @@ export function getPiAgentStatusExtensionSource(kind: PiAgentKind = 'pi'): strin
       ? '    payload: { hook_event_name: hookEventName, ...(ompRuntime ? metadata : getPersistedSessionMetadata(metadata)), ...subagents, ...extra },'
       : '    payload: { hook_event_name: hookEventName, ...metadata, ...subagents, ...extra },'
 
-  // Read endpoint files after Orca restarts because PTY-spawn environment stays frozen.
+  // Read endpoint files after OCC restarts because PTY-spawn environment stays frozen.
   return [
     '// Pi/OMP share APIs but publish types under different package names.',
     '// Warn once so malformed endpoint files cannot flood the TUI on every event.',
@@ -232,7 +232,7 @@ export function getPiAgentStatusExtensionSource(kind: PiAgentKind = 'pi'): strin
     '  const timeoutPromise = new Promise<never>((_resolve, reject) => {',
     '    timeout = setTimeout(() => {',
     '      controller?.abort()',
-    "      reject(new Error('Orca hook delivery timed out'))",
+    "      reject(new Error('OCC hook delivery timed out'))",
     '    }, HOOK_POST_TIMEOUT_MS)',
     "    if (typeof timeout.unref === 'function') timeout.unref()",
     '  })',
@@ -242,14 +242,14 @@ export function getPiAgentStatusExtensionSource(kind: PiAgentKind = 'pi'): strin
     "        method: 'POST',",
     '        headers: {',
     "          'Content-Type': 'application/json',",
-    "          'X-Orca-Agent-Hook-Token': coords.token,",
+    "          'X-OCC-Agent-Hook-Token': coords.token,",
     '        },',
     '        body,',
     '        ...(controller ? { signal: controller.signal } : {}),',
     '      }),',
     '      timeoutPromise,',
     '    ])',
-    "    if (!response.ok) throw new Error('Orca hook HTTP ' + response.status)",
+    "    if (!response.ok) throw new Error('OCC hook HTTP ' + response.status)",
     '  } catch (error) {',
     '    // After WSL loopback failure, retry through host curl.exe.',
     '    if (!isWslRuntime()) throw error',

@@ -21,7 +21,7 @@ import {
 import { resolveEnvironmentFromStore } from './runtime-environment-store'
 import { findCollidingEnvironmentName } from './runtime-environment-name-collision'
 
-/** Registers a server Orca deployed over SSH, paired through its own loopback tunnel. */
+/** Registers a server OCC deployed over SSH, paired through its own loopback tunnel. */
 export function addManagedOrcadEnvironment(
   userDataPath: string,
   args: {
@@ -81,7 +81,7 @@ export function addManagedOrcadEnvironment(
   if (!registered?.orcadDeployment) {
     throw new RuntimeEnvironmentStoreError(
       'runtime_error',
-      'This host’s Orca server was saved without its deployment link.'
+      'This host’s OCC server was saved without its deployment link.'
     )
   }
   return registered

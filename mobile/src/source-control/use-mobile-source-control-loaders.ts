@@ -214,7 +214,7 @@ export function useMobileSourceControlLoaders(params: Params): MobileSourceContr
                 kind: 'unavailable',
                 message: translate(
                   'sourceControl.loaders.updateDesktop',
-                  'Update Orca desktop to use Source Control on mobile.'
+                  'Update OCC desktop to use Source Control on mobile.'
                 )
               })
               return false

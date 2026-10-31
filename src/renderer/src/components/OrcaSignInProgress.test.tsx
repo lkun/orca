@@ -33,7 +33,7 @@ vi.mock('@/i18n/i18n', () => ({
 
 const LINK = 'https://login.example/authorize?state=abc'
 
-describe('Orca sign-in progress', () => {
+describe('OCC sign-in progress', () => {
   const writeClipboardText = vi.fn()
   const cancelSignIn = vi.fn()
 
@@ -53,16 +53,16 @@ describe('Orca sign-in progress', () => {
   afterEach(() => cleanup())
 
   it('starts a sign-in from the button', async () => {
-    render(<OrcaSignInButton>Sign in to Orca</OrcaSignInButton>)
+    render(<OrcaSignInButton>Sign in to OCC</OrcaSignInButton>)
 
-    await userEvent.setup().click(screen.getByRole('button', { name: 'Sign in to Orca' }))
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Sign in to OCC' }))
 
     expect(mocks.state.connectCurrentOrcaProfile).toHaveBeenCalledOnce()
   })
 
   it('greys the button out as Signing in… while a sign-in is in flight', () => {
     mocks.state.orcaProfileSignInProgress = { link: null }
-    render(<OrcaSignInButton>Sign in to Orca</OrcaSignInButton>)
+    render(<OrcaSignInButton>Sign in to OCC</OrcaSignInButton>)
 
     expect(screen.getByRole('button', { name: 'Signing in…' })).toBeDisabled()
   })

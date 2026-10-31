@@ -258,7 +258,7 @@ test.describe('Hangul terminating digit @headful', () => {
           // IME/compositor itself never delivered (a discarded preedit, a lost keydown) is retried.
           expect(
             domDelivered,
-            `Orca lost input the page received: ${JSON.stringify(line)}`
+            `OCC lost input the page received: ${JSON.stringify(line)}`
           ).not.toBe(expectedLine)
           if (line === null) {
             // Why: Ctrl-U drops the partial line a lost Enter leaves in the reader's tty buffer.

@@ -131,7 +131,7 @@ describe('quiescence treats a missing output clock as quiet', () => {
       .spyOn(RuntimeMachineName.prototype, 'start')
       .mockImplementation(() => {})
     try {
-      // No launch metadata: Orca did not start this agent, so the quiet-foreground lane is
+      // No launch metadata: OCC did not start this agent, so the quiet-foreground lane is
       // the only evidence available, and `lastOutputAt` is null because nothing ever arrived.
       const { runtime, handle } = await makeRuntime(null, 'codex')
       const leaves =

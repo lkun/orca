@@ -92,7 +92,7 @@ describe('CommandCodeHookService', () => {
 
     if (process.platform === 'win32') {
       expect(script).toContain('sourceEndpointByPort')
-      expect(script).toContain('orca-dev\\agent-hooks')
+      expect(script).toContain('occ-dev\\agent-hooks')
       expect(script).toContain('set ORCA_AGENT_HOOK_PORT=')
     } else {
       expect(script).toContain('__orca_read_ancestor_var')
@@ -100,7 +100,7 @@ describe('CommandCodeHookService', () => {
       expect(script).toContain('[ "$__orca_endpoint_port" != "$ORCA_AGENT_HOOK_PORT" ]')
       expect(script).toContain('ORCA_PANE_KEY')
       expect(script).toContain('ORCA_AGENT_LAUNCH_TOKEN')
-      expect(script).toContain('orca-dev/agent-hooks')
+      expect(script).toContain('occ-dev/agent-hooks')
       expect(script).toContain('endpoint_port=')
     }
   })

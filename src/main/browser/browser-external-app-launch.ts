@@ -14,7 +14,7 @@ const NEVER_EXTERNAL_APP_PROTOCOLS: ReadonlySet<string> = new Set([
   'afp:',
   'blob:',
   'chrome:',
-  // Why: extension pages and Orca's extension API are browser-internal, as in Chrome.
+  // Why: extension pages and OCC's extension API are browser-internal, as in Chrome.
   'chrome-extension:',
   `${BROWSER_EXTENSION_API_SCHEME}:`,
   'data:',

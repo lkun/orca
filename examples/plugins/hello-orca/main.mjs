@@ -4,7 +4,7 @@ export default function activate(orca) {
     const stored = await orca.host.call('storage.get', { key: 'pings' })
     const count = (typeof stored?.value === 'number' ? stored.value : 0) + 1
     await orca.host.call('storage.set', { key: 'pings', value: count })
-    // A string result is shown as-is in Orca; objects are shown as JSON.
+    // A string result is shown as-is in OCC; objects are shown as JSON.
     return count === 1 ? 'Pong! First ping.' : `Pong! ${count} pings so far.`
   })
 

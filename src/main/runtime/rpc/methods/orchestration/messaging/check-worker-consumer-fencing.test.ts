@@ -334,7 +334,7 @@ describe('worker report authority without a Dispatch capability', () => {
     it.each<[string, OrchestrationCompatibilityEvidence | undefined]>([
       ['no identity env (old CLI, scrubbed env)', undefined],
       ['its own pane', { paneKey: WORKER_PANE, terminalHandle: 'term_stale_after_remint' }],
-      ["another Orca's pane", { paneKey: 'tab_elsewhere:eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee' }],
+      ["another OCC's pane", { paneKey: 'tab_elsewhere:eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee' }],
       ['a stale handle', { terminalHandle: 'term_gone' }],
       ['a live pane that is no orchestration party', { paneKey: NON_PARTY_PANE }]
     ])('accepts a report whose env names %s', async (_case, evidence) => {
@@ -381,7 +381,7 @@ describe('worker report authority without a Dispatch capability', () => {
         setup()
         const worker = startWorker('worker', WORKER_PANE)
         db.beginWorkerStop(worker.dispatchId, 'epoch_home')
-        db.markWorkerStopUnknown(worker.dispatchId, 'tab not owned by Orca')
+        db.markWorkerStopUnknown(worker.dispatchId, 'tab not owned by OCC')
 
         expect(await workerDone(worker, undefined, outcome)).toMatchObject({
           lifecycle: { action: taskStatus }
@@ -398,7 +398,7 @@ describe('worker report authority without a Dispatch capability', () => {
       setup()
       const worker = startWorker('worker', WORKER_PANE)
       db.beginWorkerStop(worker.dispatchId, 'epoch_home')
-      db.markWorkerStopUnknown(worker.dispatchId, 'tab not owned by Orca')
+      db.markWorkerStopUnknown(worker.dispatchId, 'tab not owned by OCC')
       vi.mocked(runtime.getTerminalProcessIncarnation).mockReturnValue('runtime_test:term_worker:2')
 
       expect(await workerDone(worker)).toMatchObject({
@@ -443,7 +443,7 @@ describe('worker report authority without a Dispatch capability', () => {
         (dispatchId: string) => {
           db.markRemoteAttachmentReady(dispatchId)
           db.beginRemoteAttachmentStop(dispatchId)
-          db.markRemoteAttachmentStopUnknown(dispatchId, 'tab not owned by Orca')
+          db.markRemoteAttachmentStopUnknown(dispatchId, 'tab not owned by OCC')
         }
       ],
       [

@@ -28,7 +28,7 @@ export const EXTERNAL_AUTOMATION_SCOPE_CODES = {
   providerNotAllowed: 'external_automation_provider_not_allowed',
   /** Only the desktop authority owns external managers; runtime authorities must not be tunnelled. */
   authorityNotSupported: 'external_automation_authority_not_supported',
-  /** The SSH target is an Orca implementation detail and stays out of user-facing surfaces. */
+  /** The SSH target is an OCC implementation detail and stays out of user-facing surfaces. */
   targetHidden: 'external_automation_target_hidden'
 } as const
 
@@ -41,7 +41,7 @@ const SCOPE_MESSAGES: Record<ExternalAutomationScopeCode, string> = {
   [EXTERNAL_AUTOMATION_SCOPE_CODES.authorityNotSupported]:
     'External automation managers are available only on this computer and its SSH hosts.',
   [EXTERNAL_AUTOMATION_SCOPE_CODES.targetHidden]:
-    'Orca runs on that host, so it does not expose external automations.'
+    'OCC runs on that host, so it does not expose external automations.'
 }
 
 /** Trailing : <code> survives Electron IPC and older runtimes that preserve only the message, matching owner conflicts. */

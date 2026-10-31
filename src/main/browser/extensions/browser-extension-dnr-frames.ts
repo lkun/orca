@@ -55,7 +55,7 @@ export class DnrFrameTracker {
       return cached
     }
     const tabId = this.resolveTabId(webContentsId)
-    // Why only tabs: a restored guest loads before Orca's window lists it as a tab.
+    // Why only tabs: a restored guest loads before OCC's window lists it as a tab.
     if (tabId !== -1) {
       this.tabIdByContents.set(webContentsId, tabId)
     }

@@ -31,7 +31,7 @@ describe('Monaco filename detection', () => {
     ['constructor', 'plaintext'],
     ['toString', 'plaintext'],
     ['__proto__', 'plaintext']
-  ])('preserves Orca behavior for %s', (path, language) => {
+  ])('preserves OCC behavior for %s', (path, language) => {
     expect(detectLanguage(path)).toBe(language)
   })
 })

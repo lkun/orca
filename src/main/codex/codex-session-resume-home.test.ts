@@ -483,8 +483,8 @@ describe('findTrustedCodexSessionResume legacy-rescan home ranking', () => {
   it('ranks Windows homes case-insensitively and keeps the caller path spelling', async () => {
     const windowsRoot = 'C:\\Users\\Example'
     const windowsSystemHome = `${windowsRoot}\\.codex`
-    const windowsAccountAHome = `${windowsRoot}\\AppData\\Roaming\\Orca\\codex-accounts\\a\\home`
-    const windowsAccountBHome = `${windowsRoot}\\AppData\\Roaming\\Orca\\codex-accounts\\b\\home`
+    const windowsAccountAHome = `${windowsRoot}\\AppData\\Roaming\\OCC\\codex-accounts\\a\\home`
+    const windowsAccountBHome = `${windowsRoot}\\AppData\\Roaming\\OCC\\codex-accounts\\b\\home`
     const windowsRolloutIn = (homePath: string): string =>
       `${join(homePath, 'sessions')}\\2026\\07\\20\\rollout-2026-07-20T15-50-19-${sessionId}.jsonl`
     const listSessionFiles = async function* (sessionsRoot: string): AsyncIterable<string> {
@@ -586,7 +586,7 @@ describe('claimsCodexRolloutLayout', () => {
     ).toBe(true)
   })
 
-  it('is true for a rollout under a home Orca no longer trusts, so resume cannot silently fall through to the selected account', () => {
+  it('is true for a rollout under a home OCC no longer trusts, so resume cannot silently fall through to the selected account', () => {
     expect(
       claimsCodexRolloutLayout('/removed/account/home/sessions/2026/07/20/rollout-a.jsonl')
     ).toBe(true)
@@ -635,7 +635,7 @@ describe('resolveCodexSessionResumeProvenance', () => {
     return { homePath, rolloutPath }
   }
 
-  it('starts fresh for a rollout file that really exists under a home Orca no longer trusts', async () => {
+  it('starts fresh for a rollout file that really exists under a home OCC no longer trusts', async () => {
     const sessionId = '019f81b9-19a9-7651-a8d1-352d9420bd11'
     const removed = writeRollout(sessionId)
     const trusted = mkdtempSync(join(tmpdir(), 'orca-codex-resume-provenance-'))

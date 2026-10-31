@@ -35,7 +35,7 @@ describe('the WSL move gate with the stub agent hook events', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Orca-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+        'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
       },
       body: JSON.stringify({
         paneKey: PANE,

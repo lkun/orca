@@ -180,7 +180,7 @@ describe('retrying a failed worker-start', () => {
       failure_count: 3
     })
     await expect(retry({ taskId: first.taskId, dispatchId: third })).rejects.toThrow(
-      /failed 3 times, so Orca will not retry it again/
+      /failed 3 times, so OCC will not retry it again/
     )
     expect(h.runtime.createTerminal).toHaveBeenCalledTimes(3)
     // The refused retry replaced nothing, so the last attempt's pane stays for the user.

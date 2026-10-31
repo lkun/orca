@@ -74,7 +74,7 @@ function opencodeSources(
         : listOpenCodeDatabases(onRefusal, undefined, options.signal)
     }
   }
-  // Orca-managed accounts relocate XDG_DATA_HOME, so their stores are invisible to the default lookup.
+  // OCC-managed accounts relocate XDG_DATA_HOME, so their stores are invisible to the default lookup.
   const accountDataDirs = (options.opencodeAccountDataDirs ?? []).filter(
     (dataDirectory) => dataDirectory !== dirname(storageDir)
   )

@@ -104,7 +104,7 @@ it.each([6, 60])('bounds retained menu work at %i chats', async (size) => {
   expect(screen.getAllByRole('menuitem').map((item) => item.textContent)).toEqual([
     expect.stringContaining('Split Chat Right'),
     expect.stringContaining('Split Chat Down'),
-    'Copy Orca Session ID'
+    'Copy OCC Session ID'
   ])
   const opened = renders
   const extra = measure(writes[0]) - baseline[0]

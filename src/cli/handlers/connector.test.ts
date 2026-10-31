@@ -25,7 +25,7 @@ describe('orca connector', () => {
   it('names the update instead of surfacing method_not_found from an older host', async () => {
     await expect(
       callConnector(refusingClient('method_not_found'), 'connector.send', {})
-    ).rejects.toThrow('Update Orca on the host')
+    ).rejects.toThrow('Update OCC on the host')
   })
 
   it('claims a start only for a definite answer', () => {
@@ -47,7 +47,7 @@ describe('orca connector', () => {
     )
   })
 
-  it('prints a prompt with its id and options, and an unknown kind as one to answer in Orca', () => {
+  it('prints a prompt with its id and options, and an unknown kind as one to answer in OCC', () => {
     expect(
       formatPendingPrompt({
         kind: 'approval',
@@ -61,7 +61,7 @@ describe('orca connector', () => {
       })
     ).toBe('approval Bash: ls\n  prompt id: p_1\n  allow_once: Allow once\n  reject_once: Reject')
     expect(formatPendingPrompt({ kind: 'free-text', promptId: 'p_2' })).toBe(
-      'unsupported (answer in Orca)\n  prompt id: p_2'
+      'unsupported (answer in OCC)\n  prompt id: p_2'
     )
     expect(formatPendingPrompt(null)).toBe('no pending prompt')
   })

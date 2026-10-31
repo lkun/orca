@@ -24,7 +24,7 @@ export type WslOrcadAccountEnvDependencies = {
   claudeTerminalEnv(target: WslAccountTarget): Record<string, string>
   /** The selected Codex account's home (a UNC or guest path); null on System default. */
   prepareCodexHome(target: WslAccountTarget): Promise<string | null>
-  /** Whether an Orca-managed Claude or Codex account is selected for the distro. */
+  /** Whether an OCC-managed Claude or Codex account is selected for the distro. */
   managedAccountSelected(target: WslAccountTarget): boolean
   /** Tells the user the selected account was not applied: the distro's orcad predates it. */
   accountNotApplied(distro: string): void

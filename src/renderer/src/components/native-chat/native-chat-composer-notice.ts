@@ -1,4 +1,4 @@
-// Separate Orca’s notice wording from verbatim external errors so the latter stay readable and copyable.
+// Separate OCC’s notice wording from verbatim external errors so the latter stay readable and copyable.
 
 import { translate } from '@/i18n/i18n'
 import { readIpcErrorDetail } from '@/lib/ipc-error'
@@ -8,7 +8,7 @@ export type NativeChatComposerNoticeContent = {
   text: string
   /** Inline presentation of the sentence when it contains navigation. */
   content?: React.ReactNode
-  /** Text from outside Orca (a host or system error), shown apart and copyable. */
+  /** Text from outside OCC (a host or system error), shown apart and copyable. */
   errorText?: string
 }
 
@@ -49,7 +49,7 @@ export function setNativeChatNoticeFromError(
   }
 }
 
-/** Local errors and main’s size refusals already use Orca wording; keep other paste errors apart under headline. */
+/** Local errors and main’s size refusals already use OCC wording; keep other paste errors apart under headline. */
 export function setNativeChatPasteFailure(
   setNotice: (text: string | null, errorText?: string) => void,
   error: unknown,

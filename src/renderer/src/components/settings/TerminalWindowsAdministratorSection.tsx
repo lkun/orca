@@ -115,7 +115,7 @@ export function TerminalWindowsAdministratorSection(): React.JSX.Element {
           }
           description={translate(
             'settings.terminal.windows.administratorScope',
-            'Permissions for the Orca app. Existing terminals may differ.'
+            'Permissions for the OCC app. Existing terminals may differ.'
           )}
           control={
             <DialogTrigger asChild>
@@ -176,7 +176,7 @@ export function TerminalWindowsAdministratorSection(): React.JSX.Element {
               <p className="text-xs text-muted-foreground">
                 {translate(
                   'settings.terminal.windows.administratorPromptCancellation',
-                  'Canceling Windows’ prompt reopens Orca with its retained terminals. SSH and WSL permissions stay controlled on their hosts.'
+                  'Canceling Windows’ prompt reopens OCC with its retained terminals. SSH and WSL permissions stay controlled on their hosts.'
                 )}
               </p>
             </div>
@@ -186,18 +186,18 @@ export function TerminalWindowsAdministratorSection(): React.JSX.Element {
                 <li>
                   {translate(
                     'settings.terminal.windows.closeLocalSessions',
-                    'Save your work, close all local terminal sessions, then exit Orca.'
+                    'Save your work, close all local terminal sessions, then exit OCC.'
                   )}
                 </li>
                 <li>
                   {administrator
                     ? translate(
                         'settings.terminal.windows.launchStandard',
-                        'Open Orca normally from the Windows Start menu.'
+                        'Open OCC normally from the Windows Start menu.'
                       )
                     : translate(
                         'settings.terminal.windows.launchAdministrator',
-                        'In the Windows Start menu, right-click Orca and choose Run as administrator. Approve the Windows prompt using your usual account.'
+                        'In the Windows Start menu, right-click OCC and choose Run as administrator. Approve the Windows prompt using your usual account.'
                       )}
                 </li>
               </ol>
@@ -213,7 +213,7 @@ export function TerminalWindowsAdministratorSection(): React.JSX.Element {
             <p role="alert" className="text-sm text-destructive">
               {translate(
                 'settings.terminal.windows.administratorRestartFailed',
-                'Orca could not restart. Try again or use the manual instructions.'
+                'OCC could not restart. Try again or use the manual instructions.'
               )}
             </p>
           )}

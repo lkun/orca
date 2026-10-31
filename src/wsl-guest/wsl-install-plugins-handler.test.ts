@@ -173,7 +173,7 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
         ORCA_WSL_HOOK_INSTANCE: 'inst1'
       })
       install({ opencodePluginSource: '// v1\n' })
-      // Why: a mid-session Orca upgrade ships new plugin source; future spawns must see it.
+      // Why: a mid-session OCC upgrade ships new plugin source; future spawns must see it.
       const dir = requireOverlayDir(
         install({ opencodePluginSource: '// v2\n' }).overlayDirs.opencode
       )
@@ -220,7 +220,7 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
   it('mirrors the XDG default config root when using an overlay', () => {
     withHome((home) => {
       // Why: OPENCODE_CONFIG_DIR replaces the default root, so the overlay must
-      // carry the user's default config and Orca's plugin together.
+      // carry the user's default config and OCC's plugin together.
       const defaultConfig = join(home, '.config', 'opencode')
       mkdirSync(defaultConfig, { recursive: true })
       writeFileSync(join(defaultConfig, 'opencode.json'), '{"model":"default"}')

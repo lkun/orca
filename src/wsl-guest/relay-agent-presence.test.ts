@@ -47,7 +47,7 @@ describe('relay process presence', () => {
       const post = async (event: string, session: string, reason?: string, pid = 4001) => {
         const response = await fetch(`http://127.0.0.1:${port}/hook/claude`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Orca-Agent-Hook-Token': token },
+          headers: { 'Content-Type': 'application/json', 'X-OCC-Agent-Hook-Token': token },
           body: JSON.stringify({
             paneKey,
             tabId: 'tab-1',

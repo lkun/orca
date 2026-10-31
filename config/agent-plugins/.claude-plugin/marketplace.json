@@ -1,7 +1,7 @@
 {
   "name": "orca-agent-plugins",
-  "owner": { "name": "Orca" },
-  "description": "Repository-local plugins for coding agents working in Orca",
+  "owner": { "name": "OCC" },
+  "description": "Repository-local plugins for coding agents working in OCC",
   "plugins": [
     {
       "name": "orca-typescript",

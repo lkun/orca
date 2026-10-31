@@ -303,7 +303,7 @@ describe('worktree removal against the real Git binary', () => {
     expect(refusal).toBeInstanceOf(Error)
     const message = formatWorktreeRemovalError(refusal, subWorktreePath, false)
     expect(classifyWorktreeForceDeleteReason(message)).toBe('submodules')
-    // Git itself, not Orca's native Windows remover, decides what counts.
+    // Git itself, not OCC's native Windows remover, decides what counts.
     const gitRefusal = await git(['worktree', 'remove', subWorktreePath], repoPath).catch((e) => e)
     expect(String(gitRefusal?.stderr)).toContain('containing submodules')
   })

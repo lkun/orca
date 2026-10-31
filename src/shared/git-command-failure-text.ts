@@ -1,4 +1,4 @@
-/** Read message/stderr/stdout: execFile duplicates stderr in message, while Orca’s dirty-removal errors attach status output to stdout.
+/** Read message/stderr/stdout: execFile duplicates stderr in message, while OCC’s dirty-removal errors attach status output to stdout.
  * Classifiers must agree across both shapes. Real Git refusals use error()/die() on stderr (2.25–2.55). */
 export function readGitCommandFailureText(error: unknown): string {
   if (typeof error !== 'object' || error === null) {

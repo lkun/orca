@@ -84,7 +84,7 @@ it('never sends the setting to an older host that would reject it', async () => 
   const { toggle } = renderSetting(remote)
 
   await waitFor(() =>
-    expect(screen.getByText('Update Orca on build-box to change this setting there.')).toBeTruthy()
+    expect(screen.getByText('Update OCC on build-box to change this setting there.')).toBeTruthy()
   )
   expect(toggle.hasAttribute('disabled')).toBe(true)
   fireEvent.click(toggle)

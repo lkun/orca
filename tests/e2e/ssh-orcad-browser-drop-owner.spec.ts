@@ -171,7 +171,7 @@ test('managed Files drag cannot load a desktop same-path HTML file', async ({
     await page.screenshot({ path: testInfo.outputPath('managed-browser-drop-owner.png') })
     expect((await guestText(page, floatingId)).text).not.toContain('DESKTOP_BROWSER_DROP_OWNER')
     await expect(
-      page.getByText('Open in Orca Browser is only available for local files.', { exact: true })
+      page.getByText('Open in OCC Browser is only available for local files.', { exact: true })
     ).toBeVisible()
     expect((await guestText(page, floatingId)).url).toBe(server.pageUrl('float', 2))
   }).finally(() => server.close())

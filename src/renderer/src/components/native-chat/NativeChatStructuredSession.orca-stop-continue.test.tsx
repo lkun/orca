@@ -103,7 +103,7 @@ afterEach(() => {
   resetStructuredSessionMocks()
 })
 
-it('offers one Continue, in the card that says Orca stopped, and the card does not say it again', () => {
+it('offers one Continue, in the card that says OCC stopped, and the card does not say it again', () => {
   mocks.journalItems = cutChat
   render(
     <TooltipProvider>
@@ -122,7 +122,7 @@ it('offers one Continue, in the card that says Orca stopped, and the card does n
   // Throws on a second Continue anywhere in the pane, such as the old row above the composer.
   const button = screen.getByRole('button', { name: 'Continue' })
   const sentence = screen.getByText(
-    'Orca on the remote server stopped unexpectedly while this response was in progress.'
+    'OCC on the remote server stopped unexpectedly while this response was in progress.'
   )
   expect(sentence.parentElement).toContainElement(button)
   expect(screen.getByTestId('transcript')).toContainElement(button)

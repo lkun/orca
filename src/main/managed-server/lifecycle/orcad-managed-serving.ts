@@ -25,7 +25,7 @@ export type OrcadManagedServingInput = {
 export const MANAGED_ORCAD_FENCED_DETAIL =
   'An update, rollback or recovery holds this host; it was not started.'
 
-export const MANAGED_ORCAD_NOT_ACTIVATED_DETAIL = 'This host has no activated Orca server to start.'
+export const MANAGED_ORCAD_NOT_ACTIVATED_DETAIL = 'This host has no activated OCC server to start.'
 
 const PROBE_TIMEOUT_MS = 5_000
 // Share connect/tunnel verdicts only for the same transport and port; reboots/rebinds need fresh checks.
@@ -127,7 +127,7 @@ async function wakeIfStopped(
       const cause = idle
         ? `it had stopped after idling at ${idle.stoppedAt}`
         : 'it had stopped without an idle-stop record (crash, signal or host restart)'
-      console.info(`[ssh] Started the managed Orca server on ${label}; ${cause}.`)
+      console.info(`[ssh] Started the managed OCC server on ${label}; ${cause}.`)
       return { state: 'started', boundPort: orcadBoundPort(wake.readiness) }
     }
     // A live unanswered process may still be starting; never restart it.
@@ -136,15 +136,15 @@ async function wakeIfStopped(
       if (await input.probe(input.environment, PROBE_TIMEOUT_MS)) {
         return { state: 'serving' }
       }
-      const detail = 'This host’s Orca server process is live but is not answering.'
-      console.warn(`[ssh] The managed Orca server on ${label} is not answering: ${detail}`)
+      const detail = 'This host’s OCC server process is live but is not answering.'
+      console.warn(`[ssh] The managed OCC server on ${label} is not answering: ${detail}`)
       return { state: 'unverifiable', detail }
     }
     const detail = wake.outcome === 'recovery-refused' ? wake.reason : wakeRefusal(wake.outcome)
-    console.warn(`[ssh] The managed Orca server on ${label} is not answering: ${detail}`)
+    console.warn(`[ssh] The managed OCC server on ${label} is not answering: ${detail}`)
     return { state: 'unverifiable', detail }
   } catch (error) {
-    console.warn(`[ssh] Could not start the managed Orca server on ${label}:`, error)
+    console.warn(`[ssh] Could not start the managed OCC server on ${label}:`, error)
     return { state: 'unverifiable', detail: error instanceof Error ? error.message : String(error) }
   }
 }

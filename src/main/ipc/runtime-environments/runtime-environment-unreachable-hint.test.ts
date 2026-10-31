@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { withRuntimeUnreachableHint } from './runtime-environment-unreachable-hint'
 import { withRemoteRuntimeTailscaleHint } from '../../../shared/remote-runtime/remote-runtime-tailscale-hint'
 
-const UNREACHABLE = 'Could not connect to the remote Orca runtime at ws://127.0.0.1:42000.'
+const UNREACHABLE = 'Could not connect to the remote OCC runtime at ws://127.0.0.1:42000.'
 
 describe('withRuntimeUnreachableHint', () => {
   it('points a WSL host at its own reconnect, never at Tailscale', () => {
@@ -12,7 +12,7 @@ describe('withRuntimeUnreachableHint', () => {
       'ws://127.0.0.1:42000'
     )
     expect(message).not.toMatch(/tailscale/i)
-    expect(message).toContain('The Orca server in the WSL distro Ubuntu isn’t answering')
+    expect(message).toContain('The OCC server in the WSL distro Ubuntu isn’t answering')
   })
 
   it('keeps the Tailscale hint for a network server', () => {
@@ -56,11 +56,11 @@ describe('withRuntimeUnreachableHint', () => {
     expect(
       withRuntimeUnreachableHint(
         { orcadDeployment: { kind: 'wsl', distro: 'Debian', localPort: 1, remotePort: 2 } },
-        'Timed out waiting for the remote Orca runtime.',
+        'Timed out waiting for the remote OCC runtime.',
         null
       )
     ).toBe(
-      'Timed out waiting for the remote Orca runtime. The Orca server in the WSL distro Debian isn’t answering; connect it again in Settings → Remote Orca Servers → WSL hosts.'
+      'Timed out waiting for the remote OCC runtime. The OCC server in the WSL distro Debian isn’t answering; connect it again in Settings → Remote OCC Servers → WSL hosts.'
     )
   })
 })

@@ -14,7 +14,7 @@ export function docPreviewFailureDetail(reason: DocPreviewFileFailureReason | nu
   // Entry documents are served as text; unsupported formats fail only as subresources and belong in a notice.
   return translate(
     'auto.components.editor.HtmlDocPreview.documentUnreadablePanel',
-    'Orca could not read this file from the workspace.'
+    'OCC could not read this file from the workspace.'
   )
 }
 
@@ -47,7 +47,7 @@ export function docPreviewAssetNotice(failures: DocPreviewFileFailure[]): string
   }
   return translate(
     'auto.components.editor.HtmlDocPreview.assetUnreadableNotice',
-    'Orca could not read {{path}} from the workspace.',
+    'OCC could not read {{path}} from the workspace.',
     { path: first.relativePath }
   )
 }

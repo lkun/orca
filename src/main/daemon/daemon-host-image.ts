@@ -84,7 +84,7 @@ export function inspectDaemonHostImage(
     if (deleted) {
       return result(root ? 'severed' : 'not-ephemeral')
     }
-    // Lazy unmounts can leave an executable path relative to the detached root, such as /orca-ide.
+    // Lazy unmounts can leave an executable path relative to the detached root, such as /occ-ide.
     const resolves = proc.exists(`/proc/${record.pid}/root${path}`)
     if (root) {
       return result(resolves ? 'intact' : 'severed')

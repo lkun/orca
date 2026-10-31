@@ -299,8 +299,8 @@ describe('a turn no message opened', () => {
     ])
   })
 
-  // Legacy red Orca-stop rows are not agent failures and must stay visible.
-  it("keeps the row about Orca's stop on screen beside the reply it cut, which stays the answer", () => {
+  // Legacy red OCC-stop rows are not agent failures and must stay visible.
+  it("keeps the row about OCC's stop on screen beside the reply it cut, which stays the answer", () => {
     const orcaStop: NativeChatMessage = {
       ...failure('orca-stop'),
       blocks: [

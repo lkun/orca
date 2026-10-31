@@ -59,11 +59,11 @@ function getDialogTitle(report: CrashReportRecord | null): string {
   return report && isReactErrorBoundaryReport(report)
     ? translate(
         'auto.components.crash.report.CrashReportDialogSurface.uiErrorTitle',
-        'Orca hit a recoverable UI error'
+        'OCC hit a recoverable UI error'
       )
     : translate(
         'auto.components.crash.report.CrashReportDialogSurface.closedTitle',
-        'Orca closed unexpectedly'
+        'OCC closed unexpectedly'
       )
 }
 
@@ -99,7 +99,7 @@ function getNotesPlaceholder(report: CrashReportRecord | null): string {
       )
     : translate(
         'auto.components.crash.report.CrashReportDialogSurface.closedNotesPlaceholder',
-        'Optional: what were you doing before Orca closed?'
+        'Optional: what were you doing before OCC closed?'
       )
 }
 
@@ -283,7 +283,7 @@ export function CrashReportDialogSurface({
                 <div className="mt-1 text-muted-foreground">
                   {new Date(report.createdAt).toLocaleString(getIntlLocale())} · {report.platform}{' '}
                   {report.arch} ·{' '}
-                  {translate('auto.components.crash.report.CrashReportDialog.835037edc9', 'Orca')}{' '}
+                  {translate('auto.components.crash.report.CrashReportDialog.835037edc9', 'OCC')}{' '}
                   {report.appVersion}
                 </div>
               </div>

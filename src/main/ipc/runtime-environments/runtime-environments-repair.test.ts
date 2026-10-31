@@ -175,7 +175,7 @@ describe('runtimeEnvironments:repairFromPairingCode', () => {
     expect(environmentStore.resolveEnvironment(userDataPath, 'desk')).toEqual(before)
   })
 
-  it('declines a server another Orca service pairs', async () => {
+  it('declines a server another OCC service pairs', async () => {
     environmentStore.addEnvironmentFromPairingCode(userDataPath, {
       name: 'vm',
       pairingCode: pairingCode(ENDPOINT, { deviceToken: 'vm-token', keyByte: 2 }),

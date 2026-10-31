@@ -29,7 +29,7 @@ export type BundledSkillTargetRequest = {
   >
   /** Detected or `--agent` agents; empty means the shared root only (`--agent universal`). */
   agents: readonly SkillInstallProviderId[]
-  /** From `resolveSkillProviderRoots` (`CLAUDE_CONFIG_DIR`, `GROK_HOME`, Orca's Claude profile). */
+  /** From `resolveSkillProviderRoots` (`CLAUDE_CONFIG_DIR`, `GROK_HOME`, OCC's Claude profile). */
   providerRootOverrides?: SkillProviderRootOverrides
 }
 

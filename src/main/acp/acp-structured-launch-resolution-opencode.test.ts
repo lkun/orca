@@ -114,7 +114,7 @@ describe('OpenCode ACP launch resolution', () => {
     expect(child).toMatchObject(userEnv)
   })
 
-  it('leaves unset what the user left unset, whatever Orca itself inherited', async () => {
+  it('leaves unset what the user left unset, whatever OCC itself inherited', async () => {
     const inheritedEnv = { OPENCODE_DB: '/elsewhere/other.db', OPENCODE_AUTH_CONTENT: '' }
     const launch = await resolver(openCodeRecord(UNMANAGED), { inheritedEnv })({ identity })
     expect(launch.env.XDG_DATA_HOME).toBeUndefined()
@@ -145,7 +145,7 @@ describe('OpenCode ACP launch resolution', () => {
     })
   })
 
-  it("restores the user's own config directory over Orca's status overlay", async () => {
+  it("restores the user's own config directory over OCC's status overlay", async () => {
     const inheritedEnv = {
       OPENCODE_CONFIG_DIR: '/orca/overlay',
       ORCA_OPENCODE_CONFIG_DIR: '/orca/overlay',
@@ -188,7 +188,7 @@ describe('OpenCode ACP launch resolution', () => {
     expect(child.ORCA_OPENCODE_CONFIG_DIR).toBeUndefined()
   })
 
-  it("drops Orca's retired shared plugin directory an old shell still exports", () => {
+  it("drops OCC's retired shared plugin directory an old shell still exports", () => {
     const env: Record<string, string> = {
       OPENCODE_CONFIG_DIR: '/orca-data/opencode-hooks/shared',
       ORCA_DATA_ACCOUNT_PROVIDER: 'opencode'

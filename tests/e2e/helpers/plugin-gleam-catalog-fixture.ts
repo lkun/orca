@@ -90,7 +90,7 @@ export async function createGleamCatalogFixture(root: string) {
     join(catalog, 'orca-catalog.json'),
     JSON.stringify({
       catalogVersion: 2,
-      name: 'Orca Plugins',
+      name: 'OCC Plugins',
       owner: 'stablyai',
       plugins: [
         {
@@ -135,6 +135,6 @@ export async function createGleamCatalogFixture(root: string) {
   await mkdir(workspace, { recursive: true })
   await writeFile(join(workspace, 'main.gleam'), 'pub fn main() { Nil }\n')
   await commitRepository(workspace, gitEnvironment)
-  // Why realpath: Orca registers the repository by its resolved path, as macOS /var is a link.
+  // Why realpath: OCC registers the repository by its resolved path, as macOS /var is a link.
   return { gitEnvironment, workspace: await realpath(workspace) }
 }

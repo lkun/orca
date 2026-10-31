@@ -5,7 +5,7 @@ const mocks = vi.hoisted(() => {
   const events: string[] = []
   // Use a two-word app token to expose partial removal; retain the engine identity required by the real cleaner.
   let userAgent =
-    'Mozilla/5.0 (Test) AppleWebKit/537.36 (KHTML, like Gecko) Orca Development/0.0.0 Chrome/150.0.0.0 Electron/43.0.0 Safari/537.36'
+    'Mozilla/5.0 (Test) AppleWebKit/537.36 (KHTML, like Gecko) OCC Development/0.0.0 Chrome/150.0.0.0 Electron/43.0.0 Safari/537.36'
   const app = {
     isPackaged: false,
     exit: vi.fn(),
@@ -92,7 +92,7 @@ vi.mock('../updater', () => ({
 vi.mock('./dev-instance-identity', () => ({
   getDevInstanceIdentity: () => ({
     isDev: true,
-    appName: 'Orca Development',
+    appName: 'OCC Development',
     appUserModelId: 'com.orca.development'
   }),
   shouldApplyPreReadyAppName: () => true
@@ -212,7 +212,7 @@ describe('browser process user-agent startup ordering', () => {
     const platform = vi.spyOn(process, 'platform', 'get').mockReturnValue('darwin')
     mocks.backgroundLaunch.mockReturnValueOnce(false)
     mocks.admission.mockImplementationOnce(() => {
-      throw new Error('Stop Orca and orcad before retrying profile recovery')
+      throw new Error('Stop OCC and orcad before retrying profile recovery')
     })
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
     try {
@@ -220,8 +220,8 @@ describe('browser process user-agent startup ordering', () => {
         runMainProcessPreflight({ focusExistingWindow: vi.fn(), requestDesktopActivation: vi.fn() })
       ).toBe(false)
       expect(mocks.showErrorBox).toHaveBeenCalledWith(
-        'Orca could not start',
-        expect.stringContaining('Stop Orca and orcad before retrying profile recovery')
+        'OCC could not start',
+        expect.stringContaining('Stop OCC and orcad before retrying profile recovery')
       )
       expect(mocks.app.isReady).not.toHaveBeenCalled()
     } finally {
@@ -244,7 +244,7 @@ describe('browser process user-agent startup ordering', () => {
         runMainProcessPreflight({ focusExistingWindow: vi.fn(), requestDesktopActivation: vi.fn() })
       ).toBe(false)
       expect(mocks.showErrorBox).toHaveBeenCalledWith(
-        'Orca could not start',
+        'OCC could not start',
         'Another orcad (pid 7)'
       )
       expect(mocks.app.exit.mock.calls).toEqual([[3]])
@@ -281,7 +281,7 @@ describe('browser process user-agent startup ordering', () => {
       })
     ).toBe(false)
 
-    const nameIndex = mocks.events.indexOf('set-name:Orca Development')
+    const nameIndex = mocks.events.indexOf('set-name:OCC Development')
     const modeIndex = mocks.events.indexOf('read-mode:/canonical-user-data')
     const writeIndex = mocks.events.indexOf('write-user-agent')
     const continuationIndex = mocks.events.indexOf('continued-after-browser-identity')
@@ -297,10 +297,10 @@ describe('browser process user-agent startup ordering', () => {
       mode: 'clean',
       userAgent: mocks.userAgent(),
       electronUserAgent:
-        'Mozilla/5.0 (Test) AppleWebKit/537.36 (KHTML, like Gecko) Orca Development/0.0.0 Chrome/150.0.0.0 Electron/43.0.0 Safari/537.36'
+        'Mozilla/5.0 (Test) AppleWebKit/537.36 (KHTML, like Gecko) OCC Development/0.0.0 Chrome/150.0.0.0 Electron/43.0.0 Safari/537.36'
     })
     expect(mocks.userAgent()).not.toMatch(/Electron/)
-    expect(mocks.userAgent()).not.toMatch(/Orca|Development/)
+    expect(mocks.userAgent()).not.toMatch(/OCC|Development/)
   })
 
   it('exits without reading profile state or revealing a window when recovery holds admission', async () => {
@@ -316,7 +316,7 @@ describe('browser process user-agent startup ordering', () => {
       expect(mocks.app.exit).toHaveBeenCalledWith(1)
       expect(mocks.events).toEqual([
         'init-data-path',
-        'set-name:Orca Development',
+        'set-name:OCC Development',
         'single-instance-lock',
         'admission:/canonical-user-data'
       ])
@@ -380,7 +380,7 @@ it('defers a Linux desktop startup failure until Electron is ready', async () =>
     // The dialog waits for the async system-language catalog after ready.
     await vi.waitFor(() => expect(mocks.app.exit).toHaveBeenCalled())
     expect(mocks.showErrorBox).toHaveBeenCalledWith(
-      'Orca could not start',
+      'OCC could not start',
       expect.stringContaining('Linux pre-ready failure')
     )
     expect(mocks.app.exit).toHaveBeenCalledWith(1)

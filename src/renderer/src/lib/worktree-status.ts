@@ -25,7 +25,7 @@ type WorktreeStatusHeuristicOptions = {
   /** An awake chat tab has no PTY until its first message, but the user sees an open session. */
   hasStructuredChat?: boolean
   agentStatusPaneIdsByTabId?: Record<string, ReadonlySet<string>>
-  /** Stale rows suppress Orca's generated permission labels; native title fallback stays live. */
+  /** Stale rows suppress OCC's generated permission labels; native title fallback stays live. */
   stalePaneIdsByTabId?: Record<string, ReadonlySet<string>>
   terminalLayoutsByTabId?: Record<string, TerminalLayoutSnapshot | undefined>
   terminalLayoutRootsByTabId?: Record<string, TerminalPaneLayoutNode | null | undefined>

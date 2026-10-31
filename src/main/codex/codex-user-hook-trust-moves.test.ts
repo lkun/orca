@@ -172,7 +172,7 @@ describe('real-home user hook trust rebasing', () => {
       const user = command('user-hook')
       const other = command('other-event-hook')
       const userBody =
-        'trusted_hash = "sha256:written-by-codex"\nnote = "a field Orca does not know"'
+        'trusted_hash = "sha256:written-by-codex"\nnote = "a field OCC does not know"'
       const unrelated = [
         'model = "user-model" # the user\'s own comment',
         '',

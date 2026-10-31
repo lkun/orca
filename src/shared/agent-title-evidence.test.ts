@@ -40,7 +40,7 @@ describe('collectAgentTitleEvidence', () => {
   )
 
   describe('an anchored name outranks a name in task text', () => {
-    // Recorded failures name the owner in Orca's suffix and a competitor only in task text.
+    // Recorded failures name the owner in OCC's suffix and a competitor only in task text.
     it.each([
       'Switch Claude and Codex off the load balancer… - grok',
       'Codex structured chat revalidation… - grok',
@@ -214,7 +214,7 @@ describe('collectAgentTitleEvidence', () => {
     ['Devin - action required', 'devin'],
     ['Pi ready', 'pi'],
     ['OMP - action required', 'omp']
-  ] as const)('recognizes Orca-controlled synthetic title %s', (title, agent) => {
+  ] as const)('recognizes OCC-controlled synthetic title %s', (title, agent) => {
     expect(agentFor(title)).toBe(agent)
     expect(reasonFor(title)).toBe('anchored')
   })

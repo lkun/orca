@@ -5,7 +5,7 @@ import { MOBILE_RELAY_CLOSE_CODE } from '../../../src/shared/mobile-relay-close-
 // Unknown failures remain connecting; only named relay evidence establishes a desktop verdict.
 export type RelayHostReachability =
   | 'connecting'
-  | 'signed-out' // the cell named the desktop's own Orca Cloud sign-out as the reason
+  | 'signed-out' // the cell named the desktop's own OCC Cloud sign-out as the reason
   | 'host-offline' // 4404: the cell answered, the desktop is not attached to it
   | 'credential-refused' // 4401 / director 401: this device's relay credential was refused
   | 'unreachable' // 1006: the phone never reached the cell

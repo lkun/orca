@@ -82,7 +82,7 @@ export function usePluginPageNavigation(onBack?: () => void): PluginPageNavigati
   return { openKey, open: setOpenKey, back, leave }
 }
 
-/** The version plugins are gated against, for "Needs Orca X" checks; null until known. Why not
+/** The version plugins are gated against, for "Needs OCC X" checks; null until known. Why not
  *  the raw app version: main gates on pluginHostVersion, and a development build's package version
  *  lags the fields it already reads, so the two must agree. */
 export function useOrcaVersion(): string | null {

@@ -89,7 +89,7 @@ vi.mock('./hosted-review', () => ({
 
 import { createHostedReview } from './hosted-review-creation'
 
-// Directory-only ignores miss worktree symlinks; exclude Orca-owned links rather than demand an impossible commit.
+// Directory-only ignores miss worktree symlinks; exclude OCC-owned links rather than demand an impossible commit.
 describe('createHostedReview with shared symlinks', () => {
   let worktree: string
   let statusOutput: string

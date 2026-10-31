@@ -130,7 +130,7 @@ describe('plain SSH terminal sessions', () => {
     expect(spawned).toHaveLength(0)
   })
 
-  it('refuses a host whose move isn’t blocked: Orca’s own terminals serve it', async () => {
+  it('refuses a host whose move isn’t blocked: OCC’s own terminals serve it', async () => {
     expect(await open(deps({ isMoveBlocked: () => false }))).toEqual({
       ok: false,
       reason: 'not-blocked'

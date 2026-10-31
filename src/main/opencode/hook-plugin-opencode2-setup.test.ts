@@ -42,7 +42,7 @@ describe.each(['opencode', 'opencode2'] as const)('%s plugin on OpenCode 2', (ag
     OrcaOpenCodeStatusPlugin?: (ctx: unknown) => Promise<PluginHooks>
   }
 
-  // Isolate endpoint-file and environment inputs so tests cannot post to a live Orca session.
+  // Isolate endpoint-file and environment inputs so tests cannot post to a live OCC session.
   const ENV_KEYS = [
     'ORCA_PANE_KEY',
     'ORCA_OPENCODE_AGENT',

@@ -17,11 +17,11 @@ export function toastProjectRemovalFailure(
         : hasRuntimeRpcErrorCode(error, 'runtime_manually_disconnected')
           ? translate(
               'auto.store.slices.repos.removeProjectHostDisconnected',
-              'Its server is disconnected. Remove it from this desktop now, and Orca removes it from the server when you reconnect.'
+              'Its server is disconnected. Remove it from this desktop now, and OCC removes it from the server when you reconnect.'
             )
           : translate(
               'auto.store.slices.repos.removeProjectHostUnreachable',
-              'Its server can’t be reached. Remove it from this desktop now, and Orca removes it from the server when it reconnects.'
+              'Its server can’t be reached. Remove it from this desktop now, and OCC removes it from the server when it reconnects.'
             ),
       duration: ERROR_TOAST_DURATION,
       ...(options.hostUnreachable

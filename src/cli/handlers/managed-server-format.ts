@@ -6,13 +6,13 @@ function count(value: number | null): string {
 
 export function formatManagedServerStatus(status: OrcadManagedRuntimeStatus): string {
   const lines = [
-    `Active version: ${status.activeVersion ?? 'none'}${status.activeAppVersion ? ` (Orca ${status.activeAppVersion})` : ''}`,
+    `Active version: ${status.activeVersion ?? 'none'}${status.activeAppVersion ? ` (OCC ${status.activeAppVersion})` : ''}`,
     `Previous version: ${status.previousVersion ?? 'none'}${status.rollbackAvailable ? ' (rollback available)' : ''}`,
     `Live terminals: ${count(status.terminals.liveSessions)}`
   ]
   if (status.recovery) {
     lines.push(
-      `Interrupted ${status.recovery.operation} of ${status.recovery.version} (${status.recovery.phase}); run \`orca environment recover\`.`
+      `Interrupted ${status.recovery.operation} of ${status.recovery.version} (${status.recovery.phase}); run \`occ environment recover\`.`
     )
   }
   if (status.migration) {
@@ -25,7 +25,7 @@ export function formatManagedServerStatus(status: OrcadManagedRuntimeStatus): st
   }
   if (status.availableUpdate) {
     lines.push(
-      `Update available: ${status.availableUpdate}; run \`orca environment update --environment ${status.environmentId}\`.`
+      `Update available: ${status.availableUpdate}; run \`occ environment update --environment ${status.environmentId}\`.`
     )
   }
   return lines.join('\n')

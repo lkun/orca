@@ -49,7 +49,7 @@ export function skippedWslHookInstallStatus(runtimeHomePath: string): AgentHookI
     state: 'not_installed',
     configPath: pathWin32.join(runtimeHomePath, 'hooks.json'),
     managedHooksPresent: false,
-    detail: 'The WSL distro is not running; Orca installs these hooks once it runs.'
+    detail: 'The WSL distro is not running; OCC installs these hooks once it runs.'
   }
 }
 
@@ -150,11 +150,11 @@ async function installManagedHooksIntoWslRuntimeExclusively(
         configPath: plan.configPath,
         managedHooksPresent: true,
         detail:
-          'Hooks installed but trust is pending: the WSL distro stopped before Orca could write it. Orca writes it once the distro runs.'
+          'Hooks installed but trust is pending: the WSL distro stopped before OCC could write it. OCC writes it once the distro runs.'
       }
     }
     if (grant.lane === 'fallback') {
-      // Upsert only Orca's entries to preserve user approvals not rebuilt here.
+      // Upsert only OCC's entries to preserve user approvals not rebuilt here.
       upsertHookTrustEntries(plan.tomlPath, trustEntries)
     }
   } catch (error) {

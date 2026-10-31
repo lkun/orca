@@ -1,5 +1,5 @@
 /**
- * Install rows for plugins from Orca's public catalogs, which feed the directory's install counts.
+ * Install rows for plugins from OCC's public catalogs, which feed the directory's install counts.
  * Anything else (private catalogs, git, local and dev installs) never reports.
  */
 import { COMMUNITY_MARKETPLACE_GIT_SOURCE } from '../../shared/plugins/catalog/plugin-install-link'

@@ -311,7 +311,7 @@ describe('bundled skill guide generator', () => {
     ).toThrow('collides with canonical name')
   })
 
-  // Single-author resolver ladder; re-inlined stubs can drift like the copies that lost /usr/bin/orca (#7904).
+  // Single-author resolver ladder; re-inlined stubs can drift like the copies that lost /usr/bin/occ (#7904).
   it('projects one shared resolver fragment byte-for-byte into every stub', async () => {
     const blocks = await readSharedStubBlocks(projectDir)
 

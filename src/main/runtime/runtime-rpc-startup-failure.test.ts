@@ -151,8 +151,8 @@ describe('runtime RPC startup failure reporting', () => {
       parentWindow,
       expect.objectContaining({
         type: 'error',
-        title: 'Orca CLI unavailable',
-        message: "Orca couldn't start its local command transport.",
+        title: 'OCC CLI unavailable',
+        message: "OCC couldn't start its local command transport.",
         detail: expect.stringMatching(
           /orca status.*orca terminal.*orchestration.*Cause: metadata write failed/s
         )
@@ -162,13 +162,13 @@ describe('runtime RPC startup failure reporting', () => {
 
   // Only address_in_use can be fixed by restart; other failure classes must explain their required repair.
   it.each([
-    ['EACCES', "Check permissions on Orca's data folder"],
-    ['EPERM', "Check permissions on Orca's data folder"],
+    ['EACCES', "Check permissions on OCC's data folder"],
+    ['EPERM', "Check permissions on OCC's data folder"],
     ['ENOSPC', 'Your disk may be full or read-only'],
     ['EROFS', 'Your disk may be full or read-only'],
     ['EINVAL', 'at a path that is too long'],
     ['ENAMETOOLONG', 'at a path that is too long'],
-    ['ENOENT', "Orca's data folder may be missing"],
+    ['ENOENT', "OCC's data folder may be missing"],
     ['EADDRINUSE', 'Another process may be holding the port']
   ] as const)('guides the user on how to fix %s', async (code, guidance) => {
     const error = Object.assign(new Error('metadata write failed'), { code })
@@ -184,8 +184,8 @@ describe('runtime RPC startup failure reporting', () => {
     await showRuntimeRpcStartupFailureDialog(createParentWindow(), new Error('mystery'))
 
     const detail = showMessageBoxMock.mock.calls[0]?.[1]?.detail as string
-    expect(detail).toContain('Restart Orca to try again.')
-    expect(detail).not.toContain("Check permissions on Orca's data folder")
+    expect(detail).toContain('Restart OCC to try again.')
+    expect(detail).not.toContain("Check permissions on OCC's data folder")
   })
 
   it('truncates a runaway cause instead of pasting it whole into the dialog', async () => {

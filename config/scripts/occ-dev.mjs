@@ -13,13 +13,13 @@ const cliEntry =
   process.env.ORCA_DEV_CLI_ENTRY_PATH ?? path.join(repoRoot, 'out', 'cli', 'index.js')
 
 if (!existsSync(cliEntry)) {
-  console.error("orca-dev: CLI not built yet. Run 'pnpm run build:cli' first.")
+  console.error("occ-dev: CLI not built yet. Run 'pnpm run build:cli' first.")
   process.exit(1)
 }
 
 // Why: target the profile this checkout's `pnpm dev` uses (per-worktree in linked worktrees).
 process.env.ORCA_USER_DATA_PATH = resolveDevCliUserDataPath({ repoRoot })
-// Why: custom dev profiles do not necessarily contain "orca-dev" in their path; carry explicit provenance into the CLI.
+// Why: custom dev profiles do not necessarily contain "occ-dev" in their path; carry explicit provenance into the CLI.
 process.env.ORCA_DEV_CLI_INVOCATION = '1'
 
 const electronExecutable = getElectronExecutable()
@@ -28,7 +28,7 @@ if (!process.env.ORCA_APP_EXECUTABLE && isRunnableFile(electronExecutable)) {
   process.env.ORCA_APP_EXECUTABLE_NEEDS_APP_ROOT = '1'
 }
 
-// Why: headless `orca-dev serve` skips the Electron dev runner that normally installs terminal CLI shims.
+// Why: headless `occ-dev serve` skips the Electron dev runner that normally installs terminal CLI shims.
 prepareDevCliTerminalWrappers({
   repoRoot,
   userDataPath: process.env.ORCA_USER_DATA_PATH,

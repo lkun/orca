@@ -33,8 +33,8 @@ const { macCommandPrefixForArch } = require('./verify-packaged-daemon-entry.cjs'
 const electronBuilderConfig = require('../electron-builder.config.cjs')
 
 const usageDescriptions = electronBuilderConfig.mac.extendInfo
-const appInfo = { CFBundleIdentifier: 'com.stablyai.orca', CFBundleShortVersionString: '1.4.300' }
-const expectations = { appId: 'com.stablyai.orca', usageDescriptions, minimumOs: '13.5' }
+const appInfo = { CFBundleIdentifier: 'com.lkun.occ', CFBundleShortVersionString: '1.4.300' }
+const expectations = { appId: 'com.lkun.occ', usageDescriptions, minimumOs: '13.5' }
 
 describe('terminal host Info.plist', () => {
   const info = buildMacTerminalHostInfo({ appInfo, usageDescriptions, minimumOs: '13.5' })
@@ -42,9 +42,9 @@ describe('terminal host Info.plist', () => {
   it("carries the app's identifier, every purpose string and the Node floor", () => {
     expect(info).toMatchObject({
       ...usageDescriptions,
-      CFBundleIdentifier: 'com.stablyai.orca',
-      CFBundleName: 'Orca',
-      CFBundleDisplayName: 'Orca',
+      CFBundleIdentifier: 'com.lkun.occ',
+      CFBundleName: 'OCC',
+      CFBundleDisplayName: 'OCC',
       CFBundleExecutable: 'orca-terminal-host',
       CFBundleVersion: '0',
       LSMinimumSystemVersion: '13.5',
@@ -59,7 +59,7 @@ describe('terminal host Info.plist', () => {
       findMacTerminalHostInfoProblems(
         {
           ...info,
-          CFBundleIdentifier: 'com.stablyai.orca.helper',
+          CFBundleIdentifier: 'com.lkun.occ.helper',
           CFBundleURLTypes: [],
           CFBundleDocumentTypes: [],
           UTExportedTypeDeclarations: [],
@@ -69,7 +69,7 @@ describe('terminal host Info.plist', () => {
         expectations
       )
     ).toEqual([
-      'CFBundleIdentifier is com.stablyai.orca.helper, expected com.stablyai.orca',
+      'CFBundleIdentifier is com.lkun.occ.helper, expected com.lkun.occ',
       'declares CFBundleURLTypes',
       'declares CFBundleDocumentTypes',
       'declares UTExportedTypeDeclarations',
@@ -126,18 +126,18 @@ describe('terminal host packaging config', () => {
     expect(electronBuilderConfig.mac.signIgnore).toEqual(
       expect.arrayContaining(macTerminalHostSignIgnore)
     )
-    const helper = '/out/mac-arm64/Orca.app/Contents/Helpers/Orca Terminal Host.app'
+    const helper = '/out/mac-arm64/OCC.app/Contents/Helpers/OCC Terminal Host.app'
     expect(pattern.test(helper)).toBe(true)
     expect(pattern.test(`${helper}/Contents/MacOS/orca-terminal-host`)).toBe(true)
-    expect(pattern.test('/out/mac-arm64/Orca.app/Contents/Helpers/Orca Terminal Host.bundle')).toBe(
+    expect(pattern.test('/out/mac-arm64/OCC.app/Contents/Helpers/OCC Terminal Host.bundle')).toBe(
       false
     )
-    expect(pattern.test('/out/mac-arm64/Orca.app/Contents/Frameworks/Orca Helper.app')).toBe(false)
+    expect(pattern.test('/out/mac-arm64/OCC.app/Contents/Frameworks/OCC Helper.app')).toBe(false)
   })
 
   it('packages the helper where the desktop looks for it', () => {
-    const paths = macTerminalHostPaths('/Orca.app')
-    expect(paths.bundle).toBe(join('/Orca.app', 'Contents', 'Helpers', MAC_TERMINAL_HOST_BUNDLE))
+    const paths = macTerminalHostPaths('/OCC.app')
+    expect(paths.bundle).toBe(join('/OCC.app', 'Contents', 'Helpers', MAC_TERMINAL_HOST_BUNDLE))
     expect(basename(paths.executable)).toBe(MAC_TERMINAL_HOST_EXECUTABLE)
   })
 })
@@ -148,7 +148,7 @@ describe.skipIf(process.platform !== 'darwin')('terminal host assembly', () => {
 
   beforeEach(() => {
     root = mkdtempSync(join(tmpdir(), 'orca-terminal-host-'))
-    appPath = join(root, 'Orca.app')
+    appPath = join(root, 'OCC.app')
     const resources = join(appPath, 'Contents', 'Resources')
     const out = join(resources, 'app.asar.unpacked', 'out')
     mkdirSync(join(out, 'main', 'chunks'), { recursive: true })
@@ -182,7 +182,7 @@ describe.skipIf(process.platform !== 'darwin')('terminal host assembly', () => {
       info
     })
     expect(paths).toEqual(macTerminalHostPaths(appPath))
-    expect(paths.bundle).toBe(join(appPath, 'Contents', 'Helpers', 'Orca Terminal Host.app'))
+    expect(paths.bundle).toBe(join(appPath, 'Contents', 'Helpers', 'OCC Terminal Host.app'))
     expect(readFileSync(paths.executable, 'utf8')).toBe('pinned-node')
     expect(statSync(paths.executable).mode & 0o777).toBe(0o755)
     expect(statSync(paths.spawnHelper).mode & 0o777).toBe(0o755)

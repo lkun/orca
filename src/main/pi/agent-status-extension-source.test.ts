@@ -387,7 +387,7 @@ describe('getPiAgentStatusExtensionSource', () => {
       '-H',
       'Content-Type: application/json',
       '-H',
-      'X-Orca-Agent-Hook-Token: token-1',
+      'X-OCC-Agent-Hook-Token: token-1',
       '--data-binary',
       '@-',
       'http://127.0.0.1:4321/hook/omp'

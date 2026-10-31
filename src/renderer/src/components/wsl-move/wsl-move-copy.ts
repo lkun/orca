@@ -38,13 +38,13 @@ export function wslMoveRefusalMessage(
       if (refusal.detail === 'preview-failed') {
         return translate(
           'wslMove.refusal.previewFailed',
-          'Orca could not check these projects. Try again.'
+          'OCC could not check these projects. Try again.'
         )
       }
       if (refusal.detail === 'start-failed') {
         return translate(
           'wslMove.refusal.startFailed',
-          'Orca lost contact with the move. Open this dialog again to see where it stands.'
+          'OCC lost contact with the move. Open this dialog again to see where it stands.'
         )
       }
       return translate(
@@ -67,7 +67,7 @@ export function wslMoveRefusalMessage(
       return context === 'preview'
         ? translate(
             'wslMove.refusal.alreadyInFlightPreview',
-            'A move of {{distro}} is still finishing. Starting this move first finishes or undoes it where Orca can.',
+            'A move of {{distro}} is still finishing. Starting this move first finishes or undoes it where OCC can.',
             { distro }
           )
         : translate(
@@ -96,7 +96,7 @@ export function wslMoveRefusalMessage(
     case 'wsl_move_host_update_required':
       return translate(
         'wslMove.refusal.hostUpdateRequired',
-        'The {{distro}} host runs an older version of Orca. Update it in Settings, then try again.',
+        'The {{distro}} host runs an older version of OCC. Update it in Settings, then try again.',
         { distro }
       )
     case 'wsl_move_terminals_blocked':
@@ -126,7 +126,7 @@ export function wslMoveRefusalMessage(
     case 'wsl_move_pause_failed':
       return translate(
         'wslMove.refusal.pauseFailed',
-        'Orca could not pause the terminals in these projects, so nothing was moved. Paused terminals start again when you open them. Try again.'
+        'OCC could not pause the terminals in these projects, so nothing was moved. Paused terminals start again when you open them. Try again.'
       )
     case 'wsl_move_scope_changed':
       return translate(
@@ -138,7 +138,7 @@ export function wslMoveRefusalMessage(
     case 'wsl_move_finished_earlier_move':
       return translate(
         'wslMove.refusal.finishedEarlierMove',
-        'Orca first finished an earlier move into {{distro}}. Reload the window, then start this move again.',
+        'OCC first finished an earlier move into {{distro}}. Reload the window, then start this move again.',
         { distro }
       )
   }
@@ -194,10 +194,10 @@ export function wslMoveBlockerTitle(kind: WslMoveBlockerKind, n: number): string
           )
     case 'unverifiable':
       return one
-        ? translate('wslMove.blocker.unverifiableOne', 'Orca cannot check a terminal right now')
+        ? translate('wslMove.blocker.unverifiableOne', 'OCC cannot check a terminal right now')
         : translate(
             'wslMove.blocker.unverifiableMany',
-            'Orca cannot check {{n}} terminals right now',
+            'OCC cannot check {{n}} terminals right now',
             {
               n
             }
@@ -288,7 +288,7 @@ export function wslMoveBrowserLoginsNotCopied(reason: string): string {
     case 'destination-environment-missing':
       return translate(
         'wslMove.result.browserLoginsHostUnknown',
-        'Browser logins were not copied, because Orca could not identify the host’s browser profile. Sign in again in the host’s browser tabs.'
+        'Browser logins were not copied, because OCC could not identify the host’s browser profile. Sign in again in the host’s browser tabs.'
       )
     case 'destination-partition-conflict':
       return translate(

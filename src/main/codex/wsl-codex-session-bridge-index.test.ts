@@ -152,7 +152,7 @@ describe('startWslCodexSessionBridgeInBackground', () => {
     const heal = options?.buildInvocation?.(MANAGED_HOME, 5_000)
     expect(heal?.args.at(-1)).toContain(LINUX_HOME)
     expect(heal?.timeoutMs).toBe(5_000)
-    // A failed read keeps its marker, so it is retried after Orca restarts.
+    // A failed read keeps its marker, so it is retried after OCC restarts.
     expect(runWslProcessMock.mock.calls[1]?.[0].args).toEqual([
       `${LINUX_HOME}/.orca-index-pending`,
       NEWER

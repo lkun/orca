@@ -45,7 +45,7 @@ export type CodexStructuredInvocationDeps = Pick<
   resolveEnvironment?: () => Promise<NodeJS.ProcessEnv>
   /** Refresh after a missing binary; absence disables retry. */
   refreshEnvironmentAfterMiss?: (askedAt: number) => Promise<void>
-  /** Resolve relative PATH entries from the spawn directory; defaults to Orca's cwd. */
+  /** Resolve relative PATH entries from the spawn directory; defaults to OCC's cwd. */
   resolveWorkingDirectory?: () => Promise<string> | string
 }
 

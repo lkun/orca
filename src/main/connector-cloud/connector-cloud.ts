@@ -1,4 +1,4 @@
-// This desktop's link to the Orca Cloud connector, as whichever Orca account it is signed in to.
+// This desktop's link to the OCC Cloud connector, as whichever OCC account it is signed in to.
 import { ConnectorPollClient } from './connector-poll-client'
 import type { ConnectorMachine } from './connector-machine'
 import { ConnectorAccountTransport, type ConnectorTokenMint } from './connector-transport'
@@ -8,7 +8,7 @@ export type ConnectorCloudOptions = {
   userDataPath: string
   origin: string
   machine: ConnectorMachine
-  /** The signed-in Orca account, or null while signed out. */
+  /** The signed-in OCC account, or null while signed out. */
   account: () => string | null
   /** Quitting or relaunching into another profile: nothing new starts, as for the relay. */
   isFenced: () => boolean
@@ -27,7 +27,7 @@ export class ConnectorCloud {
 
   constructor(private readonly options: ConnectorCloudOptions) {}
 
-  /** From now on, hold the poll whenever connectors are on and an Orca account is signed in. */
+  /** From now on, hold the poll whenever connectors are on and an OCC account is signed in. */
   connect(): void {
     if (this.connected) {
       return
@@ -96,7 +96,7 @@ export class ConnectorCloud {
     }
   }
 
-  /** Null while no client runs: signed out, connectors off, or Orca quitting. */
+  /** Null while no client runs: signed out, connectors off, or OCC quitting. */
   reply(
     body: Parameters<ConnectorPollClient['reply']>[0]
   ): ReturnType<ConnectorPollClient['reply']> | null {

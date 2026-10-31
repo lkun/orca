@@ -26,7 +26,7 @@ export function JiraConnectPrompt({
       <TaskProviderLogo provider="jira" size={32} color={colors.textSecondary} />
       <Text style={styles.emptyText}>
         {unavailableReason
-          ? t('components.jiraConnectPrompt.updateDesktop', 'Update Orca desktop')
+          ? t('components.jiraConnectPrompt.updateDesktop', 'Update OCC desktop')
           : t('components.jiraConnectPrompt.connectOnDesktop', 'Connect Jira on your desktop')}
       </Text>
       <Text style={styles.centeredHint}>
@@ -39,7 +39,7 @@ export function JiraConnectPrompt({
               )
             : t(
                 'components.jiraConnectPrompt.connectHint',
-                'Add your Jira site in Orca desktop under Settings → Integrations, then check again.'
+                'Add your Jira site in OCC desktop under Settings → Integrations, then check again.'
               ))}
       </Text>
       <Pressable

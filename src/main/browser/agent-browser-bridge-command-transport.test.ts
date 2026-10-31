@@ -308,7 +308,7 @@ describe('AgentBrowserBridge', () => {
   })
 
   it('returns a passthrough batch that stopped at its first step as that step', async () => {
-    // `batch --bail` whose first step fails replies with one entry, like Orca's own batches.
+    // `batch --bail` whose first step fails replies with one entry, like OCC's own batches.
     const reply =
       '[{"command":["click","@e999"],"error":"Unknown ref: e999","result":null,"success":false}]'
     answerAgentBrowserCommands(execFileMock, stdinWrites, (command, cb) =>

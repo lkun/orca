@@ -157,7 +157,7 @@ describe('formatSessionSearchResponse: non-result answers', () => {
     expect(formatSessionSearchResponse({ kind: 'unavailable', reason: 'no-service' })).toBe(
       [
         'This host runs no session search service.',
-        'An Orca host older than session search answers the same way; update it and try again.'
+        'An OCC host older than session search answers the same way; update it and try again.'
       ].join('\n')
     )
   })

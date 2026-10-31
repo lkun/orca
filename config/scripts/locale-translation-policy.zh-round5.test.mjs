@@ -3,23 +3,23 @@ import { describe, expect, it } from 'vitest'
 import { repairTranslatedValue } from './locale-translation-policy.mjs'
 
 describe('locale-translation-policy zh round 5', () => {
-  it('fixes brand spacing, hosted review, and Orca Mobile regressions', () => {
+  it('fixes brand spacing, hosted review, and OCC Mobile regressions', () => {
     expect(
       repairTranslatedValue({
         key: 'auto.components.stats.ShareUsageCard.0eb31e79ee',
-        enValue: 'Orca IDE',
-        localeValue: 'Orca集成开发环境',
+        enValue: 'OCC IDE',
+        localeValue: 'OCC集成开发环境',
         locale: 'zh'
       })
-    ).toBe('Orca IDE')
+    ).toBe('OCC IDE')
     expect(
       repairTranslatedValue({
         key: 'auto.components.settings.ShortcutsPane.2a0e8aeccf',
-        enValue: 'Orca first',
-        localeValue: 'Orca第一',
+        enValue: 'OCC first',
+        localeValue: 'OCC第一',
         locale: 'zh'
       })
-    ).toBe('Orca 优先')
+    ).toBe('OCC 优先')
     expect(
       repairTranslatedValue({
         key: 'auto.components.settings.CommitMessageAiPane.2dafc7646e',
@@ -39,11 +39,11 @@ describe('locale-translation-policy zh round 5', () => {
     expect(
       repairTranslatedValue({
         key: 'menu.showMobileButton',
-        enValue: 'Show Orca Mobile Button',
-        localeValue: '显示 Orca 移动按钮',
+        enValue: 'Show OCC Mobile Button',
+        localeValue: '显示 OCC 移动按钮',
         locale: 'zh'
       })
-    ).toBe('显示 Orca Mobile 按钮')
+    ).toBe('显示 OCC Mobile 按钮')
     expect(
       repairTranslatedValue({
         key: 'auto.hooks.useSettingsNavigationMetadata.ab4b21b58e',
@@ -177,12 +177,12 @@ describe('locale-translation-policy zh round 5', () => {
       repairTranslatedValue({
         key: 'auto.store.slices.worktrees.d1d78a7baa',
         enValue:
-          'Git could not safely delete branch "{{value0}}"{{value1}}, so Orca kept it to avoid losing local commits.',
+          'Git could not safely delete branch "{{value0}}"{{value1}}, so OCC kept it to avoid losing local commits.',
         localeValue:
-          'Git 无法安全删除分支“{{value0}}”{{value1}}，因此 Orca 保留它以避免丢失本地提交。',
+          'Git 无法安全删除分支“{{value0}}”{{value1}}，因此 OCC 保留它以避免丢失本地提交。',
         locale: 'zh'
       })
-    ).toBe('Git 无法安全删除分支“{{value0}}”{{value1}}，因此 Orca 保留它以避免丢失本地提交。')
+    ).toBe('Git 无法安全删除分支“{{value0}}”{{value1}}，因此 OCC 保留它以避免丢失本地提交。')
   })
 
   it('does not confuse proxy copy with Agent terminology', () => {
@@ -222,7 +222,7 @@ describe('locale-translation-policy zh round 5', () => {
       '已为 {{value0}} 个智能体安装'
     ],
     ['Detecting agents...', '检测剂...', '正在检测智能体...'],
-    ['Repository not in Orca', '存储库不在 Orca 中', '仓库不在 Orca 中'],
+    ['Repository not in OCC', '存储库不在 OCC 中', '仓库不在 OCC 中'],
     ['Recent Workspaces', '最近的工作空间', '最近的工作区']
   ])('applies the glossary boundary for %s', (enValue, localeValue, expected) => {
     expect(

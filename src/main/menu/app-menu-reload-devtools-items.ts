@@ -34,7 +34,7 @@ export function createAppMenuReloadAndDevToolsItems(options: {
       click: () => reloadFocusedWindow(true)
     },
     {
-      // Why not role 'toggleDevTools': it always toggles Orca's own DevTools, even while a
+      // Why not role 'toggleDevTools': it always toggles OCC's own DevTools, even while a
       // browser page or its DevTools has focus, where Chrome would toggle the page's.
       label: translateMain('menu.toggleDevTools', 'Toggle Developer Tools'),
       // Same accelerator Electron gives the role.

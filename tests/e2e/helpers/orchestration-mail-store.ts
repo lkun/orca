@@ -65,7 +65,7 @@ export function insertDirectRunMail(
   return id
 }
 
-// A consuming check now marks its batch handled, so only an older Orca leaves one outstanding.
+// A consuming check now marks its batch handled, so only an older OCC leaves one outstanding.
 export function insertUnackedRunDelivery(
   userDataDir: string,
   params: { runId: string; subject: string }

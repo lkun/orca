@@ -33,8 +33,8 @@ function slackId(value: string | undefined, flag: string): string {
   return value
 }
 
-// Dogfood seeding (no OAuth install or Slack sign-in yet): an app Orca serves and the workspace it
-// is installed in, and which Orca account each Slack user is, with their machine-choice defaults.
+// Dogfood seeding (no OAuth install or Slack sign-in yet): an app OCC serves and the workspace it
+// is installed in, and which OCC account each Slack user is, with their machine-choice defaults.
 export async function runSlackOperator(
   argv: string[],
   deps: {
@@ -96,7 +96,7 @@ export async function runSlackOperator(
       }
       const install = { teamId, appId, botUserId, botToken }
       if (!(await installs().save(deps.database, install, deps.now()))) {
-        throw new Error(`${teamId} already has another Orca app installed`)
+        throw new Error(`${teamId} already has another OCC app installed`)
       }
       return `Saved the bot token for ${teamId}, installed through ${appId}.`
     }

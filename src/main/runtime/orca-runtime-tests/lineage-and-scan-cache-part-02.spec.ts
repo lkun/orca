@@ -16,7 +16,7 @@ import {
 const anyCatalogVersion = { epoch: expect.any(String), sequence: expect.any(Number) }
 
 describe('OrcaRuntimeService', () => {
-  it('strips Orca provenance fields from runtime metadata updates', async () => {
+  it('strips OCC provenance fields from runtime metadata updates', async () => {
     const metaById: Record<string, WorktreeMeta> = {
       [TEST_WORKTREE_ID]: makeWorktreeMeta({ instanceId: 'child-instance' })
     }

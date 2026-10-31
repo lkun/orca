@@ -29,7 +29,7 @@ async function makeFixture(): Promise<{
 }> {
   const root = await mkdtemp(join(tmpdir(), 'orca-appimage-extract-'))
   created.push(root)
-  const appImagePath = join(root, 'Orca.AppImage')
+  const appImagePath = join(root, 'OCC.AppImage')
   await writeFile(appImagePath, '#!/usr/bin/env bash\n', { encoding: 'utf8', mode: 0o755 })
   return { root, appImagePath, cacheRootPath: join(root, 'cache') }
 }
@@ -38,7 +38,7 @@ async function makeFixture(): Promise<{
 async function writePayload(cwd: string, content = ''): Promise<void> {
   const launcherDir = join(cwd, 'squashfs-root', 'resources', 'bin')
   await mkdir(launcherDir, { recursive: true })
-  await writeFile(join(launcherDir, 'orca-ide'), content, { encoding: 'utf8', mode: 0o755 })
+  await writeFile(join(launcherDir, 'occ-ide'), content, { encoding: 'utf8', mode: 0o755 })
 }
 
 describe('appimage extracted root', () => {
@@ -54,7 +54,7 @@ describe('appimage extracted root', () => {
     const namespaceKey = namespacePath.slice(namespacePath.lastIndexOf('/') + 1)
 
     expect(readAppImageSourceOfNamespace(cacheRootPath, namespaceKey)).toBe(appImagePath)
-    await writeFile(join(namespacePath, 'source-appimage'), '/elsewhere/Orca.AppImage')
+    await writeFile(join(namespacePath, 'source-appimage'), '/elsewhere/OCC.AppImage')
     expect(readAppImageSourceOfNamespace(cacheRootPath, namespaceKey)).toBeNull()
   })
 
@@ -117,7 +117,7 @@ describe('appimage extracted root', () => {
         appImagePath,
         cacheRootPath,
         runExtract: async (_path, cwd) => {
-          const launcherPath = join(cwd, 'squashfs-root', 'resources', 'bin', 'orca-ide')
+          const launcherPath = join(cwd, 'squashfs-root', 'resources', 'bin', 'occ-ide')
           if (entryKind === 'directory') {
             await mkdir(launcherPath, { recursive: true })
           } else {
@@ -142,7 +142,7 @@ describe('appimage extracted root', () => {
         appImagePath,
         cacheRootPath,
         runExtract: async (_path, cwd) => {
-          const launcherPath = join(cwd, 'squashfs-root', 'resources', 'bin', 'orca-ide')
+          const launcherPath = join(cwd, 'squashfs-root', 'resources', 'bin', 'occ-ide')
           await mkdir(dirname(launcherPath), { recursive: true })
           await symlink(executable, launcherPath)
         }
@@ -234,7 +234,7 @@ describe('appimage extracted root', () => {
       'b'.repeat(24),
       'resources',
       'bin',
-      'orca-ide'
+      'occ-ide'
     )
     publishAppImageLauncherEndpoint(cacheRootPath, 'installed', siblingLauncher)
     const options = { appImagePath, cacheRootPath }

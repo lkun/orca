@@ -30,7 +30,7 @@ function evalInRenderer(port, js) {
 }
 
 export class OrcaTerminal {
-  /** @param {number} cdpPort — the --remote-debugging-port used when launching Orca */
+  /** @param {number} cdpPort — the --remote-debugging-port used when launching OCC */
   constructor(cdpPort) {
     this.port = cdpPort
   }
@@ -150,7 +150,7 @@ export class OrcaTerminal {
   }
 
   /**
-   * Take a screenshot of the Orca window.
+   * Take a screenshot of the OCC window.
    *
    * @param {string} path — output file path
    * @returns {string} the screenshot path
@@ -161,7 +161,7 @@ export class OrcaTerminal {
   }
 
   /**
-   * Open a new terminal tab in Orca.
+   * Open a new terminal tab in OCC.
    * @returns {void}
    */
   newTerminal() {
@@ -190,7 +190,7 @@ if (process.argv[1]?.endsWith('terminal-e2e-helpers.mjs')) {
   const command = cmdIdx !== -1 ? args[cmdIdx + 1] : null
 
   const term = new OrcaTerminal(port)
-  console.log('Connecting to Orca on CDP port', port, '...')
+  console.log('Connecting to OCC on CDP port', port, '...')
   term.connect()
   console.log('Connected.')
 

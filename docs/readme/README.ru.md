@@ -1,13 +1,13 @@
 <h1 align="center">
-  <a href="https://onOrca.dev"><img src="../../resources/build/icon.png" alt="Orca" width="64" valign="middle" /></a> Orca
+  <a href="https://onOrca.dev"><img src="../../resources/build/icon.png" alt="OCC" width="64" valign="middle" /></a> OCC
 </h1>
 
 <p align="center">
   <a href="https://github.com/stablyai/orca"><img src="https://img.shields.io/github/stars/stablyai/orca?style=flat&amp;label=%E2%98%85&amp;color=08C" alt="Звёзды на GitHub" /></a>
   <a href="https://github.com/stablyai/orca/releases"><img src="../assets/readme-downloads.svg" alt="Общее число скачиваний всех выпусков" /></a>
   <img src="https://img.shields.io/badge/license-MIT-08C?style=flat" alt="Лицензия: MIT" />
-  <a href="https://discord.gg/fzjDKHxv8Q"><img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="Присоединяйтесь к сообществу Orca в Discord" /></a>
-  <a href="https://x.com/orca_build"><img src="https://img.shields.io/badge/X-000000?logo=x&logoColor=white" alt="Подпишитесь на Orca в X" /></a>
+  <a href="https://discord.gg/fzjDKHxv8Q"><img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="Присоединяйтесь к сообществу OCC в Discord" /></a>
+  <a href="https://x.com/orca_build"><img src="https://img.shields.io/badge/X-000000?logo=x&logoColor=white" alt="Подпишитесь на OCC в X" /></a>
   <img src="https://img.shields.io/badge/macOS%20%7C%20Windows%20%7C%20Linux-4493F8?style=flat-square" alt="Поддерживаемые платформы: macOS, Windows и Linux" />
 </p>
 
@@ -20,10 +20,10 @@
   Запускайте Codex, ClaudeCode, OpenCode или Pi параллельно — каждый в своём рабочем дереве, все под контролем в одном месте.
 </p>
 
-<h3 align="center"><a href="https://onorca.dev/download"><ins>Скачать Orca</ins></a></h3>
+<h3 align="center"><a href="https://onorca.dev/download"><ins>Скачать OCC</ins></a></h3>
 
 <p align="center">
-  <img src="../assets/readme-hero.jpg" alt="Настольное приложение Orca с агентами в параллельных рабочих деревьях и мобильным приложением Orca в углу" width="960" />
+  <img src="../assets/readme-hero.jpg" alt="Настольное приложение OCC с агентами в параллельных рабочих деревьях и мобильным приложением OCC в углу" width="960" />
 </p>
 
 ## Возможности
@@ -36,11 +36,11 @@
 
 Следите за агентами и направляйте их работу с телефона — получайте уведомления о завершении задач и отправляйте дополнительные указания откуда угодно.
 
-[App Store для iOS](https://apps.apple.com/us/app/orca-ide/id6766130217) · [APK для Android](https://www.onorca.dev/download/android) · [Документация →](https://www.onorca.dev/docs/mobile)
+[App Store для iOS](https://apps.apple.com/us/app/occ-ide/id6766130217) · [APK для Android](https://www.onorca.dev/download/android) · [Документация →](https://www.onorca.dev/docs/mobile)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/mobile"><picture><source srcset="../assets/feature-wall/mobile-companion-app-showcase.gif" type="image/gif"><img src="../assets/feature-wall/mobile-companion-app-showcase.jpg" alt="Настольное и мобильное приложения Orca" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/mobile"><picture><source srcset="../assets/feature-wall/mobile-companion-app-showcase.gif" type="image/gif"><img src="../assets/feature-wall/mobile-companion-app-showcase.jpg" alt="Настольное и мобильное приложения OCC" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -96,7 +96,7 @@
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/review/linear"><picture><source srcset="../../resources/onboarding/feature-wall/tile-03.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-03.poster.jpg" alt="Работа с задачами GitHub и Linear в Orca" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/review/linear"><picture><source srcset="../../resources/onboarding/feature-wall/tile-03.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-03.poster.jpg" alt="Работа с задачами GitHub и Linear в OCC" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -118,7 +118,7 @@
 
 ### Комментарии к изменениям ИИ
 
-Оставляйте комментарии к любой строке в сравнении и отправляйте их агенту — проверяйте и редактируйте код, создавайте коммиты, не выходя из Orca.
+Оставляйте комментарии к любой строке в сравнении и отправляйте их агенту — проверяйте и редактируйте код, создавайте коммиты, не выходя из OCC.
 
 [Документация →](https://www.onorca.dev/docs/review/annotate-ai-diff)
 
@@ -144,15 +144,15 @@
 <tr>
 <td width="50%" valign="middle">
 
-### Orca CLI
+### OCC CLI
 
-Агенты тоже управляют Orca — автоматизируйте любые рабочие процессы с помощью `orca worktree create`, `snapshot`, `click` и `fill`.
+Агенты тоже управляют OCC — автоматизируйте любые рабочие процессы с помощью `orca worktree create`, `snapshot`, `click` и `fill`.
 
 [Документация →](https://www.onorca.dev/docs/cli/overview)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/cli/overview"><picture><source srcset="../../resources/onboarding/feature-wall/tile-09.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-09.poster.jpg" alt="Автоматизация Orca через CLI" width="100%" /></picture></a>
+  <a href="https://www.onorca.dev/docs/cli/overview"><picture><source srcset="../../resources/onboarding/feature-wall/tile-09.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-09.poster.jpg" alt="Автоматизация OCC через CLI" width="100%" /></picture></a>
 </td>
 </tr>
 </table>
@@ -170,7 +170,7 @@
 
 ## Поддерживаемые агенты
 
-Работает с **любым CLI-агентом** — если он запускается в терминале, то запустится и в Orca.
+Работает с **любым CLI-агентом** — если он запускается в терминале, то запустится и в OCC.
 
 <p>
   <a href="https://docs.anthropic.com/claude/docs/claude-code"><kbd><img src="../assets/claude-logo.svg" alt="Логотип Claude Code" width="16" valign="middle" /> Claude Code</kbd></a> &nbsp;
@@ -217,7 +217,7 @@
 ### Настольное приложение — macOS, Windows, Linux
 
 - **[Скачать с onOrca.dev](https://onorca.dev/download)**
-- Или скачайте сборку напрямую: [macOS Apple Silicon](https://github.com/stablyai/orca/releases/latest/download/orca-macos-arm64.dmg) · [macOS Intel](https://github.com/stablyai/orca/releases/latest/download/orca-macos-x64.dmg) · [Windows (.exe)](https://github.com/stablyai/orca/releases/latest/download/orca-windows-setup.exe) · [Linux AppImage](https://github.com/stablyai/orca/releases/latest/download/orca-linux.AppImage) · [Все сборки](https://github.com/stablyai/orca/releases/latest)
+- Или скачайте сборку напрямую: [macOS Apple Silicon](https://github.com/stablyai/orca/releases/latest/download/occ-macos-arm64.dmg) · [macOS Intel](https://github.com/stablyai/orca/releases/latest/download/occ-macos-x64.dmg) · [Windows (.exe)](https://github.com/stablyai/orca/releases/latest/download/occ-windows-setup.exe) · [Linux AppImage](https://github.com/stablyai/orca/releases/latest/download/occ-linux.AppImage) · [Все сборки](https://github.com/stablyai/orca/releases/latest)
 
 _Или через менеджер пакетов:_
 
@@ -236,7 +236,7 @@ yay -S stably-orca-bin
 
 Подключите его к настольному приложению, чтобы следить за агентами и направлять их работу с телефона.
 
-- **iOS:** [Скачать в App Store](https://apps.apple.com/us/app/orca-ide/id6766130217)
+- **iOS:** [Скачать в App Store](https://apps.apple.com/us/app/occ-ide/id6766130217)
 - **Android:** [Скачать APK](https://www.onorca.dev/download/android) · [Руководство по установке](https://www.onorca.dev/docs/android-apk)
 
 ---
@@ -245,12 +245,12 @@ yay -S stably-orca-bin
 
 - **Discord:** Присоединяйтесь к сообществу в **[Discord](https://discord.gg/fzjDKHxv8Q)**.
 - **Twitter / X:** Подпишитесь на **[@orca_build](https://x.com/orca_build)**, чтобы узнавать об обновлениях и анонсах.
-- **WeChat:** Отсканируйте QR-код, чтобы присоединиться к группе сообщества Orca в WeChat.
+- **WeChat:** Отсканируйте QR-код, чтобы присоединиться к группе сообщества OCC в WeChat.
 
-  <img src="../assets/wechat-qr.jpg" alt="QR-код группы сообщества Orca в WeChat" width="160" />
+  <img src="../assets/wechat-qr.jpg" alt="QR-код группы сообщества OCC в WeChat" width="160" />
 
 - **Отзывы и идеи:** Мы быстро выпускаем обновления. Чего-то не хватает? [Предложите новую возможность](https://github.com/stablyai/orca/issues).
-- **Конфиденциальность:** В [документации о конфиденциальности и телеметрии](https://www.onorca.dev/docs/telemetry) описано, какие анонимные данные об использовании собирает Orca и как отказаться от их сбора.
+- **Конфиденциальность:** В [документации о конфиденциальности и телеметрии](https://www.onorca.dev/docs/telemetry) описано, какие анонимные данные об использовании собирает OCC и как отказаться от их сбора.
 - **Поддержите проект:** Отметьте этот репозиторий [звездой](https://github.com/stablyai/orca), чтобы следить за нашими ежедневными выпусками.
 
 ---
@@ -263,7 +263,7 @@ yay -S stably-orca-bin
 в [`cloud/`](../../cloud/README.md), с отдельным рабочим пространством pnpm и руководством по настройке.
 
 <a href="https://github.com/stablyai/orca/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=stablyai/orca" alt="Участники проекта Orca" />
+  <img src="https://contrib.rocks/image?repo=stablyai/orca" alt="Участники проекта OCC" />
 </a>
 
 <p align="center">
@@ -276,4 +276,4 @@ yay -S stably-orca-bin
 
 ## Лицензия
 
-Orca — бесплатное ПО с открытым исходным кодом под [лицензией MIT](../../LICENSE).
+OCC — бесплатное ПО с открытым исходным кодом под [лицензией MIT](../../LICENSE).

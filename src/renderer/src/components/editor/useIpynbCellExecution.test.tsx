@@ -175,7 +175,7 @@ describe('notebook cell execution', () => {
 
     act(() => hook.result.current.runCell(1))
     expect(toastError).toHaveBeenCalledWith(
-      "Orca can't tell which computer this notebook is on yet, so its cells can't run."
+      "OCC can't tell which computer this notebook is on yet, so its cells can't run."
     )
     expect(applyContent).not.toHaveBeenCalled()
     expect(hook.result.current.pendingRun).toBeNull()

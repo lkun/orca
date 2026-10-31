@@ -120,7 +120,7 @@ describe('createPtySubprocess', () => {
     )
   })
 
-  it('does not inherit parent Orca pane identity when caller omits pane env', async () => {
+  it('does not inherit parent OCC pane identity when caller omits pane env', async () => {
     const proc = mockPtyProcess()
     spawnMock.mockReturnValue(proc)
     const saved = {
@@ -162,7 +162,7 @@ describe('createPtySubprocess', () => {
     expect(env.ORCA_ORCAD_IDLE_TIMEOUT_MS).toBeUndefined()
   })
 
-  it('preserves explicit child Orca pane identity over parent env', async () => {
+  it('preserves explicit child OCC pane identity over parent env', async () => {
     const proc = mockPtyProcess()
     spawnMock.mockReturnValue(proc)
     const saved = {
@@ -203,7 +203,7 @@ describe('createPtySubprocess', () => {
 
   it.each([
     // Exported fish history must not leak the daemon-launching pane’s history into new panes.
-    ['drops an inherited Orca fish_history', undefined, undefined],
+    ['drops an inherited OCC fish_history', undefined, undefined],
     ['keeps the session this spawn injected', 'orca_c0ffee', 'orca_c0ffee'],
     ['keeps a caller-supplied value', 'mine', 'mine']
   ])('%s', async (_name, requested, expected) => {
@@ -230,7 +230,7 @@ describe('createPtySubprocess', () => {
   })
 
   it.each([
-    ['drops an inherited Orca HISTFILE', undefined, undefined],
+    ['drops an inherited OCC HISTFILE', undefined, undefined],
     [
       'keeps the path this spawn injected',
       '/fake/userData/terminal-history/00112233445566aa/zsh_history',
@@ -262,7 +262,7 @@ describe('createPtySubprocess', () => {
 
   it.each([
     // Inherited ORCA_HISTFILE can select another pane’s history and enable unwanted shell wrapping.
-    ['drops an inherited Orca ORCA_HISTFILE', undefined, undefined],
+    ['drops an inherited OCC ORCA_HISTFILE', undefined, undefined],
     [
       'keeps the path this spawn injected',
       '/fake/userData/terminal-history/00112233445566aa/zsh_history',
@@ -404,7 +404,7 @@ describe('createPtySubprocess', () => {
   })
 
   it('does not inherit NODE_ENV from the daemon process env', async () => {
-    // Orca’s ambient build mode must not affect user build tools.
+    // OCC’s ambient build mode must not affect user build tools.
     const proc = mockPtyProcess()
     spawnMock.mockReturnValue(proc)
     const previous = process.env.NODE_ENV

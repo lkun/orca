@@ -381,11 +381,11 @@ describe('skip missing upstream remote probes', () => {
 
   it('still probes upstream for PR candidates when that remote is present', async () => {
     getOwnerRepoForRemoteMock.mockImplementation(async (_path, remote) =>
-      remote === 'upstream' ? { owner: 'Acme', repo: 'Orca' } : { owner: 'acme', repo: 'orca' }
+      remote === 'upstream' ? { owner: 'Acme', repo: 'OCC' } : { owner: 'acme', repo: 'orca' }
     )
 
     await expect(resolveGitHubApiRepositoryCandidates('/repo')).resolves.toEqual({
-      candidates: [{ owner: 'Acme', repo: 'Orca', host: 'github.com' }],
+      candidates: [{ owner: 'Acme', repo: 'OCC', host: 'github.com' }],
       headRepo: { owner: 'acme', repo: 'orca', host: 'github.com' }
     })
     expect(getOwnerRepoForRemoteMock).toHaveBeenCalledWith(

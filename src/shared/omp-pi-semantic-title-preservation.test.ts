@@ -1,6 +1,6 @@
 /** OMP/Pi titles use π, never OMP/Pi. Verified oh-my-pi utils/title-generator.ts DEFAULT_TERMINAL_TITLE/buildTerminalTitleWithState
- * (native π frame label); Orca’s injected pi/titlebar-extension-source.ts instead emits π - session - cwd with 80ms braille frames.
- * Orca manufactured OMP/Pi flicker via synthetic profile labels and normalization that discarded session/cwd (#16093).
+ * (native π frame label); OCC’s injected pi/titlebar-extension-source.ts instead emits π - session - cwd with 80ms braille frames.
+ * OCC manufactured OMP/Pi flicker via synthetic profile labels and normalization that discarded session/cwd (#16093).
  * OMP disables terminal-title synthesis so its session titles survive every state. Normalize rotating braille while preserving labels. */
 import { describe, expect, it } from 'vitest'
 import { detectAgentStatusFromTitle, normalizeTerminalTitle } from './agent-title-status'
@@ -15,7 +15,7 @@ const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '
 
 describe('normalizeTerminalTitle keeps the OMP/Pi session label', () => {
   it.each([
-    ['Orca extension (spinner leads)', ORCA_EXTENSION_WORKING],
+    ['OCC extension (spinner leads)', ORCA_EXTENSION_WORKING],
     ['OMP native (spinner is medial)', OMP_NATIVE_WORKING]
   ])('collapses every %s frame to one value without losing the label', (_name, build) => {
     const normalized = new Set(FRAMES.map((frame) => normalizeTerminalTitle(build(frame))))

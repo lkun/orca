@@ -88,7 +88,7 @@ test('keeps the visible Agent Dashboard interactive during a 100-pane status rep
     ({ BrowserWindow }, { baseTime, panes }) => {
       const window = BrowserWindow.getAllWindows().find((candidate) => !candidate.isDestroyed())
       if (!window) {
-        throw new Error('Orca BrowserWindow is unavailable')
+        throw new Error('OCC BrowserWindow is unavailable')
       }
       for (const [index, pane] of panes.entries()) {
         const receivedAt = baseTime + index

@@ -136,7 +136,7 @@ describe('readDocPreviewFile — paired runtime owner', () => {
       status: 404,
       reason: 'unreadable',
       message:
-        'Secure document previews require a newer Orca on the paired machine. Update it and try again.'
+        'Secure document previews require a newer OCC on the paired machine. Update it and try again.'
     })
     expect(mocks.callRuntimeEnvironment).toHaveBeenCalledOnce()
   })

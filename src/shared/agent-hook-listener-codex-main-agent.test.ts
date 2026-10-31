@@ -65,7 +65,7 @@ describe('the Codex root record seeded from a durable row', () => {
     })
   })
 
-  it('carries the cancellation Orca inferred into a late relayed Stop', () => {
+  it('carries the cancellation OCC inferred into a late relayed Stop', () => {
     markCodexLeadTurnInterrupted(state, PANE_KEY)
     const reconciled = reconcileRemoteCodexState(
       state,

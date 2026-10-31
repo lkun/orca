@@ -212,7 +212,7 @@ describe('collectNativeBinaries', () => {
       await writeFile(join(root, 'addon.node'), ELF_HEADER)
       await writeFile(join(root, 'nested', 'lib.so'), ELF_HEADER)
       await writeFile(join(root, 'nested', 'lib.so.1'), ELF_HEADER)
-      await writeFile(join(root, 'orca-ide'), ELF_HEADER) // extensionless executable
+      await writeFile(join(root, 'occ-ide'), ELF_HEADER) // extensionless executable
       await writeFile(join(root, 'script.js'), ELF_HEADER) // has extension, not native
       await writeFile(join(root, 'text.node'), 'not an elf file') // native name, non-ELF
       await writeFile(join(root, 'notes.md'), ELF_HEADER)
@@ -226,7 +226,7 @@ describe('collectNativeBinaries', () => {
       expect(found).toContain('addon.node')
       expect(found).toContain(join('nested', 'lib.so'))
       expect(found).toContain(join('nested', 'lib.so.1'))
-      expect(found).toContain('orca-ide')
+      expect(found).toContain('occ-ide')
       expect(found).not.toContain('script.js')
       expect(found).not.toContain('text.node')
       expect(found).not.toContain('notes.md')
@@ -326,7 +326,7 @@ describe.skipIf(process.platform === 'win32')('verifyLinuxGlibcFloor', () => {
       await mkdir(sherpaDir, { recursive: true })
       await writeFile(join(root, 'app', 'good-pty.node'), ELF_HEADER)
       await writeFile(join(root, 'app', 'weakonly-lib.so'), ELF_HEADER) // weak GLIBC_2.32 → OK
-      await writeFile(join(root, 'app', 'orca-ide'), ELF_HEADER)
+      await writeFile(join(root, 'app', 'occ-ide'), ELF_HEADER)
       await writeFile(join(sherpaDir, 'sherpa-onnx.node'), ELF_HEADER) // GLIBCXX_3.4.29, exempt
 
       expect(() => verifyLinuxGlibcFloor(join(root, 'app'), { objdumpPath })).not.toThrow()

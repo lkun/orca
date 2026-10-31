@@ -148,7 +148,7 @@ describe('browserManager', () => {
         alt: false,
         shift: false
       },
-      // Why: Orca binds these to sidebar and workspace-list actions, but in a page they are bold
+      // Why: OCC binds these to sidebar and workspace-list actions, but in a page they are bold
       // and select-to-start, so only tab chords cross over.
       {
         type: 'keyDown',

@@ -249,7 +249,7 @@ describe('browser extension session loader', () => {
   })
 })
 
-describe('switching the experimental setting while Orca runs', () => {
+describe('switching the experimental setting while OCC runs', () => {
   const profile = {
     id: 'default',
     scope: 'default' as const,
@@ -435,7 +435,7 @@ describe('deleted profile action state', () => {
   })
 })
 
-it('does not restore stale enablement after uninstall and reinstall in another Orca profile', async () => {
+it('does not restore stale enablement after uninstall and reinstall in another OCC profile', async () => {
   setBrowserExtensionSupportEnabled(true)
   await loader.detachBrowserExtensionsFromAllProfileSessions()
   loader.setBrowserExtensionSessionHooks({
@@ -465,7 +465,7 @@ it('does not restore stale enablement after uninstall and reinstall in another O
 
   await expect(
     loader.loadBrowserExtensionIntoProfile('inactive-profile', installed)
-  ).rejects.toThrow('Restart Orca')
+  ).rejects.toThrow('Restart OCC')
   expect(mocks.session.extensions.loadExtension).not.toHaveBeenCalled()
   await loader.detachBrowserExtensionsFromAllProfileSessions()
 })

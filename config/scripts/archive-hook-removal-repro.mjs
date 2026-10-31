@@ -144,7 +144,7 @@ function waitForReady(child) {
   })
 }
 
-/** Filesystem + git truth about a worktree, read directly rather than through Orca. */
+/** Filesystem + git truth about a worktree, read directly rather than through OCC. */
 function evidence(repoPath, wtPath) {
   const ls = spawnSync('ls', ['-la', wtPath], { encoding: 'utf8' })
   const list = spawnSync('git', ['worktree', 'list'], { cwd: repoPath, encoding: 'utf8' })
@@ -296,7 +296,7 @@ async function main() {
       before.dirExists === after1.dirExists && before.registered === after1.registered
     )
     const shown = ok(['worktree', 'show', '--worktree', wt1.id]).worktree
-    check('Orca still resolves the worktree', shown?.id === wt1.id)
+    check('OCC still resolves the worktree', shown?.id === wt1.id)
     check(
       'the hook really ran (twice: plain + --force)',
       hookRuns().length >= 2,

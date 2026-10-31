@@ -176,7 +176,7 @@ async function runGrantAttempt(
   hostKey: CodexAppServerHostKey,
   beforeSession: (() => void) | undefined
 ): Promise<CodexManagedTrustGrantOutcome> {
-  // Callers settle Orca's own hash-bound keys; restoring config would undo concurrent user saves.
+  // Callers settle OCC's own hash-bound keys; restoring config would undo concurrent user saves.
   const attempt: GrantAttempt = {
     plan,
     expected,

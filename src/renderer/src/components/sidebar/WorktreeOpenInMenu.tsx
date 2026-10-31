@@ -100,7 +100,7 @@ export function getOpenInEntryAvailability(
             )
           : translate(
               'auto.components.sidebar.WorktreeOpenInMenu.remoteRuntimeEditorHint',
-              'Apps on this computer can open this server’s files only when Orca reaches it over SSH.'
+              'Apps on this computer can open this server’s files only when OCC reaches it over SSH.'
             )
     }
   }

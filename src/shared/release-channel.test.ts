@@ -182,13 +182,13 @@ describe('release channel', () => {
   it('finds the directly runnable installer for a platform', () => {
     const assets = [
       'latest.yml',
-      'orca-windows-setup.exe',
-      'orca-macos-arm64.dmg',
-      'orca-linux.AppImage'
+      'occ-windows-setup.exe',
+      'occ-macos-arm64.dmg',
+      'occ-linux.AppImage'
     ]
-    expect(findInstallerAssetName('win32', assets)).toBe('orca-windows-setup.exe')
-    expect(findInstallerAssetName('darwin', assets)).toBe('orca-macos-arm64.dmg')
-    expect(findInstallerAssetName('linux', assets)).toBe('orca-linux.AppImage')
+    expect(findInstallerAssetName('win32', assets)).toBe('occ-windows-setup.exe')
+    expect(findInstallerAssetName('darwin', assets)).toBe('occ-macos-arm64.dmg')
+    expect(findInstallerAssetName('linux', assets)).toBe('occ-linux.AppImage')
     expect(findInstallerAssetName('win32', ['latest.yml'])).toBeNull()
     expect(findInstallerAssetName('freebsd', assets)).toBeNull()
   })

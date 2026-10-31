@@ -127,7 +127,7 @@ const DEB_ELEVATION_ERROR =
   'Error: Command failed: /usr/bin/pkexec --disable-internal-agent "/bin/bash" "-c" "dpkg -i \'/home/u/.cache/orca-updater/pending/orca-ide_1.4.163_amd64.deb\'"\npkexec must be setuid root'
 
 const WINDOWS_SIGNATURE_MISMATCH_ERROR =
-  'New version 1.4.163 is not signed by the application owner: publisherNames: Orca, Inc.'
+  'New version 1.4.163 is not signed by the application owner: publisherNames: OCC, Inc.'
 
 type CapturedSpan = {
   readonly name: string

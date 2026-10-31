@@ -37,7 +37,7 @@ const PI_OVERLAY_SUBDIR_BY_KIND: Record<LegacyOverlayAgentKind, string> = {
 }
 const OPENCODE_PLUGIN_FILE = 'orca-opencode-status.js'
 const OPENCODE2_PLUGIN_FILE = 'orca-opencode2-status.js'
-// Orca's own entries (either major, file and TUI copy) are never mirrored from user config.
+// OCC's own entries (either major, file and TUI copy) are never mirrored from user config.
 const ORCA_OPENCODE_PLUGIN_ENTRIES = new Set([
   OPENCODE_STARTUP_PROMPT_PLUGIN_DIRECTORY,
   ...[OPENCODE_PLUGIN_FILE, OPENCODE2_PLUGIN_FILE].flatMap((f) => [f, openCodeTuiPluginDirName(f)])
@@ -166,7 +166,7 @@ export class PluginOverlayManager {
         if (!existsSync(existingConfigDir)) {
           return null
         }
-        // Mirror the remote user config before adding Orca: replacing OpenCode’s single config root must not hide auth/models/keybinds/plugins.
+        // Mirror the remote user config before adding OCC: replacing OpenCode’s single config root must not hide auth/models/keybinds/plugins.
         mirrorOpenCodeConfig(existingConfigDir, dir, ORCA_OPENCODE_PLUGIN_ENTRIES)
       }
       if (source) {

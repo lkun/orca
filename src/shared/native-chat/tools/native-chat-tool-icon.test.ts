@@ -177,7 +177,7 @@ describe('native chat tool icons', () => {
       expect(nativeChatToolRunIconName(run)).toBe('square-terminal')
     })
 
-    it('reads shell calls that drive the Orca browser CLI as a browser run', () => {
+    it('reads shell calls that drive the OCC browser CLI as a browser run', () => {
       const run = [
         { name: 'Bash', input: { command: 'orca snapshot' } },
         { name: 'shell', input: { command: "/bin/zsh -lc 'orca click --element e3'" } }

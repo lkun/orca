@@ -11,7 +11,7 @@ export class PageHostRemovalUnavailableError extends Error {
 
   constructor() {
     // Name the native removal surface because retrying inside this page cannot succeed.
-    super('Remove this host from the host list in the Orca app.')
+    super('Remove this host from the host list in the OCC app.')
     this.name = PAGE_HOST_REMOVAL_UNAVAILABLE_NAME
   }
 }

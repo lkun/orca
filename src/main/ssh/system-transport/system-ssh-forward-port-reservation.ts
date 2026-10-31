@@ -1,4 +1,4 @@
-/** Resolve port 0 locally because OpenSSH never reports its -L 0 choice; recover fixed ports only from proven Orca forwards. */
+/** Resolve port 0 locally because OpenSSH never reports its -L 0 choice; recover fixed ports only from proven OCC forwards. */
 import { createServer } from 'node:net'
 import { stopOrphanedOrcaSshForward } from './system-ssh-orphaned-forward'
 
@@ -24,7 +24,7 @@ async function releaseLocalForwardPort(
   orphanArgs?: readonly string[],
   cancelMuxedForward?: () => Promise<boolean>
 ): Promise<boolean> {
-  // Only the exact supplied Orca forward argv permits fixed-port process recovery.
+  // Only the exact supplied OCC forward argv permits fixed-port process recovery.
   if (orphanArgs && (await stopOrphanedOrcaSshForward(localPort, orphanArgs))) {
     return true
   }

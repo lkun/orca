@@ -1,4 +1,4 @@
-// Reuse byte-preserving TOML scanning; scalar hook commands stay user-owned unless they target Orca.
+// Reuse byte-preserving TOML scanning; scalar hook commands stay user-owned unless they target OCC.
 import { applyEdits, type Edit } from 'jsonc-parser'
 import {
   createTomlLineScanState,
@@ -114,7 +114,7 @@ export function applyJcodeManagedHooks(
   scriptFileName: string
 ): JcodeHooksEdit {
   const isManaged = createManagedCommandMatcher(scriptFileName)
-  // Keep one Orca element per array so the repair below cannot leave stale duplicates running.
+  // Keep one OCC element per array so the repair below cannot leave stale duplicates running.
   const content = removeManagedHookCommands(source, isManaged, true)
   const managedValue = tomlQuoteString(managedCommand)
   const eol = content.includes('\r\n') ? '\r\n' : '\n'
@@ -130,7 +130,7 @@ export function applyJcodeManagedHooks(
     }
     const array = scanJcodeHookCommandArray(content, assignment.valueStart)
     if (array) {
-      // Append after user gates: jcode runs every pre_tool command in order, so Orca observes the final input.
+      // Append after user gates: jcode runs every pre_tool command in order, so OCC observes the final input.
       if (!array.elements.some((element) => element.value === managedCommand)) {
         const stale = array.elements.find((element) => isManaged(element.value))
         edits.push(

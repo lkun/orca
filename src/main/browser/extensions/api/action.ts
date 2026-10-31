@@ -77,7 +77,7 @@ function normalizePopupPath(caller: BrowserExtensionCaller, popup: string): stri
   return url.pathname.slice(1) + url.search + url.hash
 }
 
-/** The calling page, or the worker script (Orca's wrapper sits beside the original). */
+/** The calling page, or the worker script (OCC's wrapper sits beside the original). */
 function callerBaseUrl(caller: BrowserExtensionCaller, origin: string): string {
   const background: { service_worker?: unknown } = caller.extension.manifest?.background ?? {}
   const worker = background.service_worker
@@ -88,7 +88,7 @@ function callerBaseUrl(caller: BrowserExtensionCaller, origin: string): string {
 }
 
 // Why: Chrome resolves icon paths against the calling script (Vimium passes ../icons/...) and
-// accepts the extension's own URLs (Tampermonkey); Orca reads them root-relative from the package.
+// accepts the extension's own URLs (Tampermonkey); OCC reads them root-relative from the package.
 function normalizeIconPaths(
   caller: BrowserExtensionCaller,
   path: string | Record<string, string> | undefined

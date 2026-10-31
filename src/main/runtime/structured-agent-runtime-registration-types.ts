@@ -57,7 +57,7 @@ export type StructuredAgentAccountHomeServices = {
   prepareCodexLaunchHome: StructuredCodexAccountHomeDeps['resolveLaunchHome']
   readCodexLaunchHome: StructuredCodexAccountHomeDeps['resolveLaunchHome']
   workspaceTrustSettings: () => Parameters<typeof applyStructuredCodexWorkspaceTrust>[0]['settings']
-  /** Orca's data folder on this host, where an agent's chats may keep an account of their own. */
+  /** OCC's data folder on this host, where an agent's chats may keep an account of their own. */
   stateDirectory: string
 }
 
@@ -80,7 +80,7 @@ export type StructuredAgentLaunchCheck = {
 export type StructuredAgentChatProgram = {
   /** Resolves the binary a chat start from `env` runs, spawning nothing; throws launch refusals. */
   resolve: StructuredAgentLaunchCheck['resolveLaunch']
-  /** Whether Orca can download this program on this host when none is found. */
+  /** Whether OCC can download this program on this host when none is found. */
   installable?: () => boolean
 }
 

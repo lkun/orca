@@ -20,7 +20,7 @@ async function postTruncatedHook(
   await new Promise<void>((resolve, reject) => {
     const socket = connect({ port, host: '127.0.0.1' }, () => {
       socket.write(
-        `POST ${pathname} HTTP/1.1\r\nHost: 127.0.0.1\r\nContent-Type: application/x-www-form-urlencoded\r\nX-Orca-Agent-Hook-Token: ${token}\r\nContent-Length: ${announcedLength}\r\n\r\n${sentBytes}`
+        `POST ${pathname} HTTP/1.1\r\nHost: 127.0.0.1\r\nContent-Type: application/x-www-form-urlencoded\r\nX-OCC-Agent-Hook-Token: ${token}\r\nContent-Length: ${announcedLength}\r\n\r\n${sentBytes}`
       )
       // Reset mid-body to simulate interference rather than an ordinary FIN hangup.
       setTimeout(() => {
@@ -59,7 +59,7 @@ async function postStalledHook(
     const socket = connect({ port, host: '127.0.0.1' })
     await new Promise<void>((resolve) => socket.on('connect', () => resolve()))
     socket.write(
-      `POST ${pathname} HTTP/1.1\r\nHost: 127.0.0.1\r\nContent-Type: application/x-www-form-urlencoded\r\nX-Orca-Agent-Hook-Token: ${token}\r\nContent-Length: 100000\r\n\r\n`
+      `POST ${pathname} HTTP/1.1\r\nHost: 127.0.0.1\r\nContent-Type: application/x-www-form-urlencoded\r\nX-OCC-Agent-Hook-Token: ${token}\r\nContent-Length: 100000\r\n\r\n`
     )
     await new Promise<void>((resolve) => {
       socket.on('close', () => resolve())
@@ -77,7 +77,7 @@ async function postCompleteHook(port: number, token: string): Promise<void> {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'X-Orca-Agent-Hook-Token': token
+      'X-OCC-Agent-Hook-Token': token
     },
     body
   })
@@ -185,7 +185,7 @@ describe('AgentHookServer transport interference', () => {
 
     await postTruncatedHook(port, token)
     await postTruncatedHook(port, token)
-    // Orca's own slowloris timeout must not be misclassified as external interference.
+    // OCC's own slowloris timeout must not be misclassified as external interference.
     await postStalledHook(port, token)
     expect(reports).toEqual([])
 

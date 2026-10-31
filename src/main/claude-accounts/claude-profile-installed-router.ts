@@ -45,7 +45,7 @@ export function withClaudeProfileTerminalEnv<Env extends Record<string, string> 
   return profileEnv ? { ...env, ...profileEnv } : env
 }
 
-/** The user's CLAUDE_CONFIG_DIR from the login shell, folders Orca saw Claude use, and account homes. */
+/** The user's CLAUDE_CONFIG_DIR from the login shell, folders OCC saw Claude use, and account homes. */
 export function claudeProfileHistoryDirs(surface: 'projects' | 'transcripts'): string[] {
   const homes = [
     installed?.userConfigDir(),

@@ -143,7 +143,7 @@ export type BrowserApi = {
     browserPageId: string
     direction: BrowserPageZoomDirection
   }) => Promise<BrowserPageSiteDisplay | null>
-  /** Null makes the site match Orca's theme again. */
+  /** Null makes the site match OCC's theme again. */
   setPageSiteColorScheme: (args: {
     browserPageId: string
     colorScheme: BrowserSiteColorScheme | null

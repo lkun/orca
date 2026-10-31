@@ -389,7 +389,7 @@ describe('Windows secure files through the native ACL addon', () => {
     fake.holdAsync = true
     const order: string[] = []
     const relock = loaded.addon
-      .setDaclSddlAsync('C:\\Orca', 'D:P(A;OICI;FA;;;SY)')
+      .setDaclSddlAsync('C:\\OCC', 'D:P(A;OICI;FA;;;SY)')
       .then(() => order.push('relock'))
     const grant = loaded.addon
       .grantAccessAsync('c:\\orca', FAKE_USER_SID, 0x1f01ff, { inheritable: true, replace: true })

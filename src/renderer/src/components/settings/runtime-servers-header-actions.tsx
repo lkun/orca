@@ -112,7 +112,7 @@ export function RuntimeServersHeaderActions({
               )}
               description={translate(
                 'auto.components.settings.serverList.pasteAccessLinkHelp',
-                'Pair with Orca already running on another machine.'
+                'Pair with OCC already running on another machine.'
               )}
               onSelect={() => setDialog('add')}
             />
@@ -121,11 +121,11 @@ export function RuntimeServersHeaderActions({
                 icon={<TerminalSquare />}
                 label={translate(
                   'auto.components.settings.serverList.setUpOnSshHost',
-                  'Set up Orca on an SSH host'
+                  'Set up OCC on an SSH host'
                 )}
                 description={translate(
                   'auto.components.settings.managedServers.description',
-                  'Orca installs itself on an empty SSH host and keeps itself up to date.'
+                  'OCC installs itself on an empty SSH host and keeps itself up to date.'
                 )}
                 onSelect={() => setDialog('install')}
               />

@@ -29,12 +29,12 @@ describe('resolvePairConfirmRouteState', () => {
   })
 
   it('accepts a full pairing URL', () => {
-    expect(resolvePairConfirmRouteState(`orca://pair#${encodeOffer(offer)}`)).toEqual({
+    expect(resolvePairConfirmRouteState(`occ://pair#${encodeOffer(offer)}`)).toEqual({
       kind: 'ready',
       offer,
       errorMessage: ''
     })
-    expect(resolvePairConfirmRouteState(`orca://pair?code=${encodeOffer(offer)}`)).toEqual({
+    expect(resolvePairConfirmRouteState(`occ://pair?code=${encodeOffer(offer)}`)).toEqual({
       kind: 'ready',
       offer,
       errorMessage: ''

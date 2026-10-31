@@ -71,7 +71,7 @@ async function released(host: StructuredAgentSessionHost): Promise<void> {
   )
 }
 
-describe('a Claude start that Orca fails while the CLI is still running', () => {
+describe('a Claude start that OCC fails while the CLI is still running', () => {
   it('starts with a saved option the CLI would not take as a write', async () => {
     claude.behave(SESSION, { optionWritesFail: true })
     const host = await claude.install()

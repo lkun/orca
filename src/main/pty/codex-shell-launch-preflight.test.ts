@@ -69,7 +69,7 @@ function createFishSandbox(prefix: string): { bin: string; preflight: string; ma
   return { bin, preflight, marker }
 }
 
-// Reports Orca's own wrapper (not a user-defined codex function) and any capture leak.
+// Reports OCC's own wrapper (not a user-defined codex function) and any capture leak.
 const FISH_STATE_PROBE = `if functions -q codex; and functions codex | string match -q '*prepare-codex*'
   echo -n wrapper=YES
 else
@@ -169,7 +169,7 @@ function expectNamedAliasSurvives(shell: string, enableAliases: string): void {
         ...process.env,
         PATH: `${bin}${delimiter}${process.env.PATH ?? ''}`,
         ORCA_CODEX_LAUNCH_PREFLIGHT: join(bin, 'orca-test'),
-        // Nested Orca tests must not forward the host pane's identity.
+        // Nested OCC tests must not forward the host pane's identity.
         ...Object.fromEntries(CODEX_COMMAND_IDENTITY_ENV_KEYS.map((key) => [key, '']))
       }
     }
@@ -220,7 +220,7 @@ describe.skipIf(process.platform === 'win32')('Codex shell launch preflight', ()
     )
   })
 
-  it('does not trigger a preflight outside an Orca terminal', () => {
+  it('does not trigger a preflight outside an OCC terminal', () => {
     const root = mkdtempSync(join(tmpdir(), 'orca-codex-plain-shell-'))
     roots.push(root)
     const bin = join(root, 'bin')
@@ -420,7 +420,7 @@ describe('Codex shell launch preflight command', () => {
 
   it.each([
     { platform: 'darwin' as const, bundled: 'orca', isPackaged: true },
-    { platform: 'linux' as const, bundled: 'orca-ide', isPackaged: true },
+    { platform: 'linux' as const, bundled: 'occ-ide', isPackaged: true },
     { platform: 'win32' as const, bundled: 'orca.exe', isPackaged: true },
     { platform: 'darwin' as const, bundled: 'orca', isPackaged: false }
   ])(
@@ -484,7 +484,7 @@ describe('Codex shell launch preflight command', () => {
 // Verified launcher paths may contain spaces in app bundles or Program Files.
 describe.skipIf(process.platform === 'win32')('Codex preflight paths containing spaces', () => {
   function writeSpacedPreflight(root: string): { preflightPath: string; markerPath: string } {
-    const dir = join(root, 'Orca Dev.app', 'Contents', 'Resources', 'bin')
+    const dir = join(root, 'OCC Dev.app', 'Contents', 'Resources', 'bin')
     mkdirSync(dir, { recursive: true })
     const markerPath = join(root, 'preflight-ran')
     const preflightPath = join(dir, 'orca')

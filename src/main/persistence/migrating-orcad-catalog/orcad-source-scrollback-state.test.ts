@@ -96,7 +96,7 @@ describe('orcad source scrollback projection', () => {
     })
 
     expect(projected.blockedItems).toEqual([
-      'saved terminal history Orca could not read for tab tab-1'
+      'saved terminal history OCC could not read for tab tab-1'
     ])
   })
 

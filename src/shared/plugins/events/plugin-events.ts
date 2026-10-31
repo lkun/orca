@@ -10,7 +10,7 @@ import type { PluginEventName } from '../manifest/plugin-manifest'
  * own, remotes, credentials) can leak through the event stream.
  */
 
-/** Plugins see `main`, not the `refs/heads/main` Orca tracks internally. */
+/** Plugins see `main`, not the `refs/heads/main` OCC tracks internally. */
 export function shortPluginBranchName(branch: string): string {
   return branch.replace(/^refs\/heads\//, '')
 }

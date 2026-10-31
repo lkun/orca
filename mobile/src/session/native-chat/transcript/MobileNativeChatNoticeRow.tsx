@@ -34,7 +34,7 @@ function toneColor(tone: NativeChatNoticeTone): string {
   return { warning: colors.statusAmber, error: colors.statusRed, notice: colors.textMuted }[tone]
 }
 
-// Desktop's no-Continue wording; the phone always reads its Orca host as remote.
+// Desktop's no-Continue wording; the phone always reads its OCC host as remote.
 function noticeLineText(
   notice: NativeChatTextBlock,
   names: MobileNativeChatNoticeNames,

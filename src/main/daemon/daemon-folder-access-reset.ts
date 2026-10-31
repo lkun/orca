@@ -1,4 +1,4 @@
-// Reset the folder-class TCC grant, prompt from Orca, then probe whether a fresh daemon can read it.
+// Reset the folder-class TCC grant, prompt from OCC, then probe whether a fresh daemon can read it.
 
 import { app } from 'electron'
 import { dirname, resolve } from 'node:path'
@@ -31,7 +31,7 @@ const TCC_SERVICE_BY_CWD_CLASS: Record<MacTccFolderClass, string> = {
   downloads: 'SystemPolicyDownloadsFolder'
 }
 
-/** Orca.app/Contents/MacOS/Orca → Orca.app, whose bundle ID identifies its TCC grants. */
+/** OCC.app/Contents/MacOS/OCC → OCC.app, whose bundle ID identifies its TCC grants. */
 function runningAppBundlePath(): string {
   return resolve(dirname(app.getPath('exe')), '..', '..')
 }
@@ -39,7 +39,7 @@ function runningAppBundlePath(): string {
 /** An unanswered macOS sheet must not keep the fix dialog busy for the rest of the session. */
 const PROMPT_DEADLINE_MS = 60_000
 
-/** Read from the app to attribute the TCC prompt to Orca; async I/O keeps main responsive.
+/** Read from the app to attribute the TCC prompt to OCC; async I/O keeps main responsive.
  * A deadline stops waiting but cannot cancel an unanswered prompt's read. */
 async function promptByReadingFolder(path: string): Promise<boolean> {
   let deadline: NodeJS.Timeout | undefined

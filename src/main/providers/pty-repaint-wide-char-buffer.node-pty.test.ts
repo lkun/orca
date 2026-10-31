@@ -7,7 +7,7 @@ import { isWideGlyph, readWrappedLineGlyphs } from '../daemon/__fixtures__/termi
 
 const itOnWindows = process.platform === 'win32' ? it : it.skip
 
-const KOREAN_LINE = '안녕하세요 오르카 테스트입니다. 결론부터 말씀드리면 시각적 피로도'
+const KOREAN_LINE = '안녕하세요 OCC 테스트입니다. 결론부터 말씀드리면 시각적 피로도'
 const LATIN_LINE = 'roadmap/complete-overhaul-backlog-history.md (1.75) R-08)'
 const LINE_REPEATS = 8
 const COLS = 40

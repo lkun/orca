@@ -33,7 +33,7 @@ describe('resolveBrowserAddressBarSubmission', () => {
       status: 'navigate',
       url: page
     })
-    // Elsewhere it is not a URL Orca opens.
+    // Elsewhere it is not a URL OCC opens.
     expect(resolveBrowserAddressBarSubmission(page)).toMatchObject({ status: 'invalid' })
     // A malformed extension id is never treated as an extension page.
     expect(

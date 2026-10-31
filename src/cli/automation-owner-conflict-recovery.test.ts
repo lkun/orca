@@ -47,7 +47,7 @@ describe('automation owner conflicts read as CLI outcomes', () => {
     const payload = JSON.parse(log.mock.calls[0]![0] as string)
     expect(payload.error.code).toBe('automation_owner_fencing_required')
     expect(payload.error.message).toBe('Owner required.')
-    expect(payload.error.data.nextSteps[1]).toContain('Update Orca on the host')
+    expect(payload.error.data.nextSteps[1]).toContain('Update OCC on the host')
   })
 
   it('leaves unrelated failures untouched', () => {

@@ -21,7 +21,7 @@ type ReceivedRequest = RuntimeOrchestrationEnvelope & {
 type HostReply = { result: unknown } | { error: { code: string; message: string } }
 
 describe.skipIf(process.platform === 'win32')(
-  "orca status reports a session caller's Orca session ID",
+  "orca status reports a session caller's OCC session ID",
   () => {
     let server: Server
     const sockets = new Set<Socket>()
@@ -113,7 +113,7 @@ describe.skipIf(process.platform === 'win32')(
       return received.filter((request) => request.method === 'orchestration.callerShow')
     }
 
-    it('asks the host as the session its environment names, and prints the Orca session ID it resolved', async () => {
+    it('asks the host as the session its environment names, and prints the OCC session ID it resolved', async () => {
       process.env.ORCA_AGENT_SESSION_ID = SESSION
       process.env.ORCA_TERMINAL_HANDLE = 'term_tui'
       const caller = { orcaSessionId: `orca_session_id:${SESSION}`, live: true }
@@ -146,7 +146,7 @@ describe.skipIf(process.platform === 'win32')(
       expect(callerShowRequests()).toHaveLength(0)
     })
 
-    it("reports the host's refusal of the session instead of an Orca session ID", async () => {
+    it("reports the host's refusal of the session instead of an OCC session ID", async () => {
       process.env.ORCA_AGENT_SESSION_ID = SESSION
       callerShowReply = {
         error: { code: 'session_caller_not_live', message: `Agent session ${SESSION} has ended.` }

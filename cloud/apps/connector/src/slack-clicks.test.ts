@@ -154,7 +154,7 @@ describe('Slack prompt cards', () => {
     expect(JSON.parse(String(row?.body)).text).toBe('Waiting for your answer.')
   })
 
-  it('leaves prompts Slack can’t answer to Orca: no card, the status says where', async () => {
+  it('leaves prompts Slack can’t answer to OCC: no card, the status says where', async () => {
     for (const prompt of [
       approval([{ id: 'allow_once', label: ' ' }]),
       approval([]),
@@ -171,7 +171,7 @@ describe('Slack prompt cards', () => {
     ]) {
       const harness = await asked(prompt)
       expect(await harness.card()).toBeUndefined()
-      expect(await harness.status()).toBe('Waiting for your answer in Orca on build-box.')
+      expect(await harness.status()).toBe('Waiting for your answer in OCC on build-box.')
     }
   })
 
@@ -243,7 +243,7 @@ describe('Slack prompt cards', () => {
     await harness.click({ messageTs: (await harness.card()).ts, value: 'allow_once' })
     expect(await harness.deliveries()).toEqual([])
     expect((await harness.ephemerals()).map(([, text]) => text)).toEqual([
-      'Orca for Slack is paused.'
+      'OCC for Slack is paused.'
     ])
   })
 
@@ -252,7 +252,7 @@ describe('Slack prompt cards', () => {
       [{ outcome: 'refused', reason: 'prompt_not_pending' }, 'Already answered or moved on.'],
       [
         { outcome: 'unknown', reason: 'writer_failed' },
-        'This may not have reached the agent; check Orca.'
+        'This may not have reached the agent; check OCC.'
       ]
     ] as const) {
       const harness = await asked()
@@ -303,7 +303,7 @@ describe('Slack prompt cards', () => {
     await harness.events(approval())
     expect((await harness.card()).blocks).toHaveLength(2)
     expect((await harness.card()).text).toBe(`<@${OWNER}> answered: Allow once.`)
-    expect(await harness.status()).toBe('Waiting for your answer in Orca on build-box.')
+    expect(await harness.status()).toBe('Waiting for your answer in OCC on build-box.')
     await harness.click({ messageTs: ts, value: 'allow_once' })
     expect(await harness.deliveries()).toEqual([])
   })

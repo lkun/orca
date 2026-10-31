@@ -39,7 +39,7 @@ export async function registerCliForHeadlessServe(): Promise<void> {
       error instanceof Error ? error.message : String(error)
     )
   }
-  // Linux installs orca-ide; Claude Team invokes bare orca, requiring a best-effort user-local dispatcher.
+  // Linux installs occ-ide; Claude Team invokes bare orca, requiring a best-effort user-local dispatcher.
   if (process.platform === 'linux' && app.isPackaged && process.resourcesPath) {
     try {
       const dispatcher = await installLinuxBareOrcaDispatcher({

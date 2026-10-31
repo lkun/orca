@@ -10,7 +10,7 @@ export type CreateEventRepoFacts = {
   postCheckoutHook: PostCheckoutHookPresence
   /** Entries in the index header, i.e. tracked files; absent when the count is missing or unreliable. */
   indexEntryCount?: number
-  /** The main checkout plus registered linked worktrees, Orca's prepared checkouts excluded. */
+  /** The main checkout plus registered linked worktrees, OCC's prepared checkouts excluded. */
   worktreeCount?: number
 }
 

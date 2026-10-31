@@ -14,7 +14,7 @@ export class WslOrcadLaunchDeferredError extends Error {
 export class WslDistroNotRunningError extends Error {
   constructor(distro: string) {
     super(
-      `The WSL distro ${distro} isn’t running, so Orca didn’t start it for a background request.`
+      `The WSL distro ${distro} isn’t running, so OCC didn’t start it for a background request.`
     )
     this.name = 'WslDistroNotRunningError'
   }

@@ -9,7 +9,7 @@ export type MiniMaxCredentialsStatus = {
   apiKeyProtection: SecretAtRestProtection | null
   /** False on a host without the desktop's cookie jar (orcad); older hosts omit it. */
   sessionCookieSupported?: boolean
-  /** Set when the saved file cannot be used here; 'sealed-elsewhere' means the other Orca app
+  /** Set when the saved file cannot be used here; 'sealed-elsewhere' means the other OCC app
    *  on that machine (desktop vs orcad) saved it. */
   cookieUnreadable?: 'sealed-elsewhere' | 'unreadable'
   apiKeyUnreadable?: 'sealed-elsewhere' | 'unreadable'

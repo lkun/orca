@@ -81,7 +81,7 @@ afterEach(() => {
 })
 
 describe('self-initiated tree kill breadcrumb', () => {
-  it('separates an Orca-issued tree kill from an external kill of the same shape', async () => {
+  it('separates an OCC-issued tree kill from an external kill of the same shape', async () => {
     await terminateWindowsProcessTree(4242, {
       execFileImpl: ((_program, _args, _options, done) => {
         ;(done as () => void)()

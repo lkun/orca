@@ -1,7 +1,7 @@
 import type { TerminalImeBoundaryTrace } from './terminal-ime-boundary-probe'
 
 // Reconstruct textarea delivery (composition commits, non-composing insertions, plain keys, Enter→LF).
-// Separate IME/compositor input that never reached the page from delivered input Orca lost.
+// Separate IME/compositor input that never reached the page from delivered input OCC lost.
 export function readImeDomDeliveredText(trace: TerminalImeBoundaryTrace): string {
   let text = ''
   for (const event of trace.dom) {

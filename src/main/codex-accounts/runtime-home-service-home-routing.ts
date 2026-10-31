@@ -32,7 +32,7 @@ export abstract class CodexRuntimeHomeRouting extends CodexRuntimeHomeManagedHom
     // Transcript polling must resolve the mirror path without creating it.
     const homes = [resolveOrcaManagedCodexHomePath()]
     if (this.isHostSystemDefaultRealHomeSelected() || this.getSelfContainedManagedHostAccount()) {
-      // Include real-home history even when nested Orca inherits a managed CODEX_HOME.
+      // Include real-home history even when nested OCC inherits a managed CODEX_HOME.
       homes.push(getSystemCodexHomePath())
     }
     for (const perAccountHome of this.getManagedAccountHomesForSessionDiscovery()) {
@@ -271,7 +271,7 @@ export abstract class CodexRuntimeHomeRouting extends CodexRuntimeHomeManagedHom
       if (hasRecordedLegacySharedCodexPane()) {
         this.syncLegacySharedSystemDefaultAuthForRetainedPanes()
       }
-      // Pin the native home so nested Orca cannot inherit a managed-home OAuth conflict (#5370).
+      // Pin the native home so nested OCC cannot inherit a managed-home OAuth conflict (#5370).
       return { kind: 'ready', codexHomePath: getSystemCodexHomePath() }
     }
     this.syncMirrorForReadOnlyAppServer()

@@ -77,7 +77,7 @@ function hostClient(runtime: ReturnType<typeof runtimeStub>, loseReply = false) 
       lost = true
       throw new RuntimeClientError(
         'runtime_unavailable',
-        'The Orca runtime closed the connection before responding. Restart Orca and try again.'
+        'The OCC runtime closed the connection before responding. Restart OCC and try again.'
       )
     }
     return { id: 'reply', ok: true, result, _meta: { runtimeId: 'runtime-1' } }
@@ -309,7 +309,7 @@ describe('CLI launch through host surface creation and replay admission', () => 
         _meta: { runtimeId: 'runtime-1' }
       })
       .mockRejectedValueOnce(
-        new RuntimeClientError('runtime_unavailable', 'Restart Orca and try again.')
+        new RuntimeClientError('runtime_unavailable', 'Restart OCC and try again.')
       )
     await expect(
       createWorktreeWithAgent({

@@ -80,14 +80,14 @@ describe('checks panel hosted review click routing', () => {
 })
 
 describe('checks panel hosted review modifier hint destination', () => {
-  it('names the system browser when a plain click already opens in Orca', () => {
+  it('names the system browser when a plain click already opens in OCC', () => {
     expect(resolveChecksPanelHostedReviewModifierDestination({ openLinksInApp: true }, true)).toBe(
       'system-browser'
     )
   })
 
-  // Inversion is inert when links already open in Orca; the modifier still names the system browser.
-  it('names the system browser when inverting is on and links already open in Orca', () => {
+  // Inversion is inert when links already open in OCC; the modifier still names the system browser.
+  it('names the system browser when inverting is on and links already open in OCC', () => {
     expect(
       resolveChecksPanelHostedReviewModifierDestination(
         { openLinksInApp: true, openLinksInAppModifierInverts: true },
@@ -96,7 +96,7 @@ describe('checks panel hosted review modifier hint destination', () => {
     ).toBe('system-browser')
   })
 
-  it('names Orca when inverting is on and links open externally', () => {
+  it('names OCC when inverting is on and links open externally', () => {
     expect(
       resolveChecksPanelHostedReviewModifierDestination(
         { openLinksInApp: false, openLinksInAppModifierInverts: true },

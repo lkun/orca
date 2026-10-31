@@ -46,7 +46,7 @@ created before tracking was added. A maintenance lock prevents cleanup racing wi
 Desktop and web caches are reclaimed together; the next dev launch regenerates them as needed.
 
 Use `--repo DIRECTORY` to choose another local repository. Git's worktree list determines scope,
-including registered worktrees outside Orca's workspace directory. Folder workspaces without Git
+including registered worktrees outside OCC's workspace directory. Folder workspaces without Git
 have no repository-wide sweep. These commands run on the local host: they do not inspect or delete
 anything on SSH hosts. Run maintenance on the execution host when maintaining remote repositories.
 

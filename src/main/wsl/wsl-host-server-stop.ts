@@ -18,7 +18,7 @@ import { readWslHostPeerDesktops, type WslHostPeerDesktops } from './wsl-host-pe
 const CENSUS_ATTEMPTS = 20
 const CENSUS_INTERVAL_MS = 250
 
-/** A terminal Orca asked to close but that may still run, named so the user can find it. */
+/** A terminal OCC asked to close but that may still run, named so the user can find it. */
 export type WslHostTerminalLeftover = { handle: string; worktreeId: string; reason: string }
 
 export type WslHostServerStopSteps = {
@@ -49,7 +49,7 @@ export async function stopWslHostServer(steps: WslHostServerStopSteps): Promise<
   const problems: string[] = []
   // Anything proven still running makes the stop `live`; only doubt leaves it `unverifiable`.
   let provenLive = false
-  // Another Orca using this server keeps it: only this desktop lets go (R39).
+  // Another OCC using this server keeps it: only this desktop lets go (R39).
   let peers: WslHostPeerDesktops
   try {
     peers = await steps.peerDesktops()
@@ -67,14 +67,14 @@ export async function stopWslHostServer(steps: WslHostServerStopSteps): Promise<
   }
   if (peers.kind === 'unsupported') {
     console.warn(
-      '[wsl-hosts] This WSL host’s server predates the shared-host check; removing it ends its terminals for every Orca using it.'
+      '[wsl-hosts] This WSL host’s server predates the shared-host check; removing it ends its terminals for every OCC using it.'
     )
   }
   let leftovers: WslHostTerminalLeftover[] = []
   try {
     leftovers = await steps.endTerminals()
   } catch (error) {
-    problems.push(`Orca couldn’t list the host’s terminals: ${errorMessage(error)}`)
+    problems.push(`OCC couldn’t list the host’s terminals: ${errorMessage(error)}`)
   }
   // PTY close is not shell-exit proof; wait for zero-session census.
   let census = await steps.census()
@@ -102,10 +102,10 @@ export async function stopWslHostServer(steps: WslHostServerStopSteps): Promise<
   const result = await steps.decommission(census, servingRuntimeId)
   if (result.outcome === 'refused') {
     provenLive ||= result.verdict === 'live'
-    problems.push(`Orca’s server kept running: ${result.reason}`)
+    problems.push(`OCC’s server kept running: ${result.reason}`)
   } else if (result.retirement !== 'retired') {
     provenLive ||= result.retirement === 'live'
-    problems.push('Orca’s server stopped, but its terminal daemon is still running.')
+    problems.push('OCC’s server stopped, but its terminal daemon is still running.')
   }
   return problems.length === 0
     ? { stopped: true }
@@ -179,7 +179,7 @@ export function decommissionWslHostOrcad(
           verdict: 'unverifiable',
           code: 'orcad_wsl_host_serving_instance_unproven',
           reason:
-            'the orcad this computer was connected to is not the one the distro records as active, so Orca could not prove it stopped.'
+            'the orcad this computer was connected to is not the one the distro records as active, so OCC could not prove it stopped.'
         }
       }
     }

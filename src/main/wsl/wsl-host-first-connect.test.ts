@@ -13,7 +13,7 @@ describe('connectForWslHostAdd', () => {
       ok: false,
       kind: 'unsupported-wsl1',
       message:
-        'Ubuntu runs WSL 1, which Orca no longer supports. Convert it to WSL 2 in a Windows terminal with: wsl --set-version Ubuntu 2',
+        'Ubuntu runs WSL 1, which OCC no longer supports. Convert it to WSL 2 in a Windows terminal with: wsl --set-version Ubuntu 2',
       errorCode: 'wsl1',
       errorParams: { distro: 'Ubuntu' }
     })

@@ -105,7 +105,7 @@ test('terminal input stays responsive with a slow 1,000-session inventory, and h
       expect(result.worstMs).toBeLessThan(MAX_WORST_KEY_LATENCY_MS)
       if (state === 'visible-active') {
         await expect(
-          orcaPage.getByText('1000 Orca PTYs on this computer · 1000 without a tab', {
+          orcaPage.getByText('1000 OCC PTYs on this computer · 1000 without a tab', {
             exact: true
           })
         ).toBeVisible()

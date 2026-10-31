@@ -85,7 +85,7 @@ async function waitForPairingRuntime({ child, userData, pairingAddress, logSucce
     env: {
       ...process.env,
       ORCA_USER_DATA_PATH: userData,
-      // orca-dev ignores ORCA_USER_DATA_PATH; override derived profile so CLI addresses disposable runtime. Plain orca ignores this.
+      // occ-dev ignores ORCA_USER_DATA_PATH; override derived profile so CLI addresses disposable runtime. Plain orca ignores this.
       ORCA_DEV_USER_DATA_PATH: userData
     },
     stop

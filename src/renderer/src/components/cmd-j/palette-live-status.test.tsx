@@ -136,7 +136,7 @@ describe('palette live status', () => {
     })
   }
 
-  // Stale pane rows must still suppress Orca-authored permission titles after the pane reports done.
+  // Stale pane rows must still suppress OCC-authored permission titles after the pane reports done.
   it.each(['worktree', 'recent'] as const)(
     'does not paint a stale self-authored title as a live %s question',
     async (surface) => {

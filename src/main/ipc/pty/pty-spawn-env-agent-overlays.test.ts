@@ -81,7 +81,7 @@ describe('registerPtyHandlers', () => {
           expect(env.CLAUDE_CODE_FORCE_TERMINAL_IMAGES).toBe(
             terminalInlineImages === false ? undefined : '1'
           )
-          expect(env.TERM_PROGRAM).toBe('Orca')
+          expect(env.TERM_PROGRAM).toBe('OCC')
         }
       )
 
@@ -186,7 +186,7 @@ describe('registerPtyHandlers', () => {
         spawnMock.mock.invocationCallOrder[0]!
       )
     })
-    it('injects the OpenCode hook env into Orca terminal PTYs', async () => {
+    it('injects the OpenCode hook env into OCC terminal PTYs', async () => {
       const env = await spawnAndGetEnv(undefined, { OPENCODE_CONFIG_DIR: undefined })
       expect(openCodeBuildPtyEnvMock).toHaveBeenCalledTimes(1)
       expect(openCodeBuildPtyEnvMock.mock.calls[0]?.[0]).toEqual(expect.any(String))
@@ -196,7 +196,7 @@ describe('registerPtyHandlers', () => {
       expect(env.OPENCODE_CONFIG_DIR).toEqual(expect.any(String))
       expect(env.ORCA_OPENCODE_CONFIG_DIR).toBe(env.OPENCODE_CONFIG_DIR)
     })
-    it('mirrors the original OpenCode source dir when launched from an Orca overlay shell', async () => {
+    it('mirrors the original OpenCode source dir when launched from an OCC overlay shell', async () => {
       const env = await spawnAndGetEnv({
         OPENCODE_CONFIG_DIR: '/tmp/parent-orca-opencode-overlay',
         ORCA_OPENCODE_SOURCE_CONFIG_DIR: '/tmp/user-opencode-config',
@@ -211,7 +211,7 @@ describe('registerPtyHandlers', () => {
       expect(env.ORCA_OPENCODE_CONFIG_DIR).toBe('/tmp/orca-opencode-overlay')
       expect(env.ORCA_OPENCODE_SOURCE_CONFIG_DIR).toBe('/tmp/user-opencode-config')
     })
-    it('does not treat inherited Orca OpenCode config as user config without a source dir', async () => {
+    it('does not treat inherited OCC OpenCode config as user config without a source dir', async () => {
       const env = await spawnAndGetEnv({
         OPENCODE_CONFIG_DIR: '/tmp/parent-orca-opencode-overlay',
         ORCA_OPENCODE_CONFIG_DIR: '/tmp/parent-orca-opencode-overlay',
@@ -227,7 +227,7 @@ describe('registerPtyHandlers', () => {
       expect(env.ORCA_OPENCODE_CONFIG_DIR).toBe('/tmp/orca-opencode-config')
       expect(env.ORCA_OPENCODE_SOURCE_CONFIG_DIR).toBeUndefined()
     })
-    it('restores user OpenCode config when agent status hooks are disabled in a nested Orca shell', async () => {
+    it('restores user OpenCode config when agent status hooks are disabled in a nested OCC shell', async () => {
       const env = await spawnAndGetEnv(
         {
           OPENCODE_CONFIG_DIR: '/tmp/parent-orca-opencode-overlay',
@@ -297,7 +297,7 @@ describe('registerPtyHandlers', () => {
 
       expect(mimoCodeBuildPtyEnvMock).not.toHaveBeenCalled()
     })
-    it('restores user MiMo config dir when agent status hooks are disabled in a nested Orca shell', async () => {
+    it('restores user MiMo config dir when agent status hooks are disabled in a nested OCC shell', async () => {
       const env = await spawnAndGetEnv(
         {
           MIMOCODE_CONFIG_DIR: '/tmp/parent-orca-mimocode-overlay',
@@ -334,7 +334,7 @@ describe('registerPtyHandlers', () => {
       expect(env.MIMOCODE_CONFIG_DIR).toBe('/tmp/orca-mimocode-shared')
     })
     posixOnlyIt(
-      'reproduces issue #1534: GUI-launched Orca mirrors zshrc-only OpenCode config',
+      'reproduces issue #1534: GUI-launched OCC mirrors zshrc-only OpenCode config',
       async () => {
         // Model config exported by interactive zsh but absent from the GUI environment.
         readFileSyncMock.mockImplementation((path: string) => {
@@ -369,7 +369,7 @@ describe('registerPtyHandlers', () => {
         expect(env.OPENCODE_CONFIG_DIR).not.toBe(env.ORCA_OPENCODE_SOURCE_CONFIG_DIR)
       }
     )
-    it('installs Pi managed extensions without redirecting Orca terminal PTY homes', async () => {
+    it('installs Pi managed extensions without redirecting OCC terminal PTY homes', async () => {
       const env = await spawnAndGetEnv(undefined, { PI_CODING_AGENT_DIR: '/tmp/user-pi-agent' })
       expect(piBuildPtyEnvMock).toHaveBeenCalledWith(
         expect.any(String),
@@ -499,7 +499,7 @@ describe('registerPtyHandlers', () => {
       )
       expect(env.ORCA_PI_SOURCE_AGENT_DIR).toBeUndefined()
     })
-    it('mirrors the original Pi source dir when launched from an Orca overlay shell', async () => {
+    it('mirrors the original Pi source dir when launched from an OCC overlay shell', async () => {
       const env = await spawnAndGetEnv({
         PI_CODING_AGENT_DIR: '/tmp/parent-orca-pi-overlay',
         ORCA_PI_SOURCE_AGENT_DIR: '/tmp/user-pi-agent'

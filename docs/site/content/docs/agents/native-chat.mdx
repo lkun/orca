@@ -13,7 +13,7 @@ Existing terminal-backed chats use a transcript view over an agent running in a 
 
 Chat UI is available to everyone. Supported agents inherit your global Chat or Terminal default unless you choose differently for an agent. Fresh installs default to Terminal:
 
-You can also choose whether each supported agent opens as a chat in **Settings → Agents**: each agent's row in the **Installed** list has a **Chat | CLI** choice. Choosing **CLI** makes its new sessions open in the terminal. Agents whose chat runs on a program Orca downloads, such as Antigravity, show that download and their chat sign-in when you expand their row.
+You can also choose whether each supported agent opens as a chat in **Settings → Agents**: each agent's row in the **Installed** list has a **Chat | CLI** choice. Choosing **CLI** makes its new sessions open in the terminal. Agents whose chat runs on a program OCC downloads, such as Antigravity, show that download and their chat sign-in when you expand their row.
 
 ## Continue a conversation in chat or the terminal
 
@@ -23,16 +23,16 @@ To open a saved conversation in another form:
 1. Open the conversation's menu.
 1. Choose **Resume in New Chat** for a supported CLI conversation, or **Resume in New Terminal** for a supported chat conversation.
 
-Both actions open a new tab with a copy of the conversation; the original stays unchanged. For example, **Resume in New Terminal** copies a Claude or Codex chat into a new CLI session. These actions depend on the agent, saved conversation, and execution host; they are not available for every session. Older Orca versions label them **Resume in New Native Chat** and **Resume in New CLI**.
+Both actions open a new tab with a copy of the conversation; the original stays unchanged. For example, **Resume in New Terminal** copies a Claude or Codex chat into a new CLI session. These actions depend on the agent, saved conversation, and execution host; they are not available for every session. Older OCC versions label them **Resume in New Native Chat** and **Resume in New CLI**.
 
 You can also right-click an open agent tab:
 
 - On a structured chat tab, **Continue with Terminal Agent** starts a new terminal agent with a copy of the conversation.
 - On a supported terminal agent tab, **Continue in Chat UI** opens the conversation in a new structured chat. The terminal pane header shows the same action as a chat button.
 
-These continuation actions also work for conversations on a paired **Remote Orca Server** that supports conversation-history resume. The chat and its history stay on that server. Direct SSH workspaces without an Orca runtime do not support this action. If the action is unavailable on an older server, update that server as well as the client.
+These continuation actions also work for conversations on a paired **Remote OCC Server** that supports conversation-history resume. The chat and its history stay on that server. Direct SSH workspaces without an OCC runtime do not support this action. If the action is unavailable on an older server, update that server as well as the client.
 
-If the terminal agent still owns the conversation, Orca asks you to stop or exit it before continuing from **Agent Session History**. Continuing in Chat does not forcibly terminate the terminal agent.
+If the terminal agent still owns the conversation, OCC asks you to stop or exit it before continuing from **Agent Session History**. Continuing in Chat does not forcibly terminate the terminal agent.
 
 ## Switch an existing terminal-backed chat
 
@@ -50,7 +50,7 @@ You can also switch the same terminal-backed session with **Switch between Chat 
 
 ## Questions from the agent
 
-When Claude shows an **AskUserQuestion** (or similar structured permission/question card), Chat UI should render the question card in the transcript so you can answer from the composer path instead of treating it as a collapsed tool call. Confirm with **Submit** on the card. That includes agents running on a paired [Remote Orca Server](/docs/remote-servers) / headless host — not only local panes.
+When Claude shows an **AskUserQuestion** (or similar structured permission/question card), Chat UI should render the question card in the transcript so you can answer from the composer path instead of treating it as a collapsed tool call. Confirm with **Submit** on the card. That includes agents running on a paired [Remote OCC Server](/docs/remote-servers) / headless host — not only local panes.
 
 ## Availability
 

@@ -1,11 +1,11 @@
 // Compact multi-KB dispatch boilerplate so preamble identity, task id and task-body fallback all fit AGENT_STATUS_MAX_FIELD_LENGTH.
 
 export const ORCA_DISPATCH_STATUS_PREAMBLE_PREFIX =
-  'You are working inside Orca, a multi-agent IDE.'
+  'You are working inside OCC, a multi-agent IDE.'
 export const ORCA_DISPATCH_STATUS_TASK_MARKER = '=== TASK ==='
 // Type this lead: Claude follows pasted briefs only when user prose explicitly asks; bare pasted_content was refused (STA-8200).
 export const ORCA_DISPATCH_PROMPT_LEAD_LINE =
-  'Please carry out this task from my Orca coordinator by following the brief I pasted below.'
+  'Please carry out this task from my OCC coordinator by following the brief I pasted below.'
 const ORCA_DISPATCH_STATUS_TASK_ID_MARKER = 'Your task ID is:'
 // Real task markers follow 4KB+ preambles; scan beyond the one-line preview budget to reach the body.
 const ORCA_DISPATCH_STATUS_SOURCE_SCAN_LIMIT = 24_576

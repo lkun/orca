@@ -95,7 +95,7 @@ export const claudeScriptedChild: ScriptedAgentChildFactory = () => {
         await beforeDispatch?.()
         prompts.push(promptText(message))
         writeTranscript(launch, providerSessionId)
-        // The CLI echoes each message it takes under the client's uuid: Orca's proof of delivery.
+        // The CLI echoes each message it takes under the client's uuid: OCC's proof of delivery.
         handlers.onMessage?.({
           type: 'user',
           session_id: providerSessionId,
@@ -115,7 +115,7 @@ export const claudeScriptedChild: ScriptedAgentChildFactory = () => {
           connection.closed = true
           closes += 1
           connection.exitVerdict = { root: 'exited', tree: 'exited' }
-          handlers.onExit?.(new Error('closed by Orca'))
+          handlers.onExit?.(new Error('closed by OCC'))
         }
         return true
       }

@@ -21,7 +21,7 @@ export type BundledSkillLocation = {
   place: { kind: 'shared' } | { kind: 'agents'; names: string[] }
   state: BundledSkillLocationState
   reason: BundledSkillLeaveReason | null
-  /** Replace/--force may back up this location and install Orca’s copy. */
+  /** Replace/--force may back up this location and install OCC’s copy. */
   replaceable: boolean
 }
 

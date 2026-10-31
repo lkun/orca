@@ -27,14 +27,14 @@ function getExistingFileStatus(
   file: Record<string, unknown> | null
 ): AgentHookInstallStatus {
   if (!file) {
-    return standaloneStatus(configPath, 'error', 'Could not parse the Orca Kiro hooks file')
+    return standaloneStatus(configPath, 'error', 'Could not parse the OCC Kiro hooks file')
   }
   const conflict = getKiroStandaloneHooksFileConflict(file)
   if (conflict) {
     return standaloneStatus(
       configPath,
       'error',
-      `Left the Kiro hooks file at Orca's path untouched: ${conflict}`,
+      `Left the Kiro hooks file at OCC's path untouched: ${conflict}`,
       readManagedKiroStandaloneTriggers(file).size > 0
     )
   }
@@ -51,7 +51,7 @@ export function getKiroStandaloneHooksStatus(): AgentHookInstallStatus {
   if (raw === null) {
     return config
       ? standaloneStatus(configPath, 'not_installed', null)
-      : standaloneStatus(configPath, 'error', 'Could not read the Orca Kiro hooks file')
+      : standaloneStatus(configPath, 'error', 'Could not read the OCC Kiro hooks file')
   }
   return getExistingFileStatus(configPath, config)
 }
@@ -59,7 +59,7 @@ export function getKiroStandaloneHooksStatus(): AgentHookInstallStatus {
 export function installKiroStandaloneHooks(command: string): AgentHookInstallStatus {
   const configPath = getKiroStandaloneHooksFilePath()
   const { raw, config } = readHooksJsonWithRaw(configPath)
-  // A file someone else wrote at Orca's name keeps its hooks.
+  // A file someone else wrote at OCC's name keeps its hooks.
   if (config && (raw === null || getKiroStandaloneHooksFileConflict(config) === null)) {
     writeHooksJson(configPath, buildKiroStandaloneHooksFile(command))
   }

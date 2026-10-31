@@ -54,7 +54,7 @@ const COPY: Record<TextGenerationFailureCode, (values: CopyValues) => string> = 
   windowsBatchUnsafeArguments: (values) =>
     translate(
       'sourceControl.textGenerationFailure.windowsBatchUnsafeArguments',
-      "{{label}} runs through a Windows batch script that cannot take the multi-line prompt as an argument. Point Settings at the agent's executable, or use a custom command without {prompt} so Orca sends the prompt on stdin.",
+      "{{label}} runs through a Windows batch script that cannot take the multi-line prompt as an argument. Point Settings at the agent's executable, or use a custom command without {prompt} so OCC sends the prompt on stdin.",
       values
     ),
   cliTerminated: (values) =>

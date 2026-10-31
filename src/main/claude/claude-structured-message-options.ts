@@ -70,7 +70,7 @@ export async function dispatchClaudeMessage(
     await input.beforeDispatch?.()
     try {
       input.signal?.throwIfAborted()
-      // Input joining a running turn, and Orca mail notices, run on the choices Claude already has;
+      // Input joining a running turn, and OCC mail notices, run on the choices Claude already has;
       // new choices apply at the next new turn.
       const messageOptions =
         session.translator?.openTurnHasInputWork ||

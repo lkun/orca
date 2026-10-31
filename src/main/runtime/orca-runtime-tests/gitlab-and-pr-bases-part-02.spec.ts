@@ -295,7 +295,7 @@ describe('OrcaRuntimeService', () => {
       path: 'group/repo'
     })
     const runtime = new OrcaRuntimeService(runtimeStore as never)
-    // Concurrent fetch overwrites FETCH_HEAD; durable Orca MR refs must retain compare-base authority.
+    // Concurrent fetch overwrites FETCH_HEAD; durable OCC MR refs must retain compare-base authority.
     const gitSpy = vi.spyOn(gitRunner, 'gitExecFileAsync').mockImplementation(async (args) => {
       if (args[0] === 'remote' && args[1] === 'get-url') {
         return { stdout: `${ORIGIN_REMOTE_URL}\n`, stderr: '' }
@@ -401,7 +401,7 @@ describe('OrcaRuntimeService', () => {
     ["fatal: couldn't find remote ref refs/merge-requests/42/head", 'deleted MR / cleaned fork'],
     ['Authentication failed. Check your remote credentials.', 'auth failure'],
     [
-      'This SSH host is running an older Orca relay that cannot fetch merge request heads. Reconnect to deploy the latest relay, then try again.',
+      'This SSH host is running an older OCC relay that cannot fetch merge request heads. Reconnect to deploy the latest relay, then try again.',
       'stale relay'
     ]
   ])('fails hard instead of soft-keeping the durable MR head on: %s', async (message) => {

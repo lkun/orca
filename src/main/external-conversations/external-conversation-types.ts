@@ -11,7 +11,7 @@ export const CONNECTOR_REFUSALS = [
   'agent_asleep_in_window',
   'no_session_to_reopen',
   'reopen_refused',
-  // An answer's: the prompt was answered or moved on, only Orca can answer it, or no such option.
+  // An answer's: the prompt was answered or moved on, only OCC can answer it, or no such option.
   'prompt_not_pending',
   'prompt_unsupported',
   'option_not_offered',

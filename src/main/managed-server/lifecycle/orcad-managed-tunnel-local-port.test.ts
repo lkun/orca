@@ -148,7 +148,7 @@ describe('managed tunnel on an unbindable saved local port', () => {
       movedPort,
       '127.0.0.1',
       6_768,
-      'Orca on Builder'
+      'OCC on Builder'
     )
     expect(moved.endpoints[0]?.endpoint).toBe(`ws://127.0.0.1:${movedPort}/`)
     expect(moved.endpoints[0]?.deviceToken).toBe(before.endpoints[0]?.deviceToken)

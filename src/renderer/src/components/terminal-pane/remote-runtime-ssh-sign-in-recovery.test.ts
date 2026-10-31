@@ -336,7 +336,7 @@ describe('SSH sign-in for a terminal created while the host waits for sign-in', 
     const { pane, lastPublishedState, signIn } = await mountNewPaneAwaitingSignIn(
       pendingErrors[0],
       () => {
-        throw Object.assign(new Error('Could not connect to the remote Orca runtime.'), {
+        throw Object.assign(new Error('Could not connect to the remote OCC runtime.'), {
           code: 'remote_runtime_unavailable'
         })
       }

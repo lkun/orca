@@ -14,7 +14,7 @@ const PANE_IDENTITY_ENV_KEYS = [
   'ORCA_WORKTREE_ID',
   'ORCA_AGENT_LAUNCH_TOKEN',
   'JCODE_RUNTIME_DIR',
-  // Per-viewer: an Orca started from a remote viewer's pane must not mark its own local panes.
+  // Per-viewer: an OCC started from a remote viewer's pane must not mark its own local panes.
   REMOTE_VIEWER_CLIPBOARD_ENV,
   // A server's own launch marker; a user's `orcad` in this shell is not client-managed.
   ORCAD_MANAGED_ACTIVATION_ROOT_ENV,

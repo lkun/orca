@@ -100,7 +100,7 @@ async function fakeDiscord() {
       shards: 1,
       session_start_limit: { total: 1000, remaining: 1000, reset_after: 0, max_concurrency: 1 }
     }
-    const me = { id: BOT, username: 'Orca', bot: true }
+    const me = { id: BOT, username: 'OCC', bot: true }
     response.end(JSON.stringify(url === '/api/v10/users/@me' ? me : (channels[url] ?? gatewayBot)))
   })
   http = server
@@ -174,7 +174,7 @@ const ready = (origin: string, sessionId = 'session-1') => ({
   t: 'READY',
   d: {
     v: 10,
-    user: { id: BOT, username: 'Orca', bot: true },
+    user: { id: BOT, username: 'OCC', bot: true },
     guilds: [],
     session_id: sessionId,
     resume_gateway_url: `${origin}/resume`,

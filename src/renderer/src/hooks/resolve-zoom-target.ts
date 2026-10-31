@@ -70,7 +70,7 @@ export function resolveZoomTarget(args: {
   if (activeTabType === 'simulator') {
     return 'simulator'
   }
-  // Why: with focus outside the pane, the chord belongs to Orca's own zoom.
+  // Why: with focus outside the pane, the chord belongs to OCC's own zoom.
   if (activeTabType === 'browser') {
     return 'ui'
   }

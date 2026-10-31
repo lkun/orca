@@ -134,7 +134,7 @@ describe('Session History rows a paired client cannot open as a chat', () => {
 })
 
 // Shared desktop/mobile resume builders must produce commands the ownership guard recognizes.
-describe('resume commands Orca builds for an owned row', () => {
+describe('resume commands OCC builds for an owned row', () => {
   const shells: { platform: NodeJS.Platform; shell: AgentStartupShell }[] = [
     { platform: 'darwin', shell: 'posix' },
     { platform: 'win32', shell: 'powershell' },

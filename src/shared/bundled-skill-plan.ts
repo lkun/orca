@@ -56,10 +56,10 @@ export type BundledSkillObserved =
   | { kind: 'file'; mtimeMs: number | null; treeDigest?: string }
   | { kind: 'unreadable' }
 
-/** A leftover sibling of an interrupted Orca swap, handled before the target's op. */
+/** A leftover sibling of an interrupted OCC swap, handled before the target's op. */
 export type BundledSkillCleanup = {
   path: string
-  /** `delete` only ever applies to Orca's stage siblings and released old copies. */
+  /** `delete` only ever applies to OCC's stage siblings and released old copies. */
   action: 'delete' | 'backup'
   observed: BundledSkillObserved
 }
@@ -76,7 +76,7 @@ export type BundledSkillOp = {
   /** The interrupted swap's old copy a `restore` moves back. */
   restoreFrom?: { path: string; observed: BundledSkillObserved }
   reason?: BundledSkillLeaveReason
-  /** Whether Replace / `--force` may back this up and put Orca's copy in its place. */
+  /** Whether Replace / `--force` may back this up and put OCC's copy in its place. */
   replaceable?: boolean
   /** Path of an earlier op that must succeed first. */
   requires?: string

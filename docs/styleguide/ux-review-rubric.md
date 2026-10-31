@@ -1,6 +1,6 @@
 # Screen UX review rubric
 
-Use this rubric when reviewing any Orca IDE screen, screenshot, or prototype, and when polishing a whole screen or flow. Core rules: [`docs/STYLEGUIDE.md`](../STYLEGUIDE.md#ux-rules). A good review names the highest-impact friction first, then gives concrete changes the implementer can make.
+Use this rubric when reviewing any OCC IDE screen, screenshot, or prototype, and when polishing a whole screen or flow. Core rules: [`docs/STYLEGUIDE.md`](../STYLEGUIDE.md#ux-rules). A good review names the highest-impact friction first, then gives concrete changes the implementer can make.
 
 ## Review output format
 
