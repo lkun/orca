@@ -413,7 +413,7 @@ describe('MobileSocketWiring', () => {
       clientNonceB64: Buffer.from(new Uint8Array(32).fill(3)).toString('base64'),
       capabilities: { framing: [2], payloadKinds: ['text', 'binary'] },
       context: {
-        protocol: 'occ-mobile-e2ee',
+        protocol: 'orca-mobile-e2ee',
         initiator: 'mobile',
         responder: 'desktop',
         transport: 'relay',
@@ -482,7 +482,7 @@ describe('MobileSocketWiring', () => {
       clientNonceB64: Buffer.from(new Uint8Array(32).fill(3)).toString('base64'),
       capabilities: { framing: [2], payloadKinds: ['text', 'binary'] },
       context: {
-        protocol: 'occ-mobile-e2ee',
+        protocol: 'orca-mobile-e2ee',
         initiator: 'mobile',
         responder: 'desktop',
         transport: 'relay',

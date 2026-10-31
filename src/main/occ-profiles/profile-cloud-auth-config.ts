@@ -22,9 +22,9 @@ export type OCCCloudAuthConfig = {
 }
 
 const DEFAULT_SCOPE = 'openid profile email offline_access'
-const PRODUCTION_API_BASE_URL = 'https://login.onocc.dev'
-const PRODUCTION_CLIENT_ID = 'occ-desktop'
-const PRODUCTION_RELAY_DIRECTOR_URL = 'https://relay.onocc.dev'
+const PRODUCTION_API_BASE_URL = 'https://login.onorca.dev'
+const PRODUCTION_CLIENT_ID = 'orca-desktop'
+const PRODUCTION_RELAY_DIRECTOR_URL = 'https://relay.onorca.dev'
 
 // Packaged main omits NODE_ENV; use packaged status to gate development auth overrides.
 function isPackagedOCCBuild(): boolean {

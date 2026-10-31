@@ -3,8 +3,8 @@ import { sha256 } from '@noble/hashes/sha256'
 import type { PairedE2EEV2KeySchedule } from './paired-e2ee-primitives'
 
 // Pure JS preserves shared v2 keys on insecure LAN browsers without crypto.subtle and on Hermes; exclude from the unbundled CLI graph.
-const SALT_LABEL = new TextEncoder().encode('occ-mobile-e2ee/v2/salt\0')
-const INFO_LABEL = new TextEncoder().encode('occ-mobile-e2ee/v2/session\0')
+const SALT_LABEL = new TextEncoder().encode('orca-mobile-e2ee/v2/salt\0')
+const INFO_LABEL = new TextEncoder().encode('orca-mobile-e2ee/v2/session\0')
 
 export function derivePairedE2EEV2KeySchedule(args: {
   sharedSecret: Uint8Array
