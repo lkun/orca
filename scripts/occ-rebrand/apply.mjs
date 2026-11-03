@@ -17,6 +17,7 @@
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
+import { createRequire } from 'node:module'
 
 const target = path.resolve(process.argv[2] ?? '')
 if (!target || !fs.existsSync(target)) {
@@ -120,6 +121,26 @@ for (const rel of files) {
   if (next !== text) {
     fs.writeFileSync(abs, next)
     changed++
+  }
+}
+
+// Plugin tree hashes cover file names and bytes, so refresh them after the rename.
+const pluginIndex = path.join(target, 'resources/plugins/launch/bundled-plugins.json')
+if (fs.existsSync(pluginIndex)) {
+  try {
+    const targetRequire = createRequire(path.join(target, 'package.json'))
+    const { hashPackagedPluginTree } = targetRequire(
+      './config/scripts/verify-packaged-plugin-resources.cjs'
+    )
+    const index = JSON.parse(fs.readFileSync(pluginIndex, 'utf8'))
+    for (const entry of index.plugins ?? []) {
+      const pluginRoot = path.join(target, 'resources/plugins/launch', entry.path)
+      if (fs.existsSync(pluginRoot)) entry.contentHash = hashPackagedPluginTree(pluginRoot)
+    }
+    fs.writeFileSync(pluginIndex, `${JSON.stringify(index, null, 2)}\n`)
+    console.log(`refreshed plugin hashes: ${index.plugins?.length ?? 0}`)
+  } catch (error) {
+    console.warn(`plugin hash refresh failed: ${error instanceof Error ? error.message : error}`)
   }
 }
 
