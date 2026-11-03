@@ -1,5 +1,7 @@
 # OCC rebrand and upstream sync
 
+> 日常同步看根目录 `SYNC.md`。本文件只记录背景和长期约定。
+
 ## Current version
 
 - Product version: `1.4.214`
