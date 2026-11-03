@@ -41,6 +41,7 @@ node "$ROOT/scripts/occ-rebrand/apply.mjs" "$WORKTREE"
 # Keep files that exist only in the OCC fork.
 cp "$ROOT/VERSION" "$WORKTREE/VERSION"
 cp "$ROOT/OCC_REBRAND.md" "$WORKTREE/OCC_REBRAND.md"
+cp "$ROOT/SYNC.md" "$WORKTREE/SYNC.md"
 mkdir -p "$WORKTREE/scripts/occ-rebrand"
 cp "$ROOT/scripts/occ-rebrand/apply.mjs" "$WORKTREE/scripts/occ-rebrand/apply.mjs"
 cp "$ROOT/scripts/occ-sync.sh" "$WORKTREE/scripts/occ-sync.sh"
