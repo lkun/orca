@@ -76,7 +76,16 @@ export type OCCdDeployOptions = {
 export type OCCdDeployResult =
   | { outcome: 'installed-and-activated'; fullVersion: string; verdict: OCCdActivationVerdict }
   | { outcome: 'already-active'; fullVersion: string }
-  | { outcome: 'installed-not-activated'; fullVersion: string; code: string; reason: string }
+  | {
+      outcome: 'installed-not-activated'
+      fullVersion: string
+      code: string
+      reason: string
+      /** The candidate's own preflight or launch check failed; a deferral never sets this. */
+      startCheckFailed?: true
+      /** This deploy uploaded the slot rather than finding it already installed. */
+      freshlyInstalled?: true
+    }
 
 export async function deployOCCd(
   input: OCCdDeployOptions,
@@ -130,12 +139,12 @@ export async function deployOCCd(
     return held()
   }
 
-  await installOCCdBundle(options, fullVersion, remoteDir)
+  const installed = await installOCCdBundle(options, fullVersion, remoteDir)
   if (options.sameVersionFencedByCaller && preUploadRecord.active === fullVersion) {
     return { outcome: 'already-active', fullVersion }
   }
 
-  return logOCCdActivationOutcome(
+  const result = await logOCCdActivationOutcome(
     `update to ${fullVersion}`,
     () =>
       withOCCdActivationLock(
@@ -146,4 +155,7 @@ export async function deployOCCd(
       ),
     ['installed-and-activated', 'already-active']
   )
+  return installed === 'uploaded' && result.outcome === 'installed-not-activated'
+    ? { ...result, freshlyInstalled: true }
+    : result
 }

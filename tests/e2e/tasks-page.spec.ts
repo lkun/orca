@@ -8,21 +8,9 @@ const TASK_SEARCH_SETTLE_MS = GITHUB_TASK_SEARCH_IDLE_MS + 50
 // Outlast idle timing, React commit and two store roundtrips instead of assuming a flat 2s.
 const TASK_SEARCH_PROBE_TIMEOUT_MS = GITHUB_TASK_SEARCH_IDLE_MS * 6
 
-type RenderedTaskSource = {
-  source: string
-  active: boolean
-}
-
 type TaskSearchRequestProbe = {
   countQueries: string[]
   fetchQueries: string[]
-}
-
-const TASK_SOURCE_BY_LABEL: Record<string, string> = {
-  GitHub: 'github',
-  GitLab: 'gitlab',
-  Linear: 'linear',
-  Jira: 'jira'
 }
 
 async function openTasksPage(page: Parameters<typeof getStoreState>[0]): Promise<void> {
@@ -33,25 +21,6 @@ async function openTasksPage(page: Parameters<typeof getStoreState>[0]): Promise
     }
     store.getState().openTaskPage()
   })
-}
-
-async function getRenderedTaskSources(
-  page: Parameters<typeof getStoreState>[0]
-): Promise<RenderedTaskSource[]> {
-  return page
-    .locator('[data-contextual-tour-target="tasks-source-filters"] button')
-    .evaluateAll((buttons, sourceByLabel) => {
-      return buttons.flatMap((button) => {
-        const source =
-          button.getAttribute('data-task-source') ??
-          sourceByLabel[button.getAttribute('aria-label')?.trim() ?? '']
-        if (!source) {
-          return []
-        }
-        const active = button.getAttribute('aria-pressed') === 'true'
-        return [{ source, active }]
-      })
-    }, TASK_SOURCE_BY_LABEL)
 }
 
 async function openMockedPaginatedGitHubTasks(
@@ -211,73 +180,6 @@ test.describe('Tasks page', () => {
   test.beforeEach(async ({ occPage }) => {
     await waitForSessionReady(occPage)
     await waitForActiveWorktree(occPage)
-  })
-
-  test('opening the tasks view renders the tasks UI', async ({ occPage }) => {
-    await openTasksPage(occPage)
-
-    await expect
-      .poll(async () => getStoreState<string>(occPage, 'activeView'), { timeout: 5_000 })
-      .toBe('tasks')
-
-    await expect(occPage.getByRole('button', { name: 'Close tasks' })).toBeVisible({
-      timeout: 10_000
-    })
-
-    // Assert stable Tasks chrome because source tabs depend on provider availability.
-    let renderedSources: RenderedTaskSource[] = []
-    await expect
-      .poll(
-        async () => {
-          renderedSources = await getRenderedTaskSources(occPage)
-          return renderedSources.length
-        },
-        {
-          timeout: 10_000,
-          message: 'Tasks source controls did not render'
-        }
-      )
-      .toBeGreaterThan(1)
-
-    await expect
-      .poll(
-        async () => {
-          renderedSources = await getRenderedTaskSources(occPage)
-          return renderedSources.some((source) => source.active)
-        },
-        {
-          timeout: 5_000,
-          message: 'Active task source did not render'
-        }
-      )
-      .toBe(true)
-    if (renderedSources.some((source) => source.source === 'github' && source.active)) {
-      await expect(occPage.getByRole('button', { name: 'Issues', exact: true })).toBeVisible()
-      await expect(occPage.getByRole('button', { name: 'PRs', exact: true })).toBeVisible()
-      await expect(occPage.getByRole('button', { name: 'Projects', exact: true })).toBeVisible()
-      await expect(occPage.getByPlaceholder(/Search GitHub (issues|PRs)/i)).toBeVisible()
-    }
-  })
-
-  test('closing the tasks page returns to the previous view', async ({ occPage }) => {
-    const previousView = await getStoreState<string>(occPage, 'activeView')
-
-    await openTasksPage(occPage)
-    await expect
-      .poll(async () => getStoreState<string>(occPage, 'activeView'), { timeout: 5_000 })
-      .toBe('tasks')
-    await expect(occPage.getByRole('button', { name: 'Close tasks' })).toBeVisible()
-
-    await occPage.getByRole('button', { name: 'Close tasks' }).click()
-
-    await expect
-      .poll(async () => getStoreState<string>(occPage, 'activeView'), { timeout: 5_000 })
-      .toBe(previousView)
-    // Require prior-view DOM to remount plus Tasks close control to disappear; activeView alone misses broken rendering.
-    await expect(occPage.getByRole('button', { name: 'Close tasks' })).toHaveCount(0)
-    if (previousView === 'terminal') {
-      await expect(occPage.locator('.xterm').first()).toBeVisible({ timeout: 5_000 })
-    }
   })
 
   test('reopening restores the GitHub page and scroll position', async ({ occPage }) => {

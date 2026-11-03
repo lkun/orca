@@ -16,6 +16,18 @@ describe('mapGhosttyToOCC — font & cursor', () => {
     expect(result.unsupportedKeys).toEqual([])
   })
 
+  it('imports the primary font-family from a repeated fallback list, honoring "" resets', () => {
+    const fallbackList = mapGhosttyToOCC({ 'font-family': ['Menlo', 'Monaco'] })
+    expect(fallbackList.diff).toEqual({ terminalFontFamily: 'Menlo' })
+    expect(fallbackList.unsupportedKeys).toEqual(['font-family (fallback fonts not preserved)'])
+    expect(mapGhosttyToOCC({ 'font-family': ['Fira Code', '', 'Menlo', 'Monaco'] }).diff).toEqual({
+      terminalFontFamily: 'Menlo'
+    })
+    const cleared = mapGhosttyToOCC({ 'font-family': ['Fira Code', ''] })
+    expect(cleared.diff).toEqual({})
+    expect(cleared.unsupportedKeys).toEqual(['font-family'])
+  })
+
   it('skips invalid font-size values', () => {
     const result = mapGhosttyToOCC({ 'font-size': 'not-a-number' })
     expect(result.diff).toEqual({})
@@ -164,16 +176,26 @@ describe('mapGhosttyToOCC — background & colors', () => {
     expect(result.unsupportedKeys).toEqual(['background-opacity'])
   })
 
-  it('maps background-blur-radius > 0 to windowBackgroundBlur true', () => {
+  it('maps a nonzero blur radius to the blur window material', () => {
     const result = mapGhosttyToOCC({ 'background-blur-radius': '20' })
-    expect(result.diff).toEqual({ windowBackgroundBlur: true })
+    expect(result.diff).toEqual({ windowMaterial: 'blur' })
     expect(result.unsupportedKeys).toEqual(['background-blur-radius (radius value not preserved)'])
   })
 
-  it('maps background-blur-radius = 0 to windowBackgroundBlur false without a drop note', () => {
+  it('maps zero blur to the translucent window material without a drop note', () => {
     const result = mapGhosttyToOCC({ 'background-blur-radius': '0' })
-    expect(result.diff).toEqual({ windowBackgroundBlur: false })
+    expect(result.diff).toEqual({ windowMaterial: 'translucent' })
     expect(result.unsupportedKeys).toEqual([])
+  })
+
+  it('maps the current background-blur key, including booleans and macOS glass', () => {
+    expect(mapGhosttyToOCC({ 'background-blur': 'true' }).diff).toEqual({ windowMaterial: 'blur' })
+    expect(mapGhosttyToOCC({ 'background-blur': 'false' }).diff).toEqual({
+      windowMaterial: 'translucent'
+    })
+    expect(mapGhosttyToOCC({ 'background-blur': 'macos-glass-regular' }).diff).toEqual({
+      windowMaterial: 'blur'
+    })
   })
 
   it('rejects invalid background-blur-radius', () => {
@@ -309,7 +331,7 @@ describe('mapGhosttyToOCC — unsupported keys', () => {
     expect(result.diff).toEqual({
       terminalFontFamily: 'Fira Code',
       terminalFontSize: 13,
-      windowBackgroundBlur: true
+      windowMaterial: 'blur'
     })
     expect(result.unsupportedKeys).toEqual(['background-blur-radius (radius value not preserved)'])
   })

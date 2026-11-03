@@ -43,8 +43,21 @@ function scriptHost(options: {
   /** Absent by default; raw journal or error overrides the read. */
   journal?: string | Error
   fenceHeld?: boolean
+  /** Builds staged within the keep window; undefined leaves the answer incomplete. */
+  recentlyStaged?: string[]
+  /** The host could not date some build. */
+  ageUnknown?: boolean
 }): void {
   mockExec.mockImplementation(async (_conn, command: string) => {
+    if (command.includes('OCCD_RECENT_STAGED_DONE')) {
+      return options.recentlyStaged === undefined
+        ? ''
+        : [
+            ...options.recentlyStaged.map((name) => `RECENT ${name}`),
+            ...(options.ageUnknown ? ['ERR'] : []),
+            'OCCD_RECENT_STAGED_DONE'
+          ].join('\n')
+    }
     if (command.includes('__OCCD_RECORD_PRESENT__') && command.includes('transaction.json')) {
       if (options.journal instanceof Error) {
         throw options.journal
@@ -244,6 +257,33 @@ describe('occd GC', () => {
 
     await gcOldOCCdVersions({ ...options, nodeRuntimePins: ['a'.repeat(64)] })
     expect(inventories()).toBe(1)
+  })
+
+  it('keeps builds another desktop staged recently, and all of them when it cannot tell', async () => {
+    const args = {
+      conn,
+      host,
+      remoteHome: '/home/u',
+      currentDirAbsPath: '/home/u/.occ-remote/occd-0.4.0+dd0',
+      record: { ...emptyOCCdActivationRecord(), active: '0.1.0+01d' },
+      keepStagedWithinDays: 3
+    }
+    const listing = ['occd-0.1.0+01d', 'occd-0.2.0+9ee0', 'occd-0.3.0+cc0', 'occd-0.4.0+dd0']
+    const removed: string[] = []
+    scriptHost({ listing, removed, recentlyStaged: ['occd-0.3.0+cc0'] })
+    expect(await gcOldOCCdVersions(args)).toBe(false)
+    expect(removed).toEqual(['occd-0.2.0+9ee0'])
+
+    const kept: string[] = []
+    scriptHost({ listing, removed: kept })
+    await gcOldOCCdVersions(args)
+    expect(kept).toEqual([])
+
+    // An undatable build may be another desktop's fresh candidate.
+    const undated: string[] = []
+    scriptHost({ listing, removed: undated, recentlyStaged: [], ageUnknown: true })
+    await gcOldOCCdVersions(args)
+    expect(undated).toEqual([])
   })
 
   describe('with an activation transaction in flight', () => {

@@ -1,6 +1,6 @@
 import { app } from 'electron'
 import { checkOCCStarred } from '../github/client'
-import type { Store } from '../persistence'
+import type { Store } from '../persistence/loading-store/store'
 import type { StarNagPromptMode } from '../../shared/star-nag-telemetry'
 
 export type AgentValueMomentPreparation =

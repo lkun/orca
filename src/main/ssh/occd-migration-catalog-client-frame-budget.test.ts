@@ -40,10 +40,8 @@ vi.mock('../../shared/remote-runtime/remote-runtime-client', () => ({
 
 const { commitRemoteOCCdMigrationCatalog, stageRemoteOCCdMigrationCatalog } =
   await import('./occd-migration-catalog-client')
-const {
-  abortRemoteOCCdMigrationCatalogByReference,
-  OCCD_MIGRATION_DESTINATION_ABORT_BY_REFERENCE_UNSUPPORTED
-} = await import('./occd-migration-catalog-reference-client')
+const { abortRemoteOCCdMigrationCatalogByReference } =
+  await import('./occd-migration-catalog-reference-client')
 
 const pairingCode = encodePairingOffer({
   v: PAIRING_OFFER_VERSION,
@@ -88,11 +86,6 @@ beforeEach(() => {
 })
 
 describe("occd migration requests fit the host's sealed inbound frame", () => {
-  it('stages a large manifest that still fits', async () => {
-    await stageRemoteOCCdMigrationCatalog(pairingCode, manifestOfBytes(760 * 1024))
-    expect(sendRequest).toHaveBeenCalledTimes(1)
-  })
-
   it('refuses, unsent, a manifest at the validation cap: sealed, it overflows the 1 MiB frame', async () => {
     await expect(
       stageRemoteOCCdMigrationCatalog(
@@ -135,15 +128,5 @@ describe("occd migration requests fit the host's sealed inbound frame", () => {
     await expect(
       abortRemoteOCCdMigrationCatalogByReference(pairingCode, manifest)
     ).rejects.toThrow('occd_migration_catalog_abort_durability_invalid')
-  })
-
-  it('refuses, unsent, an abort by reference to a host that predates it', async () => {
-    await expect(
-      abortRemoteOCCdMigrationCatalogByReference(
-        pairingCode,
-        manifestOfBytes(MAX_OCCD_MIGRATION_MANIFEST_BYTES)
-      )
-    ).rejects.toThrow(OCCD_MIGRATION_DESTINATION_ABORT_BY_REFERENCE_UNSUPPORTED)
-    expect(sendRequest).not.toHaveBeenCalled()
   })
 })

@@ -41,7 +41,7 @@ export abstract class OCCRuntimeWithOnPtyData extends OCCRuntimeWithPreparePtyEx
   ): void
   protected abstract getOrCreatePtyWorktreeRecord(ptyId: string): RuntimePtyWorktreeRecord | null
   protected abstract scheduleWaitBlockedCheck(ptyId: string, appendedText: string, at: number): void
-  protected abstract getLeavesForPty(ptyId: string): RuntimeLeafRecord[]
+  protected abstract getLeavesForPty(ptyId: string): readonly RuntimeLeafRecord[]
   protected abstract recordPtyWorktree(
     ptyId: string,
     worktreeId: string,
@@ -130,7 +130,7 @@ export abstract class OCCRuntimeWithOnPtyData extends OCCRuntimeWithPreparePtyEx
     let ptyTailAfter: ReturnType<typeof appendNormalizedToTailBuffer> | null = null
     let ptyNormalized: ReturnType<typeof normalizeTerminalChunk> | null = null
     if (pty) {
-      pty.connected = true
+      this.terminalIdentity.setPtyConnected(pty, true)
       pty.disconnectedAt = null
       pty.lastOutputAt = at
       const normalized = normalizeTerminalChunk(data, pty.tailPendingAnsi)
@@ -170,7 +170,7 @@ export abstract class OCCRuntimeWithOnPtyData extends OCCRuntimeWithPreparePtyEx
         paneKey: this.makeRuntimePaneKey(leaf),
         surfaceRecordedAtGraphSequence: this.graphSequence
       })
-      leaf.connected = true
+      this.terminalIdentity.updateLeafConnected(leaf, true)
       leaf.writable = this.graphStatus === 'ready'
       leaf.lastOutputAt = at
       if (

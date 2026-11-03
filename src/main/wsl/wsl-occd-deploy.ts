@@ -21,6 +21,7 @@ import type { OCCdUpdateIntent } from '../managed-server/lifecycle/occd-managed-
 import type { OCCdActivationRecord } from '../managed-server/activation/occd-activation-record'
 import { errorMessage } from '../../shared/error-message'
 import { pruneWslOCCdVersionsUntilClean } from './wsl-occd-version-gc-memo'
+import { pruneSupersededOCCdCandidates } from '../managed-server/lifecycle/occd-managed-version-gc'
 import { wakeAlreadyActiveOCCd } from '../ssh/occd-already-active-wake'
 import { OCCdActiveReadinessError } from '../ssh/occd-active-readiness'
 import { WslDistroNotRunningError } from './wsl-occd-connection-errors'
@@ -34,6 +35,7 @@ import type { WslOCCdHostTarget } from './wsl-occd-host-target'
 import { createWslOCCdHostTransport, type WslOCCdHostTransport } from './wsl-occd-host-transport'
 import { holdWslDistroWithContext } from './wsl-occd-held-context'
 import { deployWslOCCdWithOneFence } from './wsl-occd-one-fence-deploy'
+import { removeFailedFreshWslOCCdInstall } from './wsl-occd-failed-install-removal'
 import { probeWslActiveOCCd, readWslOCCdPid } from './wsl-occd-active-probe'
 import { wslOCCdConnectStateHints } from './wsl-occd-connect-state-snapshot'
 import { readWslOCCdIncumbent, type WslOCCdIncumbent } from './wsl-occd-incumbent'
@@ -227,6 +229,7 @@ async function launchOverTransport(
     hints.deployPreRead(context.activationRecord)
   )
   if (deployed.outcome === 'installed-not-activated') {
+    await removeFailedFreshWslOCCdInstall(slot, deployed)
     const failure = wslOCCdDeferralFailure(deployed)
     recordWslOCCdUpdateFailure(failureHost, incumbentVersion, failure)
     const restored =
@@ -258,6 +261,7 @@ async function launchOverTransport(
         fullVersion: incumbentVersion,
         readiness: incumbent.readiness
       }
+      await pruneSupersededOCCdCandidates(slot, context.serverTarget, deployed.fullVersion)
       return { ...(await readyLaunch(serving)), deferredUpdate }
     }
     return { outcome: 'deferred', distro: name, ...deferredUpdate }

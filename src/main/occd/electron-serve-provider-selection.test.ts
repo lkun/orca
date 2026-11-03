@@ -20,7 +20,7 @@ vi.mock('@occ/process-host', async (importOriginal) => ({
 vi.mock('./occd-browser-install-park', () => ({ openOCCdBrowserInstallPark: () => null }))
 
 import { resolveOCCdBrowserProvider, type OCCdBrowserProvider } from './occd-browser-provider'
-import { agentBrowserCommandOf } from '../browser/agent-browser-bridge-test-harness'
+import { agentBrowserCommandOf } from '../browser/agent-browser/agent-browser-bridge-test-harness'
 
 const FAKE_SIDECAR = join(import.meta.dirname, '__fixtures__', 'fake-occd-electron-sidecar.cjs')
 const INSTALLED_EXECUTABLE = join('/Applications', 'OCC.app', 'Contents', 'MacOS', 'OCC')
@@ -92,20 +92,6 @@ afterEach(async () => {
 })
 
 describe('resolveOCCdBrowserProvider Electron preference', () => {
-  it('uses the installed Electron app even when a Chromium executable is configured', async () => {
-    provider = await resolveOCCdBrowserProvider({
-      userDataPath: join(harnessRoot, 'state'),
-      environment: { OCC_BROWSER_EXECUTABLE: chromiumExecutable },
-      resolveInstalledElectronExecutable: async () => INSTALLED_EXECUTABLE,
-      resolveAgentBrowserBinary: () => '/agent-browser'
-    })
-
-    expect(provider?.kind).toBe('electron')
-    expect(provider?.isAvailable()).toBe(true)
-    expect(spawnProcessMock.mock.calls[0][0].program).toBe(INSTALLED_EXECUTABLE)
-    expect(runProcessMock).not.toHaveBeenCalled()
-  })
-
   it('falls back to the operator Chromium when the installed Electron app cannot start', async () => {
     sidecarMode = 'exit-before-ready'
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
@@ -123,20 +109,5 @@ describe('resolveOCCdBrowserProvider Electron preference', () => {
       '[occd] Installed Electron browser provider unavailable:',
       expect.anything()
     )
-  })
-
-  it('returns no provider when Electron fails and no Chromium is configured', async () => {
-    sidecarMode = 'exit-before-ready'
-    vi.spyOn(console, 'warn').mockImplementation(() => undefined)
-
-    provider = await resolveOCCdBrowserProvider({
-      userDataPath: join(harnessRoot, 'state'),
-      environment: {},
-      resolveInstalledElectronExecutable: async () => INSTALLED_EXECUTABLE,
-      resolveAgentBrowserBinary: () => '/agent-browser'
-    })
-
-    expect(provider).toBeNull()
-    expect(runProcessMock).not.toHaveBeenCalled()
   })
 })

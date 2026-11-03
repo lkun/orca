@@ -74,7 +74,7 @@ const stalePidRecord: ParsedDaemonPid = {
   linuxStartTicks: null,
   bootId: null,
   spawnerExecPath:
-    '/Users/alice/Library/Caches/com.lkun.occ.ShipIt/u/OCC.app/Contents/MacOS/OCC',
+    '/Users/alice/Library/Caches/com.stablyai.occ.ShipIt/u/OCC.app/Contents/MacOS/OCC',
   cgroupUnit: null
 }
 const origin = {

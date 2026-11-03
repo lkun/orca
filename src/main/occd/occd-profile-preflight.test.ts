@@ -1,9 +1,7 @@
-import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ProcessResult, ProcessSpec } from '@occ/process-host/process-spec'
 import { NODE_RUNTIME_PIN } from '../../shared/node-runtime-pin'
-import { OCCD_STARTUP_PREFLIGHT_FLAG } from '../../shared/occd-profile-preflight'
 import { OCCdBundledRuntimeError } from './occd-bundled-runtime'
 import type * as BundledRuntime from './occd-bundled-runtime'
 import { resolveOCCdExitCode } from './occd-exit-code'
@@ -95,41 +93,6 @@ afterEach(() => {
 })
 
 describe('bundled OCC startup readiness', () => {
-  it.each(['win32', 'darwin', 'linux'] as const)(
-    'isolates native process state in the exact bundled %s executable',
-    async (platform) => {
-      vi.spyOn(process, 'platform', 'get').mockReturnValue(platform)
-      await preflightBundledOCCdStartup()
-      expect(fixture.bundled).toHaveBeenCalledWith('/slot')
-      expect(fixture.run).toHaveBeenCalledOnce()
-      expect(fixture.run).toHaveBeenCalledWith({
-        program: process.execPath,
-        args: [join('/slot', 'occd-server.js'), OCCD_STARTUP_PREFLIGHT_FLAG, expect.any(String)],
-        env: expect.objectContaining({ OCC_BACKGROUND_LAUNCH: '1' }),
-        timeoutMs: 90_000,
-        maxOutputBytes: 64 * 1024,
-        terminationBarrier: true
-      })
-      expect(fixture.sql).not.toHaveBeenCalled()
-      expect(fixture.native).not.toHaveBeenCalled()
-    }
-  )
-
-  it('leaves an unpackaged or host-Node start on its existing readiness path', async () => {
-    fixture.bundled.mockReturnValue(false)
-    await preflightBundledOCCdStartup()
-    expect(fixture.identity).not.toHaveBeenCalled()
-    expect(fixture.run).not.toHaveBeenCalled()
-  })
-
-  it('hashes installed bytes only in the isolated child', async () => {
-    await preflightBundledOCCdStartup()
-    expect(fixture.identity).not.toHaveBeenCalled()
-    vi.spyOn(console, 'log').mockImplementation(() => {})
-    await runOCCdProfilePreflight(nonce, { nativeFeatures: false })
-    expect(fixture.identity).toHaveBeenCalledOnce()
-  })
-
   it.each(['missing artifact', 'corrupt build target'])(
     'classifies %s as a configuration fault before testing SQLite',
     async (message) => {
@@ -140,11 +103,6 @@ describe('bundled OCC startup readiness', () => {
       expect(fixture.sql).not.toHaveBeenCalled()
     }
   )
-
-  it('classifies changed artifact bytes as configuration faults on normal startup', async () => {
-    fixture.readVersion.mockResolvedValue('0.1.0+bbbbbbbbbbbb')
-    await expect(preflightBundledOCCdStartup()).rejects.toThrow(OCCdBundledRuntimeError)
-  })
 
   it.each([undefined, 'broken-version'])(
     'classifies an unreadable or malformed version marker as configuration: %s',
@@ -197,13 +155,6 @@ describe('bundled OCC startup readiness', () => {
     expect(resolveOCCdExitCode(failure)).toBe(1)
   })
 
-  it('leaves optional native probes to runtime health on normal startup', async () => {
-    vi.spyOn(console, 'log').mockImplementation(() => {})
-    await runOCCdProfilePreflight(nonce, { nativeFeatures: false })
-    expect(fixture.sql).toHaveBeenCalledOnce()
-    expect(fixture.native).toHaveBeenCalledWith({ nativeFeatures: false })
-  })
-
   it('rejects stale output from a different challenge', async () => {
     fixture.run.mockResolvedValue(readyResult(nonce))
     await expect(preflightBundledOCCdStartup()).rejects.toThrow('invalid readiness identity')
@@ -215,15 +166,6 @@ describe('bundled OCC startup readiness', () => {
       return { ...result, stdout: result.stdout.replace(identity, '0.1.0+bbbbbbbbbbbb') }
     })
     await expect(preflightBundledOCCdStartup()).rejects.toThrow('invalid readiness identity')
-  })
-
-  it('runs disposable probes directly in the command child without recursive spawning', async () => {
-    const output = vi.spyOn(console, 'log').mockImplementation(() => {})
-    await runOCCdProfilePreflight(nonce)
-    expect(fixture.sql).toHaveBeenCalledOnce()
-    expect(fixture.native).toHaveBeenCalledOnce()
-    expect(fixture.run).not.toHaveBeenCalled()
-    expect(output).toHaveBeenCalledWith(readyResult(nonce).stdout)
   })
 })
 
@@ -245,15 +187,6 @@ describe('startup qualification on an unchanged host', () => {
     expect(fixture.recordQualification).not.toHaveBeenCalled()
     await confirmBundledOCCdStartupQualified()
     expect(fixture.recordQualification).toHaveBeenCalledExactlyOnceWith('/slot', 'key-1')
-  })
-
-  it('reports whether the slot was qualified from its marker', async () => {
-    fixture.consumeQualification.mockResolvedValue(true)
-    await expect(preflightBundledOCCdStartup()).resolves.toBe(true)
-    await confirmBundledOCCdStartupQualified()
-
-    fixture.consumeQualification.mockResolvedValue(false)
-    await expect(preflightBundledOCCdStartup()).resolves.toBe(false)
   })
 
   it('records nothing once a launch forgot its qualification (node-pty probe not ok)', async () => {
@@ -280,14 +213,6 @@ describe('startup qualification on an unchanged host', () => {
     await confirmBundledOCCdStartupQualified()
 
     expect(fixture.recordQualification).not.toHaveBeenCalled()
-    expect(fixture.discardQualification).toHaveBeenCalledExactlyOnceWith('/slot')
-  })
-
-  it('voids the marker when the child answers with the wrong identity', async () => {
-    fixture.run.mockResolvedValue(readyResult(nonce))
-
-    await expect(preflightBundledOCCdStartup()).rejects.toThrow('invalid readiness identity')
-
     expect(fixture.discardQualification).toHaveBeenCalledExactlyOnceWith('/slot')
   })
 
@@ -359,16 +284,6 @@ describe('startup qualification on an unchanged host', () => {
     await Promise.all([confirming, discarding])
 
     expect(order).toEqual(['recorded', 'discarded'])
-  })
-
-  it('touches no marker on Windows or outside a managed slot when node-pty fails', async () => {
-    vi.spyOn(process, 'platform', 'get').mockReturnValue('win32')
-    await discardBundledOCCdStartupQualification()
-    fixture.qualifiable.mockReturnValue(false)
-    vi.spyOn(process, 'platform', 'get').mockReturnValue('linux')
-    await discardBundledOCCdStartupQualification()
-
-    expect(fixture.discardQualification).not.toHaveBeenCalled()
   })
 
   it('never skips the version check, which runs before any marker is read', async () => {

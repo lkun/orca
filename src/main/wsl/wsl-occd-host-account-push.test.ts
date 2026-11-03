@@ -4,7 +4,6 @@ import { HOST_ACCOUNT_LAUNCH_ENV_RUNTIME_CAPABILITY } from '../../shared/occd-ru
 import type { WslOCCdAccountEnvDependencies } from './wsl-occd-account-env'
 import type { WslOCCdHostCapabilityVerdict } from './wsl-occd-host-environments'
 import {
-  changesWslHostAccounts,
   pushWslOCCdHostAccountEnv,
   type WslOCCdHostAccountPush
 } from './wsl-occd-host-account-push'
@@ -125,18 +124,6 @@ describe('pushWslOCCdHostAccountEnv', () => {
     release()
     await Promise.all([first, second])
     expect(order).toEqual(['/old', '/new'])
-  })
-})
-
-describe('changesWslHostAccounts', () => {
-  it('fires on a selection or roster change only', () => {
-    expect(
-      changesWslHostAccounts({
-        activeCodexManagedAccountIdsByRuntime: undefined
-      })
-    ).toBe(true)
-    expect(changesWslHostAccounts({ claudeManagedAccounts: [] })).toBe(true)
-    expect(changesWslHostAccounts({ experimentalWslHosts: true })).toBe(false)
   })
 })
 

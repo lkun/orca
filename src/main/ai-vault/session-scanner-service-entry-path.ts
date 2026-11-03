@@ -3,7 +3,7 @@ import {
   getForkedChildEntryPath,
   resolveForkedChildEntryPath,
   resolveForkedChildEntryPathWithoutApp
-} from '../forked-child-entry-path'
+} from '../worker-threads/forked-child-entry-path'
 
 // occd resolves this literal beside occd.js; build-occd.mjs emits it from OCCD_CHILD_ENTRY_POINTS.
 export const AI_VAULT_SERVICE_ENTRY_FILENAME = 'session-scanner-service-entry.js'

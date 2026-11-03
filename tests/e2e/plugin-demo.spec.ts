@@ -6,6 +6,15 @@ import { join } from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
 import { expect, test } from './helpers/occ-app'
 import { removeWorktreeViaStore } from './helpers/dead-terminal'
+import {
+  pluginGuest,
+  readGuestCsp,
+  readInGuest,
+  ISOLATED_FRAMES_E2E
+} from './helpers/plugin-frame-guest'
+
+// Isolated frames are off by default; these journeys exercise the guest path.
+test.use(ISOLATED_FRAMES_E2E)
 
 async function openPluginSettings(page: Page): Promise<void> {
   await page.evaluate(() => {
@@ -35,11 +44,16 @@ async function openDemoPanel(page: Page): Promise<void> {
   const panelButton = page.getByRole('button', { name: 'Hello OCC', exact: true })
   await expect(panelButton).toBeVisible({ timeout: 15_000 })
   await panelButton.click()
-  const frame = page.frameLocator('iframe[title="Hello OCC"]')
-  await expect(frame.getByRole('heading', { name: 'Hello OCC 👋' })).toBeVisible()
-  await expect(frame.locator('meta[http-equiv="Content-Security-Policy"]')).toHaveAttribute(
-    'content',
-    /default-src 'none'/
+  const guest = pluginGuest(page, 'Hello OCC')
+  await expect(guest).toBeVisible({ timeout: 15_000 })
+  await expect.poll(() => readDemoHeading(page)).toBe('Hello OCC 👋')
+  expect(await readGuestCsp(guest)).toMatch(/default-src 'self'.*connect-src 'self' data: blob:/)
+}
+
+function readDemoHeading(page: Page): Promise<string | null> {
+  return readInGuest<string | null>(
+    pluginGuest(page, 'Hello OCC'),
+    `document.querySelector('h1')?.textContent ?? null`
   )
 }
 
@@ -171,11 +185,9 @@ test('runs hello-occ panel, command, and event behind visible consent', async ({
     const panelPath = join(pluginRoot, 'panel.html')
     const panelHtml = await readFile(panelPath, 'utf8')
     await writeFile(panelPath, panelHtml.replace('Hello OCC 👋', 'Hello OCC reloaded'))
-    await expect(
-      occPage.frameLocator('iframe[title="Hello OCC"]').getByRole('heading', {
-        name: 'Hello OCC reloaded'
-      })
-    ).toBeVisible({ timeout: 15_000 })
+    await expect
+      .poll(() => readDemoHeading(occPage), { timeout: 15_000 })
+      .toBe('Hello OCC reloaded')
 
     createdWorktreeId = await createWorktree(occPage, `plugin-event-${Date.now()}`)
     await expect

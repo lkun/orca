@@ -9,7 +9,7 @@ import {
   parseOCCdMigrationTerminalRestoreHintsText,
   type OCCdMigrationTerminalRestoreHint
 } from '../../../shared/occd-migration/occd-migration-terminal-restore-hints'
-import { syncDirectoryDurablySync } from '../../durable-file-write'
+import { syncDirectoryDurablySync } from '../../filesystem/durable-file-write'
 import {
   getOCCdMigrationReceivedBlobPath,
   stagedOCCdMigrationBlobFiles

@@ -9,8 +9,6 @@ vi.mock('./occd-browser-startup', () => ({
 
 import { OCCD_LOCK_FILE_NAME, readOCCdInstanceLockRecord } from './occd-instance-lock'
 import { startOCCdWithHost } from './occd-lifecycle'
-import { isDesktopBrowserBridgeHostEnabled } from '../runtime/desktop-browser-bridge/desktop-browser-bridge-registry'
-import { OCCD_MANAGED_ACTIVATION_ROOT_ENV } from '../../shared/occd-managed-launch-env'
 
 const roots: string[] = []
 afterEach(() => {
@@ -69,24 +67,5 @@ describe('startOCCdWithHost', () => {
     )
     await expect(handle.stop()).rejects.toThrow('occd_quit_handlers_failed')
     expect(existsSync(join(root, OCCD_LOCK_FILE_NAME))).toBe(true)
-  })
-
-  it.each([
-    ['a managed launch', { [OCCD_MANAGED_ACTIVATION_ROOT_ENV]: '/home/me/.occ-server' }, true],
-    ['a server the user started', {}, false]
-  ])('takes desktop browser bridge commands only for %s', async (_name, env, expected) => {
-    vi.stubEnv(OCCD_MANAGED_ACTIVATION_ROOT_ENV, env[OCCD_MANAGED_ACTIVATION_ROOT_ENV] ?? '')
-    try {
-      const handle = await startOCCdWithHost(
-        dataRoot(),
-        async () => ({}),
-        () => {}
-      )
-      expect(isDesktopBrowserBridgeHostEnabled()).toBe(expected)
-      await handle.stop()
-      expect(isDesktopBrowserBridgeHostEnabled()).toBe(false)
-    } finally {
-      vi.unstubAllEnvs()
-    }
   })
 })

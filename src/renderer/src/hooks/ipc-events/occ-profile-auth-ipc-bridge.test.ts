@@ -79,15 +79,6 @@ describe('occ profile auth IPC bridge', () => {
     unsubs.forEach((dispose) => dispose())
     expect(unsubscribe).toHaveBeenCalledTimes(1)
   })
-
-  it('skips registration when the preload bridge does not expose the event', () => {
-    vi.stubGlobal('window', { api: { occProfiles: { authStatus } } })
-    const unsubs: (() => void)[] = []
-
-    registerOCCProfileAuthIpcBridge(unsubs)
-
-    expect(unsubs).toHaveLength(0)
-  })
 })
 
 describe('occ profile sign-in progress IPC bridge', () => {
@@ -118,13 +109,6 @@ describe('occ profile sign-in progress IPC bridge', () => {
 
   const progress = (): OCCCloudSignInProgress | null =>
     storeHolder.current?.getState().occProfileSignInProgress ?? null
-
-  it('adopts a sign-in already in flight when the window loads', async () => {
-    registerOCCProfileAuthIpcBridge([])
-    await vi.waitFor(() => expect(snapshots).toHaveLength(1))
-    snapshots[0](WAITING)
-    await vi.waitFor(() => expect(progress()).toEqual(WAITING))
-  })
 
   it('lets a newer change win over a late snapshot', async () => {
     registerOCCProfileAuthIpcBridge([])

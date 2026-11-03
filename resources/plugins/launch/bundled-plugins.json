@@ -1,4 +1,15 @@
 {
   "version": 1,
-  "plugins": []
+  "plugins": [
+    {
+      "pluginKey": "stablyai.occ-github-vscode-theme",
+      "path": "stablyai.occ-github-vscode-theme",
+      "contentHash": "832b2c290f9df62de177865128040c41d38ecd77a167c10dc4a1f2b7637714ec"
+    },
+    {
+      "pluginKey": "stablyai.occ-vscode-default-themes",
+      "path": "stablyai.occ-vscode-default-themes",
+      "contentHash": "363927510b54b08a52e854e9d313fc05642c57ab110bd424b7b3f2303b6a0f10"
+    }
+  ]
 }

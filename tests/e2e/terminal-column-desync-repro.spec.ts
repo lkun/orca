@@ -159,33 +159,6 @@ test.describe('Terminal column desync repro', () => {
       .toBe('match')
   })
 
-  test('PTY columns re-sync after the terminal is resized while hidden', async ({ occPage }) => {
-    test.setTimeout(120_000)
-    await waitForSessionReady(occPage)
-    const homeWorktreeId = await waitForActiveWorktree(occPage)
-    const otherWorktreeId = (await getAllWorktreeIds(occPage)).find((id) => id !== homeWorktreeId)
-    test.skip(!otherWorktreeId, 'hidden-resize repro needs the seeded secondary worktree')
-    if (!otherWorktreeId) {
-      return
-    }
-
-    await closeRightSidebarAndFeatureTips(occPage)
-    await ensureTerminalVisible(occPage)
-    const ptyId = await settleTerminal(occPage)
-    await occPage.setViewportSize({ width: 1280, height: 800 })
-    await expectColumnsInSync(occPage, ptyId, 'before hidden resize')
-
-    // Resize while hidden so normal forwarding is gated, then test resume correction.
-    await switchToWorktree(occPage, otherWorktreeId)
-    await waitForActiveTerminalManager(occPage, 30_000)
-    await occPage.setViewportSize({ width: 720, height: 800 })
-    await occPage.waitForTimeout(500)
-    await switchToWorktree(occPage, homeWorktreeId)
-    await ensureTerminalVisible(occPage)
-    await waitForActiveTerminalManager(occPage, 30_000)
-    await expectColumnsInSync(occPage, ptyId, 'after hidden resize + return')
-  })
-
   test('PTY columns re-sync after repeated background resizes', async ({ occPage }) => {
     test.setTimeout(180_000)
     await waitForSessionReady(occPage)

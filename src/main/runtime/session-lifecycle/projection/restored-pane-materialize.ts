@@ -32,7 +32,7 @@ import { HistoryReader } from '../../../daemon/history-reader'
 import { servesWslMovedPaneHistory } from '../../../occd/occd-migration-wsl-destination'
 import { movedPaneHistorySessionId } from '../../../persistence/migrating-occd-catalog/occd-terminal-history-installer'
 import { makePaneKey, parsePaneKey } from '../../../../shared/stable-pane-id'
-import { agentProviderSessionsEqual } from '../../../../shared/agent-session-resume'
+import { agentProviderSessionsEqual } from '../../../../shared/agent-session/lifecycle/agent-session-resume'
 import { worktreeIdsEqual } from '../../../../shared/worktree/id'
 
 export abstract class OCCRuntimeWithRestoredPaneStart extends OCCRuntimeWithBuildHeadlessMobileSessionBrowserTabs {
@@ -302,6 +302,7 @@ export abstract class OCCRuntimeWithRestoredPaneStart extends OCCRuntimeWithBuil
               }
             : {}),
           ...(automatic ? { refuseSleptWorktree: true } : {}),
+          reopensPane: true,
           // Only resumes from this pane's record show the window banner.
           ...(resumedRecord ? { resumesSleepingRecord: true as const } : {})
         }

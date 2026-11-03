@@ -7,7 +7,7 @@ import type {
 import { isRetainedOCCdMigrationSourceCutover } from '../../shared/occd-migration/occd-migration-source-cutover'
 import type { OCCdMigrationSourceCutover } from '../../shared/occd-migration/occd-migration-source-cutover'
 import type { SshTarget } from '../../shared/ssh-types'
-import type { Store } from '../persistence'
+import type { Store } from '../persistence/loading-store/store'
 import { collectOCCdMigrationSourceCatalog } from '../persistence/migrating-occd-catalog/occd-source-catalog'
 import { listOCCdMigrationCutoverChainForTarget } from './occd-migration-cutover-journal'
 import {

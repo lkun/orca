@@ -1,6 +1,6 @@
 import { join } from 'node:path'
 
-// Why `occ-ide` on Linux: GNOME's occ screen reader ships /usr/bin/occ, so the CLI avoids that name.
+// Why `occ-ide` on Linux: GNOME OCC ships /usr/bin/occ, so the CLI never claims that name.
 export const LINUX_CLI_COMMAND_NAME = 'occ-ide'
 
 // Keep path-only callers independent of cli-installer's Electron dependency.

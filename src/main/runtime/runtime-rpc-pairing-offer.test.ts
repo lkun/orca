@@ -302,8 +302,10 @@ describe('host descriptor publication', () => {
       await server.start()
       return { runtime, server }
     }
-    const statusOf = async (runtime: OCCRuntimeService) =>
-      (await STATUS_METHODS[0].handler(undefined, { runtime })).hostDescriptor
+    const statusOf = async (runtime: OCCRuntimeService) => {
+      const status = await STATUS_METHODS[0].handler({}, { runtime })
+      return 'hostDescriptor' in status ? status.hostDescriptor : undefined
+    }
     const first = await start()
     const descriptor = await statusOf(first.runtime)
     expect(descriptor?.installationId).toBeTruthy()

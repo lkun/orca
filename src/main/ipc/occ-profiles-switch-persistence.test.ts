@@ -19,7 +19,7 @@ vi.mock('electron', () => ({
     }
   }
 }))
-vi.mock('../app-relaunch', () => ({ relaunchApp: vi.fn() }))
+vi.mock('../startup/quit/app-relaunch', () => ({ relaunchApp: vi.fn() }))
 vi.mock('../occ-profiles/profile-index-store', () => ({
   getOCCProfileListState: () => ({ activeProfileId: 'source', profiles: [] }),
   setActiveOCCProfile: select,

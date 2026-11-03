@@ -15,7 +15,7 @@ import { openServeBundlePark } from '../../shared/serve-bundle-park'
 import { superviseServeService } from './serve-supervised-service'
 import { createSupervisedParkWatch } from './serve-supervised-park-watch'
 
-const LABEL = 'com.lkun.occ.serve.default'
+const LABEL = 'com.stablyai.occ.serve.default'
 
 describe('openServeBundlePark', () => {
   let root: string

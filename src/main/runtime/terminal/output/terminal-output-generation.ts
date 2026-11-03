@@ -160,7 +160,7 @@ export abstract class OCCRuntimeWithRecordAgentPromptLifecycleState extends OCCR
       this.terminalFileUriHostnameByPtyId.delete(ptyId)
       const pty = this.ptysById.get(ptyId)
       if (pty) {
-        pty.wslDistro = null
+        this.terminalIdentity.setPtyWslDistro(pty, null)
       }
       if (replacesExistingRuntimeGeneration && postSpawnSequence === 0) {
         // The replaced process's live facet says nothing about its successor.

@@ -32,6 +32,7 @@ import {
 import { createWslOCCdLivenessSupervisor } from './wsl-occd-liveness-wiring'
 import type { WslOCCdLivenessSupervisor } from './wsl-occd-liveness-supervisor'
 import { confirmsRunning } from './wsl-occd-liveness-evidence'
+import { requireConfirmedRunning } from './wsl-occd-connection-errors'
 import { wslDistroHolderKey } from './wsl-distro-holder-record'
 import { wslHostServerStopReason } from '../../shared/wsl-host-failure-copy'
 
@@ -107,7 +108,7 @@ export function createWslHostConnector(options: {
   // Read right before a no-boot reconnect spawns anything in the distro (E9); settled, since a
   // list taken while the distro stops still names it.
   const requireRunning = async (distro: string): Promise<boolean> =>
-    confirmsRunning(await readSettledConfirmedRunningWslDistros(distro), wslDistroHolderKey(distro))
+    requireConfirmedRunning(await readSettledConfirmedRunningWslDistros(distro), distro)
   // A ready client can outlive its distro by a moment; only a settled running read lets it skip
   // the cold check, which never dials a stopped distro (E9). Reads the cache: no probe per call.
   const readyWhileRunning = (distro: string, environmentId: string): boolean =>

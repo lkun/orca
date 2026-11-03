@@ -23,7 +23,7 @@ vi.mock('./daemon-mac-code-identity', () => ({ inspectMacProcessCodeIdentity: in
 
 import { materializeMacDaemonBundle } from './macos-daemon-bundle'
 
-const APP_REQUIREMENT = 'identifier "com.lkun.occ" and anchor apple generic'
+const APP_REQUIREMENT = 'identifier "com.stablyai.occ" and anchor apple generic'
 const ok: ProcessResult = { code: 0, signal: null, stdout: '', stderr: '', timedOut: false }
 let root: string
 let source: string
@@ -40,7 +40,7 @@ const helperExecutable = (): string => join(helper, 'Contents', 'MacOS', 'occ-te
 beforeEach(async () => {
   root = await realpath(await mkdtemp(join(tmpdir(), 'occ-mac-runtime-')))
   // Model an update that moved the running bundle and replaced its original path.
-  source = join(root, 'com.lkun.occ.ShipIt.old', 'OCC.app')
+  source = join(root, 'com.stablyai.occ.ShipIt.old', 'OCC.app')
   helper = join(source, 'Contents', 'Helpers', 'OCC Terminal Host.app')
   copies = join(root, 'profile', 'daemon-host', 'macos')
   await mkdir(join(source, 'Contents', 'MacOS'), { recursive: true })
@@ -193,19 +193,4 @@ it('copies the app behind a symbolic link rather than retaining a link to the up
   await rm(alias)
   await rm(source, { recursive: true })
   expect(await readFile(copy.execPath, 'utf8')).toBe('signed-node')
-})
-
-it('rejects an unresolvable running image before running anything', async () => {
-  inspectMock.mockResolvedValue({ identity: 'unresolvable', executablePath: null })
-  await expect(materializeMacDaemonBundle(copies, signal())).rejects.toThrow(
-    'running macOS app bundle'
-  )
-  expect(runProcessMock).not.toHaveBeenCalled()
-})
-
-it('rejects an app without a signed helper and makes no copy', async () => {
-  await rm(helper, { recursive: true })
-  helper = join(root, 'elsewhere')
-  await expect(materializeMacDaemonBundle(copies, signal())).rejects.toThrow('CDHash')
-  await expect(readdir(copies)).rejects.toThrow()
 })

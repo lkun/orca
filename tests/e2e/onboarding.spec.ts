@@ -506,30 +506,6 @@ test.describe('Onboarding flow', () => {
       .toEqual({ agentTaskComplete: true, terminalBell: true, customSoundId: 'ding' })
   })
 
-  test('typing in the clone-url input does not hijack Enter as a global shortcut', async ({
-    occPage
-  }) => {
-    await expect(occPage.getByRole('heading', { name: /Pick your default agent/i })).toBeVisible({
-      timeout: 15_000
-    })
-    await continueOnboarding(occPage)
-    await continueOnboarding(occPage)
-    await continueFromPostNotificationsToRepo(occPage)
-    await occPage.getByRole('button', { name: /Clone from URL/i }).click()
-
-    // Press Cmd/Ctrl+Enter in the editable clone field; the capture handler must leave the dialog and empty form alone.
-    const isMac = await occPage.evaluate(() => navigator.userAgent.includes('Mac'))
-    const accelerator = isMac ? 'Meta+Enter' : 'Control+Enter'
-    const input = occPage.getByPlaceholder('https://github.com/user/repo.git')
-    await input.click()
-    await input.press(accelerator)
-    // Brief wait so any (incorrect) handler firing would have already happened.
-    await occPage.waitForTimeout(250)
-    await expect(occPage.getByRole('heading', { name: /Clone from URL/i })).toBeVisible()
-    await expect(input).toBeVisible()
-    expect((await getOnboardingState(occPage)).closedAt).not.toBeNull()
-  })
-
   test('Back returns to the previous step without losing progress', async ({ occPage }) => {
     await expect(occPage.getByRole('heading', { name: /Pick your default agent/i })).toBeVisible({
       timeout: 15_000

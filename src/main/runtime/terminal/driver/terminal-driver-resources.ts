@@ -1,4 +1,5 @@
 import type { RuntimeServiceCommandSurface } from '../../runtime-service-command-surface'
+import type { OCCRuntimeWithCloseStructuredAgentSessionTab as ChatPresentation } from '../../session-tabs/structured-session-tab-close'
 import {
   remoteCliBrowserScopeWorkspaceId,
   resolveRemoteCliBrowserScopeSelector
@@ -48,6 +49,18 @@ import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch
 import type { LayoutCommand } from '../../../../shared/workspace-layout/workspace-layout-command-types'
 
 export abstract class OCCRuntimeWithTerminalDrivers extends OCCRuntimeWithFitOverrideListeners {
+  abstract currentLocalStructuredSessionPresentation(
+    ...args: Parameters<ChatPresentation['currentLocalStructuredSessionPresentation']>
+  ): ReturnType<ChatPresentation['currentLocalStructuredSessionPresentation']>
+
+  abstract captureStructuredAgentSessionPresentation(
+    ...args: Parameters<ChatPresentation['captureStructuredAgentSessionPresentation']>
+  ): ReturnType<ChatPresentation['captureStructuredAgentSessionPresentation']>
+
+  abstract removeCapturedStructuredSessionSavedTabs(
+    ...args: Parameters<ChatPresentation['removeCapturedStructuredSessionSavedTabs']>
+  ): ReturnType<ChatPresentation['removeCapturedStructuredSessionSavedTabs']>
+
   declare registerSubscriptionCleanup: RuntimeServiceCommandSurface['registerSubscriptionCleanup']
   declare cleanupSubscription: RuntimeServiceCommandSurface['cleanupSubscription']
 

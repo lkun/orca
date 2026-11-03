@@ -247,7 +247,7 @@ Pair with your desktop app to monitor and steer your agents from your phone.
 - **Twitter / X:** Follow **[@occ_build](https://x.com/occ_build)** for updates and announcements.
 - **WeChat:** Scan to join the OCC community WeChat group.
 
-  <img src="docs/assets/wechat-qr.jpg" alt="WeChat QR code for the OCC community" width="160" />
+  <img src="docs/assets/wechat-qr-group14.jpg" alt="WeChat QR code for the OCC community" width="160" />
 
 - **Feedback &amp; Ideas:** We ship fast. Missing something? [Request a new feature](https://github.com/stablyai/occ/issues).
 - **Privacy:** See the [privacy &amp; telemetry docs](https://www.onocc.dev/docs/telemetry) for what anonymous usage data OCC collects and how to opt out.

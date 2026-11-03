@@ -1,2 +1,2 @@
-app_identifier(ENV["IOS_BUNDLE_IDENTIFIER"] || "com.lkun.occ.mobile")
+app_identifier(ENV["IOS_BUNDLE_IDENTIFIER"] || "com.stably.occ.mobile")
 team_id(ENV["APPLE_TEAM_ID"])

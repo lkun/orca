@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import { buildPushChallengeFixture, createPushHostKeypair } from './push-host-challenge-fixtures'
 import { PushGatewayClient } from './push-gateway-client'
 
-const GATEWAY_URL = 'https://push.onocc.dev'
+const GATEWAY_URL = 'https://push.onorca.dev'
 const NOW = 1_770_000_000_000
 
 type Recorded = {

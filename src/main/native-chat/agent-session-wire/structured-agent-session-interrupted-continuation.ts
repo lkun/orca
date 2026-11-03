@@ -2,7 +2,7 @@
 
 import { createHash, randomUUID } from 'node:crypto'
 import { withTimeout } from '../../../shared/promise-timeout-fallback'
-import type { AgentSessionResumeMarker } from '../../../shared/agent-session-resume-marker'
+import type { AgentSessionResumeMarker } from '../../../shared/agent-session/lifecycle/agent-session-resume-marker'
 import { latestNativeChatOCCStopCut } from '../../../shared/native-chat/native-chat-occ-stop-cut'
 import {
   continuationDeps,

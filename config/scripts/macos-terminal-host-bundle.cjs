@@ -1,4 +1,4 @@
-// The signed `com.lkun.occ` helper that runs the terminal daemon on the pinned Node.
+// The signed `com.stablyai.occ` helper that runs the terminal daemon on the pinned Node.
 const { spawnSync } = require('node:child_process')
 const {
   chmodSync,

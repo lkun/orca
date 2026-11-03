@@ -1,6 +1,7 @@
 import type { PersistedTrustedOCCHooks } from '../../../src/shared/occ-yaml-hook-types'
 import {
   canUseRepoWideTrust,
+  type OCCHookTrustKind,
   withOCCHookRepoAlwaysTrusted,
   withOCCHookScriptConfirmed
 } from '../../../src/shared/occ-hook-trust-entries'
@@ -12,38 +13,71 @@ export type SetupHookTrust = {
   scriptContent: string
 }
 
+export function isOCCHookTrusted(
+  trust: PersistedTrustedOCCHooks,
+  repos: readonly { id: string }[],
+  repoId: string,
+  kind: OCCHookTrustKind,
+  contentHash: string
+): boolean {
+  return (
+    canUseRepoWideTrust(trust, repos, repoId) || trust[repoId]?.[kind]?.contentHash === contentHash
+  )
+}
+
 export function isSetupHookTrusted(
   trust: PersistedTrustedOCCHooks,
   repos: readonly { id: string }[],
   repoId: string,
   contentHash: string
 ): boolean {
-  return (
-    canUseRepoWideTrust(trust, repos, repoId) || trust[repoId]?.setup?.contentHash === contentHash
-  )
+  return isOCCHookTrusted(trust, repos, repoId, 'setup', contentHash)
+}
+
+export function wasOCCHookPreviouslyApproved(
+  trust: PersistedTrustedOCCHooks,
+  repoId: string,
+  kind: OCCHookTrustKind
+): boolean {
+  return Boolean(trust[repoId]?.[kind]?.contentHash)
 }
 
 export function wasSetupHookPreviouslyApproved(
   trust: PersistedTrustedOCCHooks,
   repoId: string
 ): boolean {
-  return Boolean(trust[repoId]?.setup?.contentHash)
+  return wasOCCHookPreviouslyApproved(trust, repoId, 'setup')
 }
 
-export async function persistSetupHookTrustApproval(args: {
+type HookTrustApproval = {
   client: RpcClient
   trust: PersistedTrustedOCCHooks
   repoId: string
   contentHash: string
   alwaysTrust: boolean
-}): Promise<PersistedTrustedOCCHooks> {
-  const next = args.alwaysTrust
-    ? withOCCHookRepoAlwaysTrusted(args.trust, args.repoId)
-    : withOCCHookScriptConfirmed(args.trust, args.repoId, 'setup', args.contentHash)
+}
+
+export async function persistOCCHookTrustApproval(
+  args: HookTrustApproval & { kind: OCCHookTrustKind }
+): Promise<PersistedTrustedOCCHooks> {
+  // Repo-wide trust is ignored when the repo id is on two hosts, so keep this script's approval too.
+  const confirmed = withOCCHookScriptConfirmed(
+    args.trust,
+    args.repoId,
+    args.kind,
+    args.contentHash
+  )
+  const next = args.alwaysTrust ? withOCCHookRepoAlwaysTrusted(confirmed, args.repoId) : confirmed
   taskUiStateWrite.interpret(
     await taskUiStateWrite.request(args.client, { trustedOCCHooks: next })
   )
   return next
+}
+
+export function persistSetupHookTrustApproval(
+  args: HookTrustApproval
+): Promise<PersistedTrustedOCCHooks> {
+  return persistOCCHookTrustApproval({ ...args, kind: 'setup' })
 }
 
 // Hooks may omit setupTrust; validate the pair here while preserving other host fields.

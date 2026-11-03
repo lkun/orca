@@ -19,7 +19,7 @@ export const PUSH_LIMITS = {
 } as const
 
 export const PUSH_DEFAULTS = {
-  apnsTopic: 'com.lkun.occ.mobile',
+  apnsTopic: 'com.stably.occ.mobile',
   androidChannelId: 'occ-desktop'
 } as const
 

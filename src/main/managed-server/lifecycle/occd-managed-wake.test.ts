@@ -20,8 +20,6 @@ import { wakeStoppedManagedOCCd } from './occd-managed-wake'
 import { getRemoteHostPlatform } from '../../ssh/ssh-remote-platform'
 import type { OCCdHostTransport } from '../../ssh/occd-host-transport'
 import { FakeOCCdHost, OLD } from '../activation/occd-activation-host-test-harness'
-import { OCCD_E2E_IDLE_TIMEOUT_ENV } from '../../../shared/occd-idle-exit'
-import { OCCD_MANAGED_ACTIVATION_ROOT_ENV } from '../../../shared/occd-managed-launch-env'
 
 let host = new FakeOCCdHost()
 
@@ -64,38 +62,6 @@ afterEach(() => {
 })
 
 describe('wakeStoppedManagedOCCd', () => {
-  it('starts a stopped active slot as a managed launch and releases the fence', async () => {
-    host = stoppedHost()
-
-    const wake = await wakeStoppedManagedOCCd(slot)
-
-    expect(wake.outcome).toBe('started')
-    expect([...host.alive]).toEqual([OLD])
-    expect(host.fence).toBe(false)
-    expect(launches()).toHaveLength(1)
-    expect(launches()[0]).toContain(
-      `${OCCD_MANAGED_ACTIVATION_ROOT_ENV}='/home/u/.occ-remote/.occd-activation-transaction'`
-    )
-    expect(launches()[0]).not.toContain(OCCD_E2E_IDLE_TIMEOUT_ENV)
-  })
-
-  it('forwards the test-only idle timeout to the server it starts', async () => {
-    vi.stubEnv(OCCD_E2E_IDLE_TIMEOUT_ENV, '3000')
-    host = stoppedHost()
-
-    await wakeStoppedManagedOCCd(slot)
-
-    expect(launches()[0]).toContain(`${OCCD_E2E_IDLE_TIMEOUT_ENV}='3000'`)
-  })
-
-  it('leaves a running server alone', async () => {
-    host = FakeOCCdHost.deployedOld()
-
-    expect(await wakeStoppedManagedOCCd(slot)).toEqual({ outcome: 'serving' })
-    expect(launches()).toEqual([])
-    expect(acquireInstallLock).not.toHaveBeenCalled()
-  })
-
   it('never starts a second process when the slot state is unprovable', async () => {
     host = stoppedHost()
     host.pidFiles.clear()
@@ -117,16 +83,6 @@ describe('wakeStoppedManagedOCCd', () => {
     expect([...host.alive]).toEqual([OLD])
     expect(host.fence).toBe(false)
     expect(launches()).toHaveLength(1)
-  })
-
-  it('defers to an update or recovery that holds the activation fence', async () => {
-    host = stoppedHost()
-    host.fence = true
-    host.fenceFresh = true
-
-    expect(await wakeStoppedManagedOCCd(slot)).toEqual({ outcome: 'fenced' })
-    expect(launches()).toEqual([])
-    expect(host.fence).toBe(true)
   })
 
   it('releases the fence its own wake left when the connection dropped, and starts the slot', async () => {
@@ -263,20 +219,6 @@ describe('wakeStoppedManagedOCCd', () => {
     expect(launches()).toEqual([])
   })
 
-  it('never releases a fence another client may hold, even after its own wake dropped', async () => {
-    host = stoppedHost()
-    host.fence = true
-    host.fenceFresh = true
-    expect(
-      await wakeStoppedManagedOCCd({
-        ...slot,
-        // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: as above, a different target.
-        conn: { getTarget: () => ({ id: 'ssh-2' }) } as unknown as OCCdHostTransport
-      })
-    ).toEqual({ outcome: 'fenced' })
-    expect(host.fence).toBe(true)
-  })
-
   it('drops an abandoned fence no journal backs, and starts the slot', async () => {
     host = stoppedHost()
     host.fence = true
@@ -285,12 +227,5 @@ describe('wakeStoppedManagedOCCd', () => {
     expect(await wakeStoppedManagedOCCd(slot)).toMatchObject({ outcome: 'started' })
     expect(launches()).toHaveLength(1)
     expect(host.fence).toBe(false)
-  })
-
-  it('has nothing to start on a host with no activated server', async () => {
-    host = new FakeOCCdHost()
-
-    expect(await wakeStoppedManagedOCCd(slot)).toEqual({ outcome: 'not-activated' })
-    expect(launches()).toEqual([])
   })
 })

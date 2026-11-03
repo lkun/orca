@@ -2,11 +2,11 @@
 import type { OCCdMigrationManifestSource } from '../../shared/occd-migration/occd-migration-manifest'
 import { isOCCdMigrationLocalWslSource } from '../../shared/occd-migration/occd-migration-source-kind'
 import { isWslHostOCCdProcess } from '../ipc/wsl-guest-windows-drive-path'
+import { OCCD_WSL_DISTRO_GUID_ENV } from '../../shared/occd-server-launch-env'
 
 export const OCCD_MIGRATION_SOURCE_NOT_THIS_HOST = 'occd_migration_source_not_this_host'
 
-/** Desktop-provided registry ID; guests cannot read it themselves. */
-export const OCCD_WSL_DISTRO_GUID_ENV = 'OCC_WSL_DISTRO_GUID'
+export { OCCD_WSL_DISTRO_GUID_ENV }
 
 export function servesLocalWslMigrationSource(
   env: NodeJS.ProcessEnv = process.env,

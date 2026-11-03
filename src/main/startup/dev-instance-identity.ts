@@ -3,7 +3,7 @@ import path from 'node:path'
 import type { AppIdentity } from '../../shared/app-identity'
 
 const BASE_APP_NAME = 'OCC'
-const BASE_APP_USER_MODEL_ID = 'com.lkun.occ'
+const BASE_APP_USER_MODEL_ID = 'com.stablyai.occ'
 const MAX_LABEL_LENGTH = 80
 
 export type DevInstanceIdentity = AppIdentity & {

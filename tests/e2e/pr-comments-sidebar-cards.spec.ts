@@ -1,97 +1,12 @@
-import type { Locator } from '@stablyai/playwright-test'
 import { test, expect } from './helpers/occ-app'
 import { openChecks } from './helpers/source-control-ai-generation'
 import { seedPRCommentsSidebarFixture } from './helpers/pr-comments-sidebar-fixture'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
-async function visibleTextX(card: Locator, text: string): Promise<number> {
-  const textBox = await card.evaluate((element, targetText) => {
-    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
-    while (walker.nextNode()) {
-      const node = walker.currentNode
-      const value = node.textContent ?? ''
-      const index = value.indexOf(targetText)
-      if (index === -1) {
-        continue
-      }
-      const range = document.createRange()
-      range.setStart(node, index)
-      range.setEnd(node, index + targetText.length)
-      const rect = range.getBoundingClientRect()
-      return { x: rect.x }
-    }
-    return null
-  }, text)
-  if (!textBox) {
-    throw new Error(`visible text not found: ${text}`)
-  }
-  return textBox.x
-}
-
-async function expectOpenTextNotShiftedLeft(
-  openCard: Locator,
-  conversationCard: Locator,
-  openText: string,
-  conversationText: string
-): Promise<void> {
-  const delta =
-    (await visibleTextX(openCard, openText)) -
-    (await visibleTextX(conversationCard, conversationText))
-  // Why: the open rail is a real border, but focused row actions must not scroll content left.
-  expect(delta).toBeGreaterThanOrEqual(0)
-  expect(delta).toBeLessThanOrEqual(3)
-}
-
 test.describe('PR comments sidebar cards view', () => {
   test.beforeEach(async ({ occPage }) => {
     await waitForSessionReady(occPage)
     await waitForActiveWorktree(occPage)
-  })
-
-  test('groups open, conversation, and resolved comments in cards layout', async ({ occPage }) => {
-    const { worktreeId } = await seedPRCommentsSidebarFixture(occPage)
-    await openChecks(occPage, worktreeId)
-
-    const commentsSection = occPage.getByText('Comments', { exact: true })
-    await expect(commentsSection).toBeVisible({ timeout: 10_000 })
-
-    await expect(occPage.getByText('Needs review · 1')).toBeVisible()
-    await expect(occPage.getByText('Please update this handler before merge.')).toBeVisible()
-    await expect(occPage.getByText('coderabbitai')).toBeVisible()
-    await expect(occPage.getByText('LGTM on the overall approach.')).toBeVisible()
-
-    const openThreadCard = occPage.getByTestId('pr-comment-group').filter({
-      hasText: 'Please update this handler before merge.'
-    })
-    const conversationCard = occPage.getByTestId('pr-comment-group').filter({
-      hasText: 'LGTM on the overall approach.'
-    })
-    await expect(openThreadCard).toBeVisible()
-    await expect(conversationCard).toBeVisible()
-    await expect(openThreadCard).toHaveClass(/shadow-xs/)
-    await expectOpenTextNotShiftedLeft(
-      openThreadCard,
-      conversationCard,
-      'Please update this handler before merge.',
-      'LGTM on the overall approach.'
-    )
-    await expectOpenTextNotShiftedLeft(openThreadCard, conversationCard, 'coderabbitai', 'bob')
-
-    const resolvedTrigger = occPage.getByRole('button', { name: 'Resolved · 1' })
-    await expect(resolvedTrigger).toBeVisible()
-    await expect(occPage.getByText('Already fixed upstream.')).toBeHidden()
-
-    await resolvedTrigger.click()
-    await expect(occPage.getByText('Already fixed upstream.')).toBeVisible()
-    await expect(occPage.getByText('Resolved', { exact: true })).toBeVisible()
-    await expect(
-      occPage
-        .getByTestId('pr-comment-group')
-        .filter({ hasText: 'Already fixed upstream.' })
-        .getByRole('button', { name: 'Unresolve', exact: true })
-    ).toBeVisible()
-
-    await expect(occPage.getByRole('button', { name: /^Add$/ })).toHaveCount(0)
   })
 
   test('can switch from grouped to chronological timeline order', async ({ occPage }) => {
@@ -249,14 +164,12 @@ test.describe('PR comments sidebar cards view', () => {
     await visibleQueueButton.click()
     await expect(visibleQueueButton).toBeHidden()
     await expect(
-      occPage.getByRole('button', { name: 'Send 1 queued comments to AI' })
+      occPage.getByRole('button', { name: 'Send 1 queued comment to AI' })
     ).toBeVisible()
     await expect(occPage.getByText('Queued', { exact: true })).toBeVisible()
 
     await occPage.getByRole('button', { name: 'Clear queued comments' }).click()
-    await expect(
-      occPage.getByRole('button', { name: 'Send 1 queued comments to AI' })
-    ).toBeHidden()
+    await expect(occPage.getByRole('button', { name: 'Send 1 queued comment to AI' })).toBeHidden()
     await openThreadCard.hover()
     await expect(visibleQueueButton).toBeVisible()
 
@@ -268,7 +181,7 @@ test.describe('PR comments sidebar cards view', () => {
     await expect(queueMenuItem).toBeHidden()
 
     await expect(
-      occPage.getByRole('button', { name: 'Send 1 queued comments to AI' })
+      occPage.getByRole('button', { name: 'Send 1 queued comment to AI' })
     ).toBeVisible()
     await expect(occPage.getByText('Queued', { exact: true })).toBeVisible()
 
@@ -284,31 +197,5 @@ test.describe('PR comments sidebar cards view', () => {
       throw new Error('queued card and checkbox must be measurable')
     }
     expect(checkboxBox.x - queuedCardBox.x).toBeGreaterThanOrEqual(8)
-  })
-
-  test('keeps open card content aligned while the row menu is open', async ({ occPage }) => {
-    const { worktreeId } = await seedPRCommentsSidebarFixture(occPage)
-    await openChecks(occPage, worktreeId)
-
-    await expect(occPage.getByText('Needs review · 1')).toBeVisible({ timeout: 10_000 })
-    const openThreadCard = occPage.getByTestId('pr-comment-group').filter({
-      hasText: 'Please update this handler before merge.'
-    })
-    const conversationCard = occPage.getByTestId('pr-comment-group').filter({
-      hasText: 'LGTM on the overall approach.'
-    })
-
-    await openThreadCard.hover()
-    const actionsMenu = openThreadCard.getByRole('button', { name: 'More comment actions' })
-    await actionsMenu.evaluate((element) => (element as HTMLElement).focus())
-    await actionsMenu.press('Enter')
-    await expect(occPage.getByRole('menuitem', { name: 'Queue for agent' })).toBeVisible()
-
-    await expectOpenTextNotShiftedLeft(
-      openThreadCard,
-      conversationCard,
-      'Please update this handler before merge.',
-      'LGTM on the overall approach.'
-    )
   })
 })

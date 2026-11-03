@@ -1,5 +1,5 @@
 import { selectFreshExplicitAgentStatus } from '../../runtime-hook-agent-row-selection'
-import { OCCRuntimeWithControllerKnowsPtyIsLive } from './terminal-input-dispatch'
+import { OCCRuntimeWithPluginHookedTerminalInput } from './terminal-plugin-hooked-input'
 import type { RuntimeTerminalAgentStatus } from '../../../../shared/runtime-types'
 import type { RuntimeTerminalAgentStatusSnapshot } from '../../runtime-terminal-agent-status-query'
 import { getDisplayPromptLifecycle } from '../../runtime-worktree-status-projection'
@@ -14,7 +14,7 @@ import type {
 import { readAgentPromptWaitText } from '../../agent-prompt-submission-verification'
 import type { AgentStatus } from '../../../../shared/agent-detection'
 
-export abstract class OCCRuntimeWithSerializeAgentPromptSubmission extends OCCRuntimeWithControllerKnowsPtyIsLive {
+export abstract class OCCRuntimeWithSerializeAgentPromptSubmission extends OCCRuntimeWithPluginHookedTerminalInput {
   protected abstract getPaneKeyForTerminalHandle(handle: string): string | null
 
   protected async serializeAgentPromptSubmission<T>(

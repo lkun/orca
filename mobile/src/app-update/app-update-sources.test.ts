@@ -14,7 +14,7 @@ function fixture(name: string): unknown {
 }
 const tagRefs = fixture('github-mobile-android-tag-refs.json')
 const release050 = fixture('github-release-mobile-android-v0.0.50.json')
-const lookup = fixture('itunes-lookup-com.lkun.occ.mobile.json')
+const lookup = fixture('itunes-lookup-com.stably.occ.mobile.json')
 
 const REFS_URL =
   'https://api.github.com/repos/stablyai/occ/git/matching-refs/tags/mobile-android-v'
@@ -165,7 +165,7 @@ describe('GitHub release source (Android sideload)', () => {
 })
 
 describe('App Store source (iOS)', () => {
-  const LOOKUP = 'https://itunes.apple.com/lookup?bundleId=com.lkun.occ.mobile'
+  const LOOKUP = 'https://itunes.apple.com/lookup?bundleId=com.stably.occ.mobile'
 
   it('reads the store version and App Store page from the recorded lookup', () => {
     expect(parseAppStoreLookup(lookup)).toEqual({

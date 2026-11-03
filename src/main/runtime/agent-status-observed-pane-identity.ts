@@ -7,7 +7,7 @@ import type { EnrichedAgentHookEventPayload } from '../agent-hooks/server/server
 import type { OCCRuntimeService } from './occ-runtime'
 
 type ObservedStatusRuntime = AgentStatusRuntimeEnrichment &
-  Partial<Pick<OCCRuntimeService, 'recordCliWriterConversation'>>
+  Partial<Pick<OCCRuntimeService, 'clearSavedTerminalLaunchOnAgentHook'>>
 
 /** Bounded like the hook server's own per-pane maps; eviction only degrades a row to `unobserved`. */
 const MAX_OBSERVED_PANES = 1024
@@ -68,7 +68,7 @@ export function recordObservedAgentStatusPaneIdentity(
   event: EnrichedAgentHookEventPayload,
   runtime: ObservedStatusRuntime | undefined
 ): void {
-  runtime?.recordCliWriterConversation?.(event)
+  runtime?.clearSavedTerminalLaunchOnAgentHook?.(event)
   const binding = resolveAgentStatusBinding(event.paneKey, runtime)
   identities.record(
     event.paneKey,

@@ -1,5 +1,5 @@
 import { getPtyIpc } from '../pty-host-bindings'
-import type { Store } from '../../../persistence'
+import type { Store } from '../../../persistence/loading-store/store'
 import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import { rekeyMovedPaneOwners } from '../../../runtime/moved-pane-owner-rekey'
 import {

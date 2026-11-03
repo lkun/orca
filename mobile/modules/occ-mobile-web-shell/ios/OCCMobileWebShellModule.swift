@@ -19,7 +19,7 @@ public class OCCMobileWebShellModule: Module {
     }.runOnQueue(.main)
 
     View(OCCMobileWebShellView.self) {
-      Events("onLoadState", "onBridgeMessage", "onExternalNavigation")
+      Events("onLoadState", "onBridgeMessage", "onExternalNavigation", "onBackEdgeSwipe")
 
       Prop("generationDirectory") { (view: OCCMobileWebShellView, value: String) in
         view.setGenerationDirectory(value)
@@ -31,6 +31,10 @@ public class OCCMobileWebShellModule: Module {
 
       Prop("bridgeEnabled") { (view: OCCMobileWebShellView, value: Bool) in
         view.setBridgeEnabled(value)
+      }
+
+      Prop("backEdgeSwipe") { (view: OCCMobileWebShellView, value: Bool) in
+        view.setBackEdgeSwipe(value)
       }
 
       AsyncFunction("postBridgeMessage") {

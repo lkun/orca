@@ -1,6 +1,6 @@
 import { EXIT_SETTLE_MS } from './wsl-occd-liveness-evidence'
 import type { OCCdTerminalCensus } from '../../shared/occd-terminal-census'
-import type { SystemPowerLifecycleListener } from '../system-power-lifecycle'
+import type { SystemPowerLifecycleListener } from '../power/system-power-lifecycle'
 import type { WslRunningDistrosRead } from '../wsl-background-distro-gate'
 import type { WslGuestIdentity } from './wsl-guest-process-identity'
 import type { WslOCCdConnection, WslOCCdConnectionManager } from './wsl-occd-connection'

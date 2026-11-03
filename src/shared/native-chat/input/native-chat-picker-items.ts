@@ -16,6 +16,8 @@ export type NativeChatPickerItem =
       argumentHint?: string
       skillCollision: boolean
       occOwned?: true
+      /** The provider reported this as its built-in command. */
+      builtin?: true
     }
   | {
       kind: 'skill'
@@ -120,7 +122,8 @@ export function buildNativeChatPickerItems(
           ? sanitizePickerText(command.argumentHint, 80)
           : undefined,
         skillCollision: sharedSigil && !command.occOwned && skillNames.has(command.name),
-        ...(command.occOwned ? { occOwned: true as const } : {})
+        ...(command.occOwned ? { occOwned: true as const } : {}),
+        ...(command.builtin ? { builtin: true as const } : {})
       },
       stableOrder: index
     })),

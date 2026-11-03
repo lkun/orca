@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron'
-import type { Store } from '../persistence'
+import type { Store } from '../persistence/loading-store/store'
 import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { parseTerminalSurfaceCloseTarget } from '../../shared/terminal-surface-close-target'
 import { isFrozenOCCdSourceSessionPartition } from '../ssh/occd-retained-source'

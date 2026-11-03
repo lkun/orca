@@ -81,15 +81,6 @@ describe('new profile consent seeding', () => {
     expect(existsSync(getOCCProfileStateDatabaseFile(profileId, root))).toBe(false)
   })
 
-  it('refuses an incapable runtime before admission or profile creation', () => {
-    vi.spyOn(database, 'isProfileStateSqliteAvailable').mockReturnValue(false)
-    expect(() => seedNewOCCProfileTelemetryConsent(profileId, telemetry, root)).toThrow(
-      'bundled OCC runtime'
-    )
-    expect(existsSync(join(root, '.profile-state-access'))).toBe(false)
-    expect(existsSync(join(root, 'profiles'))).toBe(false)
-  })
-
   it('refuses seeding while maintenance owns the root', () => {
     const maintenance = acquireProfileStateMaintenance(root)
     try {

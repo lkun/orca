@@ -16,7 +16,7 @@ import {
 } from 'node:fs'
 import { join } from 'node:path'
 import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
-import { syncDirectoryDurablySync } from '../../durable-file-write'
+import { syncDirectoryDurablySync } from '../../filesystem/durable-file-write'
 
 export const OCCD_MIGRATION_STAGING_DIRECTORY = '.occd-migration-staging'
 

@@ -15,7 +15,7 @@ import {
   type OCCdMigrationBlobUploadState
 } from '../../../shared/occd-migration/occd-migration-blob-transfer'
 import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
-import { syncDirectoryDurablySync } from '../../durable-file-write'
+import { syncDirectoryDurablySync } from '../../filesystem/durable-file-write'
 import {
   appendOCCdMigrationStagedChunk,
   ensureOCCdMigrationDirectory,

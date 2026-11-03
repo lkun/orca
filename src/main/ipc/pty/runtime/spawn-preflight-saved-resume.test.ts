@@ -1,4 +1,4 @@
-import { agentSessionConversationView } from '../../../../shared/agent-session-conversation-view'
+import { agentSessionConversationView } from '../../../../shared/agent-session/lifecycle/agent-session-conversation-view'
 import { CLAUDE_CLI_CONVERSATIONS } from '../../../claude/claude-cli-conversations'
 import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { localProvider } from '../provider/registry'
@@ -10,8 +10,8 @@ import { getDefaultSettings } from '../../../../shared/constants'
 import {
   agentSessionLeaseFixture,
   agentSessionRecordFixture
-} from '../../../../shared/agent-session-record.test-fixture'
-import { AgentSessionRecordStore } from '../../../runtime/agent-session-record-store'
+} from '../../../../shared/agent-session/lifecycle/agent-session-record.test-fixture'
+import { AgentSessionRecordStore } from '../../../runtime/agent-session/records/agent-session-record-store'
 import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import { finishPtyShutdown } from '../provider/liveness'
 import { listStructuredProviderSessionOwnership } from '../../../native-chat/agent-session-wire/structured-provider-session-ownership'

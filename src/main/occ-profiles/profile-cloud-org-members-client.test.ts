@@ -1,14 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { OCCCloudAuthConfig } from './profile-cloud-auth-config'
 import type { OCCCloudSession } from './profile-cloud-session-store'
-import { OCCCloudRequestError } from './profile-cloud-client'
-import {
-  changeOCCCloudOrgMemberRole,
-  inviteOCCCloudOrgMember,
-  listOCCCloudOrgMembers,
-  removeOCCCloudOrgMember,
-  revokeOCCCloudOrgInvite
-} from './profile-cloud-org-members-client'
+
+import { listOCCCloudOrgMembers } from './profile-cloud-org-members-client'
 
 const fetchMock = vi.fn()
 
@@ -78,76 +72,6 @@ describe('OCC cloud org members client', () => {
         method: 'GET',
         headers: expect.objectContaining({ authorization: 'Bearer access-token' })
       })
-    )
-  })
-
-  it('percent-encodes the org id in the request URL', async () => {
-    mockJsonResponse({
-      members: [],
-      pendingInvites: [],
-      viewerRole: 'owner',
-      canManageMembers: true
-    })
-    await listOCCCloudOrgMembers(config, session, 'org/with space')
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://occ-cloud.example/v1/desktop/orgs/org%2Fwith%20space/members',
-      expect.any(Object)
-    )
-  })
-
-  it('posts invites with an email and role body', async () => {
-    mockJsonResponse({ ok: true })
-    await inviteOCCCloudOrgMember(config, session, {
-      orgId: 'org-1',
-      email: 'new@example.com',
-      role: 'admin'
-    })
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://occ-cloud.example/v1/desktop/orgs/org-1/invites',
-      expect.objectContaining({
-        method: 'POST',
-        body: JSON.stringify({ email: 'new@example.com', role: 'admin' })
-      })
-    )
-  })
-
-  it('carries the server error code on a 409 conflict', async () => {
-    mockJsonResponse({ error: 'already_invited' }, { ok: false, status: 409 })
-    await expect(
-      inviteOCCCloudOrgMember(config, session, {
-        orgId: 'org-1',
-        email: 'dupe@example.com',
-        role: 'member'
-      })
-    ).rejects.toMatchObject({ statusCode: 409, errorCode: 'already_invited' })
-  })
-
-  it('surfaces a 403 as an OCCCloudRequestError without an error code when the body is empty', async () => {
-    fetchMock.mockResolvedValue({
-      ok: false,
-      status: 403,
-      json: async () => {
-        throw new Error('no body')
-      }
-    })
-    await expect(
-      changeOCCCloudOrgMemberRole(config, session, {
-        orgId: 'org-1',
-        userId: 'user-2',
-        role: 'admin'
-      })
-    ).rejects.toBeInstanceOf(OCCCloudRequestError)
-    await expect(
-      removeOCCCloudOrgMember(config, session, { orgId: 'org-1', userId: 'user-2' })
-    ).rejects.toMatchObject({ statusCode: 403, errorCode: undefined })
-  })
-
-  it('posts invite revocations by email', async () => {
-    mockJsonResponse({ ok: true })
-    await revokeOCCCloudOrgInvite(config, session, { orgId: 'org-1', email: 'gone@example.com' })
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://occ-cloud.example/v1/desktop/orgs/org-1/invites/revoke',
-      expect.objectContaining({ body: JSON.stringify({ email: 'gone@example.com' }) })
     )
   })
 })

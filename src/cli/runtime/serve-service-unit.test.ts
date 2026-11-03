@@ -13,8 +13,8 @@ const base: ServeServiceInput = {
 describe('renderServeService', () => {
   it('writes a LaunchAgent that supervises, never pairs, and stops after a give-up', () => {
     const spec = renderServeService({ ...base, port: '6768' })
-    expect(spec.name).toBe('com.lkun.occ.serve')
-    expect(spec.unitPath).toBe('/Users/me/Library/LaunchAgents/com.lkun.occ.serve.plist')
+    expect(spec.name).toBe('com.stablyai.occ.serve')
+    expect(spec.unitPath).toBe('/Users/me/Library/LaunchAgents/com.stablyai.occ.serve.plist')
     expect(spec.content).toContain('<string>--supervise</string>')
     expect(spec.content).toContain('<string>--no-pairing</string>')
     expect(spec.content).toContain('<string>6768</string>')

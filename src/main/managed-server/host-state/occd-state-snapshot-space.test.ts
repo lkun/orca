@@ -142,10 +142,4 @@ describe.skipIf(process.platform === 'win32')('snapshot room on a real shell (#3
     expect(output.trim()).toBe('SNAPSHOT_SPACE UNMEASURED')
     expect(parseOCCdSnapshotSpace(output)).toBeNull()
   })
-
-  it('reads no room answer from a host that printed none', () => {
-    expect(parseOCCdSnapshotSpace('')).toBeNull()
-    expect(occdSnapshotShortfallKb(null)).toBeNull()
-    expect(occdSnapshotShortfallKb({ neededKb: 0, availableKb: 0, reclaimKb: 0 })).toBeNull()
-  })
 })

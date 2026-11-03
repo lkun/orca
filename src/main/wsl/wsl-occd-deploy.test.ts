@@ -24,7 +24,11 @@ const mocks = vi.hoisted(() => ({
   adoptRunning: vi.fn(),
   localVersion: vi.fn(),
   readRecord: vi.fn(),
+  removeFailed: vi.fn(),
   transaction: vi.fn(async (): Promise<unknown> => null)
+}))
+vi.mock('./wsl-occd-failed-install-removal', () => ({
+  removeFailedFreshWslOCCdInstall: mocks.removeFailed
 }))
 vi.mock('../managed-server/activation/occd-activation-transaction-store', () => ({
   readOCCdActivationTransaction: mocks.transaction
@@ -65,7 +69,8 @@ vi.mock('./wsl-occd-active-probe', async (importOriginal) => ({
 }))
 vi.mock('../managed-server/lifecycle/occd-managed-version-gc', () => ({
   provenLiveDaemonVersion: () => null,
-  pruneManagedOCCdVersions: mocks.prune
+  pruneManagedOCCdVersions: mocks.prune,
+  pruneSupersededOCCdCandidates: async () => {}
 }))
 vi.mock('../managed-server/lifecycle/occd-managed-wake', () => ({
   wakeStoppedManagedOCCd: mocks.wake
@@ -376,6 +381,27 @@ describe('deployAndLaunchWslOCCd', () => {
       reason: 'terminals are running',
       forceable: true
     })
+    expect(mocks.probe).not.toHaveBeenCalled()
+  })
+
+  it('hands a failed first deploy to the fresh-install cleanup before reporting it', async () => {
+    const failed = {
+      outcome: 'installed-not-activated',
+      fullVersion: '1.5.0+ab',
+      code: 'occd_activation_daemon_degraded',
+      reason: 'the candidate failed its readiness check',
+      startCheckFailed: true,
+      freshlyInstalled: true
+    }
+    mocks.deploy.mockResolvedValueOnce(failed)
+    await expect(launch()).resolves.toMatchObject({
+      outcome: 'deferred',
+      candidateVersion: '1.5.0+ab'
+    })
+    expect(mocks.removeFailed).toHaveBeenCalledWith(
+      expect.objectContaining({ remoteHome: '/home/u' }),
+      failed
+    )
     expect(mocks.probe).not.toHaveBeenCalled()
   })
 })

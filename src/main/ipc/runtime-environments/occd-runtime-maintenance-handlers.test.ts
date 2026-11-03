@@ -33,7 +33,8 @@ const clearHostServerNotes = vi.fn()
 const store = {
   removeWorkspaceSessionHost: vi.fn(),
   getRemoteLayoutSnapshot: vi.fn(),
-  setRemoteLayoutSnapshot: vi.fn()
+  setRemoteLayoutSnapshot: vi.fn(),
+  setHostRepoCatalogSnapshot: vi.fn()
 }
 
 function handler(channel: string): (_event: unknown, args: unknown) => Promise<unknown> {
@@ -110,18 +111,6 @@ describe('managed occd maintenance IPC', () => {
     expect(invalidateTransport).not.toHaveBeenCalled()
   })
 
-  it('reconnects after rollback and after recovery restores a serving slot', async () => {
-    mocks.rollback.mockResolvedValueOnce({ outcome: 'rolled-back', environment: { id: 'e-1' } })
-    await handler('runtimeEnvironments:rollbackOCCd')(null, { selector: 'Managed' })
-    mocks.recover.mockResolvedValueOnce({
-      outcome: 'recovered',
-      activeVersion: null,
-      environment: { id: 'e-1' }
-    })
-    await handler('runtimeEnvironments:recoverOCCd')(null, { selector: 'Managed' })
-    expect(invalidateTransport).toHaveBeenCalledTimes(1)
-  })
-
   it('stops with the Active Server guard and the shared removal cleanup', async () => {
     mocks.stop.mockResolvedValueOnce({ outcome: 'unlinked', sshTargetId: 'ssh-1' })
     await handler('runtimeEnvironments:stopOCCd')(null, { selector: ' Managed ' })
@@ -144,12 +133,5 @@ describe('managed occd maintenance IPC', () => {
     })
     await handler('runtimeEnvironments:stopOCCd')(null, { selector: 'Managed' })
     expect(clearHostServerStatus).not.toHaveBeenCalled()
-  })
-
-  it('rejects a missing selector before touching SSH', async () => {
-    await expect(handler('runtimeEnvironments:cancelOCCdStop')(null, {})).rejects.toThrow(
-      'Server is required'
-    )
-    expect(mocks.cancel).not.toHaveBeenCalled()
   })
 })

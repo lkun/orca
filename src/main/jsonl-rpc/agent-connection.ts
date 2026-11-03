@@ -1,6 +1,9 @@
 import type { PipedProcessSpawner } from '@occ/process-host/process-spec'
 import { spawnProcess } from '@occ/process-host'
-import { providerDiagnostic, withProviderDiagnostic } from '../../shared/agent-session-failure'
+import {
+  providerDiagnostic,
+  withProviderDiagnostic
+} from '../../shared/agent-session/failures/agent-session-failure'
 import {
   spawnManagedProviderProcess,
   type ManagedProviderProcess,

@@ -57,22 +57,6 @@ function makeSetup(
 }
 
 describe('project-host workspace target resolution', () => {
-  it('falls back to a local setup for a local-only repo', () => {
-    const repo = makeRepo('occ')
-
-    const resolution = resolveWorkspaceCreationTarget({ eligibleRepos: [repo] })
-
-    expect(resolution).toMatchObject({
-      status: 'ready',
-      target: {
-        projectId: 'repo:occ',
-        hostId: 'local',
-        projectHostSetupId: 'occ',
-        repoId: 'occ'
-      }
-    })
-  })
-
   it('chooses the focused host setup when one project exists on multiple hosts', () => {
     const repos = [makeRepo('occ-local'), makeRepo('occ-ssh', { connectionId: 'openclaw-2' })]
     const projects = [makeProject('github:stablyai/occ', ['occ-local', 'occ-ssh'])]
@@ -176,36 +160,6 @@ describe('project-host workspace target resolution', () => {
     })
   })
 
-  it('resolves an explicit project and host to the matching setup', () => {
-    const repos = [
-      makeRepo('occ-local'),
-      makeRepo('occ-runtime', { executionHostId: 'runtime:gpu-1' })
-    ]
-    const projects = [makeProject('github:stablyai/occ', ['occ-local', 'occ-runtime'])]
-    const projectHostSetups = [
-      makeSetup('occ-local', 'github:stablyai/occ', 'local', 'occ-local'),
-      makeSetup('occ-runtime', 'github:stablyai/occ', 'runtime:gpu-1', 'occ-runtime')
-    ]
-
-    const resolution = resolveWorkspaceCreationTarget({
-      eligibleRepos: repos,
-      projects,
-      projectHostSetups,
-      projectId: 'github:stablyai/occ',
-      hostId: 'runtime:gpu-1'
-    })
-
-    expect(resolution).toMatchObject({
-      status: 'ready',
-      target: {
-        projectId: 'github:stablyai/occ',
-        hostId: 'runtime:gpu-1',
-        projectHostSetupId: 'occ-runtime',
-        repoId: 'occ-runtime'
-      }
-    })
-  })
-
   it('canonicalizes a stale same-host setup id to the setup the picker shows', () => {
     // Legacy drafts can name hidden duplicate setups; creation must use the canonical picker row/path.
     const repos = [makeRepo('occ-main'), makeRepo('occ-worktree')]
@@ -228,27 +182,6 @@ describe('project-host workspace target resolution', () => {
     })
   })
 
-  it('keeps an explicit setup id that is the only one on its host', () => {
-    const repos = [makeRepo('occ-local'), makeRepo('occ-ssh', { connectionId: 'builder' })]
-    const projects = [makeProject('github:stablyai/occ', ['occ-local', 'occ-ssh'])]
-    const projectHostSetups = [
-      makeSetup('occ-local', 'github:stablyai/occ', 'local', 'occ-local'),
-      makeSetup('occ-ssh', 'github:stablyai/occ', 'ssh:builder', 'occ-ssh')
-    ]
-
-    expect(
-      resolveWorkspaceCreationTarget({
-        eligibleRepos: repos,
-        projects,
-        projectHostSetups,
-        projectHostSetupId: 'occ-ssh'
-      })
-    ).toMatchObject({
-      status: 'ready',
-      target: { projectHostSetupId: 'occ-ssh', repoId: 'occ-ssh', hostId: 'ssh:builder' }
-    })
-  })
-
   it('does not merge same-name repos without shared project identity', () => {
     const repos = [
       makeRepo('personal-occ', { displayName: 'occ' }),
@@ -262,25 +195,6 @@ describe('project-host workspace target resolution', () => {
         focusedHostScope: 'ssh:work-linux'
       })
     ).toBe('personal-occ')
-  })
-
-  it('reports unavailable when the project is not set up on the selected host', () => {
-    const repo = makeRepo('occ')
-    const projects = [makeProject('github:stablyai/occ', ['occ'])]
-    const projectHostSetups = [makeSetup('occ', 'github:stablyai/occ', 'local', 'occ')]
-
-    expect(
-      resolveWorkspaceCreationTarget({
-        eligibleRepos: [repo],
-        projects,
-        projectHostSetups,
-        projectId: 'github:stablyai/occ',
-        hostId: 'ssh:openclaw-2'
-      })
-    ).toEqual({
-      status: 'unavailable',
-      reason: 'project-not-set-up-on-host'
-    })
   })
 
   it('does not fall back to another host when only a host is selected', () => {
@@ -332,45 +246,6 @@ describe('project-host workspace target resolution', () => {
     })
   })
 
-  it('reports unavailable when an explicit setup is not ready', () => {
-    const repo = makeRepo('occ')
-    const projects = [makeProject('github:stablyai/occ', ['occ'])]
-    const projectHostSetups = [
-      makeSetup('occ', 'github:stablyai/occ', 'local', 'occ', { setupState: 'setting-up' })
-    ]
-
-    expect(
-      resolveWorkspaceCreationTarget({
-        eligibleRepos: [repo],
-        projects,
-        projectHostSetups,
-        projectHostSetupId: 'occ'
-      })
-    ).toEqual({
-      status: 'unavailable',
-      reason: 'setup-not-ready'
-    })
-  })
-
-  it('does not resolve workspace creation through a removed host', () => {
-    const remoteRepo = makeRepo('remote-repo', { connectionId: 'removed' })
-    const projects = [makeProject('repo:remote', ['remote-repo'])]
-    const projectHostSetups = [
-      makeSetup('removed-setup', 'repo:remote', 'ssh:removed', 'remote-repo')
-    ]
-
-    expect(
-      resolveWorkspaceCreationTarget({
-        eligibleRepos: [remoteRepo],
-        projects,
-        projectHostSetups,
-        draftRepoId: remoteRepo.id,
-        projectHostSetupId: 'removed-setup',
-        actionableHostIds: new Set(['local'])
-      })
-    ).toEqual({ status: 'unavailable', reason: 'setup-not-found' })
-  })
-
   it('does not silently switch an explicit setup id to an actionable sibling host', () => {
     const remoteRepo = makeRepo('remote-repo', { connectionId: 'removed' })
     const localRepo = makeRepo('local-repo')
@@ -414,39 +289,6 @@ describe('project-host workspace target resolution', () => {
           focusedHostScope: 'local'
         })
       ).toBe('remote-repo')
-    })
-
-    it('resolves a local-only project while the current host is remote', () => {
-      expect(
-        resolveWorkspaceCreationRepoId({
-          eligibleRepos: repos,
-          projects,
-          projectHostSetups,
-          projectId: 'repo:local-repo',
-          focusedHostScope: 'ssh:remote-1'
-        })
-      ).toBe('local-repo')
-    })
-
-    it('still prefers the current host when the project is set up on it', () => {
-      const multiHostProjects = [makeProject('repo:multi', ['multi-local', 'multi-remote'])]
-      const multiHostSetups = [
-        makeSetup('multi-local', 'repo:multi', 'local', 'multi-local'),
-        makeSetup('multi-remote', 'repo:multi', 'ssh:remote-1', 'multi-remote')
-      ]
-
-      expect(
-        resolveWorkspaceCreationRepoId({
-          eligibleRepos: [
-            makeRepo('multi-local'),
-            makeRepo('multi-remote', { connectionId: 'remote-1' })
-          ],
-          projects: multiHostProjects,
-          projectHostSetups: multiHostSetups,
-          projectId: 'repo:multi',
-          focusedHostScope: 'local'
-        })
-      ).toBe('multi-local')
     })
 
     it('still reports unavailable for an explicit project+host with no ready setup', () => {

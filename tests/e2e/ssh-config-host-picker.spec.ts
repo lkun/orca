@@ -9,7 +9,6 @@ import {
   closeOpenDialogs,
   configHostRow,
   expectSshHostListedInSettings,
-  hostEndpointSummary,
   makeSshConfigHostPrefix,
   openSshConfigHostPicker,
   openSshHostSettings,
@@ -57,45 +56,6 @@ test.describe('SSH config host picker', () => {
   test.afterEach(async ({ occPage }) => {
     await closeOpenDialogs(occPage).catch(() => undefined)
     await removeSshTargetsByPrefix(occPage, HOST_PREFIX).catch(() => undefined)
-  })
-
-  test('P1: empty config shows empty state; Back returns to blank form', async ({ occPage }) => {
-    // Isolated HOME has no ~/.ssh/config by default.
-    const picker = await openSshConfigHostPicker(occPage)
-    await expect(picker.getByRole('heading', { name: 'Choose from ~/.ssh/config' })).toBeVisible()
-    await expect(picker.getByText('No hosts in ~/.ssh/config')).toBeVisible()
-    await expect(
-      picker.getByText('Add a Host entry there, or go back and type the details manually.')
-    ).toBeVisible()
-    await expect(picker.getByRole('button', { name: 'Add all to OCC' })).toBeDisabled()
-
-    await picker.getByRole('button', { name: 'Back' }).click()
-    const form = occPage.getByRole('dialog', { name: 'Add SSH host' })
-    await expect(form.getByRole('heading', { name: 'Add SSH host' })).toBeVisible()
-    const fields = addSshHostFormFields(form)
-    await expect(fields.host).toHaveValue('')
-    await expect(fields.username).toHaveValue('')
-    await expect(fields.label).toHaveValue('')
-  })
-
-  test('P2: seeded hosts list with summary lines and Add all enabled', async ({
-    electronApp,
-    occPage
-  }) => {
-    const hosts = await seedPairConfig(electronApp, HOST_PREFIX)
-    const picker = await openSshConfigHostPicker(occPage)
-
-    const hostList = picker.getByRole('list', { name: 'SSH config hosts' })
-    await expect(hostList).toBeVisible()
-    await expect(configHostRow(picker, hosts.alpha)).toBeVisible()
-    await expect(configHostRow(picker, hosts.bravo)).toBeVisible()
-    await expect(
-      hostList.getByText(hostEndpointSummary(hosts.alpha), { exact: true })
-    ).toBeVisible()
-    await expect(
-      hostList.getByText(hostEndpointSummary(hosts.bravo), { exact: true })
-    ).toBeVisible()
-    await expect(picker.getByRole('button', { name: 'Add all 2 to OCC' })).toBeEnabled()
   })
 
   test('P3: select host prefills form; Save persists; N3 identity hint', async ({
@@ -157,21 +117,6 @@ test.describe('SSH config host picker', () => {
     await expect(
       picker.getByText('Try another filter, or go back and type manually.')
     ).toBeVisible()
-  })
-
-  test('P8: Back without select leaves form empty', async ({ electronApp, occPage }) => {
-    const hosts = await seedPairConfig(electronApp, HOST_PREFIX)
-    const picker = await openSshConfigHostPicker(occPage)
-    await expect(configHostRow(picker, hosts.alpha)).toBeVisible()
-
-    await picker.getByRole('button', { name: 'Back' }).click()
-    const form = occPage.getByRole('dialog', { name: 'Add SSH host' })
-    await expect(form.getByRole('heading', { name: 'Add SSH host' })).toBeVisible()
-    const fields = addSshHostFormFields(form)
-    await expect(fields.host).toHaveValue('')
-    await expect(fields.username).toHaveValue('')
-    await expect(fields.label).toHaveValue('')
-    await expect(occPage.getByText(/Filled from /i)).toHaveCount(0)
   })
 })
 

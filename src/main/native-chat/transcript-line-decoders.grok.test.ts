@@ -36,6 +36,7 @@ describe('decodeGrokTranscriptLine', () => {
   it.each([
     'C:\\Users\\me\\AppData\\Local\\Temp\\occ-paste-1783675302563-2207c073-535f-4b83-a181-61127c8bbd68.png',
     '/tmp/occ-paste-1783675302563-2207c073-535f-4b83-a181-61127c8bbd68.png',
+    '/tmp/occ-paste-1783675302563-2207c073-535f-4b83-a181-61127c8bbd68.jpg',
     'C:\\occ-paste-1783675302563-2207c073-535f-4b83-a181-61127c8bbd68.png',
     '/occ-paste-1783675302563-2207c073-535f-4b83-a181-61127c8bbd68.png',
     '\\\\server\\temp\\occ-paste-1783675302563-2207c073-535f-4b83-a181-61127c8bbd68.png'

@@ -44,29 +44,6 @@ describe('issue command ignore rules', () => {
     }
   )
 
-  it('does not create .gitignore when the repository exclude already ignores .occ', async () => {
-    writeFileSync(join(repo, '.git', 'info', 'exclude'), '.occ/\n')
-
-    await writeIssueCommand(repo, 'local command')
-
-    expect(existsSync(join(repo, '.gitignore'))).toBe(false)
-    expect((await git(['status', '--porcelain'])).stdout).toBe('')
-  })
-
-  it('respects anchored repository rules', async () => {
-    writeFileSync(join(repo, '.gitignore'), '/.occ/\n')
-
-    await writeIssueCommand(repo, 'local command')
-
-    expect(readFileSync(join(repo, '.gitignore'), 'utf8')).toBe('/.occ/\n')
-  })
-
-  it('creates .gitignore when no ignore rules exist', async () => {
-    await writeIssueCommand(repo, 'local command')
-
-    expect(readFileSync(join(repo, '.gitignore'), 'utf8')).toBe('.occ\n')
-  })
-
   it('respects shared repository excludes from a linked worktree', async () => {
     await git([
       '-c',

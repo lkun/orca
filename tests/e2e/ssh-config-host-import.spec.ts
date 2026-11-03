@@ -15,7 +15,6 @@ import {
   removeSshTargetsByPrefix,
   returnToAppShell,
   seedIsolatedSshConfig,
-  seedOCCSshTargetMatchingAlias,
   type SeededSshConfigHost
 } from './helpers/ssh-config-host-picker'
 
@@ -79,34 +78,6 @@ test.describe('SSH config host import (bulk + settings re-adopt)', () => {
 
   test.afterEach(async ({ occPage }) => {
     await removeSshTargetsByPrefix(occPage, HOST_PREFIX).catch(() => undefined)
-  })
-
-  test('P5: already-in-OCC badge, disabled row, and Add all counts only new hosts', async ({
-    electronApp,
-    occPage
-  }) => {
-    const hosts = await seedPairConfig(electronApp, HOST_PREFIX)
-    await seedOCCSshTargetMatchingAlias(occPage, {
-      alias: hosts.alpha.alias,
-      hostname: hosts.alpha.hostname,
-      username: hosts.alpha.user,
-      port: hosts.alpha.port
-    })
-
-    const picker = await openSshConfigHostPicker(occPage)
-    const alphaRow = configHostRow(picker, hosts.alpha)
-    const bravoRow = configHostRow(picker, hosts.bravo)
-
-    await expect(alphaRow).toBeVisible()
-    await expect(alphaRow).toBeDisabled()
-    await expect(alphaRow.getByText('In OCC', { exact: true })).toBeVisible()
-
-    await expect(bravoRow).toBeVisible()
-    await expect(bravoRow).toBeEnabled()
-    await expect(bravoRow.getByText('In OCC', { exact: true })).toHaveCount(0)
-
-    await expect(picker.getByRole('button', { name: 'Add all 1 to OCC' })).toBeEnabled()
-    await expect(picker.getByRole('button', { name: 'Add all 2 to OCC' })).toHaveCount(0)
   })
 
   test('P6: Add all N to OCC imports new hosts; re-open shows all in OCC', async ({

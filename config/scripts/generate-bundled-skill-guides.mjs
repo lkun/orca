@@ -22,6 +22,7 @@ const CANONICAL_GUIDE_NAMES = [
   'occ-jira',
   'occ-linear',
   'occ-per-workspace-env',
+  'occ-plugin-authoring',
   'orchestration'
 ]
 
@@ -36,6 +37,7 @@ const GUIDE_ALIASES = {
   'occ-jira': [],
   'occ-linear': [],
   'occ-per-workspace-env': [],
+  'occ-plugin-authoring': [],
   orchestration: []
 }
 
@@ -51,6 +53,7 @@ const STUB_TOPICS = [
   'occ-jira',
   'occ-linear',
   'occ-per-workspace-env',
+  'occ-plugin-authoring',
   'orchestration'
 ]
 

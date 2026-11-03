@@ -1,8 +1,8 @@
-import { agentSessionFailureSentence } from '../../../src/shared/agent-session-failure-words'
+import { agentSessionFailureSentence } from '../../../src/shared/agent-session/failures/agent-session-failure-words'
 import type {
   AgentSessionWriteNoticePart,
   AgentSessionWriteNoticeSentence
-} from '../../../src/shared/agent-session-write-notice-copy'
+} from '../../../src/shared/agent-session/failures/agent-session-write-notice-copy'
 import { translate } from '../i18n/mobile-i18n'
 import { sayMobileAgentSessionFailure } from './agent-session-failure-copy'
 
@@ -228,6 +228,11 @@ const SENTENCES: Record<AgentSessionWriteNoticeSentence, () => string> = {
     translate(
       'session.writeNotice.recordUnreadable',
       "OCC couldn't read this chat's saved state."
+    ),
+  mailOwnerUnconfirmed: () =>
+    translate(
+      'session.writeNotice.mailOwnerUnconfirmed',
+      "OCC couldn't confirm this message is still meant for this chat."
     ),
   chatNotFound: () => translate('session.writeNotice.chatNotFound', "OCC can't find this chat."),
   startNewChat: () =>

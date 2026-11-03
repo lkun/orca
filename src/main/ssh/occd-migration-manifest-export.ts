@@ -12,7 +12,7 @@ import type {
 } from '../../shared/occd-migration/occd-migration-manifest'
 import type { SshTarget } from '../../shared/ssh-types'
 import { REMOTE_RUNTIME_MAX_INBOUND_REQUEST_JSON_BYTES } from '../../shared/remote-runtime/remote-runtime-memory-limits'
-import type { Store } from '../persistence'
+import type { Store } from '../persistence/loading-store/store'
 import { collectOCCdMigrationSourceCatalog } from '../persistence/migrating-occd-catalog/occd-source-catalog'
 import { computeOCCdMigrationManifestSha256 } from '../occd/occd-migration-manifest-digest'
 import {

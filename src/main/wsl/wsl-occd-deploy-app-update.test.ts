@@ -67,7 +67,8 @@ vi.mock('./wsl-occd-active-probe', async (importOriginal) => ({
 }))
 vi.mock('../managed-server/lifecycle/occd-managed-version-gc', () => ({
   provenLiveDaemonVersion: () => null,
-  pruneManagedOCCdVersions: mocks.prune
+  pruneManagedOCCdVersions: mocks.prune,
+  pruneSupersededOCCdCandidates: async () => {}
 }))
 vi.mock('../managed-server/lifecycle/occd-managed-wake', () => ({
   wakeStoppedManagedOCCd: mocks.wake

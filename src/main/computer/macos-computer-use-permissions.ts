@@ -1,7 +1,7 @@
 import { spawn, spawnSync } from 'node:child_process'
 import { RuntimeClientError } from './runtime-client-error'
-import { isHostShuttingDown } from '../host-shutdown-state'
-import { readMacosBundleId, resetMacosTccPermission } from '../macos-tcc-reset'
+import { isHostShuttingDown } from '../startup/quit/host-shutdown-state'
+import { readMacosBundleId, resetMacosTccPermission } from '../macos-permissions/macos-tcc-reset'
 import { resolveMacOSComputerUseAppPath } from './macos-native-provider-paths'
 import { resolveComputerUseHelperUnavailableReason } from './macos-computer-use-permission-status'
 import { computerUsePermissionStatusGate } from './macos-computer-use-permission-status-gate'
@@ -12,7 +12,7 @@ import type {
   ComputerUsePermissionStatusResult
 } from '../../shared/computer-use-permissions-types'
 
-const DEFAULT_COMPUTER_USE_BUNDLE_ID = 'com.lkun.occ.computer-use'
+const DEFAULT_COMPUTER_USE_BUNDLE_ID = 'com.stablyai.occ.computer-use'
 
 export { getComputerUsePermissionStatus } from './macos-computer-use-permission-status'
 

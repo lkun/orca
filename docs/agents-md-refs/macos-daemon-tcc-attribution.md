@@ -30,13 +30,13 @@ So a packaged macOS GUI app starts its daemon from a private copy that the updat
 - `macos-daemon-launchd.ts` runs the copy's Node on the copy's `daemon-entry.js` as a
   non-persistent launchd job, so the daemon has OCC's own identity rather than the UI process's
   replaceable path. The label is fixed per profile and protocol
-  (`com.lkun.occ.terminal.<profile hash>.v<protocol>`). Before bootstrap a stopped job with
+  (`com.stablyai.occ.terminal.<profile hash>.v<protocol>`). Before bootstrap a stopped job with
   that label is booted out. A running job gets a bounded wait for shutdown and launchd retirement;
   a job still running afterward gets the retired-service recovery below for this protocol's label
   only, and stays fatal unless that recovery releases it; an unreadable job is fatal. `--entry-path` stays the installed
   app's entry, which the replacement preflight compares. The job file is 0600 and deleted right
   after bootstrap, because the environment may hold credentials. It sets
-  `AssociatedBundleIdentifiers` to `com.lkun.occ`, which is how a launchd job not installed
+  `AssociatedBundleIdentifiers` to `com.stablyai.occ`, which is how a launchd job not installed
   through SMAppService names the app it belongs to for Local Network access. Readiness is the
   normal authenticated handshake, fenced by the launch nonce.
 
@@ -48,7 +48,7 @@ Only Developer ID builds exercise the helper path in practice. A local ad hoc bu
 requirement is a cdhash, which the helper (a different binary) cannot match, so it falls back to the
 fork.
 
-## Why the helper is `com.lkun.occ`
+## Why the helper is `com.stablyai.occ`
 
 TCC records grants against the designated requirement, which for OCC is the identifier plus team.
 Signing the helper with the app's own identifier lets it inherit every existing grant, including Full

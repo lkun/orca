@@ -246,7 +246,7 @@ yay -S stably-occ-bin
 - **Twitter / X:** 업데이트와 공지는 **[@occ_build](https://x.com/occ_build)** 를 팔로우하세요.
 - **WeChat:** QR 코드를 스캔해 OCC 커뮤니티 WeChat 그룹에 참여하세요.
 
-  <img src="../assets/wechat-qr.jpg" alt="OCC 커뮤니티 WeChat 그룹 QR 코드" width="160" />
+  <img src="../assets/wechat-qr-group14.jpg" alt="OCC 커뮤니티 WeChat 그룹 QR 코드" width="160" />
 
 - **피드백과 아이디어:** 우리는 빠르게 출시합니다. 필요한 기능이 있나요? [새 기능을 요청](https://github.com/stablyai/occ/issues)하세요.
 - **개인정보 보호:** OCC가 수집하는 익명 사용 데이터와 수집 거부 방법은 [개인정보 및 텔레메트리 문서](https://www.onocc.dev/docs/telemetry)를 참고하세요.

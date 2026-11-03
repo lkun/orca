@@ -42,7 +42,7 @@ describe('isRoutedOCCDeepLink', () => {
     expect(isRoutedOCCDeepLink(LINK)).toBe(true)
     expect(isRoutedOCCDeepLink('occ://plugins/bad')).toBe(true)
     expect(isRoutedOCCDeepLink('occ://skills/share/abc_1')).toBe(true)
-    expect(isRoutedOCCDeepLink('occ://pair?code=x')).toBe(false)
+    expect(isRoutedOCCDeepLink('orca://pair?code=x')).toBe(false)
     expect(isRoutedOCCDeepLink('https://example.com/plugins/acme.dusk')).toBe(false)
   })
 })

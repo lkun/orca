@@ -33,8 +33,8 @@ const { macCommandPrefixForArch } = require('./verify-packaged-daemon-entry.cjs'
 const electronBuilderConfig = require('../electron-builder.config.cjs')
 
 const usageDescriptions = electronBuilderConfig.mac.extendInfo
-const appInfo = { CFBundleIdentifier: 'com.lkun.occ', CFBundleShortVersionString: '1.4.300' }
-const expectations = { appId: 'com.lkun.occ', usageDescriptions, minimumOs: '13.5' }
+const appInfo = { CFBundleIdentifier: 'com.stablyai.occ', CFBundleShortVersionString: '1.4.300' }
+const expectations = { appId: 'com.stablyai.occ', usageDescriptions, minimumOs: '13.5' }
 
 describe('terminal host Info.plist', () => {
   const info = buildMacTerminalHostInfo({ appInfo, usageDescriptions, minimumOs: '13.5' })
@@ -42,7 +42,7 @@ describe('terminal host Info.plist', () => {
   it("carries the app's identifier, every purpose string and the Node floor", () => {
     expect(info).toMatchObject({
       ...usageDescriptions,
-      CFBundleIdentifier: 'com.lkun.occ',
+      CFBundleIdentifier: 'com.stablyai.occ',
       CFBundleName: 'OCC',
       CFBundleDisplayName: 'OCC',
       CFBundleExecutable: 'occ-terminal-host',
@@ -59,7 +59,7 @@ describe('terminal host Info.plist', () => {
       findMacTerminalHostInfoProblems(
         {
           ...info,
-          CFBundleIdentifier: 'com.lkun.occ.helper',
+          CFBundleIdentifier: 'com.stablyai.occ.helper',
           CFBundleURLTypes: [],
           CFBundleDocumentTypes: [],
           UTExportedTypeDeclarations: [],
@@ -69,7 +69,7 @@ describe('terminal host Info.plist', () => {
         expectations
       )
     ).toEqual([
-      'CFBundleIdentifier is com.lkun.occ.helper, expected com.lkun.occ',
+      'CFBundleIdentifier is com.stablyai.occ.helper, expected com.stablyai.occ',
       'declares CFBundleURLTypes',
       'declares CFBundleDocumentTypes',
       'declares UTExportedTypeDeclarations',

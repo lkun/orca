@@ -8,7 +8,7 @@ import { getAppEnvironment, hasAppEnvironment } from '../../shared/app-environme
 import {
   OCC_AGENT_SESSION_ID_ENV,
   OCC_AGENT_SESSION_SPAWN_TOKEN_ENV
-} from '../../shared/agent-session-caller-env'
+} from '../../shared/agent-session/lifecycle/agent-session-caller-env'
 import {
   OCC_SCRUB_SAFE_LAUNCH_ENV,
   OCC_SCRUB_SAFE_PANE_ENV

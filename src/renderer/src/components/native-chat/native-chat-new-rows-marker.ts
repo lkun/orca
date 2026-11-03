@@ -2,8 +2,8 @@
 
 import { useCallback, useMemo, useState } from 'react'
 import { useOCCWindowForegroundFocused } from '@/hooks/use-occ-window-foreground-focused'
-import { compareAgentJournalPositions } from '../../../../shared/agent-session-journal-position'
-import type { AgentJournalPosition } from '../../../../shared/agent-session-journal-types'
+import { compareAgentJournalPositions } from '../../../../shared/agent-session/journal/agent-session-journal-position'
+import type { AgentJournalPosition } from '../../../../shared/agent-session/journal/agent-session-journal-types'
 import { nativeChatSlotKey, type NativeChatTranscriptSlot } from './native-chat-transcript-slots'
 
 /** Use journal positions for conversation rows, including folded-turn bars; terminal-backed rows have none and remain unmarked. */

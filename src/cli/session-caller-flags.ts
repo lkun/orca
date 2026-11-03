@@ -5,7 +5,7 @@ import { RuntimeClientError } from './runtime/types'
 import {
   injectedSessionAddress,
   readInjectedAgentSessionId
-} from '../shared/agent-session-caller-env'
+} from '../shared/agent-session/lifecycle/agent-session-caller-env'
 import { OCC_SESSION_ADDRESS_PREFIX } from '../shared/occ-session-address-prefix'
 
 export function refuseConflictingSessionCallerFlags(

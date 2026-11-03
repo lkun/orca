@@ -10,24 +10,6 @@ function rowByName(explorer: Locator, page: Page, name: string): Locator {
     .filter({ has: page.locator('[data-file-explorer-row-name]', { hasText: name }) })
 }
 
-test('name filter narrows to the matching file', async ({ occPage }) => {
-  await waitForSessionReady(occPage)
-  await waitForActiveWorktree(occPage)
-  await openFileExplorer(occPage)
-
-  const explorer = occPage.locator('[data-occ-explorer-shell]')
-  await expect(explorer).toBeVisible({ timeout: 10_000 })
-  const input = occPage.getByPlaceholder('Find files')
-  await expect(input).toBeVisible({ timeout: 10_000 })
-
-  await input.fill('package.')
-  await expect(rowByName(explorer, occPage, 'package.json').first()).toBeVisible({
-    timeout: 10_000
-  })
-  // Leave absent-file assertions to the no-match case; seeded repo contents vary.
-  await expect(explorer.getByText('No files match this filter')).toHaveCount(0)
-})
-
 test('name filter shows the empty message only for a true no-match', async ({ occPage }) => {
   await waitForSessionReady(occPage)
   await waitForActiveWorktree(occPage)

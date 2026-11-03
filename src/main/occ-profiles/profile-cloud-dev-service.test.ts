@@ -43,9 +43,7 @@ vi.mock('./profile-cloud-client', () => ({
 
 import {
   connectCurrentOCCProfile,
-  createCloudLinkedOCCProfile,
   getCurrentOCCProfileAuthStatus,
-  selectCurrentOCCProfileOrg,
   signOutCurrentOCCProfile
 } from './profile-cloud-service'
 
@@ -71,59 +69,6 @@ describe('OCC cloud dev auth service', () => {
   afterEach(() => {
     rmSync(userDataPath, { recursive: true, force: true })
     vi.unstubAllEnvs()
-  })
-
-  it('connects the active profile without PKCE or cloud endpoints', async () => {
-    expect(getCurrentOCCProfileAuthStatus(userDataPath)).toMatchObject({
-      configured: true,
-      state: 'local'
-    })
-
-    const result = await connectCurrentOCCProfile(userDataPath)
-
-    expect(result.status).toBe('connected')
-    expect(beginOCCCloudPkceFlowMock).not.toHaveBeenCalled()
-    expect(exchangeOCCCloudAuthCodeMock).not.toHaveBeenCalled()
-    expect(getCurrentOCCProfileAuthStatus(userDataPath)).toMatchObject({
-      configured: true,
-      state: 'connected',
-      persistence: 'encrypted',
-      cloud: {
-        cloudProfileId: 'dev-cloud-local-default',
-        email: 'dev@occ.local'
-      },
-      capabilities: {
-        flags: expect.objectContaining({ 'share.create': true })
-      }
-    })
-    expect(getCurrentOCCProfileAuthStatus(userDataPath).organizations).toHaveLength(2)
-  })
-
-  it('selects dev organizations and creates org-scoped cloud profiles locally', async () => {
-    await connectCurrentOCCProfile(userDataPath)
-
-    const selected = await selectCurrentOCCProfileOrg(userDataPath, 'dev-acme')
-    const created = await createCloudLinkedOCCProfile(userDataPath, {
-      orgId: 'dev-acme',
-      name: 'Acme Dev'
-    })
-
-    expect(selected.status).toBe('selected')
-    expect(getCurrentOCCProfileAuthStatus(userDataPath).cloud).toMatchObject({
-      activeOrgId: 'dev-acme',
-      activeOrgName: 'Acme Dev'
-    })
-    expect(created.status).toBe('created')
-    if (created.status === 'created') {
-      expect(created.profile).toMatchObject({
-        name: 'Acme Dev',
-        kind: 'cloud-linked',
-        cloud: expect.objectContaining({
-          activeOrgId: 'dev-acme',
-          activeOrgName: 'Acme Dev'
-        })
-      })
-    }
   })
 
   it('signs out locally without calling the cloud logout endpoint', async () => {

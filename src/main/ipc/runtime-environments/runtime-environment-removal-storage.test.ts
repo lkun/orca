@@ -51,7 +51,8 @@ describe('runtime environment removal storage clearing', () => {
       store: {
         getSettings: () => ({}),
         removeWorkspaceSessionHost: vi.fn(),
-        setRemoteLayoutSnapshot: vi.fn()
+        setRemoteLayoutSnapshot: vi.fn(),
+        setHostRepoCatalogSnapshot: vi.fn()
       } as never,
       getUserDataPath: () => '/tmp/occ-user-data',
       invalidateTransport: () => teardown
@@ -76,7 +77,8 @@ describe('runtime environment removal storage clearing', () => {
       store: {
         getSettings: () => ({}),
         removeWorkspaceSessionHost: vi.fn(),
-        setRemoteLayoutSnapshot: vi.fn()
+        setRemoteLayoutSnapshot: vi.fn(),
+        setHostRepoCatalogSnapshot: vi.fn()
       } as never,
       getUserDataPath: () => '/tmp/occ-user-data',
       invalidateTransport: () => Promise.resolve()

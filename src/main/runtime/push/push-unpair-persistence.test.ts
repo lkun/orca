@@ -35,7 +35,7 @@ describe('mobile revoke when the registry write fails', () => {
     const service = DesktopPushService.create({
       runtime,
       runtimeRpc: server,
-      gatewayUrl: 'https://push.onocc.dev',
+      gatewayUrl: 'https://push.onorca.dev',
       client: client as never
     })!
     service.start()

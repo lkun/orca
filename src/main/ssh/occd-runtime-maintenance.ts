@@ -35,7 +35,10 @@ import { readRemoteOCCdBuildHash } from '../managed-server/install/occd-remote-b
 import { deployOCCd, type OCCdDeployOptions } from './occd-remote-deploy'
 import type { OCCdUpdateForce } from './occd-update-plan'
 import { OCCD_ACTIVATION_POLICY_REFUSED_CODE } from './occd-installed-activation'
-import { pruneManagedOCCdVersions } from '../managed-server/lifecycle/occd-managed-version-gc'
+import {
+  pruneManagedOCCdVersions,
+  pruneSupersededOCCdCandidates
+} from '../managed-server/lifecycle/occd-managed-version-gc'
 import { clearOCCdUpdateFailedThisLaunch } from '../managed-server/lifecycle/occd-managed-update-failure-memory'
 import { admitOCCdRecordForIntent } from '../managed-server/lifecycle/occd-managed-update-decision'
 import { rollbackOCCd } from '../managed-server/install/occd-remote-rollback'
@@ -156,6 +159,7 @@ export async function runManagedOCCdUpdate(
     if (result.code !== OCCD_ACTIVATION_POLICY_REFUSED_CODE) {
       recordManagedOCCdUpdateDeferral(environment.id, deferral)
     }
+    await pruneSupersededOCCdCandidates(slot, context.serverTarget, result.fullVersion)
     return deferral
   }
   clearManagedOCCdUpdateDeferral(environment.id)

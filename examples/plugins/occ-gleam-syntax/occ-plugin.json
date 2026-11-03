@@ -1,5 +1,5 @@
 {
-  "$schema": "./occ-plugin.v2.schema.json",
+  "$schema": "https://raw.githubusercontent.com/stablyai/occ/main/docs/schemas/plugins/occ-plugin.v2.schema.json",
   "manifestVersion": 2,
   "execution": "data",
   "id": "occ-gleam-syntax",

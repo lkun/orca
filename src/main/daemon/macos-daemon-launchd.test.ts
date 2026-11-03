@@ -217,7 +217,7 @@ it('launches the copied helper on plain Node and leaves no inherited credentials
   expect(job).toMatchObject({
     Label: macDaemonJobLabel(state.root),
     KeepAlive: false,
-    AssociatedBundleIdentifiers: ['com.lkun.occ'],
+    AssociatedBundleIdentifiers: ['com.stablyai.occ'],
     MaterializeDatalessFiles: true,
     EnvironmentVariables: { OCC_TEST_SECRET: 'test-value' }
   })

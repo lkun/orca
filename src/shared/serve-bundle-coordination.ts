@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 
 /** launchd label prefix `occ serve service install` writes; only those supervisors register. */
-export const SERVE_LAUNCHD_LABEL_PREFIX = 'com.lkun.occ.serve'
+export const SERVE_LAUNCHD_LABEL_PREFIX = 'com.stablyai.occ.serve'
 export const SERVE_COORDINATION_PROTOCOL = 1
 /** occd restarts its own browser helper; under the serve prefix so older installers park it too. */
 export const OCCD_BROWSER_PARK_LABEL = `${SERVE_LAUNCHD_LABEL_PREFIX}.occd-browser`

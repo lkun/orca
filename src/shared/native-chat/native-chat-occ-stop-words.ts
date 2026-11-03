@@ -1,4 +1,4 @@
-import type { AgentSessionOCCStopCause } from '../agent-session-occ-stop'
+import type { AgentSessionOCCStopCause } from '../agent-session/lifecycle/agent-session-occ-stop'
 import { joinSentences } from '../sentence-joining'
 
 /** English pieces; desktop translates each with the same fallback, the phone keeps English. */
