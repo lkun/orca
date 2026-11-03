@@ -89,7 +89,7 @@ gh pr create \
 
 输出：上游 SHA、版本号、分支、PR 链接、typecheck/build 结果。
 
-7. 合并并打 tag（构建通过后自动执行）
+8. 合并并打 tag（构建通过后自动执行）
 
 ```bash
 PR=$(gh pr view --repo lkun/orca --head "$(git branch --show-current)" --json number -q .number)
@@ -101,7 +101,7 @@ git tag "v<upstream-version>-occ.<n>"
 git push origin "v<upstream-version>-occ.<n>"
 ```
 
-8. 失败处理
+9. 失败处理
 
 `pnpm tc` 或 `pnpm build:unpack` 失败时停止：不推送、不合并、不打 tag，报告错误。
 
