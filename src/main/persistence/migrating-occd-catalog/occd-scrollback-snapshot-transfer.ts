@@ -8,7 +8,7 @@ import {
   type OCCdMigrationSnapshotUploadState,
   type OCCdMigrationTerminalScrollbackSnapshot
 } from '../../../shared/occd-migration/occd-migration-scrollback'
-import { syncDirectoryDurablySync } from '../../durable-file-write'
+import { syncDirectoryDurablySync } from '../../filesystem/durable-file-write'
 import {
   getTerminalScrollbackSnapshotPath,
   getTerminalScrollbackSnapshotRoot,

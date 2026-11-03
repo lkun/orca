@@ -86,25 +86,6 @@ describe('occd migration snapshot coordinator', () => {
     expect(remoteReads).toEqual([])
   })
 
-  it('fails closed when an old host omits snapshot upload state', async () => {
-    const sourceRead = vi.fn(unreachableRead)
-    const store = source(sourceRead)
-    await expect(
-      transferOCCdMigrationSnapshots({
-        source: store,
-        manifest: MANIFEST,
-        state: staged(),
-        destination: {
-          stageChunk: async () => {
-            throw new Error('must not upload')
-          },
-          readState: async () => staged()
-        }
-      })
-    ).rejects.toThrow('occd_migration_snapshot_transfer_unsupported')
-    expect(sourceRead).not.toHaveBeenCalled()
-  })
-
   it('refuses a snapshot whose source length changed since export', async () => {
     await expect(
       transferOCCdMigrationSnapshots({

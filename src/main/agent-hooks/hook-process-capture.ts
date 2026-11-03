@@ -18,6 +18,9 @@ export function buildHookProcessCapture(): string[] {
     '    occ_agent_start=$(TZ=UTC0 LC_ALL=C /bin/ps -p "$OCC_HOOK_AGENT_PID" -o lstart= 2>/dev/null | sed \'s/^ *//;s/ *$//\')',
     '    [ -z "$occ_agent_start" ] || occ_agent_process=$(printf \'{"pid":%s,"platform":"darwin","startTime":"%s"}\' "$OCC_HOOK_AGENT_PID" "$occ_agent_start")',
     '  fi ;;',
-    'esac'
+    'esac',
+    // A tmux pane's own server, socket and pane id; only a lookup hint for the host's attachment check.
+    'occ_tmux_pane=',
+    'case "${TMUX_PANE:-}" in %[0-9]*) [ -z "${TMUX:-}" ] || occ_tmux_pane="$TMUX_PANE ${TMUX%,*,*}" ;; esac'
   ]
 }

@@ -116,6 +116,7 @@ export abstract class OCCRuntimeWithSplitPaneInMain extends OCCRuntimeWithSplitP
       ...(opts.wslUserAct ? { wslUserAct: true } : {}),
       connectionId: workspace.connectionId,
       worktreeId: workspace.id,
+      resolvedWorkspace: workspace,
       preAllocatedHandle,
       tabId: source.tabId,
       leafId,
@@ -135,6 +136,7 @@ export abstract class OCCRuntimeWithSplitPaneInMain extends OCCRuntimeWithSplitP
       throw new Error('terminal_exited')
     }
     recordPtySurface(
+      this.terminalIdentity,
       createdPty,
       source.tabId,
       makePaneKey(source.tabId, leafId),

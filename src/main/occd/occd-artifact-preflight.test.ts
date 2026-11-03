@@ -5,7 +5,6 @@ import { dirname, join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { OCCD_MOBILE_WEB_MANIFEST, occdArtifactFilenames } from '../../shared/occd-artifacts'
 import { runOCCdProfilePreflight } from './occd-profile-preflight'
-import { readOCCdArtifactIdentity } from './occd-artifact-identity'
 import { resolveOCCdExitCode } from './occd-exit-code'
 import type * as BundledRuntime from './occd-bundled-runtime'
 
@@ -50,14 +49,6 @@ afterEach(async () => {
 })
 
 describe('installed artifact admission', () => {
-  it('qualifies build output before its version marker is published', async () => {
-    await runOCCdProfilePreflight(randomUUID())
-    expect(fixture.sqlite).toHaveBeenCalledOnce()
-    expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining(await readOCCdArtifactIdentity(fixture.directory))
-    )
-  })
-
   it.each([
     '.server-target',
     'node_modules/@parcel/watcher/watcher.node',

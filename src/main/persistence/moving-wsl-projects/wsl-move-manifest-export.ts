@@ -29,7 +29,7 @@ import {
   rewriteOCCdMigrationPayloadPaths,
   rewriteOCCdMigrationWorktreeId
 } from '../../ssh/occd-migration-path-rewrite'
-import type { Store } from '../../persistence'
+import type { Store } from '../loading-store/store'
 import { compareKeys } from '../migrating-occd-catalog/occd-source-key-order'
 import { wslUncPathToLinux } from '../../../shared/wsl-paths'
 import { createUncToLinuxPathRewriter } from './wsl-move-path-rewriter'

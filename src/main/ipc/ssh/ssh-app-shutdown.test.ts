@@ -21,7 +21,7 @@ vi.mock('../../managed-server/lifecycle/occd-managed-tunnel', async (importOrigi
 
 import { beginSshShutdown } from './ssh-shutdown-drain'
 import type { SshTarget } from '../../../shared/ssh-types'
-import { quitTeardownStartGate } from '../../quit-teardown-start-gate'
+import { quitTeardownStartGate } from '../../startup/quit/quit-teardown-start-gate'
 import { createSshIpcHarness } from './ssh-ipc-test-harness'
 
 const { mockSshStore, mockConnectionManager, mockPortForwardManager } = mocks

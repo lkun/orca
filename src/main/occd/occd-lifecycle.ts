@@ -1,5 +1,5 @@
 import { setRuntimeBrowserCommandsFactory } from '../runtime/runtime-browser-commands-factory'
-import { markHostShuttingDown } from '../host-shutdown-state'
+import { markHostShuttingDown } from '../startup/quit/host-shutdown-state'
 import { setDesktopBrowserBridgeHostEnabled } from '../runtime/desktop-browser-bridge/desktop-browser-bridge-registry'
 import { OCCD_MANAGED_ACTIVATION_ROOT_ENV } from '../../shared/occd-managed-launch-env'
 import { startOCCdBrowserProvider } from './occd-browser-startup'
@@ -8,7 +8,7 @@ import type { OCCdManagedStopInstance } from '../../shared/occd-stop-request'
 import { acquireOCCdInstanceLock } from './occd-instance-lock'
 import { OCCD_BUNDLED_LAUNCHER_ENV } from './occd-bundled-runtime'
 import { resolveOCCdExitCode } from './occd-exit-code'
-import { recordAgentSessionRuntimeEnd } from '../runtime/agent-session-runtime-end-record'
+import { recordAgentSessionRuntimeEnd } from '../runtime/agent-session/records/agent-session-runtime-end-record'
 import { OCCD_SHUTDOWN_DEADLINE_MS } from './occd-stop-deadlines'
 import { holdOCCdTerminalAdmissionUntilExit } from './occd-stop-terminal-admission'
 import {
@@ -95,7 +95,7 @@ export function installOCCdShutdownSignals(
 
 export async function stopOCCdStructuredAgentSessions(): Promise<void> {
   const { stopStructuredAgentSessionRuntime } =
-    await import('../runtime/structured-agent-session-runtime')
+    await import('../runtime/agent-session/structured-agent-session-runtime')
   await stopStructuredAgentSessionRuntime({ trigger: 'quit' })
 }
 

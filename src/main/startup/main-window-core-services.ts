@@ -1,7 +1,7 @@
 import type { BrowserWindow } from 'electron'
 import { registerCoreHandlers } from '../ipc/register-core-handlers/register-core-handlers'
 import { attachMainWindowServices } from '../window/attach-main-window-services'
-import { initTccPromptNotice } from '../macos-tcc-prompt-notice'
+import { initTccPromptNotice } from '../macos-permissions/macos-tcc-prompt-notice'
 import { resolveUpdateInstallMode } from '../updater'
 import { desktopConnectorCloud } from './main-process-connector-startup'
 import { mainProcessState as state } from './main-process-state'
@@ -121,6 +121,9 @@ export function attachMainWindowCoreServices(
           marketplace: state.pluginMarketplaceService,
           installer: state.pluginMarketplaceInstaller,
           ...(state.pluginAutoUpdater ? { autoUpdater: state.pluginAutoUpdater } : {}),
+          ...(state.pluginInstallStatsService
+            ? { installStats: state.pluginInstallStatsService }
+            : {}),
           ...(state.pluginUpdateReviewNotices
             ? { reviewNotices: state.pluginUpdateReviewNotices }
             : {})

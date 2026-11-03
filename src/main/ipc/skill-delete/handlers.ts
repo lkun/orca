@@ -1,5 +1,5 @@
 import { app } from 'electron'
-import type { Store } from '../../persistence'
+import type { Store } from '../../persistence/loading-store/store'
 import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import {
   SkillDeleteRequestSchema,

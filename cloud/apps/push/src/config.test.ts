@@ -42,7 +42,7 @@ describe('push gateway config', () => {
       OCC_PUSH_APNS_KEY: keyPem,
       OCC_PUSH_APNS_KEY_ID: 'ABCDE12345',
       OCC_PUSH_APPLE_TEAM_ID: 'TEAM123456',
-      OCC_PUSH_APNS_TOPIC: 'com.lkun.occ.mobile.dev',
+      OCC_PUSH_APNS_TOPIC: 'com.stably.occ.mobile.dev',
       OCC_PUSH_FCM_PROJECT_ID: 'onocc-staging',
       OCC_PUSH_TRUSTED_PROXY_HOPS: '1'
     })
@@ -51,7 +51,7 @@ describe('push gateway config', () => {
       databaseUrl: 'postgres://localhost/occ_push',
       dataDir: '/var/lib/push',
       apns: { keyPem, keyId: 'ABCDE12345', teamId: 'TEAM123456' },
-      apnsTopic: 'com.lkun.occ.mobile.dev',
+      apnsTopic: 'com.stably.occ.mobile.dev',
       trustedProxyHops: 1,
       fcmProjectId: 'onocc-staging'
     })

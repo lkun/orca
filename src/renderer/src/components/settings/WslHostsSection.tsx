@@ -143,7 +143,7 @@ export function WslHostsSection({
                 ? getWslHostsPausedLabel()
                 : translate(
                     'auto.components.settings.wslHosts.description',
-                    'OCC runs a server inside each distro. A stopped distro starts only when you open one of its projects or connect it here.'
+                    'OCC runs a server inside each distro. Opening a project never starts a stopped distro: click Start, open a new terminal, or connect it here.'
                   ))}
           </p>
         </div>

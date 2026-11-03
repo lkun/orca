@@ -26,7 +26,7 @@ public final class AuthenticatedConnectionHangupMonitor: @unchecked Sendable {
     public convenience init(
         fileDescriptor: Int32,
         queue: DispatchQueue = DispatchQueue(
-            label: "com.lkun.occ.computer-use-owner-hangup"
+            label: "com.stablyai.occ.computer-use-owner-hangup"
         ),
         onEvent: @escaping @Sendable () -> Void = {},
         onHangup: @escaping @Sendable () -> Void
@@ -51,7 +51,7 @@ public final class AuthenticatedConnectionHangupMonitor: @unchecked Sendable {
     init(
         fileDescriptor: Int32,
         queue: DispatchQueue = DispatchQueue(
-            label: "com.lkun.occ.computer-use-owner-hangup"
+            label: "com.stablyai.occ.computer-use-owner-hangup"
         ),
         registerEvents: RegisterEvents,
         closeDescriptor: @escaping CloseDescriptor,

@@ -55,14 +55,15 @@ The exact release the catalog vouches for. OCC refuses bytes that differ.
 | `types` | (`"interface-language"` \| `"app-theme"` \| `"terminal-theme"` \| `"icon-theme"` \| `"syntax"` \| `"instructions"` \| `"panel"` \| `"editor"` \| `"worker"`)[] | no | 1.4.245 | Optional; OCC derives it from `contributes` and `execution`. When present, every kind of contribution the release carries, matching its manifest exactly. `instructions` needs the `declarative` profile or higher, `panel` and `editor` need `sandboxed-ui`, and `worker` needs `trusted-worker`. Example: `["syntax"]` |
 | `name` | string | no | 1.4.245 | The manifest's `name`, so OCC can suggest the plugin before downloading it. Example: `"Gleam"` |
 | `license` | string | no | 1.4.245 | SPDX license expression. Example: `"MIT"` |
-| `repository` | string | no | 1.4.245 | Source repository page, https only. Example: `"https://github.com/acme/occ-gleam-syntax"` |
+| `repository` | string | no | 1.4.245 | Source repository page, https only. OCC links it when it is a github.com or gitlab.com repository of the plugin's publisher. Example: `"https://github.com/acme/occ-gleam-syntax"` |
+| `sourceUnavailable` | `true` | no | 1.4.246 | Set when the release's `repository` is gone and `source` serves an archived copy, so OCC links `source` instead. Example: `true` |
 | `homepage` | string | no | 1.4.245 | Project homepage, https only. Example: `"https://example.com/gleam"` |
 | `updatedAt` | string | no | 1.4.245 | When this release was published, as an ISO 8601 date or date-time. Example: `"2026-10-20"` |
 | `changelog` | string | no | 1.4.245 | What changed in this release, as plain text. At most 2000 characters. Example: `"Adds highlighting for use expressions."` |
 | `images` | [CatalogImages](#catalogimages) | no | 1.4.245 | Images extracted from the release by catalog CI, which re-encodes them and strips metadata. Same rules as the manifest: icon PNG, WEBP, static, at least 128×128, square, at most 256 KB. Cover PNG, JPEG, WEBP, static, at least 800×500, at most 1024 KB. Screenshots PNG, JPEG, WEBP, static, at least 1280×800, at most 1536 KB. Images must not imitate OCC's trust badges. |
 | `themePreview` | [CatalogThemePreview](#catalogthemepreview)[] | no | 1.4.245 | Up to 4 theme palettes for listing art. Display only; the installed theme files decide the real colors. |
 | `contributes` | [CatalogContribution](#catalogcontribution)[] | no | 1.4.245 | What the release adds, as the listing shows it. Generate it with the catalog tooling; OCC refuses an install whose manifest says otherwise. |
-| `capabilities` | (`"workspace:read"` \| `"agent:read"` \| `"terminal:send"` \| `"notifications:show"` \| `"storage:own"` \| `"secrets:own"` \| `"settings:own"`)[] | no | 1.4.245 | Every capability the release asks for. OCC refuses an install whose manifest asks for different ones. Example: `["notifications:show"]` |
+| `capabilities` | (`"workspace:read"` \| `"workspace:write"` \| `"agent:read"` \| `"agent:launch"` \| `"terminal:send"` \| `"terminal:read"` \| `"notifications:show"` \| `"storage:own"` \| `"secrets:own"` \| `"settings:own"`)[] | no | 1.4.245 | Every capability the release asks for. OCC refuses an install whose manifest asks for different ones. Example: `["notifications:show"]` |
 | `fileTypes` | string[] | no | 1.4.245 | Extensions, without the dot, that this release opens. OCC suggests the plugin when such a file has no viewer. |
 | `editorFileTypes` | string[] | no | 1.4.245 | The `fileTypes` this release opens in a custom editor. OCC suggests the plugin for such a file even when it already opens it as text. |
 
@@ -107,7 +108,7 @@ One thing the release adds to OCC.
 
 | Field | Type | Required | Since | Description |
 | --- | --- | --- | --- | --- |
-| `kind` | `"panels"` \| `"commands"` \| `"events"` \| `"languagePacks"` \| `"keybindings"` \| `"vmRecipes"` \| `"themes"` \| `"terminalThemes"` \| `"iconThemes"` \| `"syntaxes"` \| `"customEditors"` \| `"newFiles"` | yes | 1.4.245 | Contribution point. Example: `"themes"` |
+| `kind` | `"panels"` \| `"commands"` \| `"events"` \| `"hooks"` \| `"languagePacks"` \| `"keybindings"` \| `"vmRecipes"` \| `"themes"` \| `"terminalThemes"` \| `"iconThemes"` \| `"syntaxes"` \| `"customEditors"` \| `"newFiles"` \| `"settings"` \| `"statusBarItems"` | yes | 1.4.245 | Contribution point. Example: `"themes"` |
 | `name` | string | yes | 1.4.245 | What the item is called in OCC. Example: `"Dusk"` |
 | `detail` | string | no | 1.4.245 | Extra context, such as file extensions. |
 

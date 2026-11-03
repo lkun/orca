@@ -81,6 +81,7 @@ export abstract class OCCRuntimeWithSplitPtyBackedTerminal extends OCCRuntimeWit
       envToDelete: opts.envToDelete,
       connectionId: workspace.connectionId,
       worktreeId: workspace.id,
+      resolvedWorkspace: workspace,
       ...(opts.wslUserAct ? { wslUserAct: true } : {}),
       preAllocatedHandle,
       tabId: parentTabId,
@@ -115,6 +116,7 @@ export abstract class OCCRuntimeWithSplitPtyBackedTerminal extends OCCRuntimeWit
     const createdPty = this.getOrCreatePtyWorktreeRecord(result.id)
     if (createdPty) {
       recordPtySurface(
+        this.terminalIdentity,
         createdPty,
         parentTabId,
         paneKey,

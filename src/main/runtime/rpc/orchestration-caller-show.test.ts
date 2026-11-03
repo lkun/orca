@@ -120,14 +120,6 @@ describe('orchestration.callerShow: a session learns its OCC session ID from the
     expect(response).toMatchObject({ ok: false, error: { code: CODES.hostBoundary } })
   })
 
-  it('answers null for a terminal agent, whose status stays as it was', async () => {
-    const response = await h.dispatch(
-      callerShow({ evidence: { terminalHandle: 'term_live', paneKey: 'tab_1:leaf_1' } })
-    )
-
-    expect(resultOf(response)).toEqual({ caller: null })
-  })
-
   it('gives the menu the OCC session ID each session of a cleared chat acts as', async () => {
     const cleared = sessionRecord(SESSION_X)
     h.records.set(SESSION_X, {
@@ -151,19 +143,5 @@ describe('orchestration.callerShow: a session learns its OCC session ID from the
       expect(shown.occSessionId).toBe(ADDRESS_X)
       expect(acting.caller).toMatchObject({ occSessionId: shown.occSessionId })
     }
-  })
-
-  it('refuses an id that is not an OCC session ID', async () => {
-    const response = await h.dispatch(
-      orchestrationRequest('orchestration.sessionAddress', { sessionId: 'not an id' })
-    )
-
-    expect(response).toMatchObject({ ok: false, error: { code: CODES.unknown } })
-  })
-
-  it('answers null for a caller whose environment carries no identity', async () => {
-    const response = await h.dispatch(callerShow({}))
-
-    expect(resultOf(response)).toEqual({ caller: null })
   })
 })

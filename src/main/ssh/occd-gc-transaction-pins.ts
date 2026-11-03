@@ -20,13 +20,15 @@ function transactionVersions(transaction: OCCdActivationTransaction): (string | 
 }
 
 export async function readOCCdGcTransactionPins(
-  target: OCCdRemoteExecTarget & { remoteHome: string }
+  target: OCCdRemoteExecTarget & { remoteHome: string },
+  /** The caller holds the activation fence, so its presence says nothing about another owner. */
+  options: { callerHoldsFence?: boolean } = {}
 ): Promise<OCCdGcTransactionPins> {
   try {
     const transaction = await readOCCdActivationTransaction(target)
     if (!transaction) {
       // An unjournaled fence may be a transaction starting or an interrupted release.
-      return (await occdActivationFenceExists(target))
+      return !options.callerHoldsFence && (await occdActivationFenceExists(target))
         ? { state: 'keep-all' }
         : { state: 'pinned', dirNames: [] }
     }

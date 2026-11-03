@@ -1,6 +1,7 @@
+import type * as PtySpawnValidationTypes from '../providers/working-directory-validation'
 import { describe, expect, it, vi } from 'vitest'
 import { delimiter } from 'node:path'
-import type * as LocalPtyUtils from '../providers/local-pty-utils'
+import type * as LocalPtyUtils from '../providers/local-pty/local-pty-executable-spawn'
 
 const {
   spawnMock,
@@ -44,11 +45,18 @@ vi.mock('../providers/windows-powershell-executable', () => ({
   getWindowsCmdPath: () => CMD_ABS
 }))
 
-vi.mock('../providers/local-pty-utils', async (importOriginal) => {
+vi.mock('../providers/local-pty/local-pty-executable-spawn', async (importOriginal) => {
   const actual = await importOriginal<typeof LocalPtyUtils>()
   return {
     ...actual,
-    resolveUnixShellPath: resolveUnixShellPathMock,
+    resolveUnixShellPath: resolveUnixShellPathMock
+  }
+})
+
+vi.mock('../providers/working-directory-validation', async (importOriginal) => {
+  const actual = await importOriginal<typeof PtySpawnValidationTypes>()
+  return {
+    ...actual,
     validateWorkingDirectory: validateWorkingDirectoryMock,
     validateWorkingDirectoryAsync: validateWorkingDirectoryMock
   }
@@ -130,10 +138,15 @@ describe('createPtySubprocess', () => {
       OCC_WSL_CLI_DIR: process.env.OCC_WSL_CLI_DIR,
       OCC_OCCD_MANAGED_ACTIVATION_ROOT: process.env.OCC_OCCD_MANAGED_ACTIVATION_ROOT,
       OCC_REMOTE_VIEWER_CLIPBOARD: process.env.OCC_REMOTE_VIEWER_CLIPBOARD,
-      OCC_OCCD_IDLE_TIMEOUT_MS: process.env.OCC_OCCD_IDLE_TIMEOUT_MS
+      OCC_OCCD_IDLE_TIMEOUT_MS: process.env.OCC_OCCD_IDLE_TIMEOUT_MS,
+      OCC_WSL_OCCD_HOST: process.env.OCC_WSL_OCCD_HOST,
+      OCC_WSL_DISTRO_GUID: process.env.OCC_WSL_DISTRO_GUID
     }
     process.env.OCC_OCCD_MANAGED_ACTIVATION_ROOT = '/home/u/.occ-remote/.activation'
     process.env.OCC_OCCD_IDLE_TIMEOUT_MS = '300000'
+    // A WSL host's own marker and distro id; a user's `occd` in its shell is not that host.
+    process.env.OCC_WSL_OCCD_HOST = '1'
+    process.env.OCC_WSL_DISTRO_GUID = '{0e3a7f2c-1b4d-4c5e-9f60-7a8b9c0d1e2f}'
     process.env.OCC_REMOTE_VIEWER_CLIPBOARD = '1'
     process.env.OCC_PANE_KEY = 'parent-tab:parent-leaf'
     process.env.OCC_TAB_ID = 'parent-tab'
@@ -160,6 +173,8 @@ describe('createPtySubprocess', () => {
     expect(env.OCC_OCCD_MANAGED_ACTIVATION_ROOT).toBeUndefined()
     expect(env.OCC_REMOTE_VIEWER_CLIPBOARD).toBeUndefined()
     expect(env.OCC_OCCD_IDLE_TIMEOUT_MS).toBeUndefined()
+    expect(env.OCC_WSL_OCCD_HOST).toBeUndefined()
+    expect(env.OCC_WSL_DISTRO_GUID).toBeUndefined()
   })
 
   it('preserves explicit child OCC pane identity over parent env', async () => {

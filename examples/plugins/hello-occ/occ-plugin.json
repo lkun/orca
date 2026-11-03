@@ -2,11 +2,10 @@
   "manifestVersion": 2,
   "execution": "trusted-worker",
   "id": "hello-occ",
-  "publisher": "your-github-user",
   "name": "Hello OCC",
   "version": "1.0.0",
   "description": "Sample plugin combining a panel, a worker command, and event subscriptions.",
-  "engines": { "occ": ">=1.4.245" },
+  "engines": { "occ": ">=1.4.246" },
   "pluginApi": 1,
   "main": "main.mjs",
   "contributes": {

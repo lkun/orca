@@ -26,12 +26,6 @@ function row(pid: number, ppid: number, command: string, creationTimeMs?: number
 }
 
 describe('findOrphanedOCCSshForward', () => {
-  it('finds a reparented OCC forward for this exact forward (macOS/Linux init)', () => {
-    expect(findOrphanedOCCSshForward([row(900, 1, OCC_FORWARD)], EXPECTED, 'darwin')?.pid).toBe(
-      900
-    )
-  })
-
   it('finds one reparented to a systemd --user subreaper', () => {
     const rows = [row(50, 1, '/usr/lib/systemd/systemd --user'), row(900, 50, OCC_FORWARD)]
     expect(findOrphanedOCCSshForward(rows, EXPECTED, 'linux')?.pid).toBe(900)

@@ -56,6 +56,7 @@ export abstract class OCCRuntimeWithHeadlessPaneMoveToNewTab extends OCCRuntimeW
       const pty = result.ptyId ? this.ptysById.get(result.ptyId) : undefined
       if (pty) {
         recordPtySurface(
+          this.terminalIdentity,
           pty,
           move.targetTabId,
           makePaneKey(move.targetTabId, move.leafId),

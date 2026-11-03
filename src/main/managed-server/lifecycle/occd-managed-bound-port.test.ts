@@ -6,7 +6,7 @@ vi.mock('../install/occd-remote-runtime-control', () => ({ execOCCdRemote }))
 const resolveOCCdRemoteContext = vi.hoisted(() => vi.fn())
 vi.mock('../install/occd-remote-context', () => ({ resolveOCCdRemoteContext }))
 
-import { occdBoundPort, resolveManagedOCCdTunnelPort } from './occd-managed-bound-port'
+import { resolveManagedOCCdTunnelPort } from './occd-managed-bound-port'
 import type { KnownRuntimeEnvironment } from '../../../shared/runtime-environments'
 import type { SshTarget } from '../../../shared/ssh-types'
 import { unusedOCCdHostTransport } from '../../ssh/unused-host-transport.test-fixture'
@@ -14,16 +14,6 @@ import { unusedOCCdHostTransport } from '../../ssh/unused-host-transport.test-fi
 function readinessLine(boundEndpoint: string | null): string {
   return `${JSON.stringify({ type: 'occ_server_ready', runtimeId: 'runtime-1', boundEndpoint })}\n`
 }
-
-describe('occdBoundPort', () => {
-  it('reads the port occd actually bound', () => {
-    expect(occdBoundPort({ boundEndpoint: 'ws://127.0.0.1:58520' })).toBe(58_520)
-  })
-
-  it.each([null, 'not a url', 'ws://127.0.0.1'])('returns null for %s', (boundEndpoint) => {
-    expect(occdBoundPort({ boundEndpoint })).toBeNull()
-  })
-})
 
 describe('resolveManagedOCCdTunnelPort', () => {
   const link = {

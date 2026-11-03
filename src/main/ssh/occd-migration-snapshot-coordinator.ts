@@ -8,7 +8,7 @@ import {
   type OCCdMigrationSnapshotChunkRequest,
   type OCCdMigrationSnapshotChunkResult
 } from '../../shared/occd-migration/occd-migration-scrollback'
-import type { Store } from '../persistence'
+import type { Store } from '../persistence/loading-store/store'
 
 export type OCCdMigrationSnapshotSource = Pick<Store, 'readOCCdMigrationSourceSnapshotChunk'>
 

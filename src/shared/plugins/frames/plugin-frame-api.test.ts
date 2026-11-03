@@ -3,59 +3,48 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { buildPluginPanelShellHtml, type PluginFrameSurface } from './plugin-panel-shell'
-
-/** The injected `window.occ` is the public frame API; the envelope under it stays internal. */
-
-type FrameOCC = {
-  api: { major: number; minor: number }
-  host: {
-    call: (method: string, params?: unknown, options?: { signal?: AbortSignal }) => Promise<unknown>
-    has: (method: string) => boolean
-  }
-  on: (event: string, handler: (payload: unknown) => unknown) => { dispose: () => void }
-  document?: {
-    get: () => Promise<unknown>
-    onDidChange: (handler: (document: unknown) => void) => { dispose: () => void }
-    applyEdit: (edit: unknown) => Promise<unknown>
-  }
-}
-
-const realParent = window.parent
-
-afterEach(() => {
-  Object.defineProperty(window, 'parent', { value: realParent, configurable: true })
-})
-
-function mountShell(surface: PluginFrameSurface = 'panel') {
-  const parent = { postMessage: vi.fn() }
-  Object.defineProperty(window, 'parent', { value: parent, configurable: true })
-  const script = buildPluginPanelShellHtml('<main></main>', surface).match(
-    /<script>\n([\s\S]*?)<\/script>/
-  )?.[1]
-  // Configurable only so happy-dom can tear down; the frame's copy stays locked.
-  window.eval(script!.replaceAll('configurable: false', 'configurable: true'))
-  const occ: FrameOCC = Object.getOwnPropertyDescriptor(window, 'occ')?.value
-  const fromHost = (data: unknown, source: unknown = parent) =>
-    window.dispatchEvent(
-      // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the shim only compares source identity.
-      new MessageEvent('message', { data, source: source as Window })
-    )
-  const posted = () => parent.postMessage.mock.calls.map(([message]) => message)
-  return { occ, parent, fromHost, posted }
-}
-
-const flush = () => new Promise((resolve) => setTimeout(resolve, 0))
+import { buildPluginGuestShellHtml, type PluginFrameSurface } from './plugin-panel-shell'
+import { flush, mountShell, type FrameOCC } from './plugin-frame-shell-mount.test-fixture'
 
 describe('window.occ', () => {
+  it('times out a call the host never answers, and bounds calls in flight', async () => {
+    vi.useFakeTimers()
+    try {
+      const { occ, posted } = mountShell()
+      const lost = occ.host.call('workspace.readContext', {})
+      const outcome = lost.then(
+        () => 'resolved',
+        (error: { code?: string }) => error.code
+      )
+      await vi.advanceTimersByTimeAsync(120_000)
+      await expect(outcome).resolves.toBe('timeout')
+      expect(posted().at(-1)).toMatchObject({ kind: 'cancel' })
+      const flood = Array.from({ length: 256 }, () =>
+        occ.host.call('workspace.readContext', {}).catch(() => undefined)
+      )
+      await expect(occ.host.call('workspace.readContext', {})).rejects.toMatchObject({
+        code: 'rate_limited'
+      })
+      void flood
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
   it('is frozen, announces ready with the protocol, and knows api and methods up front', () => {
     const { occ, posted } = mountShell()
     expect(Object.isFrozen(occ)).toBe(true)
     expect(Object.isFrozen(occ.host)).toBe(true)
     expect(posted()).toEqual([{ occ: 1, kind: 'evt', event: 'ready', payload: { protocol: 1 } }])
-    expect(occ.api).toEqual({ major: 1, minor: 0 })
+    expect(occ.api).toEqual({ major: 1, minor: 2 })
+    expect(occ.shell).toBeUndefined()
+    expect(occ.files).toBeUndefined()
+    expect(occ.host.has('shell.openExternal')).toBe(false)
     expect(occ.host.has('workspace.readContext')).toBe(true)
     expect(occ.host.has('terminal.sendText')).toBe(false)
+    expect(occ.host.has('plugin.request')).toBe(true)
+    expect(Object.isFrozen(occ.plugin)).toBe(true)
+    expect(Object.isFrozen(occ.storage)).toBe(true)
     expect(occ.document).toBeUndefined()
   })
 
@@ -200,6 +189,132 @@ describe('window.occ.document', () => {
       event: 'editor.keydown',
       payload: { key: 's', code: 'KeyS', metaKey: true, ctrlKey: false }
     })
+  })
+})
+
+/** The guest shell over a fake preload transport; `fromHost` delivers like ipcRenderer.on. */
+function mountGuestShell(surface: PluginFrameSurface = 'panel') {
+  Reflect.deleteProperty(window, 'occ')
+  const send = vi.fn()
+  let receive: (message: unknown) => void = () => {}
+  Object.defineProperty(window, '__occPluginFrameTransport', {
+    value: { send, subscribe: (fn: (message: unknown) => void) => (receive = fn) },
+    configurable: true
+  })
+  const script =
+    buildPluginGuestShellHtml('<main></main>', surface)
+      .match(/<script>\n([\s\S]*?)<\/script>/)?.[1]
+      ?.replaceAll('configurable: false', 'configurable: true') ?? ''
+  window.eval(script)
+  const occ: FrameOCC = Object.getOwnPropertyDescriptor(window, 'occ')?.value
+  const posted = () => send.mock.calls.map(([message]) => message)
+  return { occ, fromHost: (data: unknown) => receive(data), posted }
+}
+
+function setUserActivation(isActive: boolean | null): void {
+  Object.defineProperty(navigator, 'userActivation', {
+    value: isActive === null ? undefined : { isActive },
+    configurable: true
+  })
+}
+
+describe('window.occ user-gesture methods', () => {
+  afterEach(() => setUserActivation(null))
+
+  it('refuse without transient activation and never reach the host', async () => {
+    const { occ, posted } = mountGuestShell()
+    setUserActivation(false)
+    await expect(occ.shell!.openExternal('https://example.com')).rejects.toMatchObject({
+      code: 'not_permitted'
+    })
+    await expect(occ.files!.saveAs({ data: 'x' })).rejects.toMatchObject({ code: 'not_permitted' })
+    expect(posted()).toHaveLength(1)
+  })
+
+  it('call the host with activation, sending bytes as an ArrayBuffer', () => {
+    const { occ, posted } = mountGuestShell()
+    setUserActivation(true)
+    void occ.shell!.openExternal('https://example.com/docs')
+    void occ.files!.saveAs({
+      suggestedName: 'chart.png',
+      mimeType: 'image/png',
+      data: new Uint8Array([1, 2, 3]).subarray(1)
+    })
+    const [open, save] = posted().slice(1)
+    expect(open).toMatchObject({
+      kind: 'req',
+      method: 'shell.openExternal',
+      params: { url: 'https://example.com/docs' }
+    })
+    expect(save).toMatchObject({
+      kind: 'req',
+      method: 'files.saveAs',
+      params: { suggestedName: 'chart.png', mimeType: 'image/png' }
+    })
+    expect(save.params.data).toBeInstanceOf(ArrayBuffer)
+    expect([...new Uint8Array(save.params.data)]).toEqual([2, 3])
+  })
+})
+
+describe('window.occ saveAs and locale', () => {
+  afterEach(() => setUserActivation(null))
+
+  it('resolves a save and a cancelled dialog alike, with their status', async () => {
+    const { occ, fromHost } = mountGuestShell()
+    setUserActivation(true)
+    const saved = occ.files!.saveAs({ data: 'a' })
+    const cancelled = occ.files!.saveAs({ data: 'b' })
+    fromHost({ occ: 1, kind: 'res', id: 0, result: { status: 'saved' } })
+    fromHost({ occ: 1, kind: 'res', id: 1, result: { status: 'cancelled' } })
+    await expect(saved).resolves.toEqual({ status: 'saved' })
+    await expect(cancelled).resolves.toEqual({ status: 'cancelled' })
+  })
+
+  it("follows OCC's UI locale from hello, falling back to navigator.language", () => {
+    const { occ, fromHost } = mountGuestShell()
+    expect(occ.locale).toBe(navigator.language)
+    fromHost({ occ: 1, kind: 'evt', event: 'hello', payload: { locale: 'de-DE', theme: null } })
+    expect(occ.locale).toBe('de-DE')
+  })
+})
+
+describe('guest window.occ', () => {
+  const guestScript = (surface: PluginFrameSurface = 'panel') =>
+    buildPluginGuestShellHtml('<main></main>', surface)
+      .match(/<script>\n([\s\S]*?)<\/script>/)?.[1]
+      ?.replaceAll('configurable: false', 'configurable: true') ?? ''
+
+  it('takes the preload transport once, before plugin code can see it', async () => {
+    Reflect.deleteProperty(window, 'occ')
+    const send = vi.fn()
+    let receive: ((message: unknown) => void) | null = null
+    Object.defineProperty(window, '__occPluginFrameTransport', {
+      value: { send, subscribe: (fn: (message: unknown) => void) => (receive = fn) },
+      configurable: true
+    })
+    window.eval(guestScript())
+    expect('__occPluginFrameTransport' in window).toBe(false)
+    expect(send).toHaveBeenCalledWith({
+      occ: 1,
+      kind: 'evt',
+      event: 'ready',
+      payload: { protocol: 1 }
+    })
+    const occ: FrameOCC = Object.getOwnPropertyDescriptor(window, 'occ')?.value
+    const answer = occ.host.call('workspace.readContext', {})
+    receive!({ occ: 1, kind: 'res', id: 0, result: { ok: true } })
+    await expect(answer).resolves.toEqual({ ok: true })
+    // Window messages are not the guest channel.
+    window.dispatchEvent(
+      new MessageEvent('message', { data: { occ: 1, kind: 'evt', event: 'ping', payload: 1 } })
+    )
+    expect(send).toHaveBeenCalledTimes(2)
+  })
+
+  it('defines no window.occ without the preload', () => {
+    Reflect.deleteProperty(window, 'occ')
+    window.eval(guestScript())
+    expect('occ' in window).toBe(false)
   })
 })
 

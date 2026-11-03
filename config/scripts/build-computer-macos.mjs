@@ -14,7 +14,7 @@ const entitlementsPath = path.join(
   'build',
   'entitlements.computer-use.mac.plist'
 )
-const bundleId = process.env.OCC_COMPUTER_MACOS_BUNDLE_ID ?? 'com.lkun.occ.computer-use'
+const bundleId = process.env.OCC_COMPUTER_MACOS_BUNDLE_ID ?? 'com.stablyai.occ.computer-use'
 const displayName = 'OCC Computer Use'
 const signingIdentity = resolveSigningIdentity()
 const universalTriples = ['arm64-apple-macosx', 'x86_64-apple-macosx']

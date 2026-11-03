@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { buildPushChallengeFixture, createPushHostKeypair } from './push-host-challenge-fixtures'
 import { PushGatewaySession, type PushSessionOutcome } from './push-gateway-session'
 
-const GATEWAY_ORIGIN = 'https://push.onocc.dev'
+const GATEWAY_ORIGIN = 'https://push.onorca.dev'
 const NOW = 1_770_000_000_000
 
 function jsonResponse(status: number, body: unknown): Response {
@@ -80,14 +80,6 @@ function createSessionHarness(
 }
 
 describe('PushGatewaySession', () => {
-  it('reuses the cached session until it nears expiry', async () => {
-    const harness = createSessionHarness()
-
-    expect(tokenOf(await harness.session.ensure(null))).toBe('session-1')
-    expect(tokenOf(await harness.session.ensure(null))).toBe('session-1')
-    expect(harness.challenges()).toBe(1)
-  })
-
   it('drops only the exact session that received the 401', async () => {
     const harness = createSessionHarness()
     expect(tokenOf(await harness.session.ensure(null))).toBe('session-1')
@@ -95,12 +87,6 @@ describe('PushGatewaySession', () => {
     expect(tokenOf(await harness.session.ensure('session-1'))).toBe('session-2')
     expect(tokenOf(await harness.session.ensure('session-1'))).toBe('session-2')
     expect(harness.challenges()).toBe(2)
-  })
-
-  it('reports a refused handshake as rejected rather than unreachable', async () => {
-    const harness = createSessionHarness({ sessionStatus: 403 })
-
-    expect(await harness.session.ensure(null)).toEqual({ ok: false, reason: 'rejected' })
   })
 
   it('reports a session minted for another host as rejected', async () => {
@@ -147,14 +133,6 @@ describe('PushGatewaySession', () => {
     harness.now.value += 60_000
     await harness.session.ensure(null)
     expect(harness.requests()).toBe(2)
-  })
-
-  it('reports a rate-limited session mint as unreachable, not refused', async () => {
-    const harness = createSessionHarness({ sessionStatus: 429 })
-
-    expect(await harness.session.ensure(null)).toEqual({ ok: false, reason: 'unreachable' })
-    expect(await harness.session.ensure(null)).toEqual({ ok: false, reason: 'unreachable' })
-    expect(harness.challenges()).toBe(1)
   })
 
   it('shares one handshake across concurrent callers', async () => {

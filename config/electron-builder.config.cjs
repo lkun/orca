@@ -102,7 +102,7 @@ const devChannelRepo = isHourlyChannel
     : isAdhocChannel
       ? 'occ-adhoc'
       : null
-const appId = 'com.lkun.occ'
+const appId = 'com.stablyai.occ'
 const featureWallResources = {
   from: 'resources/onboarding/feature-wall',
   to: 'onboarding/feature-wall'
@@ -330,11 +330,16 @@ module.exports = {
     'out/main/gitlab/project-ref-parser.js',
     'out/main/grok/**',
     'out/main/hermes/**',
-    'out/main/asar-transparent-fs.js',
-    'out/main/macos-tree-clone.js',
+    'out/main/filesystem/asar-transparent-fs.js',
+    'out/main/filesystem/macos-tree-clone.js',
     'out/main/occ-profiles/profile-index-store.js',
     'out/main/persistence/profile-state/**',
     'out/main/plugins/plugin-authoring-checks.js',
+    // `occ plugin types` copies the author typings from here in Node mode.
+    'resources/plugins/declarative/occ*.d.ts',
+    // `occ plugin test` and `occ plugin check` load the runtime, kit and hooks in Node.
+    'resources/plugins/declarative/*.mjs',
+    'resources/plugins/types/*.d.ts',
     'out/main/skills/bundled-skill-install/cli-entry.js',
     'out/main/startup/http1-compatibility-marker.js',
     'out/main/daemon-entry.js',
@@ -648,7 +653,7 @@ module.exports = {
     // shared-mime-info already maps md/markdown: advertise handler only, leaving mimeapps.list defaults intact.
     // Omit mdx because Ubuntu 24.04 maps it to application/x-genesis-32x-rom; claiming it would need a glob override.
     mimeTypes: ['text/markdown', 'text/csv', 'text/tab-separated-values'],
-    // Avoid GNOME's occ screen reader package and /usr/bin/occ names.
+    // Avoid GNOME OCC’s occ package and /usr/bin/occ names.
     executableName: 'occ-ide',
     // Use icns to generate hicolor sizes; some Linux docks ignore a lone 1024px PNG.
     icon: 'resources/build/icon.icns',

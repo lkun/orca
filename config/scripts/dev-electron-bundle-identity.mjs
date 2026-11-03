@@ -1,7 +1,7 @@
 // Keep all signed Info.plist values branch-invariant: ad-hoc cdhash is the Keychain ACL identity, so branch drift re-prompts for passwords.
 // Branch Dock names belong in the unsigned .app directory name.
 
-export const DEV_BUNDLE_ID = 'com.lkun.occ.dev'
+export const DEV_BUNDLE_ID = 'com.stablyai.occ.dev'
 export const DEV_HELPER_BUNDLE_ID = `${DEV_BUNDLE_ID}.helper`
 // Fixed display name distinguishes dev notifications from other Electron apps without branch-specific signature drift.
 export const DEV_BUNDLE_DISPLAY_NAME = 'OCC Dev'

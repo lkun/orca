@@ -34,6 +34,21 @@ Use one of the two workflows below instead.
 
 Reproducible, and keeps the mechanical rename out of conflict resolution.
 
+### One command
+
+```bash
+scripts/occ-sync.sh          # upstream/main, OCC revision 1
+OCC_REV=2 scripts/occ-sync.sh
+```
+
+The script fetches upstream, builds a rebranded tree in a temporary worktree,
+refreshes bundled plugin hashes, preserves OCC-only files, and creates
+`sync/upstream-<version>-occ.<rev>` with the current branch as parent. Nothing
+is pushed. Review the diff, run typecheck/build, then push the branch and open a
+PR against `rebrand/occ-full`.
+
+### Manual steps
+
 ```bash
 cd /Users/lvkun/occ
 git fetch upstream --tags

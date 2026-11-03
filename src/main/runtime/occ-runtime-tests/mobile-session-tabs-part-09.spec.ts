@@ -3,13 +3,11 @@ import { bindPaneFirst, committingSpawn, registerBoundPty } from '../bind-first-
 import {
   OCCRuntimeService,
   electronMocks,
-  waitForMobileSessionTabsEvents
+  waitForMobileSessionTabsEvents,
+  type RuntimeMobileSessionTabsResult,
+  type WorkspaceSessionState
 } from '../occ-runtime-test-mocks.spec'
-import type {
-  RuntimeMobileSessionTabsResult,
-  SleepingAgentSessionRecord,
-  WorkspaceSessionState
-} from '../occ-runtime-test-mocks.spec'
+import type { SleepingAgentSessionRecord } from '../../../shared/agent-session/lifecycle/agent-session-resume'
 import {
   HEADLESS_LEAF_ID,
   HEADLESS_SECOND_LEAF_ID,

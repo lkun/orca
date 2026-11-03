@@ -19,7 +19,7 @@ describe('prepareShipItStaging', () => {
 
   beforeEach(async () => {
     root = await mkdtemp(join(tmpdir(), 'occ-shipit-recovery-'))
-    cacheDir = join(root, 'Caches', 'com.lkun.occ.ShipIt')
+    cacheDir = join(root, 'Caches', 'com.stablyai.occ.ShipIt')
     coordinationDir = join(root, 'coordination')
     await mkdir(join(cacheDir, 'update.6rnCgPu', 'OCC.app'), { recursive: true })
     await writeFile(join(cacheDir, 'ShipItState.plist'), '<plist/>')
@@ -31,7 +31,7 @@ describe('prepareShipItStaging', () => {
   })
 
   const deps = (overrides: Partial<ShipItStagingDeps> = {}): ShipItStagingDeps => ({
-    bundleId: 'com.lkun.occ',
+    bundleId: 'com.stablyai.occ',
     cacheDir,
     coordinationDir,
     pid: 500,
@@ -84,7 +84,7 @@ describe('prepareShipItStaging', () => {
   })
 
   it('never clears while ShipIt runs, or when that cannot be checked', async () => {
-    const running = deps({ listProcesses: async () => `${SHIPIT} com.lkun.occ.ShipIt\n` })
+    const running = deps({ listProcesses: async () => `${SHIPIT} com.stablyai.occ.ShipIt\n` })
     await expect(prepareShipItStaging(running)).resolves.toEqual({
       kind: 'skipped',
       reason: 'installer-running'

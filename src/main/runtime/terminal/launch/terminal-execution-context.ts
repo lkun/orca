@@ -35,7 +35,7 @@ export abstract class OCCRuntimeWithPreparePtyExecutionContext extends OCCRuntim
       this.wslDistroByPtyId.delete(ptyId)
     }
     if (pty) {
-      pty.wslDistro = wslDistro
+      this.terminalIdentity.setPtyWslDistro(pty, wslDistro)
     }
     if (!options.resetIncarnation && previous !== wslDistro && this.headlessTerminals.has(ptyId)) {
       // Why: bytes parsed with two distro namespaces would leave an internally

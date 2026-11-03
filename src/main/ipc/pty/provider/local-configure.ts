@@ -1,12 +1,12 @@
-import { getClaudeAgentViewService } from '../../../claude/agent-view-service'
+import { getClaudeAgentViewService } from '../../../claude/agent-view/agent-view-service'
 import { inheritOmpLaunchEnvironment } from '../host-env/omp-launch-environment'
 import { getAppEnvironment } from '../../../../shared/app-environment'
 import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
 import { isAgentStatusHooksEnabled } from '../../../agent-hooks/managed-agent-hook-controls'
 import { isPwshAvailableAsync } from '../../../pwsh'
-import { LocalPtyProvider } from '../../../providers/local-pty-provider'
-import type { LocalPtyProviderOptions } from '../../../providers/local-pty-provider-types'
+import { LocalPtyProvider } from '../../../providers/local-pty/local-pty-provider'
+import type { LocalPtyProviderOptions } from '../../../providers/local-pty/local-pty-provider-types'
 import { runAsWslLaunchUserAct } from '../../../wsl/wsl-background-exec-gate'
 import {
   addOCCWslInteropEnv,

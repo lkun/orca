@@ -43,10 +43,6 @@ describe('occd idle-stop record', () => {
     expect(consumeOCCdIdleStopRecord(root)).toBeNull()
   })
 
-  it('reads a start with no record as "not an idle stop"', () => {
-    expect(consumeOCCdIdleStopRecord(root)).toBeNull()
-  })
-
   it('drops a corrupt record instead of trusting it', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
     writeFileSync(occdIdleStopRecordPath(root), '{"kind":"occd_idle_stop"')

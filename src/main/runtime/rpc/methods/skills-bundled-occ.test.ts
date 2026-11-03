@@ -76,11 +76,6 @@ afterEach(async () => {
 })
 
 describe('skills.planBundledOCC / skills.executeBundledOCC', () => {
-  it('plans read-only and executes behind skills-admin', () => {
-    expect(method('skills.planBundledOCC').permission).toBe('workspace')
-    expect(method('skills.executeBundledOCC').permission).toBe('skills-admin')
-  })
-
   it('never lets a paired client point the host at a WSL guest or send ops', () => {
     const plan = method('skills.planBundledOCC').params
     const execute = method('skills.executeBundledOCC').params

@@ -1,4 +1,7 @@
+import type { WslRunningDistrosRead } from '../wsl-background-distro-gate'
+import { wslDistroHolderKey } from './wsl-distro-holder-record'
 import type { WslOCCdLaunch } from './wsl-occd-deploy'
+import { confirmsRunning } from './wsl-occd-liveness-evidence'
 
 type WslOCCdDeferredLaunch = Extract<WslOCCdLaunch, { outcome: 'deferred' }>
 
@@ -18,6 +21,24 @@ export class WslDistroNotRunningError extends Error {
     )
     this.name = 'WslDistroNotRunningError'
   }
+}
+
+/** A no-boot gate couldn't read WSL's running list: nothing was started, and the verdict is open. */
+export class WslDistroUnverifiableConnectError extends Error {
+  constructor(distro: string) {
+    super(
+      `WSL didn’t answer whether ${distro} is running, so OCC didn’t start anything there yet.`
+    )
+    this.name = 'WslDistroUnverifiableConnectError'
+  }
+}
+
+/** True only for a confirmed running read; an unreadable list throws, never reading as "not running". */
+export function requireConfirmedRunning(running: WslRunningDistrosRead, distro: string): boolean {
+  if (running.status !== 'confirmed') {
+    throw new WslDistroUnverifiableConnectError(distro)
+  }
+  return confirmsRunning(running, wslDistroHolderKey(distro))
 }
 
 export class WslOCCdConnectionSupersededError extends Error {
@@ -46,9 +67,14 @@ export async function assertWslDistroMayStart(
   }
 }
 
+/** A no-boot gate refused before anything spawned: stopped, or the running list was unreadable. */
+export function isNoBootRefusal(error: unknown): boolean {
+  return (
+    error instanceof WslDistroNotRunningError || error instanceof WslDistroUnverifiableConnectError
+  )
+}
+
 /** Failures the connection's status must not report as `failed`: liveness owns those verdicts. */
 export function isQuietConnectFailure(error: unknown): boolean {
-  return (
-    error instanceof WslOCCdConnectionSupersededError || error instanceof WslDistroNotRunningError
-  )
+  return error instanceof WslOCCdConnectionSupersededError || isNoBootRefusal(error)
 }

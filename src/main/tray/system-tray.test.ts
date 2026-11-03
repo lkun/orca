@@ -97,7 +97,7 @@ vi.mock('../../../resources/tray/occ-menu-barTemplate@2x.png?asset&asarUnpack', 
   default: '/assets/occ-menu-barTemplate@2x.png'
 }))
 
-vi.mock('../app-icon', () => ({
+vi.mock('../window/desktop-integration/app-icon', () => ({
   createAppIconImage: createAppIconImageMock
 }))
 

@@ -91,7 +91,7 @@ export function formatProfileStateStartupFailure(
         ),
         translate(
           'profileState.startupFailure.repairCommand',
-          'Stop OCC, then run `{{command}}` to replace only the damaged parts from backups and keep everything else. OCC keeps a copy of the damaged file.',
+          'Stop OCC, then run `{{command}}` to repair only the damaged parts and keep everything else. OCC keeps a copy of the damaged file.',
           {
             command: `occ profile state rollback --repair --profile-id ${error.profileId}`
           }

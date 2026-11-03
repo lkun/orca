@@ -29,10 +29,10 @@ cask "occ" do
   zap trash: [
     "~/.occ",
     "~/Library/Application Support/OCC",
-    "~/Library/Caches/com.lkun.occ",
-    "~/Library/Caches/com.lkun.occ.ShipIt",
-    "~/Library/HTTPStorages/com.lkun.occ",
-    "~/Library/Preferences/com.lkun.occ.plist",
-    "~/Library/Saved Application State/com.lkun.occ.savedState",
+    "~/Library/Caches/com.stablyai.occ",
+    "~/Library/Caches/com.stablyai.occ.ShipIt",
+    "~/Library/HTTPStorages/com.stablyai.occ",
+    "~/Library/Preferences/com.stablyai.occ.plist",
+    "~/Library/Saved Application State/com.stablyai.occ.savedState",
   ]
 end

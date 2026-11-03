@@ -20,6 +20,7 @@ import { isAutomaticTabActivation } from '../../../../shared/tab-activation-inte
 import { isWorktreeTerminalsSleepingError } from '../../worktree-terminals-sleeping-error'
 
 import { paneHoldsSession } from '../../terminal/surface/main-terminal-surfaces'
+import { resolveChatTabActivation } from '../../agent-session/agent-session-tab-identity'
 export abstract class OCCRuntimeWithPerformMobileSessionPtyRecordsRefresh extends OCCRuntimeWithRestoredPaneStart {
   protected abstract buildResolvedWorktreeFromId(
     ...args: Parameters<WorkspaceSelectors['buildResolvedWorktreeFromId']>
@@ -137,6 +138,7 @@ export abstract class OCCRuntimeWithPerformMobileSessionPtyRecordsRefresh extend
     // Why: the renderer can publish the host's spelling while inventory refresh is pending.
     worktreeId = this.getExplicitSessionWorktreeIdSelector(worktreeSelector) ?? worktreeId
     const snapshot = this.mobileSessionTabsByWorktree.get(worktreeId)
+    tabId = resolveChatTabActivation(snapshot?.tabs ?? [], tabId)
     const directTab = snapshot?.tabs.find((candidate) => candidate.id === tabId)
     const tab = leafId
       ? ((directTab?.type === 'terminal' && directTab.leafId === leafId ? directTab : undefined) ??

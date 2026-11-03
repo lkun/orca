@@ -10,6 +10,7 @@ keywords:
   - occ-linear skill
   - occ-emulator skill
   - occ-emulator-android skill
+  - occ-plugin-authoring skill
 ---
 
 OCC ships **skills** that agents install into their skill directories. Public install packages are **hybrid discovery stubs**: short `SKILL.md` files that tell the agent _when_ to engage OCC and how to load the full guide from the running CLI. Command flags live in the binary so they cannot drift from the app version.
@@ -27,6 +28,7 @@ Use `npx skills add` with the public OCC repo and the skill name. Default agent 
 | [`occ-emulator`](#occ-emulator)                   | `npx skills add https://github.com/stablyai/occ --skill occ-emulator --global`          | iOS Simulator control.                                        |
 | [`occ-emulator-android`](#occ-emulator-android)   | `npx skills add https://github.com/stablyai/occ --skill occ-emulator-android --global`  | Android emulator/device via adb.                              |
 | [`occ-per-workspace-env`](#occ-per-workspace-env) | `npx skills add https://github.com/stablyai/occ --skill occ-per-workspace-env --global` | Per-workspace environment recipes (`occ.yaml`).              |
+| [`occ-plugin-authoring`](#occ-plugin-authoring)   | `npx skills add https://github.com/stablyai/occ --skill occ-plugin-authoring --global`  | Build, debug and publish OCC plugins.                        |
 
 ## Hybrid stubs vs the live guide
 
@@ -155,6 +157,14 @@ npx skills add https://github.com/stablyai/occ --skill occ-per-workspace-env --g
 ```
 
 Use when setting up or debugging per-workspace environment recipes in `occ.yaml`. See [Ways to run OCC](/docs/ways-to-run#4-cloud-vms-per-workspace-environments).
+
+## occ-plugin-authoring
+
+```bash
+npx skills add https://github.com/stablyai/occ --skill occ-plugin-authoring --global
+```
+
+Use when an agent should make, debug, test or publish an OCC plugin: themes, syntaxes, custom editors, TSX components panels and worker commands. Load it with `occ skills get occ-plugin-authoring`; its references (components, host API, events, manifest fields, CLI) are generated from the running OCC.
 
 ## Discovery sources
 

@@ -12,9 +12,18 @@ import type { Page } from '@stablyai/playwright-test'
 import { PLUGIN_MANIFEST_V2_SINCE } from '../../src/shared/plugins/manifest/plugin-schema-field-docs'
 import { expect, test } from './helpers/occ-app'
 import { disablePluginSystem, enableDevPlugins, openRepoFile } from './helpers/plugin-smoke'
+import {
+  focusInGuest,
+  pluginGuest,
+  readInGuest,
+  ISOLATED_FRAMES_E2E
+} from './helpers/plugin-frame-guest'
+
+// Isolated frames are off by default; these journeys exercise the guest path.
+test.use(ISOLATED_FRAMES_E2E)
 
 const FILE = 'custom-editor-smoke.sketch'
-const FRAME = 'iframe[title="Sketch Pad"]'
+const SAVE_KEY = process.platform === 'darwin' ? 'Meta+s' : 'Control+s'
 
 // A tiny complete editor on window.occ: a textarea that sends debounced full-text edits.
 const EDITOR_HTML = `<textarea id="doc" style="width:100%;height:90vh"></textarea>
@@ -80,31 +89,34 @@ test('plugin custom editor edits and saves through OCC', async ({ occPage, seede
     await enableDevPlugins(occPage, [pluginRoot])
     await openRepoFile(occPage, seededRepoPath, FILE)
 
-    const frame = occPage.frameLocator(FRAME)
-    const textarea = frame.locator('#doc')
-    await expect(textarea).toHaveValue('first line\n', { timeout: 15_000 })
+    const guest = pluginGuest(occPage, 'Sketch Pad')
+    const text = () => readInGuest<string>(guest, `document.getElementById('doc').value`)
+    await expect(guest).toBeVisible({ timeout: 15_000 })
+    await expect.poll(text, { timeout: 15_000 }).toBe('first line\n')
     // Opening a file in its custom editor must not dirty it.
     expect(await activeFileDirty(occPage)).toBe(false)
 
-    await textarea.click()
-    await textarea.press('End')
-    await textarea.pressSequentially('second line')
+    // Real input: the save chord only counts with the frame's own user activation.
+    await focusInGuest(guest, '#doc')
+    await occPage.keyboard.press(process.platform === 'darwin' ? 'Meta+ArrowDown' : 'Control+End')
+    await occPage.keyboard.type('second line')
     await expect.poll(() => activeFileDirty(occPage)).toBe(true)
 
     // Saved inside the debounce window: OCC must flush the frame first.
-    await textarea.pressSequentially('!')
-    await textarea.press(process.platform === 'darwin' ? 'Meta+s' : 'Control+s')
+    await occPage.keyboard.type('!')
+    await occPage.keyboard.press(SAVE_KEY)
     await expect.poll(() => readFile(filePath, 'utf8')).toBe('first line\nsecond line!')
     await expect.poll(() => activeFileDirty(occPage)).toBe(false)
 
     await chooseView(occPage, 'Source')
-    await expect(occPage.locator(FRAME)).toHaveCount(0)
+    await expect(guest).toHaveCount(0)
     await expect(occPage.locator('.monaco-editor .view-lines')).toContainText('second line!')
     await chooseView(occPage, 'Sketch Pad')
-    await expect(textarea).toHaveValue('first line\nsecond line!')
+    await expect(guest).toBeVisible()
+    await expect.poll(text).toBe('first line\nsecond line!')
 
     await disablePluginSystem(occPage)
-    await expect(occPage.locator(FRAME)).toHaveCount(0, { timeout: 15_000 })
+    await expect(guest).toHaveCount(0, { timeout: 15_000 })
     await expect(occPage.locator('.monaco-editor .view-lines')).toBeVisible()
   } finally {
     await disablePluginSystem(occPage).catch(() => undefined)
@@ -114,7 +126,6 @@ test('plugin custom editor edits and saves through OCC', async ({ occPage, seede
 })
 
 const BYTES_FILE = 'custom-editor-smoke.hexbook'
-const BYTES_FRAME = 'iframe[title="Hex Book"]'
 
 // Reports what a bytes editor receives; its button appends 0xaa as a full-bytes edit.
 const BYTES_EDITOR_HTML = `<output id="summary">waiting</output><button id="append">Append</button>
@@ -180,11 +191,11 @@ test('a bytes custom editor edits and saves a binary file', async ({
     await enableDevPlugins(occPage, [pluginRoot])
     await openRepoFile(occPage, seededRepoPath, BYTES_FILE)
 
-    const bytesFrame = occPage.frameLocator(BYTES_FRAME)
-    const summary = bytesFrame.locator('#summary')
-    await expect(summary).toHaveText('v1 hexbook false 8:50 4b 3 4 name=opaque', {
-      timeout: 15_000
-    })
+    const guest = pluginGuest(occPage, 'Hex Book')
+    const summary = () =>
+      readInGuest<string>(guest, `document.getElementById('summary').textContent`)
+    await expect(guest).toBeVisible({ timeout: 15_000 })
+    await expect.poll(summary, { timeout: 15_000 }).toBe('v1 hexbook false 8:50 4b 3 4 name=opaque')
     // Opening and the ignored text edit leave the file and the tab untouched.
     const dirty = () =>
       occPage.evaluate(
@@ -195,25 +206,26 @@ test('a bytes custom editor edits and saves a binary file', async ({
     expect(await readFile(filePath)).toEqual(original)
     expect(await dirty()).toBe(false)
 
-    const append = bytesFrame.locator('#append')
     // Why a key: in a hidden Linux window the mouse never reaches a sandboxed frame's button.
-    await append.press('Enter')
+    await focusInGuest(guest, '#append')
+    await occPage.keyboard.press('Enter')
     await expect.poll(dirty).toBe(true)
-    await append.press(process.platform === 'darwin' ? 'Meta+s' : 'Control+s')
+    await occPage.keyboard.press(SAVE_KEY)
     const edited = Buffer.concat([original, Buffer.from([0xaa])])
     await expect.poll(() => readFile(filePath)).toEqual(edited)
     await expect.poll(dirty).toBe(false)
 
     // Source of a binary file is the binary placeholder, never decoded bytes.
     await chooseView(occPage, 'Source')
-    await expect(occPage.locator(BYTES_FRAME)).toHaveCount(0)
+    await expect(guest).toHaveCount(0)
     await expect(occPage.getByText('Binary file — cannot display')).toBeVisible()
     await chooseView(occPage, 'Hex Book')
     // A remount reads the saved bytes back.
-    await expect(summary).toContainText('hexbook false 9:')
+    await expect(guest).toBeVisible()
+    await expect.poll(summary).toContain('hexbook false 9:')
 
     await disablePluginSystem(occPage)
-    await expect(occPage.locator(BYTES_FRAME)).toHaveCount(0, { timeout: 15_000 })
+    await expect(guest).toHaveCount(0, { timeout: 15_000 })
     await expect(occPage.getByText('Binary file — cannot display')).toBeVisible()
   } finally {
     await disablePluginSystem(occPage).catch(() => undefined)

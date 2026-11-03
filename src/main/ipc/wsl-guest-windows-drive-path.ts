@@ -5,8 +5,9 @@ import { resolveCliCommand } from '../../shared/node-cli-command-resolution'
 
 const WINDOWS_DRIVE_MOUNT_TYPES = new Set(['drvfs', '9p', 'virtiofs'])
 
-/** WSL-host launch marker; SSH guests and WSLg retain their original PATH. */
-export const OCCD_WSL_HOST_ENV = 'OCC_WSL_OCCD_HOST'
+import { OCCD_WSL_HOST_ENV } from '../../shared/occd-server-launch-env'
+
+export { OCCD_WSL_HOST_ENV }
 
 let cachedGuestMounts: readonly string[] | null = null
 

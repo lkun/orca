@@ -1,4 +1,4 @@
-import { isAgentSessionId } from './agent-session-record'
+import { isAgentSessionId } from './agent-session/lifecycle/agent-session-record'
 import { STRUCTURED_WORKER_HANDLE_PREFIX } from './structured-worker-handle'
 import { OCC_SESSION_ADDRESS_PREFIX } from './occ-session-address-prefix'
 

@@ -153,7 +153,7 @@
         "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/e5/01/a2/e501a2f6-8e2c-11a2-ad6a-c9b42f49e905/apple-ipadpro13-spacegrey-portrait-promo-opaque.png/360x480bb.jpg"
       ],
       "releaseNotes": "Clearer chat while agents work\n• A proposed plan now appears as a plan you can read, not a generic approval prompt.\n• Approval requests show what the agent actually asked for instead of raw tool data.\n• The working timer counts from the message that started the turn.\n\nSteadier workspace setup\n• Creating a workspace no longer risks starting two if the reply is lost on the way back.\n• A worktree that launches an agent on creation opens straight into its chat.\n• A newly created tab stays put when the host list refreshes.\n\nFixes\n• Pairing no longer reports a declined permission as a missing feature.\n• The notification opt-in screen is clearer about what you are turning on.\n• Sign-in now accepts enterprise-managed GitHub accounts.",
-      "bundleId": "com.lkun.occ.mobile",
+      "bundleId": "com.stably.occ.mobile",
       "genres": ["Developer Tools"],
       "price": 0.0,
       "artistId": 1498017204,

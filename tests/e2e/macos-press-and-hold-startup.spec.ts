@@ -59,7 +59,7 @@ test.describe('macOS press-and-hold default', () => {
     expect(record.domain).toBe(state.bundleIdentifier)
 
     const ownsDomain =
-      record.domain === 'com.lkun.occ' || record.domain!.startsWith('com.lkun.occ.')
+      record.domain === 'com.stablyai.occ' || record.domain!.startsWith('com.stablyai.occ.')
     if (ownsDomain) {
       // A packaged or dev-identity bundle: the write path is live and must have settled.
       expect(['applied', 'kept-user-preference']).toContain(record.decision)

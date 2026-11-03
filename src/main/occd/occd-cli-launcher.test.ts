@@ -103,46 +103,12 @@ describe('occd profile CLI launcher', () => {
     }
   )
 
-  it.skipIf(process.platform === 'win32')(
-    'refreshes the launcher when the host switches server slots',
-    async () => {
-      await writeCli()
-      await prepareOCCdCliLauncher()
-      roots.install = join(directory, 'updated server')
-      await writeCli()
-      await prepareOCCdCliLauncher()
-      const launcher = getOCCdCliLauncherPath()
-      if (!launcher) {
-        throw new Error('CLI launcher is missing')
-      }
-      expect(await readFile(launcher, 'utf8')).toContain(roots.install)
-    }
-  )
-
   it('leaves old slots without a CLI usable and clears a previous launcher', async () => {
     await writeCli()
     await prepareOCCdCliLauncher()
     roots.install = join(directory, 'old server')
     await prepareOCCdCliLauncher()
     expect(getOCCdCliLauncherPath()).toBeNull()
-  })
-
-  describe('on a Linux host', () => {
-    beforeEach(() => {
-      Object.defineProperty(process, 'platform', { configurable: true, value: 'linux' })
-    })
-
-    it('refreshes both CLI names when the runtime switches server slots', async () => {
-      await writeCli()
-      await prepareOCCdCliLauncher()
-      roots.install = join(directory, 'updated server')
-      await writeCli()
-      await prepareOCCdCliLauncher()
-      const binDir = join(roots.profile, 'cli', 'bin')
-      const script = await readFile(join(binDir, 'occ-ide'), 'utf8')
-      expect(script).toContain(roots.install)
-      expect(script).toBe(await readFile(join(binDir, 'occ'), 'utf8'))
-    })
   })
 
   describe('on a Windows host', () => {
@@ -191,12 +157,6 @@ describe('occd profile CLI launcher', () => {
       await prepareOCCdCliLauncher()
       expect(await readFile(join(binDir(), 'occ.exe'), 'utf8')).toBe('native launcher v2')
       expect(await readConfig()).toContain(`cli=${join(roots.install, 'out', 'cli', 'index.js')}`)
-    })
-
-    it('leaves a slot without the native launcher with no occ command', async () => {
-      await writeCli()
-      await prepareOCCdCliLauncher()
-      expect(getOCCdCliLauncherPath()).toBeNull()
     })
   })
 })

@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { ChevronLeft, Globe } from 'lucide-react-native'
+import { View, Text } from 'react-native'
+import { Globe } from 'lucide-react-native'
 import Svg, { Path } from 'react-native-svg'
 import { OCCLogo } from '../components/OCCLogo'
+import { LIST_LEADING_INSET, ListRow } from '../components/list/ListGroup'
 import { useMobileTranslation } from '../i18n/use-mobile-translation'
-import { colors, radii, spacing, typography } from '../theme/mobile-theme'
+import { colors, spacing, typography } from '../theme/mobile-theme'
 import { themedStyleSheet } from '../theme/themed-styles'
 import { useMobileColorScheme } from '../theme/use-mobile-color-scheme'
+import { SettingsScreen, SettingsSection } from './settings-screen-frame'
 
 function GithubIcon({ size = 16, color = colors.textSecondary }) {
   useMobileColorScheme()
@@ -43,22 +44,9 @@ export default function AboutScreen({
     setError(false)
     void openExternal(url).catch(() => setError(true))
   }
-  const insets = useSafeAreaInsets()
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + spacing.sm }]}>
-      <View style={styles.topRow}>
-        <Pressable
-          style={styles.backButton}
-          accessibilityRole="button"
-          accessibilityLabel={t('common.back', 'Back')}
-          onPress={onBack}
-        >
-          <ChevronLeft size={22} color={colors.textSecondary} />
-        </Pressable>
-        <Text style={styles.heading}>{t('settings.aboutScreen.title', 'About')}</Text>
-      </View>
-
+    <SettingsScreen title={t('settings.aboutScreen.title', 'About')} onBack={onBack}>
       <View style={styles.brand}>
         <OCCLogo size={28} />
         <Text style={styles.brandName}>OCC</Text>
@@ -67,37 +55,29 @@ export default function AboutScreen({
         </Text>
       </View>
 
-      <View style={styles.section}>
-        <Pressable
-          style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
-          accessibilityRole="button"
+      <SettingsSection first separatorInset={LIST_LEADING_INSET}>
+        <ListRow
+          key="website"
+          title="onOCC.dev"
+          leading={<Globe size={18} color={colors.textSecondary} />}
           accessibilityLabel={t('settings.aboutScreen.website', 'OCC website')}
           onPress={() => openLink('https://onOCC.dev')}
-        >
-          <Globe size={16} color={colors.textSecondary} />
-          <Text style={styles.rowValue}>onOCC.dev</Text>
-        </Pressable>
-        <View style={styles.separator} />
-        <Pressable
-          style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
-          accessibilityRole="button"
+        />
+        <ListRow
+          key="source"
+          title="stablyai/occ"
+          leading={<GithubIcon size={18} />}
           accessibilityLabel={t('settings.aboutScreen.sourceCode', 'OCC source code')}
           onPress={() => openLink('https://github.com/stablyai/occ')}
-        >
-          <GithubIcon />
-          <Text style={styles.rowValue}>stablyai/occ</Text>
-        </Pressable>
-        <View style={styles.separator} />
-        <Pressable
-          style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
-          accessibilityRole="button"
+        />
+        <ListRow
+          key="social"
+          title="@occ_build"
+          leading={<XIcon size={18} />}
           accessibilityLabel={t('settings.aboutScreen.socialProfile', 'OCC on X')}
           onPress={() => openLink('https://x.com/occ_build')}
-        >
-          <XIcon />
-          <Text style={styles.rowValue}>@occ_build</Text>
-        </Pressable>
-      </View>
+        />
+      </SettingsSection>
 
       <Text style={styles.versionText}>{versionLabel}</Text>
       {error && (
@@ -105,38 +85,14 @@ export default function AboutScreen({
           {t('settings.aboutScreen.openLinkFailed', 'Could not open the link. Try again.')}
         </Text>
       )}
-    </View>
+    </SettingsScreen>
   )
 }
 
 const styles = themedStyleSheet(() => ({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bgBase,
-    padding: spacing.lg
-  },
-  topRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.xl
-  },
-  backButton: {
-    width: 36,
-    height: 36,
-    borderRadius: radii.control,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: spacing.sm
-  },
-  heading: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: colors.textPrimary
-  },
   brand: {
     alignItems: 'center',
-    paddingVertical: spacing.xl,
-    marginBottom: spacing.lg
+    paddingVertical: spacing.xl
   },
   brandName: {
     fontSize: 22,
@@ -148,38 +104,6 @@ const styles = themedStyleSheet(() => ({
     fontSize: 13,
     color: colors.textMuted,
     marginTop: spacing.xs
-  },
-  section: {
-    backgroundColor: colors.bgPanel,
-    borderRadius: radii.surface,
-    overflow: 'hidden'
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm + 2,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.md + 2
-  },
-  rowPressed: {
-    backgroundColor: colors.bgRaised
-  },
-  rowLabel: {
-    flex: 1,
-    fontSize: typography.bodySize,
-    fontWeight: '500',
-    color: colors.textPrimary
-  },
-  rowValue: {
-    flex: 1,
-    textAlign: 'right',
-    fontSize: typography.bodySize,
-    color: colors.textSecondary
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: colors.borderSubtle,
-    marginHorizontal: spacing.md
   },
   versionText: {
     marginTop: spacing.lg,

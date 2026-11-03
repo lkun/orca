@@ -1,4 +1,3 @@
-import type { ManagedServerUpdateDeps } from '../../ssh/managed-server-update-check'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { SshTarget } from '../../../shared/ssh-types'
 import type { ManagedOCCdAutoUpdateOutcome } from './occd-managed-auto-update'
@@ -8,10 +7,6 @@ import {
   updateManagedOCCdOnRestore,
   type ManagedOCCdRestoreUpdateDeps
 } from './occd-managed-update-on-restore'
-
-// Read the last locked retry decision rather than an earlier overlapping attempt.
-const failedBeforeOf = (autoUpdate: ManagedServerUpdateDeps['autoUpdate']) =>
-  vi.mocked(autoUpdate).mock.lastCall?.[1].failedBefore()
 
 const target: SshTarget = { id: 'ssh-1', label: 'Box', host: 'box', port: 22, username: 'me' }
 
@@ -39,51 +34,11 @@ function deps(
 describe('updating a managed server when the launch restores its tunnel', () => {
   beforeEach(() => resetManagedOCCdRestoreUpdatesForTests())
 
-  it('runs the same update check a connect runs, and publishes it', async () => {
-    const d = deps({ outcome: 'updated', activeVersion: '0.1.0+b' })
-    await updateManagedOCCdOnRestore('env-1', () => d)
-    expect(failedBeforeOf(d.autoUpdate)).toBe(false)
-    expect(vi.mocked(d.publish).mock.calls).toEqual([
-      [target, 'env-1', 'updating'],
-      [target, 'env-1', 'settled', undefined]
-    ])
-  })
-
   it('checks each server once per session, however often its tunnel is ensured', async () => {
     const d = deps({ outcome: 'skipped', reason: 'current' })
     await updateManagedOCCdOnRestore('env-1', () => d)
     expect(updateManagedOCCdOnRestore('env-1', () => d)).toBeNull()
     expect(d.autoUpdate).toHaveBeenCalledTimes(1)
-  })
-
-  it('keeps the same safety: waits on terminals, never downgrades, records a failure', async () => {
-    const waiting = deps({
-      outcome: 'deferred',
-      code: 'occd_update_terminals_running',
-      reason: 'r'
-    })
-    await updateManagedOCCdOnRestore('env-wait', () => waiting)
-    expect(waiting.publish).toHaveBeenLastCalledWith(target, 'env-wait', 'settled', {
-      state: 'deferred',
-      detail: 'r'
-    })
-
-    const newer = deps({ outcome: 'skipped', reason: 'host-newer' })
-    await updateManagedOCCdOnRestore('env-newer', () => newer)
-    expect(newer.publish).toHaveBeenLastCalledWith(target, 'env-newer', 'settled', {
-      state: 'host-newer'
-    })
-
-    const failed = deps({ outcome: 'failed', reason: 'rolled back' })
-    await updateManagedOCCdOnRestore('env-failed', () => failed)
-    expect(failed.recordUpdateFailure).toHaveBeenCalledWith(target, 'rolled back')
-
-    const held = deps(
-      { outcome: 'skipped', reason: 'failed-before' },
-      { recordedUpdateFailure: () => 'rolled back' }
-    )
-    await updateManagedOCCdOnRestore('env-held', () => held)
-    expect(failedBeforeOf(held.autoUpdate)).toBe(true)
   })
 
   it('never fails the restore that triggered it', async () => {

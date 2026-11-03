@@ -6,7 +6,14 @@ import {
 } from '../contributions/plugin-execution-profile'
 import { pluginCapabilityReachable } from '../capabilities/plugin-capability-reach'
 import { occEngineRangeSchema, satisfiesOCCEngineRange } from './plugin-manifest-engine-range'
-import { PLUGIN_DERIVED_PUBLISHER_SINCE } from './plugin-schema-field-docs'
+import {
+  PLUGIN_DERIVED_PUBLISHER_SINCE,
+  PLUGIN_SOURCE_MODULES_SINCE
+} from './plugin-schema-field-docs'
+import {
+  isPluginSourceModulePath,
+  isPluginWorkerSourcePath
+} from '../frames/plugin-frame-source-modules'
 
 type V2RuleSubject = {
   execution: PluginExecutionProfile
@@ -55,4 +62,50 @@ export function validateOmittedPublisherFloor(
     path: ['engines', 'occ'],
     message: `must be at least >=${PLUGIN_DERIVED_PUBLISHER_SINCE} when publisher is left out, because older OCC requires publisher`
   })
+}
+
+const engineBelow = (range: string, version: string): boolean =>
+  occEngineRangeSchema.safeParse(range).success &&
+  !satisfiesOCCEngineRange(range.slice(2), `>=${version}`)
+
+/** Why authoring only: older OCC serves a `.tsx` entry as raw bytes, so it must not install it. */
+export function validateSourceModuleEntryFloor(
+  manifest: {
+    engines: { occ: string }
+    main?: string
+    contributes: {
+      panels: readonly { entry: string }[]
+      customEditors: readonly { entry: string }[]
+    }
+  },
+  ctx: RefinementCtx
+): void {
+  const { panels, customEditors } = manifest.contributes
+  const usesSource = [...panels, ...customEditors].some((item) =>
+    isPluginSourceModulePath(item.entry)
+  )
+  if (usesSource && engineBelow(manifest.engines.occ, PLUGIN_SOURCE_MODULES_SINCE)) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['engines', 'occ'],
+      message: `must be at least >=${PLUGIN_SOURCE_MODULES_SINCE} when a panel or editor entry is a .ts, .tsx, .mts or .jsx file, because older OCC does not transpile it`
+    })
+  }
+  const main = manifest.main?.toLowerCase()
+  if (main === undefined || !isPluginSourceModulePath(main)) {
+    return
+  }
+  if (!isPluginWorkerSourcePath(main)) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['main'],
+      message: 'a worker runs in Node with no JSX; use a .ts, .mts, .js or .mjs file'
+    })
+  } else if (engineBelow(manifest.engines.occ, PLUGIN_SOURCE_MODULES_SINCE)) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['engines', 'occ'],
+      message: `must be at least >=${PLUGIN_SOURCE_MODULES_SINCE} when main is a .ts or .mts file, because older OCC does not transpile it`
+    })
+  }
 }

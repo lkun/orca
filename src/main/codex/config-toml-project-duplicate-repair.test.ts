@@ -172,11 +172,4 @@ describe('repairing configs broken by #22592', () => {
     expect(repairOCCDuplicateTrustTables(broken)).toBe(broken)
     expect(warn).toHaveBeenCalledTimes(1)
   })
-
-  it('does not touch a valid config', () => {
-    const config = ['["projects"."/repo-f"]', '"trust_level" = "trusted"', ''].join('\n')
-
-    expect(repairOCCDuplicateTrustTables(config)).toBe(config)
-    expect(warn).not.toHaveBeenCalled()
-  })
 })

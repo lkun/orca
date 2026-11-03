@@ -44,7 +44,7 @@ describe('OCCRuntimeService', () => {
         setup: 'pnpm worktree:setup'
       }
     })
-    vi.mocked(createSetupRunnerScript).mockReturnValue({
+    vi.mocked(createSetupRunnerScript).mockResolvedValue({
       runnerScriptPath: '/tmp/repo/.git/occ/setup-runner.sh',
       envVars: {
         OCC_ROOT_PATH: '/tmp/repo',
@@ -132,7 +132,7 @@ describe('OCCRuntimeService', () => {
         setup: 'pnpm worktree:setup'
       }
     })
-    vi.mocked(createSetupRunnerScript).mockReturnValue({
+    vi.mocked(createSetupRunnerScript).mockResolvedValue({
       runnerScriptPath: '/tmp/repo/.git/occ/setup-runner.sh',
       envVars: {
         OCC_ROOT_PATH: '/tmp/repo',
@@ -199,7 +199,7 @@ describe('OCCRuntimeService', () => {
       }
     })
     vi.mocked(resolveSetupRunnerShell).mockReturnValue({ family: 'posix' })
-    vi.mocked(createSetupRunnerScript).mockReturnValue({
+    vi.mocked(createSetupRunnerScript).mockResolvedValue({
       runnerScriptPath: 'C:\\repo\\.git\\occ\\setup-runner.sh',
       shell: { family: 'posix' },
       envVars: {
@@ -282,7 +282,7 @@ describe('OCCRuntimeService', () => {
       }
     })
     vi.mocked(shouldRunSetupForCreate).mockReturnValue(true)
-    vi.mocked(createSetupRunnerScript).mockReturnValue({
+    vi.mocked(createSetupRunnerScript).mockResolvedValue({
       runnerScriptPath: '/tmp/repo/.git/occ/setup-runner.sh',
       envVars: {
         OCC_ROOT_PATH: '/tmp/repo',
@@ -396,7 +396,7 @@ describe('OCCRuntimeService', () => {
       }
     })
     vi.mocked(shouldRunSetupForCreate).mockReturnValue(true)
-    vi.mocked(createSetupRunnerScript).mockReturnValue({
+    vi.mocked(createSetupRunnerScript).mockResolvedValue({
       runnerScriptPath: 'C:\\repo\\.git\\occ\\setup-runner.sh',
       shell: { family: 'posix', executable: 'wsl.exe' },
       envVars: {
@@ -474,7 +474,7 @@ describe('OCCRuntimeService', () => {
     })
     vi.mocked(shouldRunSetupForCreate).mockReturnValue(true)
     vi.mocked(resolveSetupRunnerShell).mockReturnValue({ family: 'posix' })
-    vi.mocked(createSetupRunnerScript).mockReturnValue({
+    vi.mocked(createSetupRunnerScript).mockResolvedValue({
       runnerScriptPath: 'C:\\repo\\.git\\occ\\setup-runner.sh',
       shell: { family: 'posix' },
       envVars: {

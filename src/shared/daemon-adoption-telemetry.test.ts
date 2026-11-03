@@ -24,7 +24,7 @@ describe('classifyDaemonSpawnerPath', () => {
     ).toBe('applications')
     expect(
       classifyDaemonSpawnerPath(
-        '/Users/a/Library/Caches/com.lkun.occ.ShipIt/update.abc/OCC.app/Contents/MacOS/OCC',
+        '/Users/a/Library/Caches/com.stablyai.occ.ShipIt/update.abc/OCC.app/Contents/MacOS/OCC',
         alwaysExists,
         null
       )

@@ -72,7 +72,7 @@ function createService(
   const service = DesktopPushService.create({
     runtime: runtime as never,
     runtimeRpc: runtimeRpc as never,
-    gatewayUrl: 'https://push.onocc.dev',
+    gatewayUrl: 'https://push.onorca.dev',
     client: client as never,
     scheduleRetry: (run, delayMs) => {
       retries.push({ run, delayMs })

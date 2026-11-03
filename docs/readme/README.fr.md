@@ -251,7 +251,7 @@ Associez-la à l'app de bureau pour surveiller et piloter vos agents depuis votr
 - **Twitter / X :** Suivez **[@occ_build](https://x.com/occ_build)** pour les news et annonces.
 - **WeChat :** Scannez pour rejoindre le groupe WeChat de la communauté OCC.
 
-  <img src="../assets/wechat-qr.jpg" alt="QR code du groupe WeChat de la communauté OCC" width="160" />
+  <img src="../assets/wechat-qr-group14.jpg" alt="QR code du groupe WeChat de la communauté OCC" width="160" />
 
 - **Feedback &amp; idées :** On ship vite. Il manque quelque chose ? [Demandez une feature](https://github.com/stablyai/occ/issues).
 - **Confidentialité :** Voir la [doc confidentialité &amp; télémétrie](https://www.onocc.dev/docs/telemetry) pour ce qu'OCC collecte en anonyme et comment désactiver la télémétrie.

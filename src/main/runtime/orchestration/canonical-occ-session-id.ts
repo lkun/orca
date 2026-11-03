@@ -8,18 +8,46 @@ import {
 /** Address by the /clear root to preserve Runs and mail; without records, retain the supplied id. */
 export function canonicalOCCSessionId(
   occSessionId: OCCSessionId,
-  store: Pick<AgentSessionRecordReader, 'listRecords'> | null = readAgentSessionRecordStore()
+  store: Pick<
+    AgentSessionRecordReader,
+    'listRecords' | 'lineageRevision'
+  > | null = readAgentSessionRecordStore()
 ): OCCSessionId {
+  return createCanonicalOCCSessionResolver(store)(occSessionId)
+}
+
+/** Clear edges per lineage revision: mail checks ask per message, and must not rescan every record each time. */
+const clearEdgesByRevision = new WeakMap<object, ReadonlyMap<string, string>>()
+
+export function createCanonicalOCCSessionResolver(
+  store: Pick<AgentSessionRecordReader, 'listRecords' | 'lineageRevision'> | null
+): (id: OCCSessionId) => OCCSessionId {
   if (!store) {
-    return occSessionId
+    return (id) => id
   }
-  const clearedFrom = new Map<string, string>()
-  for (const record of store.listRecords()) {
-    const next = clearedInto(record)
-    if (next) {
-      clearedFrom.set(next, record.sessionId)
+  const revision = store.lineageRevision?.()
+  let clearedFrom = revision ? clearEdgesByRevision.get(revision) : undefined
+  if (!clearedFrom) {
+    const edges = new Map<string, string>()
+    for (const record of store.listRecords()) {
+      const next = clearedInto(record)
+      if (next) {
+        edges.set(next, record.sessionId)
+      }
+    }
+    clearedFrom = edges
+    if (revision) {
+      clearEdgesByRevision.set(revision, edges)
     }
   }
+  const edges = clearedFrom
+  return (id) => canonicalOCCSessionFromEdges(id, edges)
+}
+
+export function canonicalOCCSessionFromEdges(
+  occSessionId: OCCSessionId,
+  clearedFrom: ReadonlyMap<string, string>
+): OCCSessionId {
   // The visited set bounds corrupt chains; valid clear lineage is acyclic.
   let root: string = occSessionId
   const earlier = new Set([root])

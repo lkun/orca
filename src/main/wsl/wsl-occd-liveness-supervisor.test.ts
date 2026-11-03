@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { OCCdTerminalCensus } from '../../shared/occd-terminal-census'
-import type { SystemPowerLifecycleListener } from '../system-power-lifecycle'
+import type { SystemPowerLifecycleListener } from '../power/system-power-lifecycle'
 import type { WslRunningDistrosRead } from '../wsl-background-distro-gate'
 import type { WslGuestIdentity } from './wsl-guest-process-identity'
 import type { WslOCCdConnection } from './wsl-occd-connection'
@@ -8,7 +8,10 @@ import type { WslOCCdConnectionStatus } from './wsl-occd-connection-status'
 import { EXIT_SETTLE_MS } from './wsl-occd-liveness-evidence'
 import { WSL_OCCD_HEARTBEAT_MS } from './wsl-occd-liveness-state'
 import { WSL_OCCD_IDLE_VERIFY_MS } from './wsl-occd-liveness-monitor'
-import { WslDistroNotRunningError } from './wsl-occd-connection-errors'
+import {
+  WslDistroNotRunningError,
+  WslDistroUnverifiableConnectError
+} from './wsl-occd-connection-errors'
 import { WslOCCdLivenessSupervisor } from './wsl-occd-liveness-supervisor'
 import { WSL_OCCD_RECONNECT_DELAYS_MS } from './wsl-occd-reconnect-backoff'
 import {
@@ -188,7 +191,8 @@ function harness(options: { visible?: boolean } = {}) {
       clock += ms
     },
     clock: () => clock,
-    lastWatch: () => watches.at(-1)!
+    lastWatch: () => watches.at(-1)!,
+    watchCount: () => watches.length
   }
 }
 
@@ -246,6 +250,21 @@ describe('WslOCCdLivenessSupervisor', () => {
     await expect(h.supervisor.connect('Ubuntu', { noBoot: true })).rejects.toBeInstanceOf(
       WslDistroNotRunningError
     )
+    await h.advance(60_000)
+    expect(h.statuses.at(-1)).toMatchObject({ state: 'distro-stopped' })
+  })
+
+  it('re-verifies, never arms, when a no-boot connect could not read the running list (E9)', async () => {
+    const h = harness({ visible: true })
+    await h.supervisor.connect('Ubuntu')
+    const watches = h.watchCount()
+    h.state.running = { status: 'confirmed', distros: [] }
+    h.state.ensureFails = 1
+    h.state.ensureError = new WslDistroUnverifiableConnectError('Ubuntu')
+    await expect(h.supervisor.connect('Ubuntu', { noBoot: true })).rejects.toBeInstanceOf(
+      WslDistroUnverifiableConnectError
+    )
+    expect(h.watchCount()).toBe(watches)
     await h.advance(60_000)
     expect(h.statuses.at(-1)).toMatchObject({ state: 'distro-stopped' })
   })

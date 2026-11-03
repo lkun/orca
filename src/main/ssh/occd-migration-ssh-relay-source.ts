@@ -1,7 +1,7 @@
 import { OCCD_MIGRATION_SSH_RELAY_SOURCE_KIND } from '../../shared/occd-migration/occd-migration-source-kind'
 import type { SshTarget } from '../../shared/ssh-types'
 import { collectOCCdMigrationSourceCatalog } from '../persistence/migrating-occd-catalog/occd-source-catalog'
-import type { Store } from '../persistence'
+import type { Store } from '../persistence/loading-store/store'
 import { createOCCdMigrationManifest } from './occd-migration-manifest-export'
 import { IDENTITY_OCCD_MIGRATION_PATH_REWRITER } from './occd-migration-path-rewrite'
 import type {

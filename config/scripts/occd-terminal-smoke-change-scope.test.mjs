@@ -48,7 +48,7 @@ describe('the actual terminal smoke dependency graph', () => {
     ...Object.values(OCCD_CHILD_ENTRY_POINTS),
     'src/main/runtime/occ-runtime.ts',
     'src/main/windows/windows-process-table.ts',
-    'src/main/worker-thread-entry-path.ts',
+    'src/main/worker-threads/worker-thread-entry-path.ts',
     'src/cli/index.ts',
     'config/scripts/runtime-serve-terminal-smoke.mjs',
     'config/scripts/build-occd-node.mjs',

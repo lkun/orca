@@ -67,13 +67,13 @@ vi.mock('../terminal-history-deletion', async () =>
 vi.mock('../ports/advertised-url-watcher', async () =>
   (await import('./worktrees-test-module-mocks')).advertisedUrlWatcherModuleMock()
 )
-vi.mock('../workspace-cleanup-scan-snapshot', async () =>
+vi.mock('../workspaces/cleanup/workspace-cleanup-scan-snapshot', async () =>
   (await import('./worktrees-test-module-mocks')).workspaceCleanupScanSnapshotModuleMock()
 )
-vi.mock('../workspace-space-analysis-snapshot', async () =>
+vi.mock('../workspaces/space-analysis/workspace-space-analysis-snapshot', async () =>
   (await import('./worktrees-test-module-mocks')).workspaceSpaceAnalysisSnapshotModuleMock()
 )
-vi.mock('../workspace-cleanup-removal-snapshot-prune', async () =>
+vi.mock('../workspaces/cleanup/workspace-cleanup-removal-snapshot-prune', async () =>
   (await import('./worktrees-test-module-mocks')).workspaceCleanupRemovalSnapshotPruneModuleMock()
 )
 vi.mock('../runtime/worktree-teardown', async () =>
@@ -148,7 +148,7 @@ describe('automation creates: main provisions setup and default tabs', () => {
   ])(
     'runs a $platform runner with the $platform command',
     async ({ runnerScriptPath, platform }) => {
-      createSetupRunnerScriptMock.mockReturnValueOnce({ runnerScriptPath, envVars: {} })
+      createSetupRunnerScriptMock.mockResolvedValueOnce({ runnerScriptPath, envVars: {} })
 
       await handlers['worktrees:create'](null, {
         repoId: 'repo-1',

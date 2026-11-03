@@ -10,17 +10,17 @@ import {
   UNVERIFIABLE_OCCD_TERMINAL_CENSUS
 } from '../../shared/occd-terminal-census'
 import { requestOCCdTerminalCensus } from '../ssh/occd-terminal-census-client'
-import { subscribeSystemPowerLifecycle } from '../system-power-lifecycle'
+import { subscribeSystemPowerLifecycle } from '../power/system-power-lifecycle'
 import {
   deferUntilWslDistroRunning,
   readSettledConfirmedRunningWslDistros
 } from '../wsl-background-distro-gate'
 import type { WslDistroHolder } from './wsl-distro-holder'
-import { wslDistroHolderKey } from './wsl-distro-holder-record'
 import { readWslGuestIdentity } from './wsl-guest-process-identity'
 import type { WslOCCdConnection, WslOCCdConnectionManager } from './wsl-occd-connection'
 import { defaultWslOCCdEnvironmentId } from './wsl-occd-deploy'
-import { confirmsRunning, EXIT_SETTLE_MS } from './wsl-occd-liveness-evidence'
+import { EXIT_SETTLE_MS } from './wsl-occd-liveness-evidence'
+import { requireConfirmedRunning } from './wsl-occd-connection-errors'
 import { WslOCCdLivenessSupervisor } from './wsl-occd-liveness-supervisor'
 import { createWslOCCdHostTransport } from './wsl-occd-host-transport'
 import { openWslOCCdWatch } from './wsl-occd-watch'
@@ -70,18 +70,12 @@ export function createWslOCCdLivenessSupervisor(options: {
     hasUserVisibleWork: options.hasUserVisibleWork,
     deferUntilRunning: deferUntilWslDistroRunning,
     requireRunning: async (distro) =>
-      confirmsRunning(
-        await readSettledConfirmedRunningWslDistros(distro),
-        wslDistroHolderKey(distro)
-      ),
+      requireConfirmedRunning(await readSettledConfirmedRunningWslDistros(distro), distro),
     // Liveness is background work: the holder may re-spawn only into a distro that runs (E9).
     ensureHolder: (distro) =>
       options.holder.ensureHeld(distro, {
         requireRunning: async () =>
-          confirmsRunning(
-            await readSettledConfirmedRunningWslDistros(distro),
-            wslDistroHolderKey(distro)
-          )
+          requireConfirmedRunning(await readSettledConfirmedRunningWslDistros(distro), distro)
       }),
     subscribePower: subscribeSystemPowerLifecycle
   })

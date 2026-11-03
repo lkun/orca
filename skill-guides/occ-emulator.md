@@ -45,7 +45,7 @@ device.
 
 | Goal                     | Command                                                     | Constraint                                                                                                                                                            |
 | ------------------------ | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| List available / running | `OCC emulator list --json`                                 | OCC-managed sessions plus raw serve-sim streams. Use its ids for `--device` / `--emulator`.                                                                          |
+| List worktree's sessions | `OCC emulator list --json`                                 | The worktree's attached sessions, iOS and Android; `--worktree all` lists every worktree's. Use a row's `deviceUdid` for `--device`.                                  |
 | List devices everywhere  | `OCC emulator devices --json`                              | Every backend's devices with a platform column, booted and shutdown.                                                                                                  |
 | Attach / make active     | `OCC emulator attach "iPhone 16 Pro" --json`               | Starts the helper if needed and makes the device active for the worktree. `--focus` switches the UI; it does not by default.                                          |
 | Single tap               | `OCC emulator tap <x> <y> --json`                          | Normalized 0..1 coordinates.                                                                                                                                          |
@@ -86,6 +86,12 @@ and retry.
   stream.
 - Run `kill` when you are done. A helper left running holds the device until OCC quits.
 - The iOS backend drives private simulator APIs, so an Xcode update can change its behavior.
+- While Xcode's Device Hub is running, the simulator drops OCC's touch and keyboard input, so
+  `tap`, `type`, and `gesture` fail with `emulator_input_blocked`. Quit Device Hub, which shuts
+  the simulator down, then attach again. If Device Hub must stay open, run
+  `xcrun simctl spawn <udid> notifyutil -s com.apple.coredevice.dtuhidd.active 0` and
+  `xcrun simctl spawn <udid> launchctl kickstart -k system/com.apple.backboardd` (this closes
+  running apps), then `kill` and attach again.
 
 ## Examples
 

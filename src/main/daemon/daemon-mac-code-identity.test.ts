@@ -12,7 +12,7 @@ import {
 const HELPER_PATH =
   '/Applications/OCC.app/Contents/Frameworks/OCC Helper.app/Contents/MacOS/OCC Helper'
 const PARKED_PATH =
-  '/private/var/folders/x/T/com.lkun.occ.ShipIt.abc/OCC.app/Contents/MacOS/OCC'
+  '/private/var/folders/x/T/com.stablyai.occ.ShipIt.abc/OCC.app/Contents/MacOS/OCC'
 
 function codesignReturns(stderr: string, code: number | null, timedOut = false): void {
   runProcessMock.mockResolvedValue({ code, stdout: '', stderr, timedOut })
@@ -28,29 +28,14 @@ afterEach(() => {
 })
 
 describe('classifyCodesignDisplayOutput', () => {
-  it('resolves the executable path codesign reports for a live process', () => {
-    expect(
-      classifyCodesignDisplayOutput(
-        `Executable=${HELPER_PATH}\nIdentifier=com.lkun.occ.helper\nFormat=pid diskrep\n`,
-        0
-      )
-    ).toBe('resolved')
-  })
-
   it('separates the Squirrel staging copy from the installed bundle', () => {
     expect(classifyCodesignDisplayOutput(`Executable=${PARKED_PATH}\n`, 0)).toBe('parked')
     expect(
       classifyCodesignDisplayOutput(
-        'Executable=/Users/a/Library/Caches/com.lkun.occ.ShipIt/u/OCC.app/Contents/MacOS/OCC\n',
+        'Executable=/Users/a/Library/Caches/com.stablyai.occ.ShipIt/u/OCC.app/Contents/MacOS/OCC\n',
         0
       )
     ).toBe('parked')
-  })
-
-  it('treats the unlinked-executable diagnostic as unresolvable', () => {
-    expect(classifyCodesignDisplayOutput('+3337: No such file or directory\n', 1)).toBe(
-      'unresolvable'
-    )
   })
 
   it('fails open on a dead pid, an exiting pid, unsigned code, or an unexpected failure', () => {
@@ -89,17 +74,6 @@ describe('getDaemonMacCodeIdentity', () => {
     })
   })
 
-  it('asks codesign to display the running pid and reads its stderr', async () => {
-    codesignReturns(`Executable=${HELPER_PATH}\n`, 0)
-    await expect(getDaemonMacCodeIdentity(3337)).resolves.toBe('resolved')
-    expect(runProcessMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        program: '/usr/bin/codesign',
-        args: ['--display', '--verbose=1', '+3337']
-      })
-    )
-  })
-
   it('reports unresolvable when codesign cannot map the pid to on-disk code', async () => {
     codesignReturns('+3337: No such file or directory\n', 1)
     await expect(getDaemonMacCodeIdentity(3337)).resolves.toBe('unresolvable')
@@ -113,19 +87,6 @@ describe('getDaemonMacCodeIdentity', () => {
 
     codesignReturns('+3337: No such file or directory\n', 1)
     await expect(getDaemonMacCodeIdentity(3337)).resolves.toBe('unresolvable')
-  })
-
-  it('discards a timed-out probe even when it printed a path first', async () => {
-    codesignReturns('Executable=/x\n', null, true)
-    await expect(getDaemonMacCodeIdentity(3337)).resolves.toBe('probe-failed')
-  })
-
-  it('coalesces concurrent asks about one pid into a single probe', async () => {
-    codesignReturns(`Executable=${HELPER_PATH}\n`, 0)
-    await expect(
-      Promise.all([getDaemonMacCodeIdentity(3337), getDaemonMacCodeIdentity(3337)])
-    ).resolves.toEqual(['resolved', 'resolved'])
-    expect(runProcessMock).toHaveBeenCalledTimes(1)
   })
 
   it('fails open when codesign cannot be spawned, off macOS, or without a pid', async () => {

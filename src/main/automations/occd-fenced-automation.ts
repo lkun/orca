@@ -1,6 +1,6 @@
 import { getAppEnvironment } from '../../shared/app-environment'
 import type { Automation } from '../../shared/automations-types'
-import type { Store } from '../persistence'
+import type { Store } from '../persistence/loading-store/store'
 import { listOCCdMigrationCutoverChainForTarget } from '../ssh/occd-migration-cutover-journal'
 
 export const OCCD_FENCED_AUTOMATION = "This automation now runs on its SSH host's OCC server."

@@ -1,0 +1,4 @@
+/** `node --import occ-test-register.mjs`: installs the plugin test hooks shipped beside it. */
+import { register } from 'node:module'
+
+register('./occ-test-hooks.mjs', import.meta.url)

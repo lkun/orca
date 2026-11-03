@@ -48,7 +48,7 @@ describe('electron-builder mac channel config', () => {
   it('builds hourly artifacts with the release signing identity', () => {
     withHourlyEnv((config) => {
       expect(config.mac.appId).toBeUndefined()
-      expect(config.appId).toBe('com.lkun.occ')
+      expect(config.appId).toBe('com.stablyai.occ')
       expect(config.mac.hardenedRuntime).toBe(true)
       expect(config.forceCodeSigning).toBe(true)
     })
@@ -88,7 +88,7 @@ describe('electron-builder mac channel config', () => {
   // Adhoc uses same updater, signing and TCC identity as hourly; only destination repo differs.
   it('builds adhoc artifacts with the release identity and its own repo', () => {
     withAdhocEnv((config) => {
-      expect(config.appId).toBe('com.lkun.occ')
+      expect(config.appId).toBe('com.stablyai.occ')
       expect(config.mac.hardenedRuntime).toBe(true)
       expect(config.mac.notarize).toBe(true)
       expect(config.forceCodeSigning).toBe(true)
@@ -107,7 +107,7 @@ describe('electron-builder mac channel config', () => {
 
   it('builds daily artifacts with the release identity and its own repo', () => {
     withDailyEnv((config) => {
-      expect(config.appId).toBe('com.lkun.occ')
+      expect(config.appId).toBe('com.stablyai.occ')
       expect(config.mac.hardenedRuntime).toBe(true)
       expect(config.mac.notarize).toBe(true)
       expect(config.forceCodeSigning).toBe(true)

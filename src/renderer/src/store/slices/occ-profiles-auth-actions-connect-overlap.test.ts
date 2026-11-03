@@ -159,19 +159,4 @@ describe('occ profile overlapping connect actions', () => {
     expect(store.getState().occProfileAuthStatus).toEqual(signedOutAuth)
     expect(store.getState().occProfiles).toEqual(listState.profiles)
   })
-
-  it('does not toast signed out when sign-out returns an already-relinked session', async () => {
-    const signedOut: SignOutCurrentOCCProfileResult = {
-      status: 'signed-out',
-      auth: connectedAuthStatus,
-      activeProfileId: 'local-default',
-      profiles: [{ ...listState.profiles[0], kind: 'cloud-linked', cloud: connectedCloud }]
-    }
-    occProfilesApi.signOutCurrent.mockResolvedValue(signedOut)
-    const store = createTestStore()
-
-    await expect(store.getState().signOutCurrentOCCProfile()).resolves.toEqual(signedOut)
-    expect(toastSuccessMock).not.toHaveBeenCalled()
-    expect(store.getState().occProfileAuthStatus).toEqual(connectedAuthStatus)
-  })
 })

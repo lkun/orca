@@ -43,9 +43,9 @@ export async function installOCCdBundle(
   },
   fullVersion: string,
   remoteDir: string
-): Promise<void> {
+): Promise<'uploaded' | 'reused'> {
   if (options.recordedNodeRuntimeProbe && (await cachedOCCdSlotInstalled(options, remoteDir))) {
-    return
+    return 'reused'
   }
   // Existing slot bytes are unusable without their referenced runtime.
   await ensureRemoteOCCdNodeRuntime({
@@ -66,7 +66,7 @@ export async function installOCCdBundle(
       signal: options.signal
     })
   ) {
-    return
+    return 'reused'
   }
   // Persist the token so a relaunch can prove ownership of an interrupted upload lock.
   const token = randomUUID()
@@ -95,7 +95,7 @@ export async function installOCCdBundle(
         signal: options.signal
       })
     ) {
-      return
+      return 'reused'
     }
     await uploadRemoteInstallDirectory(
       options.conn,
@@ -127,6 +127,7 @@ export async function installOCCdBundle(
       signal: options.signal,
       releaseLock: false
     })
+    return 'uploaded'
   } catch (error) {
     preserveInstallLock = isUnconfirmedSshCommandTermination(error)
     throw error

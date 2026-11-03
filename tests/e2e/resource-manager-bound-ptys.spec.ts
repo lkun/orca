@@ -71,8 +71,7 @@ for (const theme of ['light', 'dark'] as const) {
       ).toHaveAttribute('data-active', 'true')
     }
     await body.getByRole('button', { name: `End ${first.title}`, exact: true }).click()
-    await expect(occPage.getByRole('heading', { name: `End ${first.title}?` })).toBeVisible()
-    await occPage.getByRole('button', { name: 'End terminal', exact: true }).click()
+    await expect(occPage.getByRole('dialog', { name: `End ${first.title}?` })).toHaveCount(0)
     await expect(occPage.getByText('2 OCC PTYs on this computer')).toBeVisible()
     await expect(
       body.getByRole('button', { name: `Open ${first.title}`, exact: true })
@@ -82,6 +81,17 @@ for (const theme of ['light', 'dark'] as const) {
       path: testInfo.outputPath(`bound-ptys-${theme}.png`)
     })
     await expect(occPage.getByRole('heading', { name: `End ${first.title}?` })).toHaveCount(0)
+    for (const terminal of terminals.slice(1)) {
+      await body.getByRole('checkbox', { name: `Select ${terminal.title}`, exact: true }).check()
+    }
+    await occPage.screenshot({
+      animations: 'disabled',
+      path: testInfo.outputPath(`bound-ptys-selected-${theme}.png`)
+    })
+    await panel.getByRole('button', { name: 'End selected (2)', exact: true }).click()
+    await expect(occPage.getByText('0 OCC PTYs on this computer')).toBeVisible()
+    await expect(body.getByText('No local OCC PTYs', { exact: true })).toBeVisible()
+    await expect(occPage.getByRole('dialog', { name: /^End / })).toHaveCount(0)
     await occPage.keyboard.press('Escape')
     await expect(body).toHaveCount(0)
   })

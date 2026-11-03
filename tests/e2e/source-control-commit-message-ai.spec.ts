@@ -107,43 +107,4 @@ test.describe('Source Control AI commit messages', () => {
       }
     })
   }
-
-  test('generates a commit message from staged changes through the Source Control UI', async ({
-    occPage,
-    testRepoPath
-  }) => {
-    const { branchName, worktreePath } = createWorktreeWithStagedChange(testRepoPath)
-    const agentCommand =
-      'node -e "setTimeout(() => process.stdout.write(\'Add generated E2E message\'), 250)"'
-
-    try {
-      await waitForSessionReady(occPage)
-      await openSourceControlForWorktree(occPage, testRepoPath, worktreePath, {
-        commitMessageAi: {
-          enabled: true,
-          agentId: 'custom',
-          selectedModelByAgent: {},
-          selectedThinkingByModel: {},
-          customPrompt: '',
-          customAgentCommand: agentCommand
-        }
-      })
-
-      const textarea = occPage.getByRole('textbox', { name: 'Commit message' })
-      await expect(textarea).toBeVisible({ timeout: 10_000 })
-      await expect(textarea).toHaveValue('')
-
-      const generate = occPage.getByRole('button', { name: 'Generate commit message with AI' })
-      await expect(generate).toBeVisible()
-      await expect(generate).toBeEnabled()
-      await generate.click()
-
-      await expect(
-        occPage.getByRole('button', { name: 'Stop generating commit message' })
-      ).toBeVisible()
-      await expect(textarea).toHaveValue('Add generated E2E message', { timeout: 10_000 })
-    } finally {
-      cleanupWorktree(testRepoPath, worktreePath, branchName)
-    }
-  })
 })

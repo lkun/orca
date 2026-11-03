@@ -311,7 +311,8 @@ describe('deployOCCd', () => {
       scriptHost(script)
       expect(await deployOCCd(options())).toMatchObject({
         outcome: 'installed-not-activated',
-        code: 'occd_candidate_preflight_failed'
+        code: 'occd_candidate_preflight_failed',
+        startCheckFailed: true
       })
       expect(script.log).toEqual(['preflight'])
       expect(
@@ -690,8 +691,11 @@ describe('deployOCCd', () => {
     )
     expect(result).toMatchObject({
       outcome: 'installed-not-activated',
-      code: 'occd_update_terminals_running'
+      code: 'occd_update_terminals_running',
+      freshlyInstalled: true
     })
+    // A deferral keeps its staged build for the later update.
+    expect(result).not.toHaveProperty('startCheckFailed')
     // Uploading bytes must not mutate a refused incumbent.
     expect(vi.mocked(uploadRemoteInstallDirectory)).toHaveBeenCalled()
     expect(script.log).toEqual([])
@@ -729,7 +733,7 @@ describe('deployOCCd', () => {
     }
     scriptHost(script)
     const result = await deployOCCd(options())
-    expect(result).toMatchObject({ outcome: 'installed-not-activated' })
+    expect(result).toMatchObject({ startCheckFailed: true, freshlyInstalled: true })
     expect(script.log).toEqual([
       'preflight',
       `stop:${OLD_VERSION}`,

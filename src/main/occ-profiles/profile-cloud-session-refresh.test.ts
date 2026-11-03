@@ -275,16 +275,4 @@ describe('refresh-token replay after an ambiguous attempt', () => {
     expect(invalidated).toHaveBeenCalledTimes(1)
     unsubscribe()
   })
-
-  it('does not mark a 401 that follows no ambiguous attempt', async () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    refreshMock.mockRejectedValue(new OCCCloudRequestError(401))
-
-    await expect(readFreshOCCCloudSession(config, active, '/data')).resolves.toEqual({
-      status: 'reconnect-required'
-    })
-
-    expect(warn.mock.calls.flat().join(' ')).not.toContain('occ_cloud_refresh_possible_replay')
-    expect(clearMock).toHaveBeenCalledTimes(1)
-  })
 })

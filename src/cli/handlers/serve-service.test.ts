@@ -183,6 +183,25 @@ describe('occ serve service', () => {
     ).resolves.toMatchObject({ dryRun: true })
   })
 
+  it('keeps an AppImage launch and profile directories out of the unit PATH (#36000)', async () => {
+    const profileBin = join(home, 'profile', 'cli', 'bin')
+    const d = deps('linux')
+    d.env = {
+      ...d.env,
+      PATH: [
+        '/tmp/.mount_occ-lonOeOb',
+        '/tmp/.mount_occ-lonOeOb/usr/sbin',
+        '/tmp/appimage_extracted_0f3a/usr/bin',
+        profileBin,
+        'relative/bin',
+        '/usr/local/bin',
+        bin
+      ].join(':')
+    }
+    const result = await installServeService({ command: join(bin, 'occ-ide'), dryRun: true }, d)
+    expect(String(result.content)).toContain(`Environment=PATH=/usr/local/bin:${bin}\n`)
+  })
+
   it('refuses a --command tied to one OCC version', async () => {
     const scoped = join(home, 'profile', 'cli', 'bin')
     await mkdir(scoped, { recursive: true })
@@ -191,6 +210,19 @@ describe('occ serve service', () => {
     expect(() =>
       resolveServiceCommand(join(scoped, 'occ'), {
         platform: 'darwin',
+        env: { OCC_USER_DATA_PATH: join(home, 'profile') }
+      })
+    ).toThrow(/one OCC version/)
+  })
+
+  it('refuses a --command inside an extract-and-run AppImage copy', async () => {
+    const extracted = join(home, 'appimage_extracted_0f3a')
+    await mkdir(extracted)
+    await writeFile(join(extracted, 'AppRun'), '#!/bin/sh\n')
+    await chmod(join(extracted, 'AppRun'), 0o755)
+    expect(() =>
+      resolveServiceCommand(join(extracted, 'AppRun'), {
+        platform: 'linux',
         env: { OCC_USER_DATA_PATH: join(home, 'profile') }
       })
     ).toThrow(/one OCC version/)

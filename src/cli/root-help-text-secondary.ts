@@ -78,7 +78,7 @@ export const ROOT_HELP_TEXT_SECONDARY = [
   '  occ project setup-update --setup <setup-id> [--host <host>] [--display-name <name>] [--path <path>] [--worktree-base-path <path>] [--git-username <name>] [--kind git|folder] [--state ready|not-set-up|setting-up|error|unsupported] [--method legacy-repo|imported-existing-folder|cloned|provisioned] [--json]',
   '  occ project setup-delete --setup <setup-id> [--host <host>] [--force] [--json]',
   '  occ repo list [--json]',
-  '  occ repo add --path <path> [--json]',
+  '  occ repo add --path <path> [--kind git|folder] [--json]',
   '  occ repo show --repo <selector> [--json]',
   '  occ repo set --repo <selector> --external-worktree-visibility show|hide|inherit [--json]',
   '  occ repo set-base-ref --repo <selector> --ref <ref> [--json]',

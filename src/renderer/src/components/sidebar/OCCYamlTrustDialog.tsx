@@ -201,10 +201,12 @@ const OCCYamlTrustDialog = React.memo(function OCCYamlTrustDialog() {
   const resolveAndClose = useCallback(
     (decision: 'run' | 'skip') => {
       if (decision === 'run' && repoId) {
+        // Repo-wide trust is ignored when the repo id is on two hosts, so keep this script's approval too.
+        if (contentHash) {
+          markOCCHookScriptConfirmed(repoId, scriptKind, contentHash)
+        }
         if (alwaysTrust) {
           markOCCHookRepoAlwaysTrusted(repoId)
-        } else if (contentHash) {
-          markOCCHookScriptConfirmed(repoId, scriptKind, contentHash)
         }
       }
       onResolve?.(decision)

@@ -1,3 +1,4 @@
+import { watchMovedWorkerResumeSessions } from './rpc/methods/orchestration/worker/worker-resume-session-capture'
 import { AgentTransitionDetector } from '../agent-hooks/agent-transition-detector'
 import type { ConnectorCloud } from '../connector-cloud/connector-cloud'
 import type { ExternalConversationSeam } from '../external-conversations/external-conversation-seam'
@@ -6,7 +7,7 @@ import { HEADLESS_RUNTIME_WINDOW_ID } from '../../shared/runtime-session-contrac
 import { parsePaneKey } from '../../shared/stable-pane-id'
 import { parseWorkspaceKey } from '../../shared/workspace-scope'
 import { getRepoIdFromWorktreeId } from '../../shared/worktree/id'
-import { OCCRuntimeWithMigrationCatalog } from './occ-runtime-migration-catalog'
+import { OCCRuntimeWithWindowlessTerminalActivity } from './occ-runtime-windowless-terminal-activity'
 import { getRuntimeDesktopSurface } from './runtime-desktop-surface'
 import type { AgentStatusStoreView } from './sidebar-inputs/workspace-activity-facts-producer'
 import { subscribeHookStatusTitles } from './terminal/layout/hook-status-title-subscription'
@@ -27,7 +28,7 @@ function unrefTimer(run: () => void, delayMs: number): { cancel: () => void } {
 }
 
 /** All hosts/builds own transition detection and windowless phone pushes. */
-export abstract class OCCRuntimeWithAgentTransitions extends OCCRuntimeWithMigrationCatalog {
+export abstract class OCCRuntimeWithAgentTransitions extends OCCRuntimeWithWindowlessTerminalActivity {
   readonly agentTransitions = new AgentTransitionDetector({
     resolveTabWorktreeId: (tabId) => this.tabs.get(tabId)?.worktreeId,
     subscribeToPtyExit: (ptyId, listener) => this.subscribeToPtyExit(ptyId, listener),
@@ -43,6 +44,8 @@ export abstract class OCCRuntimeWithAgentTransitions extends OCCRuntimeWithMigra
     readWorkspaceLabels: (worktreeId, paneKey) =>
       this.readTerminalAgentWorkspaceLabels(worktreeId, paneKey),
     isWorkspaceMuted: (worktreeId) => this.isWorkspaceNotificationMuted(worktreeId),
+    readOrchestration: (paneKey) => this.getAgentStatusOrchestrationContextForPaneKey(paneKey),
+    readTerminalTitle: (paneKey) => this.getPtyRecordForPaneKey(paneKey)?.lastOscTitle ?? null,
     readHookRow: (paneKey) => this.agentTransitions.latestRow(paneKey),
     translate: (key, fallback) =>
       getRuntimeDesktopSurface().translateNotification?.(key, fallback) ?? fallback,
@@ -78,11 +81,22 @@ export abstract class OCCRuntimeWithAgentTransitions extends OCCRuntimeWithMigra
     this.connectorCloud = cloud
   }
 
-  constructor(...args: ConstructorParameters<typeof OCCRuntimeWithMigrationCatalog>) {
+  constructor(...args: ConstructorParameters<typeof OCCRuntimeWithWindowlessTerminalActivity>) {
     super(...args)
     this.agentTransitions.subscribe((change) => this.terminalAgentPhonePush.observe(change))
     this.agentTransitions.subscribe((change) => this.terminalWorkerTurnStops.observe(change))
     this.agentTransitions.subscribe((change) => this.workerAutoReleaseActivity.observePane(change))
+    const saveMovedWorkerSessions = watchMovedWorkerResumeSessions(
+      this,
+      () => this._orchestrationDb
+    )
+    this.subscribeAgentProviderSessionChangesFn?.((sessions) => {
+      try {
+        saveMovedWorkerSessions(sessions)
+      } catch (error) {
+        console.warn('[orchestration] a worker conversation change was not saved', error)
+      }
+    })
   }
 
   /** Whether a worker's agent is in a turn now, working or waiting on the user; an automatic close never takes one. */
@@ -109,11 +123,17 @@ export abstract class OCCRuntimeWithAgentTransitions extends OCCRuntimeWithMigra
     // Attach connector watches at hook-store startup, before any connector call.
     this.externalConversations.current()
     const detachTransitions = this.agentTransitions.attach(store)
+    const detachCrew = store.subscribeStatusRowMutations(() =>
+      this.crewChanges.notify(new Set(['status', 'names']))
+    )
+    this.crewChanges.notify(new Set(['status', 'names']))
     const subscribe = store.subscribeEnrichedStatus?.bind(store)
     const detachTitles = subscribe
       ? subscribeHookStatusTitles({ subscribeEnrichedStatus: subscribe }, this)
       : () => {}
     return () => {
+      detachCrew()
+      this.crewChanges.notify(new Set(['status', 'names']))
       detachTitles()
       detachTransitions()
     }

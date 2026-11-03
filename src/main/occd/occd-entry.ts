@@ -98,7 +98,8 @@ async function startOCCdRuntime(
   const { agentHookRuntimeDeps } = await import('../agent-hooks/agent-hook-runtime-deps')
   const { installHookStatusSessionTabsRepublish } =
     await import('../agent-hooks/hook-status-session-tabs-republish')
-  const { startOCCdManagedAgentHooks } = await import('./occd-managed-agent-hooks')
+  const { startOCCdAgentHookServer, startOCCdManagedAgentHooks } =
+    await import('./occd-managed-agent-hooks')
   const { AgentStatusObservedPaneIdentities, AgentStatusObservedPaneIdentityCapture } =
     await import('../runtime/agent-status-observed-pane-identity')
 
@@ -155,7 +156,7 @@ async function startOCCdRuntime(
   // Subscribe before hooks start so early turns are counted.
   const { startOCCdStats } = await import('./occd-stats')
   const stats = startOCCdStats(runtimeUserDataPath, agentHookServer, registerCleanup)
-  await agentHookServer.start({
+  await startOCCdAgentHookServer(agentHookServer, {
     env: 'production',
     userDataPath: runtimeUserDataPath,
     statusHooksEnabled: isAgentStatusHooksEnabled(profileStore.getSettings())

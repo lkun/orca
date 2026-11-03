@@ -49,7 +49,7 @@ async function pipeline() {
       getPushUnregisterOutbox: () => new PushUnregisterOutbox(path),
       setOnPushUnregisterQueued: () => {}
     } as never,
-    gatewayUrl: 'https://push.onocc.dev',
+    gatewayUrl: 'https://push.onorca.dev',
     client: client as never
   })!
   services.push(service)

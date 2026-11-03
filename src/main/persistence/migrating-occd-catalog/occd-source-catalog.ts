@@ -2,7 +2,7 @@ import type { OCCdMigrationCatalogPayload } from '../../../shared/occd-migration
 import { withoutOCCdRetainedMarker } from '../../../shared/occd-retained-marker'
 import type { ProjectGroup } from '../../../shared/project-group-types'
 import type { SshTarget } from '../../../shared/ssh-types'
-import type { Store } from '../../persistence'
+import type { Store } from '../loading-store/store'
 import { occdSourceFolderWorkspaceIds, repoBelongsToOCCdSource } from './occd-source-ownership'
 
 type OCCdSourceCatalogStore = Pick<Store, 'getFolderWorkspaces' | 'getProjectGroups' | 'getRepos'>

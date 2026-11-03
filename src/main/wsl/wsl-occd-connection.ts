@@ -29,6 +29,7 @@ import { createWslOCCdHostTransport } from './wsl-occd-host-transport'
 import { resolveWslOCCdPairing } from './wsl-occd-pairing-identity'
 import { trackWslOCCdHostEnvironment } from './wsl-occd-host-environments'
 import { listenWslOCCdStdioBridgeOnPreferredPort } from './wsl-occd-stdio-bridge'
+import { wslConnectDeploySpawns } from './wsl-occd-connect-stop-fence'
 
 export type {
   WslOCCdConnection,
@@ -194,12 +195,12 @@ export class WslOCCdConnectionManager {
     // Taken before any await, so a close during the running-list read still supersedes this.
     const generation = this.generation(key)
     const stillCurrent = (): boolean => this.generation(key) === generation
-    const requireRunning = options.requireRunning
-    await assertWslDistroMayStart(distro, requireRunning, stillCurrent)
+    await assertWslDistroMayStart(distro, options.requireRunning, stillCurrent)
     const environmentId = options.environmentId ?? defaultWslOCCdEnvironmentId(distro)
     const label = options.label ?? distro
     const target = { kind: 'wsl', id: environmentId, distro, label } as const
     const transport = (this.dependencies.createTransport ?? defaultTransport)(target)
+    const spawns = wslConnectDeploySpawns(distro, transport, this.dependencies, options)
     // Relaunch stopped occd on each connect so distro restarts recover.
     const launch = await (this.dependencies.deployAndLaunch ?? deployAndLaunchWslOCCd)(distro, {
       environmentId,
@@ -207,10 +208,8 @@ export class WslOCCdConnectionManager {
       intent: options.intent,
       pairedOffer: this.enrolledOffer(key, environmentId),
       signal: options.signal,
-      holder: this.dependencies.holder,
-      createTransport: () => transport,
-      ...(requireRunning ? { requireRunning: () => requireRunning(distro) } : {})
-    })
+      ...spawns.options
+    }).finally(spawns.dispose)
     if (launch.outcome === 'deferred') {
       throw new WslOCCdLaunchDeferredError(launch)
     }

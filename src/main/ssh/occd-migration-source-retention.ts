@@ -2,7 +2,7 @@
 import { toRuntimeExecutionHostId } from '../../shared/execution-host'
 import type { OCCdMigrationSourceCutover } from '../../shared/occd-migration/occd-migration-source-cutover'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
-import type { Store } from '../persistence'
+import type { Store } from '../persistence/loading-store/store'
 import { withRenamedOCCdMigrationDrafts } from '../persistence/migrating-occd-catalog/occd-source-draft-rename'
 import {
   listOCCdMigrationSourceCutovers,

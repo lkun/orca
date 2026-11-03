@@ -4,7 +4,7 @@ import { GLOBAL_FLAGS } from '../args'
 export const EMULATOR_COMMAND_SPECS: CommandSpec[] = [
   {
     path: ['emulator', 'list'],
-    summary: 'List available/running emulators (OCC-managed + raw serve-sim)',
+    summary: "List the worktree's attached emulator sessions (iOS and Android)",
     usage: 'occ emulator list [--worktree <selector>] [--json]',
     allowedFlags: [...GLOBAL_FLAGS, 'worktree']
   },
