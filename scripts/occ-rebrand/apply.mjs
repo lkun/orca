@@ -49,7 +49,10 @@ function isTracked(rel) {
     return true
   } catch {
     try {
-      return execFileSync('git', ['-C', target, 'ls-files', `${rel}/`], { encoding: 'utf8' }).trim().length > 0
+      return (
+        execFileSync('git', ['-C', target, 'ls-files', `${rel}/`], { encoding: 'utf8' }).trim()
+          .length > 0
+      )
     } catch {
       return false
     }
@@ -59,11 +62,15 @@ function isTracked(rel) {
 let renamed = 0
 function renameTree(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (PROTECTED_DIRS.has(entry.name)) continue
+    if (PROTECTED_DIRS.has(entry.name)) {
+      continue
+    }
     const oldAbs = path.join(dir, entry.name)
     const rel = path.relative(target, oldAbs)
     if (/orca/i.test(entry.name)) {
-      if (!isTracked(rel)) continue
+      if (!isTracked(rel)) {
+        continue
+      }
       const newAbs = path.join(dir, map(entry.name))
       if (fs.existsSync(newAbs)) {
         console.warn(`skip collision: ${rel}`)
@@ -73,7 +80,9 @@ function renameTree(dir) {
         stdio: 'inherit'
       })
       renamed++
-      if (entry.isDirectory()) renameTree(newAbs)
+      if (entry.isDirectory()) {
+        renameTree(newAbs)
+      }
     } else if (entry.isDirectory()) {
       renameTree(oldAbs)
     }
@@ -100,7 +109,9 @@ const replacements = [
 
 let changed = 0
 for (const rel of files) {
-  if (SKIP_EXT.test(rel)) continue
+  if (SKIP_EXT.test(rel)) {
+    continue
+  }
   const abs = path.join(target, rel)
   let stat
   try {
@@ -108,15 +119,25 @@ for (const rel of files) {
   } catch {
     continue
   }
-  if (!stat.isFile() || stat.size > 16 * 1024 * 1024) continue
+  if (!stat.isFile() || stat.size > 16 * 1024 * 1024) {
+    continue
+  }
   const buf = fs.readFileSync(abs)
-  if (buf.subarray(0, 8192).includes(0)) continue
+  if (buf.subarray(0, 8192).includes(0)) {
+    continue
+  }
   const text = buf.toString('utf8')
-  if (!Buffer.from(text, 'utf8').equals(buf)) continue
-  let next = text.replace(/orca/gi, (match) => (match === 'Orca' || match === 'ORCA' ? 'OCC' : 'occ'))
+  if (!Buffer.from(text, 'utf8').equals(buf)) {
+    continue
+  }
+  let next = text.replace(/orca/gi, (match) =>
+    match === 'Orca' || match === 'ORCA' ? 'OCC' : 'occ'
+  )
   // Only the shipped desktop code keeps production relay hosts and wire labels.
   if (rel.startsWith('src/main/') || rel.startsWith('src/shared/')) {
-    for (const [from, to] of replacements) next = next.split(from).join(to)
+    for (const [from, to] of replacements) {
+      next = next.split(from).join(to)
+    }
   }
   if (next !== text) {
     fs.writeFileSync(abs, next)
@@ -129,13 +150,17 @@ const pluginIndex = path.join(target, 'resources/plugins/launch/bundled-plugins.
 if (fs.existsSync(pluginIndex)) {
   try {
     const targetRequire = createRequire(path.join(target, 'package.json'))
-    const { hashPackagedPluginTree } = targetRequire(
+    const verifierPath = [
+      './config/scripts/desktop-distribution/runtime-verification/verify-packaged-plugin-resources.cjs',
       './config/scripts/verify-packaged-plugin-resources.cjs'
-    )
+    ].find((rel) => fs.existsSync(path.join(target, rel)))
+    const { hashPackagedPluginTree } = targetRequire(verifierPath)
     const index = JSON.parse(fs.readFileSync(pluginIndex, 'utf8'))
     for (const entry of index.plugins ?? []) {
       const pluginRoot = path.join(target, 'resources/plugins/launch', entry.path)
-      if (fs.existsSync(pluginRoot)) entry.contentHash = hashPackagedPluginTree(pluginRoot)
+      if (fs.existsSync(pluginRoot)) {
+        entry.contentHash = hashPackagedPluginTree(pluginRoot)
+      }
     }
     fs.writeFileSync(pluginIndex, `${JSON.stringify(index, null, 2)}\n`)
     console.log(`refreshed plugin hashes: ${index.plugins?.length ?? 0}`)
