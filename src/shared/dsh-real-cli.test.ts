@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { runProcess } from '@occ/process-host'
-import { recognizeAgentProcessFromCommandLine } from './agent-process-recognition'
+import { recognizeAgentProcessFromCommandLine } from './agent-status/process/agent-process-recognition'
 
 const binary = process.env.OCC_REAL_DSH_CLI
 

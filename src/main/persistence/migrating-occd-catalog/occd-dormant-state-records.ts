@@ -13,7 +13,7 @@ import {
   mergeRetiredNameRegistries,
   type RetiredNameRegistry
 } from '../../../shared/worktree/retired-name-registry'
-import { recordRetirementNamespaceRegistry } from '../../worktree-retirement-namespace'
+import { recordRetirementNamespaceRegistry } from '../../workspaces/removal/retirement/worktree-retirement-namespace'
 import {
   applyPreparedOCCdMigrationWorkspaceSession,
   prepareOCCdMigrationWorkspaceSession,
@@ -29,6 +29,11 @@ import {
   prepareOCCdMigrationClientState,
   type PreparedOCCdMigrationClientState
 } from './occd-destination-client-state'
+import {
+  applyImportedLineage,
+  reconcileImportedLineage,
+  type PreparedChildLineage
+} from './occd-dormant-lineage-reconciliation'
 
 type KeyedRow<T> = { key: string; value: T }
 type RegistryUpdate = { key: string; value: RetiredNameRegistry }
@@ -36,8 +41,7 @@ type RegistryUpdate = { key: string; value: RetiredNameRegistry }
 export type PreparedOCCdMigrationDormantState = {
   payload: OCCdMigrationDormantStatePayload | undefined
   newWorktreeMeta: KeyedRow<WorktreeMeta>[]
-  newWorktreeLineage: KeyedRow<WorktreeLineage>[]
-  newWorkspaceLineage: KeyedRow<WorkspaceLineage>[]
+  lineage: PreparedChildLineage[]
   newSparsePresets: SparsePreset[]
   retiredNameUpdates: RegistryUpdate[]
   retirementNamespaceUpdates: RegistryUpdate[]
@@ -88,16 +92,7 @@ export function prepareOCCdMigrationDormantState(
       'worktree_meta',
       omitDefaultWorktreeMetaFields
     ),
-    newWorktreeLineage: selectNewKeyedRows(
-      worktreeLineage,
-      state.worktreeLineageById,
-      'worktree_lineage'
-    ),
-    newWorkspaceLineage: selectNewKeyedRows(
-      workspaceLineage,
-      state.workspaceLineageByChildKey,
-      'workspace_lineage'
-    ),
+    lineage: prepareImportedLineage(state, worktreeLineage, workspaceLineage),
     newSparsePresets,
     retiredNameUpdates: payload.retiredWorktreeNames.map((entry) => ({
       key: entry.repoId,
@@ -133,12 +128,7 @@ export function applyPreparedOCCdMigrationDormantState(
   for (const entry of prepared.newWorktreeMeta) {
     state.worktreeMeta[entry.key] = entry.value
   }
-  for (const entry of prepared.newWorktreeLineage) {
-    state.worktreeLineageById[entry.key] = entry.value
-  }
-  for (const entry of prepared.newWorkspaceLineage) {
-    state.workspaceLineageByChildKey[entry.key] = entry.value
-  }
+  applyImportedLineage(prepared.lineage, state)
   for (const preset of prepared.newSparsePresets) {
     state.sparsePresetsByRepo[preset.repoId] = [
       ...(state.sparsePresetsByRepo[preset.repoId] ?? []),
@@ -166,6 +156,17 @@ export function applyPreparedOCCdMigrationDormantState(
   applyPreparedOCCdMigrationClientState(prepared.clientState, state)
 }
 
+/** Same-key mismatches refuse first, as for every dormant row; then each child gets one parent. */
+function prepareImportedLineage(
+  state: PersistedState,
+  worktreeLineage: KeyedRow<WorktreeLineage>[],
+  workspaceLineage: KeyedRow<WorkspaceLineage>[]
+): PreparedChildLineage[] {
+  selectNewKeyedRows(worktreeLineage, state.worktreeLineageById, 'worktree_lineage')
+  selectNewKeyedRows(workspaceLineage, state.workspaceLineageByChildKey, 'workspace_lineage')
+  return reconcileImportedLineage(state, { worktreeLineage, workspaceLineage })
+}
+
 function selectNewKeyedRows<T>(
   incoming: KeyedRow<T>[],
   existing: Record<string, T>,
@@ -189,8 +190,7 @@ function emptyPreparedDormantState(): PreparedOCCdMigrationDormantState {
   return {
     payload: undefined,
     newWorktreeMeta: [],
-    newWorktreeLineage: [],
-    newWorkspaceLineage: [],
+    lineage: [],
     newSparsePresets: [],
     retiredNameUpdates: [],
     retirementNamespaceUpdates: [],

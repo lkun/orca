@@ -1,7 +1,7 @@
 import { getRepoRegistrationHostIds } from '../../../shared/repo-host-identity'
 import { isRemoteRuntimePtyId } from '../../../shared/remote-runtime/remote-runtime-pty-id'
 import { OCCRuntimeWithDetectedCheckoutsAndLiveContent } from './occ-runtime-detected-checkouts-live-content'
-import type { OCCRuntimeWithAgentTransitions } from '../occ-runtime-agent-transitions'
+import type { OCCRuntimeWithAgentTransitions } from '../construction/occ-runtime-agent-transitions'
 import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../shared/sidebar-inputs-switch'
 import { DEFAULT_HIDE_SLEEPING_WORKSPACES } from '../../../shared/constants'
 import {

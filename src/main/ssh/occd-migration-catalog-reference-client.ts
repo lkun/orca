@@ -4,7 +4,7 @@ import type {
   OCCdMigrationCatalogReferenceAbortResult
 } from '../../shared/occd-migration/occd-migration-manifest'
 import { OCCD_MIGRATION_CATALOG_ABORT_BY_REFERENCE_RUNTIME_CAPABILITY } from '../../shared/occd-runtime-capabilities'
-import { parsePairingCode } from '../../shared/pairing'
+import { parsePairingCode } from '../../shared/remote-runtime/pairing/pairing'
 import type { RuntimeRpcResponse } from '../../shared/runtime-rpc-envelope'
 import {
   OCCD_MIGRATION_DESTINATION_UNSUPPORTED,

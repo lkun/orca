@@ -9,7 +9,7 @@ import {
   occdBunRuntimeFilename
 } from '../../../shared/occd-artifacts'
 import { assertPosixOCCdHost } from './occd-remote-host-support'
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import { joinRemotePath, type RemoteHostPlatform } from '../../ssh/ssh-remote-platform'
 
 // Assign the long slot path once to reduce command size on the wire.
@@ -44,7 +44,11 @@ export function occdNodeSlotRuntimeCommand(host: RemoteHostPlatform, directory: 
   )
 }
 
-/** Legacy host Node fallback must never hide an incomplete Node or Bun slot. */
+/** Keeps address space small under RLIMIT_AS: undici's WASM memory otherwise reserves 4-9 GiB (#37538).
+ * Caps any WASM memory in occd at 64 MiB. Pinned Node only: older host Node rejects the flag. */
+const OCCD_PINNED_NODE_FLAGS = '--disable-wasm-trap-handler --wasm-max-mem-pages=1024'
+
+/** Also sets $occd_runtime_flags. Legacy host Node fallback must never hide an incomplete Node or Bun slot. */
 export function selectOCCdSlotRuntimeCommand(
   host: RemoteHostPlatform,
   directory: string,
@@ -57,9 +61,11 @@ export function selectOCCdSlotRuntimeCommand(
   const runtime = quotePosixShell(joinRemotePath(host, directory, occdBunRuntimeFilename(host.os)))
   const target = quotePosixShell(joinRemotePath(host, directory, OCCD_BUILD_TARGET_FILENAME))
   return (
+    // One compound command: launch chains it with && after cd.
     `if [ -e ${nodeMarker} ]; then ${occdNodeSlotRuntimeCommand(host, directory)}` +
+    `occd_runtime_flags=${quotePosixShell(OCCD_PINNED_NODE_FLAGS)}; ` +
     `elif [ -e ${target} ] || [ -e ${runtime} ]; then ` +
-    `[ -x ${runtime} ] || exit 78; occd_runtime=${runtime}; ` +
-    `else occd_runtime=${quotePosixShell(legacyNodePath)}; fi`
+    `[ -x ${runtime} ] || exit 78; occd_runtime=${runtime}; occd_runtime_flags=; ` +
+    `else occd_runtime=${quotePosixShell(legacyNodePath)}; occd_runtime_flags=; fi`
   )
 }

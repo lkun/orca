@@ -4,7 +4,7 @@ import {
   type OCCdMigrationDependencyKind
 } from '../../../shared/occd-migration/occd-migration-preflight'
 import type { PersistedState } from '../../../shared/persisted-state-types'
-import type { TerminalScrollbackSnapshotStorage } from '../../terminal-scrollback-snapshots'
+import type { TerminalScrollbackSnapshotStorage } from '../../pty/scrollback/terminal-scrollback-snapshots'
 import {
   inspectOCCdMigrationSourceSessions,
   type OCCdMigrationSourceSessionInspection
@@ -19,7 +19,7 @@ import {
   occdMigrationPartitionScope,
   type OCCdMigrationSourceScope
 } from './occd-source-scope'
-import { paneBelongsToTabs } from '../../../shared/workspace-session-pane-ownership'
+import { paneBelongsToTabs } from '../../../shared/workspace-session/workspace-session-pane-ownership'
 
 export type OCCdMigrationSourceDependencyCensus = {
   totalCount: number

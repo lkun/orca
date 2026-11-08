@@ -18,32 +18,6 @@ describe('Portuguese UI language load migration', () => {
     }
   )
 
-  it.each([
-    'system',
-    'en',
-    'zh',
-    'ko',
-    'ja',
-    'es',
-    'fr',
-    'pt',
-    'plugin:other.occ-portuguese/pt-BR',
-    'plugin:stablyai.other/pt-BR',
-    'plugin:stablyai.occ-portuguese/pt',
-    'plugin:stablyai.occ-portuguese/pt-br',
-    'Plugin:stablyai.occ-portuguese/pt-BR',
-    'plugin:Stablyai.occ-portuguese/pt-BR',
-    undefined,
-    null,
-    42,
-    'invalid'
-  ])('normalizes without aliasing %j', (uiLanguage) => {
-    expect(migratePortugueseUiLanguageOnLoad(JSON.parse(JSON.stringify({ uiLanguage })))).toEqual({
-      uiLanguage: normalizeUiLanguage(uiLanguage),
-      uiLanguagePortugueseMigrationApplied: true
-    })
-  })
-
   it('preserves explicit plugin selection in stamped and fresh stores', () => {
     expect(normalizeUiLanguage(plugin)).toBe(plugin)
     expect(

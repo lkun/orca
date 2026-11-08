@@ -42,7 +42,7 @@ export async function getManagedOCCdRuntimeStatus(
         recovery: transaction ? managedRecoveryStatus(transaction) : null,
         terminals: await collectManagedTerminalCensus(userDataPath, environment, record),
         migration: migrationStatus(userDataPath, environment.id),
-        deferredUpdate: currentManagedOCCdUpdateDeferral(environment.id, record.active)
+        deferredUpdate: currentManagedOCCdUpdateDeferral(environment.id, record)
       }
       return { status, record, serverTarget: context.serverTarget }
     }

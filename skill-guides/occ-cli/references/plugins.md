@@ -1,8 +1,8 @@
 # Plugin commands
 
-Use these to make, check, load and manage OCC plugins (themes, terminal themes, icon themes,
-syntaxes, language packs, custom editors, panels, TSX component panels). All commands take `--json`; branch on
-`error.code`, not on wording.
+Use these to make, check, load, install and manage OCC plugins (themes, terminal themes, icon
+themes, syntaxes, language packs, custom editors, panels, TSX component panels). All commands take
+`--json`; branch on `error.code`, not on wording.
 
 ```text
 OCC plugin create <dir> --template <theme|terminal-theme|icon-theme|syntax|language-pack|editor|panel|components|worker-panel> [--id <id>] [--name <name>] --json
@@ -27,6 +27,12 @@ OCC plugin restart <plugin-key> --json
 OCC plugin open <plugin-key> [--panel <id> | --editor <file>] --json
 OCC plugin shot <plugin-key> [--panel <id>] [--theme light|dark] [--width <px>] [--act '<json>'] [--out <file.png>] --json
 OCC plugin shot <dir> --scenario <name> [--panel <id>] [--theme light|dark] [--width <px>] [--out <file.png>] --json
+OCC plugin install <publisher.id|owner/repo[@ref]|git-url|page-url|dir> [--ref <ref>] [--catalog <name>] [--approve <fingerprint>] --json
+OCC plugin update <plugin-key|--all> [--approve <fingerprint>] --json
+OCC plugin uninstall <plugin-key> --json
+OCC plugin catalog list --json
+OCC plugin catalog add <owner/repo|git-url> [--ref <branch>] [--approve <fingerprint>] --json
+OCC plugin catalog rm <id|name|url> --json   # alias: catalog remove
 ```
 
 Exit codes: `0` ok, `1` error, `2` `plugin_invalid`, `3` `approval_required` or `approval_stale`.
@@ -95,10 +101,63 @@ plugins" in Settings → Plugins, or on a host with no window (`occ serve`) to r
 `plugin system on` with the same `--environment`. It approves nothing; only plugins approved
 earlier start.
 
+## Install, update and remove
+
+`plugin install` accepts:
+
+- a catalog id such as `acme.dusk` (from OCC's official, the community or an added catalog;
+  `--catalog` picks one when several list it),
+- `owner/repo` or `owner/repo@v1.2.0` on GitHub,
+- any `https://` or `ssh://` Git URL or `git@host:owner/repo.git`, with `#ref` for a version,
+- a GitHub or GitLab release, tag or tree page URL (`.../releases/tag/v1.2.0`, `.../-/tree/main`),
+- a plugin folder (a path on the OCC host).
+
+With no version, OCC installs the newest version tag (`vX.Y.Z`), else the default branch, and
+always pins the exact commit. The result names the version, commit, publisher and repository.
+
+```text
+OCC plugin install acme/dusk-theme --json                     # content only: installs and enables
+OCC plugin install acme/notes-panel@v1.4.0 --json             # code: exits 3 with approval_required
+OCC plugin install acme/notes-panel@v1.4.0 --approve ap1-… --json
+OCC plugin update --all --json
+OCC plugin uninstall acme.notes-panel --json
+```
+
+`plugin update` moves catalog installs to the release their catalog offers now, Git installs from
+a version tag to the newest version tag and from a branch to its newest commit; a commit pin stays.
+An update from the same repository that asks for no new access keeps its approval. One that adds
+capabilities, a higher execution level, commands, shortcuts or panels, or that comes from another
+repository (even a theme or language pack), fails with `approval_required` listing exactly what
+changes; the running version keeps working until it is approved. `--all` updates everything it can and exits 3 with one
+`--approve` command per plugin still waiting.
+
+`plugin uninstall` and `plugin catalog rm` never need approval. `plugin catalog add` always
+does: a catalog decides which repositories OCC installs and auto-updates from, so the first run
+returns `approval_required` with a `cat1-…` fingerprint for that exact URL and branch.
+
+## Private repositories
+
+Git runs on the OCC host (the `--environment` server when given) with that machine's own Git
+credentials and never prompts. Nothing to pass to `occ`; set up Git there once:
+
+- HTTPS on GitHub: `gh auth login` then `gh auth setup-git`. GitLab: `glab auth login`. Elsewhere:
+  any credential helper (Git Credential Manager, osxkeychain, libsecret).
+- SSH: a key in `ssh-agent` that the server accepts, with its host key in `known_hosts`, then
+  install with `git@github.com:owner/repo.git`.
+
+```text
+OCC plugin install git@github.com:acme/private-panel.git --json
+OCC plugin install https://github.com/acme/private-panel --json
+```
+
+If that host's Git cannot read the repository, the command fails with `git_auth_failed`.
+`error.data` has `executionHost`, `transport` (`https` or `ssh`), `gitHost` and `nextSteps` for
+that host. Never put a token or password in the URL; OCC refuses it.
+
 ## Approval
 
-- Content-only plugins (themes, terminal themes, icon themes, syntaxes, language packs) load
-  and enable without approval.
+- Content-only plugins (themes, terminal themes, icon themes, syntaxes, language packs) load,
+  install and enable without approval.
 - Anything that runs code or acts in OCC (panels, editors, commands, shortcuts, workers,
   capabilities) fails with `approval_required` (exit 3). `error.message` and `error.data`
   say exactly what it would be granted, why approval is needed, and `error.data.command`, the
@@ -110,10 +169,14 @@ earlier start.
   with `--approve` unless they already asked for exactly this plugin and this access. Never pass a
   fingerprint you did not get from OCC for this exact command. Each approval is written to the
   plugin audit log as approved via CLI.
+- `install` and `update` decide approval before writing anything: without it nothing is
+  installed and the running version is untouched. For anything not from OCC's official catalog
+  the message also names the publisher (the repository owner) and the source repository; show
+  that to your user, since OCC has not checked that code.
 - Without approval a development folder stays loaded but nothing in it runs.
 - For an approved development folder, later code edits run without asking again; new
   capabilities, a higher execution level, or changed commands and shortcuts need a new approval.
-- `disable`, `restart` and `dev unload` never need approval.
+- `disable`, `restart`, `uninstall`, `dev unload` and `catalog rm` never need approval.
 
 ## Publish
 

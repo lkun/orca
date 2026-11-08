@@ -1,6 +1,6 @@
 import type { OCCdMigrationCatalogPayload } from '../../shared/occd-migration/occd-migration-manifest'
 import type { SshRemotePtyLease } from '../../shared/ssh-types'
-import { collectLeafIds } from '../../shared/terminal-pane-layout-tree'
+import { collectLeafIds } from '../../shared/workspace-layout/terminal-pane-layout-tree'
 import { normalizeWorkspaceSessionKeyToWorkspaceId } from '../../shared/workspace-scope'
 
 export type OCCdMigrationPaneLeasePredicate = (lease: SshRemotePtyLease) => boolean

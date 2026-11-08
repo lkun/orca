@@ -2,7 +2,7 @@
 import {
   PREVIOUS_DAEMON_PROTOCOL_VERSIONS,
   PROTOCOL_VERSION
-} from '../daemon/daemon-protocol-version'
+} from '../daemon/protocol/daemon-protocol-version'
 import type { OCCdTerminalCensus } from '../../shared/occd-terminal-census'
 
 export type OCCdDaemonProtocolFacts = {

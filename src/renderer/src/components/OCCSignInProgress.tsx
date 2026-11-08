@@ -2,6 +2,7 @@ import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from './ui/button'
 import { translate } from '@/i18n/i18n'
+import { useTranslate } from '@/i18n/use-translate'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '../store'
 
@@ -22,6 +23,7 @@ export function OCCSignInButton({
   disabled,
   ...props
 }: Omit<React.ComponentProps<typeof Button>, 'onClick' | 'type'>): React.JSX.Element {
+  const t = useTranslate()
   const connect = useAppStore((state) => state.connectCurrentOCCProfile)
   const signingIn = useAppStore((state) => Boolean(state.occProfileSignInProgress))
   return (
@@ -34,7 +36,7 @@ export function OCCSignInButton({
       {signingIn ? (
         <>
           <Loader2 className="animate-spin" />
-          {translate('auto.components.OCCSignInProgress.signingIn', 'Signing in…')}
+          {t('auto.components.OCCSignInProgress.signingIn', 'Signing in…')}
         </>
       ) : (
         children
@@ -48,6 +50,7 @@ export function OCCSignInWaitNotice({
 }: {
   className?: string
 }): React.JSX.Element | null {
+  const t = useTranslate()
   const link = useAppStore((state) => state.occProfileSignInProgress?.link)
   if (!link) {
     return null
@@ -61,14 +64,11 @@ export function OCCSignInWaitNotice({
       )}
     >
       <span className="pr-2">
-        {translate(
-          'auto.components.OCCSignInProgress.waiting',
-          'Waiting for sign-in in your browser'
-        )}
+        {t('auto.components.OCCSignInProgress.waiting', 'Waiting for sign-in in your browser')}
       </span>
       <span aria-hidden>·</span>
       <Button type="button" variant="link" size="xs" onClick={() => void copySignInLink(link)}>
-        {translate('auto.components.OCCSignInProgress.copyLink', 'Copy sign-in link')}
+        {t('auto.components.OCCSignInProgress.copyLink', 'Copy sign-in link')}
       </Button>
       <span aria-hidden>·</span>
       <Button
@@ -77,7 +77,7 @@ export function OCCSignInWaitNotice({
         size="xs"
         onClick={() => void window.api.occProfiles.cancelSignIn().catch(() => {})}
       >
-        {translate('auto.components.OCCSignInProgress.cancel', 'Cancel')}
+        {t('auto.components.OCCSignInProgress.cancel', 'Cancel')}
       </Button>
     </div>
   )

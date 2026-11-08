@@ -1,8 +1,8 @@
 import {
   countInProcessFallbackTerminals,
   listLiveDaemonSessionsWithProtocol
-} from '../daemon/daemon-provider-state'
-import type { DaemonSessionInfo } from '../daemon/types'
+} from '../daemon/providers/lifecycle/daemon-provider-state'
+import type { DaemonSessionInfo } from '../daemon/protocol/daemon-session-info'
 import type { OCCdTerminalCensus } from '../../shared/occd-terminal-census'
 
 const UNVERIFIABLE: OCCdTerminalCensus = {

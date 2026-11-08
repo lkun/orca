@@ -201,13 +201,15 @@ describe('advertised migration blob kinds', () => {
     expect(advertisedOCCdMigrationBlobCapabilities({ wslHost: false })).toEqual([
       OCCD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
       'occd.migration-blob.terminal-restore-hints.v1',
-      'occd.migration-blob.shell-history.v1'
+      'occd.migration-blob.shell-history.v1',
+      'occd.migration-blob.automation-run-history.v1'
     ])
     expect(advertisedOCCdMigrationBlobCapabilities({ wslHost: true })).toEqual([
       OCCD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
       'occd.migration-blob.terminal-restore-hints.v1',
       'occd.migration-blob.shell-history.v1',
-      'occd.migration-blob.terminal-history.v1'
+      'occd.migration-blob.terminal-history.v1',
+      'occd.migration-blob.automation-run-history.v1'
     ])
   })
 })

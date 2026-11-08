@@ -1,6 +1,7 @@
 import { setCachedWorktrees } from '../cache/worktree-cache'
-import type { RpcClient } from '../transport/rpc-client'
-import { isLogicalClientCutoverError } from '../transport/stable-logical-rpc-client'
+import type { RpcClient } from '../transport/rpc/rpc-client-contract'
+import '../transport/connection/stable-logical-rpc-client'
+import { isLogicalClientCutoverError } from '../transport/connection/logical-client-cutover-error'
 import {
   markHomeWorktreeCatalogUnavailable,
   type HomeWorktreeSummary,
@@ -58,7 +59,7 @@ export function fetchHomeHostWorktreeInfo(
           markUnavailable()
           return
         }
-        // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the rows stay opaque because three screens project a row differently. Home reads `status`, `sidebarStatus` and the resume pick, both through their own guards, and the `worktree-home-catalog` golden records the row it is given as `{worktreeId, displayName, repo, status}`.
+        // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the rows stay opaque because three screens project a row differently. Home reads `status`, `sidebarStatus` and the resume pick through their own guards, plus the host-typed `agents` that name Jump back in rows, and the `worktree-home-catalog` golden records the row it is given as `{worktreeId, displayName, repo, status}`.
         const worktrees = rows as HomeWorktreeSummary[]
         setCachedWorktrees(hostId, worktrees, { proven: true })
         // Count what the list shows: archived rows are hidden, and active is the sleeping filter's rule.

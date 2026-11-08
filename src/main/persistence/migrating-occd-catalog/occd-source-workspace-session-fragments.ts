@@ -1,5 +1,5 @@
 import { serializeOCCdMigrationValue } from '../../../shared/occd-migration/occd-migration-manifest'
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
 import { mergeWorkspaceSessions } from '../../occ-profiles/profile-project-session-state'
 import { SESSION_FIELDS_PRUNED_BY_OWNER_KEY } from '../../occ-profiles/profile-project-session-field-disposition'
 import { withRequiredWorkspaceSessionMaps } from '../loading-store/session-host-partitions'

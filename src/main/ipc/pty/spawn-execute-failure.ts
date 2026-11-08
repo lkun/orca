@@ -1,4 +1,4 @@
-import type { PtyRegistrationClaim } from '../../runtime/runtime-terminal-state-records'
+import type { PtyRegistrationClaim } from '../../runtime/terminal/records/runtime-terminal-state-records'
 import type { PtySpawnResult } from '../../providers/pty-provider-contract'
 import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { classifyError } from '../../telemetry/classify-error'

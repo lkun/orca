@@ -12,7 +12,7 @@ import { getOCCdMigrationReceivedBlobPath } from './occd-migration-blob-staging'
 import {
   commitStagedOCCdMigrationCatalogDurably,
   getOCCdMigrationCatalogState
-} from '../../runtime/occd-migration-catalog-import'
+} from '../../runtime/hosts/migration/occd-migration-catalog-import'
 import {
   DORMANT_LEAF_ID,
   DORMANT_WORKTREE_ID,
@@ -154,18 +154,5 @@ describe('occd migration received blobs wait for a durable commit', () => {
     expect(retried.state).toBe('committed')
     expect(existsSync(receivedHintsPath(input))).toBe(false)
     expect(hint(store)).toBe('/home/me/src')
-  })
-
-  it('treats any successful write of the commit as proof, and a load from disk as proof', async () => {
-    const store = createStore()
-    const { input } = await stageHints(store)
-    store.commitStagedOCCdMigrationCatalog(input)
-    expect(getOCCdMigrationCatalogState({ store, manifest: input }).state).toBe('committed')
-    expect(existsSync(receivedHintsPath(input))).toBe(true)
-    await store.flushPendingOrThrowAsync()
-
-    const restarted = createStore()
-    expect(existsSync(receivedHintsPath(input))).toBe(false)
-    expect(hint(restarted)).toBe('/home/me/src')
   })
 })

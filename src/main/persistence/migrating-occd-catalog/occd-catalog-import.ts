@@ -53,6 +53,7 @@ import {
   pruneOCCdMigrationBlobStaging,
   stageOCCdMigrationBlobChunk
 } from './occd-migration-blob-staging'
+import { withStagedAutomationRunHistory } from './occd-staged-automation-run-history'
 import { assertOCCdMigrationBlobContentsValid } from './occd-migration-blob-installers'
 import {
   abortOCCdMigrationCatalogByReference,
@@ -166,7 +167,6 @@ export class OCCdCatalogImportPersistence {
     if (current.state !== 'staged') {
       throw new Error('occd_migration_catalog_not_staged')
     }
-    const prepared = prepareOCCdMigrationCatalog(manifest, context.runtime.state)
     const blobRoot = context.runtime.occdMigrationBlobRoot
     assertOCCdMigrationSnapshotsReady(manifest, context.runtime.terminalScrollbackSnapshotStorage)
     if (options.expectedBlobs) {
@@ -174,6 +174,10 @@ export class OCCdCatalogImportPersistence {
     }
     assertOCCdMigrationBlobsReady(manifest, blobRoot)
     assertOCCdMigrationBlobContentsValid(manifest, blobRoot)
+    const prepared = prepareOCCdMigrationCatalog(
+      withStagedAutomationRunHistory(manifest, blobRoot),
+      context.runtime.state
+    )
     commitOCCdMigrationSnapshots(manifest, context.runtime.terminalScrollbackSnapshotStorage)
     commitOCCdMigrationBlobs(manifest, blobRoot)
     const receipt = commitPreparedCatalog(context, manifest, prepared, options.now)

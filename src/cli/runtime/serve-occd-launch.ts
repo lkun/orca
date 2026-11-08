@@ -5,6 +5,7 @@ import type { ProcessSpec } from '@occ/process-host/process-spec'
 import {
   OCCD_LOCAL_SERVE_SELECTION_ENTRY,
   OCCD_LOCAL_SERVE_SELECTION_FLAGS as FLAGS,
+  SERVE_RUNTIME_ENV,
   parseServeRuntimeSelection,
   type ServeRuntimeSelection
 } from '../../shared/occd-local-serve-selection'
@@ -14,6 +15,7 @@ import { isSupervisedSpawnHeld } from './serve-supervised-stop'
 import { redactingSpawn, shouldRedactSupervisedStdout } from './serve-pairing-redaction'
 import { occdServeArgs, type ServeOCCAppArgs } from '../../shared/occd-serve-argv'
 import { SPEECH_RECOGNIZER_DIR_ENV } from '../../shared/speech-recognizer-package'
+import { OCC_SERVE_SUPERVISED_ENV } from '../../shared/serve-supervised-terminal-durability'
 
 /** A first run may download and verify the pinned Node; bound it well past that. */
 const SELECTION_TIMEOUT_MS = 10 * 60_000
@@ -24,11 +26,13 @@ export async function resolveLocalServeRuntime(
     appRoot: string
     userDataPath: string
     usesMacUpdateHandoff: boolean
+    env?: NodeJS.ProcessEnv
   },
   run: typeof runProcess = runProcess
 ): Promise<ServeRuntimeSelection> {
-  // occd has no updater; keep Electron for packaged macOS update handoffs.
-  if (options.usesMacUpdateHandoff) {
+  // occd has no updater; keep Electron for packaged macOS update handoffs unless occd is asked for,
+  // e.g. over SSH with no desktop login, where Electron cannot start.
+  if (options.usesMacUpdateHandoff && (options.env ?? process.env)[SERVE_RUNTIME_ENV] !== 'occd') {
     return {
       kind: 'electron',
       reason:
@@ -83,7 +87,9 @@ export function serveWithOCCd(
       OCC_USER_DATA: userDataPath,
       OCC_VERSION: selection.version,
       // Always set: a value inherited from an OCC terminal would name another install's copy.
-      [SPEECH_RECOGNIZER_DIR_ENV]: speechRecognizerDir ?? ''
+      [SPEECH_RECOGNIZER_DIR_ENV]: speechRecognizerDir ?? '',
+      // A service manager restarts this server, so it must not run terminals that die with it.
+      [OCC_SERVE_SUPERVISED_ENV]: args.supervise === true ? '1' : ''
     }
   }
   const spawnChild = shouldRedactSupervisedStdout(args.supervise === true)

@@ -5,7 +5,7 @@
 import { execFileSync } from 'node:child_process'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { makeTerminalScrollbackSnapshotRef } from '../../../src/main/terminal-scrollback-snapshots'
+import { makeTerminalScrollbackSnapshotRef } from '../../../src/main/pty/scrollback/terminal-scrollback-snapshots'
 import { DEFAULT_LOCAL_OCC_PROFILE_ID } from '../../../src/shared/occ-profiles'
 import { OCCD_MIGRATION_MANIFEST_VERSION } from '../../../src/shared/occd-migration/occd-migration-manifest-validation'
 import { mutateStoppedProfileState } from './persisted-profile-state'

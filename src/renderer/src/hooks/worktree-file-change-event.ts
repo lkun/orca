@@ -1,4 +1,4 @@
-import type { FsChangedPayload } from '../../../shared/filesystem-entry-types'
+import type { FsChangedPayload } from '../../../shared/file-watch/filesystem-change-event'
 
 export const OCC_WORKTREE_FILE_CHANGE_EVENT = 'occ:worktree-file-change'
 

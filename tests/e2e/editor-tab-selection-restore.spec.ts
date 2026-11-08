@@ -25,7 +25,7 @@ test('preserves highlighted editor text across worktree tab switches', async ({
   const explorer = occPage.locator('[data-occ-explorer-shell]')
   const rowNamed = (name: string) =>
     explorer.locator('[data-file-explorer-row]').filter({
-      has: occPage.locator('[data-file-explorer-row-name]').getByText(name, { exact: true })
+      has: occPage.getByText(name, { exact: true })
     })
 
   await rowNamed('package.json').dblclick()

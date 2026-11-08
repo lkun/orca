@@ -1,7 +1,7 @@
 /** Keep source rows for downgraded clients using their old relays; new clients hide them and serve managed state. Never delete retained rows automatically. */
 import { toRuntimeExecutionHostId } from '../../shared/execution-host'
 import type { OCCdMigrationSourceCutover } from '../../shared/occd-migration/occd-migration-source-cutover'
-import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
+import type { WorkspaceSessionState } from '../../shared/workspace-session/workspace-session-state-types'
 import type { Store } from '../persistence/loading-store/store'
 import { withRenamedOCCdMigrationDrafts } from '../persistence/migrating-occd-catalog/occd-source-draft-rename'
 import {

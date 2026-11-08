@@ -140,6 +140,16 @@ occ serve --pairing-address <server-tailscale-ip-or-hostname>
 occ-ide serve --pairing-address <server-tailscale-ip-or-hostname>
 ```
 
+Use `--bind <literal-ip>` to choose the interface that accepts runtime connections. For a
+server reached through an SSH tunnel or reverse proxy, bind locally; use a Tailscale or LAN IP
+when the client should connect directly. `--pairing-address` still controls only the address
+embedded in pairing links. `--mobile-pairing` needs all interfaces, so use it without `--bind` or with
+`--bind 0.0.0.0`.
+
+```bash
+occ-ide serve --bind 127.0.0.1 --pairing-address 127.0.0.1
+```
+
 For example:
 
 ```bash
@@ -158,6 +168,15 @@ The command:
 
 Paste the printed pairing URL into **Settings → Remote OCC Servers → Add Server** on the client.
 
+`occ serve` accepts clients from localhost, LAN and Tailscale addresses, including addresses on one of the server's own network prefixes (for example a same-network global IPv6 address). It refuses other public internet addresses unless:
+
+- you pass `--allow-public`;
+- `--pairing-address` is a hostname or a public IP;
+- a paired client has already connected from a public address; or
+- clients paired before this check was added are still paired.
+
+The startup log says which rule applies, and the first refused public address each hour is logged. Pass `--refuse-public` to refuse public addresses in every case, for example on a server whose older pairings would otherwise keep them accepted.
+
 Add `--port 6768` when a firewall, tunnel, or service definition requires a fixed port:
 
 ```bash
@@ -168,7 +187,7 @@ occ-ide serve --port 6768 --pairing-address 100.64.1.20
 
 Use only one host mode at a time. If the OCC desktop app is already sharing that computer, do not start a second `occ serve` process for the same setup.
 
-`occ serve` runs on OCC's own Node server (occd) by default. If occd can't serve on this computer, it uses the desktop app's server instead and prints one line saying why. On a packaged macOS app it currently always uses the desktop app's server, so paired clients can still update it. To always use the desktop app's server, set `OCC_SERVE_RUNTIME=electron`.
+`occ serve` runs on OCC's own Node server (occd) by default. If occd can't serve on this computer, it uses the desktop app's server instead and prints one line saying why. On a packaged macOS app it uses the desktop app's server, so paired clients can still update it, unless you set `OCC_SERVE_RUNTIME=occd` (see [A Mac reached only over SSH](#a-mac-reached-only-over-ssh)). To always use the desktop app's server, set `OCC_SERVE_RUNTIME=electron`.
 
 ### Limit terminal memory on a Linux server
 
@@ -209,6 +228,27 @@ occ-ide serve --pairing-address 100.64.1.20 --mobile-pairing
 ```
 
 Keep the phone on the same tailnet, open OCC Mobile, choose **Pair**, and scan the terminal QR code or paste the printed link.
+
+### Pair without restarting the server
+
+`occ pair` asks the OCC already running on this machine for a new pairing, so you do not have to stop a service or restart `occ serve`. Run it on the server, as the user OCC runs as:
+
+```bash
+occ pair --mobile --address 100.64.1.20   # QR code and link for OCC Mobile
+occ pair --address 100.64.1.20            # access link for another OCC
+# Linux
+occ-ide pair --mobile --address 100.64.1.20
+```
+
+It works the same against the desktop app, a foreground `occ serve`, or `occ serve service install`. Only the machine's own user can run it; paired clients and phones cannot create pairings.
+
+### A Mac reached only over SSH
+
+On a packaged macOS app, `occ serve` uses the desktop app's server, which needs a desktop login: started from an SSH session with nobody logged in, it aborts at startup. To serve such a Mac, ask for OCC's Node server instead. It has no in-app updater, so update the app yourself (for example with `brew upgrade --cask stablyai/occ/occ`) and restart the server:
+
+```bash
+OCC_SERVE_RUNTIME=occd occ serve --pairing-address 100.64.1.20
+```
 
 ## Desktop app or `occ serve`?
 

@@ -1,9 +1,8 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   emptyOCCdActivationRecord,
   type OCCdActivationRecord
 } from '../activation/occd-activation-record'
-import { OCCdHostUnsupportedError } from '../../occd/occd-host-unavailable'
 
 const mocks = vi.hoisted(() => {
   const state: { record: OCCdActivationRecord | null } = { record: null }
@@ -39,11 +38,9 @@ vi.mock('../install/remote-versioned-install', () => ({
   readLocalFullVersion: () => '0.1.0+new'
 }))
 
-import {
-  autoUpdateManagedOCCdEnvironment,
-  resetBundledOCCdVersionsForTests
-} from './occd-managed-auto-update'
 import { planManagedOCCdAutoUpdate } from './occd-managed-update-decision'
+import { autoUpdateManagedOCCdEnvironment } from './occd-managed-auto-update'
+import { OCCdCrashLoopError } from './occd-managed-crash-loop'
 
 function record(overrides: Partial<OCCdActivationRecord>): OCCdActivationRecord {
   return { ...emptyOCCdActivationRecord(), active: '0.1.0+old', ...overrides }
@@ -100,105 +97,21 @@ describe('whether a connect updates its managed occd', () => {
   })
 })
 
-describe('updating a managed occd on connect', () => {
-  const run = () =>
-    autoUpdateManagedOCCdEnvironment('/user-data', {
-      environmentId: 'env-1',
-      appVersion: '1.5.0',
-      failedBefore: () => false,
-      onUpdating: vi.fn()
-    })
-
-  beforeEach(() => {
-    resetBundledOCCdVersionsForTests()
-    mocks.materialize.mockReset().mockResolvedValue('/cache/occd')
-    mocks.runUpdate.mockReset()
-    mocks.migrating.mockReset().mockReturnValue(null)
-    mocks.state.record = record({ activeAppVersion: '1.4.0' })
-  })
-
-  it('runs the Managed servers update, never forced past running terminals', async () => {
-    mocks.runUpdate.mockResolvedValue({ outcome: 'updated', activeVersion: '0.1.0+new' })
-    await expect(run()).resolves.toEqual({ outcome: 'updated', activeVersion: '0.1.0+new' })
-    expect(mocks.runUpdate).toHaveBeenCalledWith(
-      '/user-data',
-      expect.anything(),
-      expect.anything(),
-      { admitRecord: expect.any(Function) }
+describe('an auto-update that finds the host braked for crashing', () => {
+  // Recording it as failed would block update retries for the rest of the session.
+  it('is not an update failure: the host already runs this build', async () => {
+    mocks.state.record = record({})
+    mocks.runUpdate.mockRejectedValueOnce(
+      new OCCdCrashLoopError('OCC stopped restarting its server on Box')
     )
-  })
 
-  it.each([
-    ['active', record({ active: '0.1.1+newer', activeAppVersion: '1.6.0' })],
-    ['stopped', record({ active: null, previous: '0.1.1+newer', activeAppVersion: '1.6.0' })]
-  ])(
-    'skips when the record under the fence names a newer %s build than the one planned on',
-    async (_name, lockedRecord) => {
-      let admitted: string | null = 'not called'
-      mocks.runUpdate.mockImplementation(async (_u, _m, _c, args) => {
-        admitted = args.admitRecord(lockedRecord)
-        return { outcome: 'deferred', code: 'occd_activation_policy_refused', reason: 'x' }
+    expect(
+      await autoUpdateManagedOCCdEnvironment('/user-data', {
+        environmentId: 'env-1',
+        appVersion: '1.5.0',
+        failedBefore: () => false,
+        onUpdating: () => {}
       })
-      await expect(run()).resolves.toEqual({ outcome: 'skipped', reason: 'host-newer' })
-      expect(admitted).toEqual(expect.any(String))
-    }
-  )
-
-  it('admits the record under the fence when it still allows this build', async () => {
-    let admitted: string | null = 'not called'
-    mocks.runUpdate.mockImplementation(async (_u, _m, _c, args) => {
-      admitted = args.admitRecord(record({ activeAppVersion: '1.4.0' }))
-      return { outcome: 'updated', activeVersion: '0.1.0+new' }
-    })
-    await expect(run()).resolves.toMatchObject({ outcome: 'updated' })
-    expect(admitted).toBeNull()
-  })
-
-  it('reports live terminals as a wait, and a rejected candidate as a failure', async () => {
-    mocks.runUpdate.mockResolvedValueOnce({
-      outcome: 'deferred',
-      code: 'occd_update_terminals_running',
-      reason: '1 terminal is running on this host.'
-    })
-    await expect(run()).resolves.toMatchObject({ outcome: 'deferred' })
-
-    mocks.runUpdate.mockResolvedValueOnce({
-      outcome: 'deferred',
-      code: 'occd_activation_fence_busy',
-      reason: 'Another run is changing this host.'
-    })
-    await expect(run()).resolves.toMatchObject({ outcome: 'deferred' })
-
-    mocks.runUpdate.mockResolvedValueOnce({
-      outcome: 'deferred',
-      code: 'occd_candidate_launch_failed',
-      reason: 'The candidate failed while starting. occd 0.1.0+old was restarted.'
-    })
-    await expect(run()).resolves.toEqual({
-      outcome: 'failed',
-      reason: 'The candidate failed while starting. occd 0.1.0+old was restarted.'
-    })
-
-    mocks.runUpdate.mockRejectedValueOnce(new Error('Could not snapshot state'))
-    await expect(run()).resolves.toEqual({ outcome: 'failed', reason: 'Could not snapshot state' })
-  })
-
-  it('reads the bundled build once per session', async () => {
-    mocks.state.record = record({ active: '0.1.0+new' })
-    await run()
-    await run()
-    expect(mocks.materialize).toHaveBeenCalledTimes(1)
-    expect(mocks.runUpdate).not.toHaveBeenCalled()
-  })
-
-  it('leaves a server alone while a migration into it is still running', async () => {
-    mocks.migrating.mockReturnValue({ migrationId: 'm', phase: 'staged' })
-    await expect(run()).resolves.toEqual({ outcome: 'skipped', reason: 'migrating' })
-    expect(mocks.runUpdate).not.toHaveBeenCalled()
-  })
-
-  it('skips a host whose target the template does not carry', async () => {
-    mocks.materialize.mockRejectedValue(new OCCdHostUnsupportedError('no linux-x64'))
-    await expect(run()).resolves.toEqual({ outcome: 'skipped', reason: 'no-template' })
+    ).toEqual({ outcome: 'skipped', reason: 'current' })
   })
 })

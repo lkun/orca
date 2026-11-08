@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { AGENT_STATUS_STALE_AFTER_MS } from '../../../../shared/agent-status-freshness'
-import type { OrchestrationCoordinatorKey } from '../orchestration-caller-identity'
-import type { OrchestrationDb } from '../db'
+import { AGENT_STATUS_STALE_AFTER_MS } from '../../../../shared/agent-status/contracts/agent-status-freshness'
+import type { OrchestrationCoordinatorKey } from '../addressing/orchestration-caller-identity'
+import type { OrchestrationDb } from '../db/orchestration-db'
 import { currentRunCoordinatorOCCSessionIdSql } from '../db/runs/run-coordinator-occ-session'
 
 const nullable = z.string().nullable()

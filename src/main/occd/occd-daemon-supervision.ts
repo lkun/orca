@@ -3,10 +3,11 @@ import {
   disconnectDaemon,
   daemonOwnsFreshPersistentPtys,
   readDaemonPidRecord
-} from '../daemon/daemon-provider-state'
-import { initDaemonPtyProvider } from '../daemon/daemon-provider-init'
-import { resolveTerminalSpawnAdmissionMode } from '../daemon/terminal-spawn-gate'
+} from '../daemon/providers/lifecycle/daemon-provider-state'
+import { initDaemonPtyProvider } from '../daemon/providers/lifecycle/daemon-provider-init'
+import { resolveTerminalSpawnAdmissionMode } from '../daemon/admission/terminal-spawn-admission-mode'
 import { errorMessage } from '../../shared/error-message'
+import { OCCdTerminalsNotDurableError, takeOCCdServeSupervision } from './occd-serve-supervision'
 
 const WINDOWS_DAEMON_STARTUP_TIMEOUT_MS = 30_000
 
@@ -15,10 +16,12 @@ type OCCdDaemonStartup =
   | { state: 'degraded'; reason: string }
   | { state: 'unavailable'; reason: string }
 
-/** Continue serving without a daemon on failure, but never claim terminal persistence. */
+/** Serve without a daemon only when unsupervised; never claim terminal persistence without one. */
 export async function startOCCdDaemon(
   platform: NodeJS.Platform = process.platform
 ): Promise<OCCdDaemonStartup> {
+  // Taken before the daemon launches so neither it nor its terminals pass it on.
+  const supervised = takeOCCdServeSupervision()
   // Daemons must survive SSH logout; macOS GUI-session retirement would kill their terminals.
   const policy = {
     macosLoginSessionWatch: false,
@@ -36,6 +39,9 @@ export async function startOCCdDaemon(
     })
   } catch (error) {
     const reason = errorMessage(error)
+    if (supervised) {
+      throw new OCCdTerminalsNotDurableError(reason)
+    }
     console.error(
       `[occd] The terminal daemon did not start: ${reason}\n` +
         '[occd] Terminals will run in-process and WILL NOT survive an occd restart.'

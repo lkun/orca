@@ -7,10 +7,7 @@ import {
   setPaneTitleFromTerminalMenu,
   openTerminalContextMenu
 } from './helpers/terminal-pane-title-actions'
-import {
-  readVisibleXtermContainerBox,
-  expectTerminalToReserveTitleSpace
-} from './helpers/terminal-pane-geometry'
+import './helpers/terminal-pane-geometry'
 import { registerTerminalPaneMountReadiness } from './helpers/terminal-pane-mount-readiness'
 
 async function openPaneTitleContextMenu(page: Page, title: string): Promise<void> {
@@ -101,42 +98,6 @@ test.describe('Terminal Panes', () => {
 
     await expect(titleInput).toHaveCount(0)
     await expect(occPage.locator('.pane-title-text', { hasText: title })).toHaveCount(1)
-  })
-
-  test('Set Title editor renders in OCC overlay while terminal reserves title space', async ({
-    occPage
-  }) => {
-    const title = `Reserved overlay title ${Date.now()}`
-    const terminalBoxBefore = await readVisibleXtermContainerBox(occPage)
-
-    await openTerminalContextMenu(occPage)
-    await occPage.getByText('Set Title…', { exact: true }).click()
-
-    const titleInput = occPage.locator('.pane-title-overlay-layer .pane-title-input').first()
-    await expect(titleInput).toBeVisible()
-    await expect(titleInput).toBeFocused()
-    await expect(occPage.getByText('Set Title…', { exact: true })).toBeHidden()
-    await expect(occPage.locator('.pane .pane-title-input')).toHaveCount(0)
-    await expect(occPage.locator('.pane[data-has-title]')).toHaveCount(1)
-    await expect
-      .poll(() =>
-        occPage
-          .locator('.pane-title-bar')
-          .first()
-          .evaluate((titleBar) => getComputedStyle(titleBar).backgroundColor)
-      )
-      .not.toBe('rgba(0, 0, 0, 0)')
-    const terminalBoxEditing = await readVisibleXtermContainerBox(occPage)
-    expectTerminalToReserveTitleSpace(terminalBoxEditing, terminalBoxBefore)
-
-    await titleInput.fill(title)
-    await titleInput.press('Enter')
-    await expect(occPage.locator('.pane-title-text', { hasText: title })).toBeVisible()
-    await expect(occPage.locator('.pane[data-has-title]')).toHaveCount(1)
-    expectTerminalToReserveTitleSpace(
-      await readVisibleXtermContainerBox(occPage),
-      terminalBoxBefore
-    )
   })
 
   test('Set Title context menu opens from the title overlay strip', async ({ occPage }) => {

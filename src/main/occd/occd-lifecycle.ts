@@ -1,4 +1,4 @@
-import { setRuntimeBrowserCommandsFactory } from '../runtime/runtime-browser-commands-factory'
+import { setRuntimeBrowserCommandsFactory } from '../runtime/browser/installation/runtime-browser-commands-factory'
 import { markHostShuttingDown } from '../startup/quit/host-shutdown-state'
 import { setDesktopBrowserBridgeHostEnabled } from '../runtime/desktop-browser-bridge/desktop-browser-bridge-registry'
 import { OCCD_MANAGED_ACTIVATION_ROOT_ENV } from '../../shared/occd-managed-launch-env'
@@ -6,8 +6,14 @@ import { startOCCdBrowserProvider } from './occd-browser-startup'
 import { OCCdRuntimeLifetime, type OCCdRuntimeCleanup } from './occd-runtime-lifetime'
 import type { OCCdManagedStopInstance } from '../../shared/occd-stop-request'
 import { acquireOCCdInstanceLock } from './occd-instance-lock'
+import {
+  markOCCdRunFailed,
+  occdRunFailed,
+  recordOCCdPreviousUnexpectedExit
+} from './occd-unexpected-exit'
 import { OCCD_BUNDLED_LAUNCHER_ENV } from './occd-bundled-runtime'
 import { resolveOCCdExitCode } from './occd-exit-code'
+import { SINGLE_INSTANCE_ALREADY_RUNNING_EXIT_CODE } from '../../shared/single-instance-exit-code'
 import { recordAgentSessionRuntimeEnd } from '../runtime/agent-session/records/agent-session-runtime-end-record'
 import { OCCD_SHUTDOWN_DEADLINE_MS } from './occd-stop-deadlines'
 import { holdOCCdTerminalAdmissionUntilExit } from './occd-stop-terminal-admission'
@@ -34,6 +40,8 @@ export type OCCdShutdownTrigger = (
   stoppedExitCode?: number
 ) => boolean
 
+let installedShutdown: OCCdShutdownTrigger | null = null
+
 /** Deduplicate launcher/child signals into one bounded stop; onFailed retracts clean-stop records. */
 export function installOCCdShutdownSignals(
   stop: () => Promise<void>,
@@ -50,6 +58,10 @@ export function installOCCdShutdownSignals(
     }
   }
   const shutdown: OCCdShutdownTrigger = (signal, onFailed, stoppedExitCode = 0) => {
+    // Yielding a lost lock is not a crash; the successor owns the lock now.
+    if (stoppedExitCode !== 0 && stoppedExitCode !== SINGLE_INSTANCE_ALREADY_RUNNING_EXIT_CODE) {
+      markOCCdRunFailed()
+    }
     if (stopping) {
       // Fatal faults must escalate an in-progress clean stop to failure.
       if (stoppedExitCode !== 0 && exitCode === 0) {
@@ -78,6 +90,7 @@ export function installOCCdShutdownSignals(
       })
     return true
   }
+  installedShutdown = shutdown
   process.on('SIGINT', () => shutdown('SIGINT'))
   process.on('SIGTERM', () => shutdown('SIGTERM'))
   // Survive terminal hangups; INT/TERM request graceful shutdown.
@@ -137,7 +150,24 @@ export async function startOCCdWithHost<T extends object>(
   start: (registerCleanup: (cleanup: OCCdRuntimeCleanup) => void) => Promise<T>,
   runQuitHandlers: () => void | Promise<void>
 ): Promise<T & { stop(): Promise<void>; instance: OCCdManagedStopInstance }> {
-  const instanceLock = acquireOCCdInstanceLock(userDataPath)
+  const instanceLock = acquireOCCdInstanceLock(userDataPath, {
+    // Yield the data root to the process that took its lock; supervisors stand by on this code.
+    onExclusivityLost: () => {
+      console.error('[occd] Stopping so only one runtime writes this data root.')
+      installedShutdown?.(
+        'instance lock lost',
+        undefined,
+        SINGLE_INSTANCE_ALREADY_RUNNING_EXIT_CODE
+      )
+    }
+  })
+  const previous = instanceLock.previousUnexpectedExit
+  recordOCCdPreviousUnexpectedExit(previous)
+  if (previous) {
+    console.error(
+      `[occd] the previous run (pid ${previous.pid}, ${previous.version}) exited without stopping cleanly`
+    )
+  }
   const { pid, startedAtMs, nonce } = instanceLock.record
   const instance = { pid, startedAtMs, nonce, lockPath: instanceLock.path }
   let admission: ProfileStateRuntimeAdmission | undefined
@@ -154,7 +184,7 @@ export async function startOCCdWithHost<T extends object>(
     async (runtimeCleanupSucceeded) => {
       // Failed cleanup retains both ownership fences until process exit.
       const host = new OCCdRuntimeLifetime(() => {
-        if (runtimeCleanupSucceeded) {
+        if (runtimeCleanupSucceeded && !occdRunFailed()) {
           instanceLock.release()
         }
       })

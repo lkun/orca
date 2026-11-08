@@ -1,9 +1,9 @@
 import { ipcMain } from 'electron'
 import { getRepoDialableSshTargetId, type ExecutionHostId } from '../../../shared/execution-host'
 import { isFolderRepo } from '../../../shared/repo-kind'
-import { hasHooksFile, loadHooks, hasUnrecognizedOCCYamlKeys } from '../../hooks'
+import { hasHooksFile, loadHooks, hasUnrecognizedOCCYamlKeys } from '../../workspace-hooks/hooks'
 import { resolveRepoForExecutionHost } from '../worktrees/repo-host-ownership'
-import { blockedWslDistroForPath } from '../../wsl/wsl-unc-access-gate'
+import { blockedWslDistroForPath } from '../../wsl/filesystem/wsl-unc-access-gate'
 import type { WorktreeIpcContext } from '../worktrees/worktree-ipc-context'
 
 export function registerWorktreeHookCheckHandler(context: WorktreeIpcContext): void {

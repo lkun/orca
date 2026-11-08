@@ -2,7 +2,7 @@
 import { z } from 'zod'
 import { MAX_PANE_KEY_LEN } from '../agent-hook-listener/listener-limits'
 import { OCCD_MIGRATION_BLOB_KIND_CONTRACTS } from './occd-migration-blob-transfer'
-import { parsePaneKey } from '../stable-pane-id'
+import { parsePaneKey } from '../workspace-layout/stable-pane-id'
 
 export const OCCD_MIGRATION_TERMINAL_RESTORE_HINTS_VERSION = 1
 export const OCCD_MIGRATION_TERMINAL_RESTORE_HINTS_KEY = 'migration'

@@ -1,7 +1,8 @@
 // Normalize one desktop scenario's CLI, paired and occd replies for byte-identical comparison across layout ownership modes.
 import { readFileSync } from 'node:fs'
 import { vi } from 'vitest'
-import { OCCRuntimeService } from '../../occ-runtime-test-mocks.spec'
+import '../../occ-runtime-tests/runtime-test-module-registration.spec'
+import { OCCRuntimeService } from '../../occ-runtime'
 import {
   HEADLESS_LEAF_ID,
   HEADLESS_SECOND_LEAF_ID,
@@ -10,13 +11,14 @@ import {
   makeHeadlessTerminalLayout,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} from '../../occ-runtime-test-fixtures.spec'
-import type { RuntimeSyncWindowGraph, RuntimeTerminalShow } from '../../../../shared/runtime-types'
-import type { WorkspaceSessionState } from '../../../../shared/workspace-session-state-types'
+} from '../../occ-runtime-tests/occ-runtime-test-fixtures.spec'
+import type { RuntimeSyncWindowGraph } from '../../../../shared/runtime-session-contracts'
+import type { RuntimeTerminalShow } from '../../../../shared/runtime-terminal-contracts'
+import type { WorkspaceSessionState } from '../../../../shared/workspace-session/workspace-session-state-types'
 import type { ExecutionHostId } from '../../../../shared/execution-host'
 import type { LayoutCommand } from '../../../../shared/workspace-layout/workspace-layout-command-types'
 import { applyCommandToSession } from '../../../persistence/terminal-topology/terminal-pane-admission'
-import { partialRuntimeStore } from '../../runtime-store-partial-fixture'
+import { partialRuntimeStore } from '../../occ-runtime-tests/runtime-store-partial-fixture'
 
 export const SURFACE_TAB_ID = '44444444-4444-4444-8444-444444444444'
 export const SURFACE_PTYS = { [HEADLESS_LEAF_ID]: 'pty-a', [HEADLESS_SECOND_LEAF_ID]: 'pty-b' }

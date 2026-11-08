@@ -120,7 +120,7 @@ async function runParkedSplitCli(
     const result = await execFileAsync(
       process.execPath,
       [
-        path.join(repoRoot, 'config', 'scripts', 'occ-dev.mjs'),
+        path.join(repoRoot, 'config', 'scripts', 'development', 'launch', 'occ-dev.mjs'),
         'terminal',
         'split',
         '--terminal',

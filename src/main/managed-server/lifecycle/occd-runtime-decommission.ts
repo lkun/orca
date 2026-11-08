@@ -5,11 +5,13 @@ import type {
   OCCdManagedStopResult
 } from '../../../shared/occd-managed-runtime'
 import type { OCCdDaemonRetirementVerdict } from '../../../shared/occd-stop-request'
-import { removeManagedOCCdEnvironment } from '../../../shared/runtime-environment-managed-occd-store'
+import { removeManagedOCCdEnvironment } from '../../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
+import { listEnvironments } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
+import { findManagedSshTwin } from '../../../shared/remote-runtime/host-catalog/runtime-environment-host-key-match'
 import type {
   KnownRuntimeEnvironment,
   OCCdSshDeploymentLink
-} from '../../../shared/runtime-environments'
+} from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import { recoverInterruptedOCCdActivation } from '../activation/occd-activation-recovery'
 import { withStaleOCCdActivationRecoveryLock } from '../activation/occd-activation-lock'
 import { readOCCdActivationTransaction } from '../activation/occd-activation-transaction-store'
@@ -31,6 +33,8 @@ import { RemoteInstallLockBusyError } from '../install/remote-install-lock'
 type ManagedOCCdStopPolicy = {
   isActiveEnvironment: (environmentId: string) => boolean
   retireLocalState: (environmentId: string) => Promise<void> | void
+  /** Runs inside the host's lifecycle, so a Connect queued behind the unlink still wins. */
+  releaseHostTransport: (sshTargetId: string) => Promise<void>
 }
 
 type Refusal = Extract<OCCdManagedStopResult, { outcome: 'refused' }>
@@ -76,23 +80,54 @@ export function forgetManagedOCCdEnvironment(
   args: { selector: string },
   policy: ManagedOCCdStopPolicy
 ): Promise<OCCdManagedForgetResult> {
-  return withManagedOCCdLifecycle(userDataPath, args.selector, async (managed) => {
-    const { environment, deployment } = managed
-    if (policy.isActiveEnvironment(environment.id)) {
-      return refuse(
-        'live',
-        'occd_forget_active_environment',
-        'This server is the default host for new projects. Choose another one under New projects open on before forgetting it.'
+  return withManagedOCCdLifecycle(userDataPath, args.selector, (managed) =>
+    forgetLinkedEnvironment(userDataPath, managed, policy)
+  )
+}
+
+/** Forget one of two saved entries for one managed server; the other keeps managing it, so the host is not contacted. */
+export function forgetRedundantManagedOCCdEnvironment(
+  userDataPath: string,
+  args: { selector: string },
+  policy: ManagedOCCdStopPolicy
+): Promise<OCCdManagedForgetResult> {
+  return withManagedOCCdLifecycle(userDataPath, args.selector, (managed) => {
+    // Checked in the queue and unlinked in the same tick, so two Removes cannot each count the other as the twin.
+    if (!findManagedSshTwin(listEnvironments(userDataPath), managed.environment)) {
+      return Promise.resolve(
+        refuse(
+          'live',
+          'occd_forget_no_managed_twin',
+          'No other saved entry manages this server anymore, so removing this one would leave it unmanaged. Stop it instead.'
+        )
       )
     }
-    await unlinkEnvironmentLocally(userDataPath, environment, deployment, policy)
-    return {
-      outcome: 'forgotten',
-      verdict: 'unverifiable',
-      environmentId: environment.id,
-      sshTargetId: deployment.sshTargetId
-    }
+    return forgetLinkedEnvironment(userDataPath, managed, policy)
   })
+}
+
+async function forgetLinkedEnvironment(
+  userDataPath: string,
+  {
+    environment,
+    deployment
+  }: { environment: KnownRuntimeEnvironment; deployment: OCCdSshDeploymentLink },
+  policy: ManagedOCCdStopPolicy
+): Promise<OCCdManagedForgetResult> {
+  if (policy.isActiveEnvironment(environment.id)) {
+    return refuse(
+      'live',
+      'occd_forget_active_environment',
+      'This server is the default host for new projects. Choose another one under New projects open on before forgetting it.'
+    )
+  }
+  await unlinkEnvironmentLocally(userDataPath, environment, deployment, policy)
+  return {
+    outcome: 'forgotten',
+    verdict: 'unverifiable',
+    environmentId: environment.id,
+    sshTargetId: deployment.sshTargetId
+  }
 }
 
 async function stopRemote(
@@ -168,6 +203,8 @@ async function unlinkEnvironmentLocally(
   await claims.flush()
   // Clear journals after the fence; stale leftovers are recoverable on later conversion.
   removeOCCdMigrationJournalsForDestination(userDataPath, deployment.sshTargetId, environment.id)
+  // No server serves the host now, and an unserved host never stays connected.
+  await policy.releaseHostTransport(deployment.sshTargetId)
 }
 
 export function cancelManagedOCCdStop(

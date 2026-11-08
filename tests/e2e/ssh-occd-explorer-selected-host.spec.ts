@@ -10,7 +10,7 @@ import { dismissTransientAnnouncement } from './helpers/ssh-config-host-picker'
 import { toRuntimeExecutionHostId } from '../../src/shared/execution-host'
 import { folderWorkspaceKey } from '../../src/shared/workspace-scope'
 import { OCCD_TEMPLATE, skipUnlessManagedDockerHost } from './helpers/occd-managed-workspace'
-import { getOCCdSshDeployment } from '../../src/shared/runtime-environments'
+import { getOCCdSshDeployment } from '../../src/shared/remote-runtime/host-catalog/runtime-environments'
 
 skipUnlessManagedDockerHost()
 

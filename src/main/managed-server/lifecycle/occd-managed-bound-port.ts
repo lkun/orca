@@ -2,7 +2,7 @@
 import {
   getRuntimeSshAccess,
   type KnownRuntimeEnvironment
-} from '../../../shared/runtime-environments'
+} from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import type { SshTarget } from '../../../shared/ssh-types'
 import type { ServeReadiness } from '../../server/serve-readiness'
 import { managedOCCdInstallDir } from './occd-managed-runtime-context'
@@ -16,6 +16,7 @@ import {
   type OCCdRemoteExecTarget
 } from '../install/occd-remote-runtime-control'
 import type { OCCdHostTarget, OCCdHostTransport } from '../../ssh/occd-host-transport'
+import { parsePairingCode } from '../../../shared/remote-runtime/pairing/pairing'
 
 export type OCCdTunnelPortInput = {
   environment: KnownRuntimeEnvironment
@@ -96,6 +97,23 @@ export async function readManagedOCCdPublishedPort(
 ): Promise<number | null> {
   try {
     return await readActiveSlotBoundPort(input)
+  } catch {
+    return null
+  }
+}
+
+/** The server key the active slot offers to new pairings; null when unpublished or unreadable. */
+export async function readManagedOCCdPublishedKey(
+  input: OCCdTunnelPortInput
+): Promise<string | null> {
+  if (!input.environment.occdDeployment) {
+    return null
+  }
+  try {
+    const readiness = await readActiveManagedOCCdReadiness(input)
+    return readiness?.pairing.available
+      ? (parsePairingCode(readiness.pairing.url)?.publicKeyB64 ?? null)
+      : null
   } catch {
     return null
   }

@@ -14,7 +14,7 @@ export const REPO_COMMAND_SPECS: CommandSpec[] = [
     usage: 'occ repo add --path <path> [--kind git|folder] [--json]',
     allowedFlags: [...GLOBAL_FLAGS, 'path', 'kind'],
     notes: [
-      'Defaults to git. Use --kind folder for an ordinary directory, including a parent of separate Git repositories; folder workspaces have no Git worktrees or source control.',
+      'Defaults to git. Use --kind folder for an ordinary directory, including a parent of separate Git repositories; worktrees attached to a folder workspace appear in its Source Control panel, one section each.',
       'With --environment, --path must be an absolute path on that OCC server.'
     ],
     examples: ['occ repo add --path /abs/path/to/folder --kind folder --json']

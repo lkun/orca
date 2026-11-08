@@ -169,7 +169,7 @@ export function setupRuntimeHomeTest(): void {
   testState.userDataDir = mkdtempSync(join(tmpdir(), 'occ-runtime-home-'))
   testState.fakeHomeDir = mkdtempSync(join(tmpdir(), 'occ-codex-home-'))
   // Keep Windows profile and registry path probes inside the fake home.
-  vi.doMock('../windows-native-registry', () => ({
+  vi.doMock('../windows/windows-native-registry', () => ({
     loadWindowsNativeRegistry: () => {
       throw new Error('no registry in runtime-home tests')
     }

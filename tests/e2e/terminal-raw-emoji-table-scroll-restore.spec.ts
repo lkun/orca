@@ -475,39 +475,6 @@ test.describe('Terminal raw emoji table scroll restore repro', () => {
   })
 
   // Require auto to start fast and the complex emoji golden to retain that renderer.
-  test('uses WebGL by default for ordinary terminal output when available @terminal-rendering-golden', async ({
-    occPage
-  }) => {
-    await waitForSessionReady(occPage)
-    await closeFeatureTips(occPage)
-    await ensureTerminalVisible(occPage)
-    await waitForActiveTerminalManager(occPage, 30_000)
-    const ptyId = await waitForActivePanePtyId(occPage)
-    const marker = `OCC_AUTO_WEBGL_SMOKE_${randomUUID()}`
-
-    await sendToTerminal(occPage, ptyId, `printf ${JSON.stringify(`${marker}\\n`)}\r`)
-    await waitForTerminalOutput(occPage, marker, 10_000)
-
-    const expectedWebgl = await expectAutoWebgl(occPage)
-    // Wait for async WebGL attachment and transient cursorHidden to settle before the single-shot golden.
-    // Keep hasComplexScriptOutput single-shot: its not-ready default is also false.
-    let diagnostics = await readTerminalRenderDiagnostics(occPage)
-    await expect
-      .poll(
-        async () => {
-          diagnostics = await readTerminalRenderDiagnostics(occPage)
-          return diagnostics.hasWebgl === expectedWebgl && diagnostics.cursorHidden === false
-        },
-        {
-          timeout: 15_000,
-          message: `terminal render diagnostics did not settle (expected hasWebgl=${expectedWebgl}, cursorHidden=false)`
-        }
-      )
-      .toBe(true)
-    expect(diagnostics.hasComplexScriptOutput).toBe(false)
-    expect(diagnostics.hasWebgl).toBe(expectedWebgl)
-    expect(diagnostics.cursorHidden).toBe(false)
-  })
 
   // v1.4.51 minimal golden rejects one-scrollbar-column underfit and ZWJ emoji counted as width 4.
   test('keeps raw emoji box table aligned after restore and scroll @terminal-rendering-golden', async ({

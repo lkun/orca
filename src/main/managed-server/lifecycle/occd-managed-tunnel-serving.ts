@@ -1,5 +1,5 @@
 // Reread readiness after unanswered tunnels: another desktop may have restarted occd on a new port.
-import type { KnownRuntimeEnvironment } from '../../../shared/runtime-environments'
+import type { KnownRuntimeEnvironment } from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import type { OCCdManagedServing } from './occd-managed-serving'
 import type { OCCdManagedServingCheck } from './occd-managed-tunnel-resume'
 import type { ActiveOCCdTunnel } from './occd-managed-tunnel-active'

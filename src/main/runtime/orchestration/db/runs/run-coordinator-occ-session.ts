@@ -1,6 +1,6 @@
 import { occSessionAddressSql } from '../occ-session-address-sql'
 import type { OCCSessionId } from '../../../../../shared/occ-session-address'
-import type { RunRow } from '../../types'
+import type { RunRow } from '../orchestration-records'
 
 type RunCoordinatorOCCSessionFields = Pick<
   RunRow,

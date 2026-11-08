@@ -5,8 +5,8 @@
  */
 import { z } from 'zod'
 import { MAX_PANE_KEY_LEN } from '../agent-hook-listener/listener-limits'
-import { PTY_SESSION_ID_SEPARATOR } from '../pty-session-id-format'
-import { parsePaneKey } from '../stable-pane-id'
+import { PTY_SESSION_ID_SEPARATOR } from '../terminal/pty/lifecycle/pty-session-id-format'
+import { parsePaneKey } from '../workspace-layout/stable-pane-id'
 import { isOCCdMigrationTerminalRestoreHintCwd } from './occd-migration-terminal-restore-hints'
 
 export const OCCD_MIGRATION_TERMINAL_HISTORY_VERSION = 1

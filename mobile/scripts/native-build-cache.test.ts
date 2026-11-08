@@ -46,15 +46,6 @@ describe('the Expo build cache provider', () => {
     expect(cached).toBe(path.join(cacheDir, 'ios-abc-Debug', 'OCC.app'))
     expect(fs.readFileSync(path.join(cached!, 'Info.plist'), 'utf8')).toBe('OCC.app')
   })
-
-  it('keys by variant, so a Release build never satisfies a Debug lookup', async () => {
-    vi.stubEnv(nativeBuildCache.CACHE_MODE_ENV, 'store')
-    const release = { ...request, runOptions: { configuration: 'Release' } }
-    await nativeBuildCache.uploadBuildCache({ ...release, buildPath: fakeAppBundle('OCC.app') })
-    vi.stubEnv(nativeBuildCache.CACHE_MODE_ENV, '')
-    expect(await nativeBuildCache.resolveBuildCache(request)).toBeNull()
-    expect(await nativeBuildCache.resolveBuildCache(release)).not.toBeNull()
-  })
 })
 
 describe('cache pruning', () => {

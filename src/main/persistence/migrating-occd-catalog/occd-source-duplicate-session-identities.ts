@@ -1,4 +1,4 @@
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
 import { visitOCCdMigrationSessionEntities } from './occd-destination-workspace-session'
 import { worktreeLabel } from './occd-source-workspace-session-eligibility'
 

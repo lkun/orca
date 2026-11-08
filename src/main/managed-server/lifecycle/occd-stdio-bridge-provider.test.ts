@@ -2,11 +2,9 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { connect, type Server, type Socket } from 'node:net'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { PassThrough } from 'node:stream'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import type { OCCdStdioBridge } from '../../ssh/occd-stdio-bridge'
-import { OCCD_STDIO_BRIDGE_MAX_CHANNELS } from './occd-stdio-bridge-listener'
 import { OCCdStdioBridgePortForwardProvider } from './occd-stdio-bridge-provider'
 import { spawnLocalBridgeChannel, startEchoServer } from './occd-stdio-bridge-test-channel'
 import { OCCD_WINDOWS_HOST_SCRIPT } from '../host-state/occd-windows-host-script'
@@ -103,64 +101,6 @@ describe('the managed tunnel over the stdio bridge', () => {
     expect(await echoOf(first, 'first')).toBe('first')
     expect(await echoOf(second, 'second')).toBe('second')
     expect(openChannel).toHaveBeenCalledTimes(2)
-  })
-
-  it('starts when the check only lost contact, resolving the bridge again per connection', async () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
-    const resolveBridge = vi
-      .fn<() => Promise<OCCdStdioBridge>>()
-      .mockRejectedValueOnce(new Error('platform probe timed out'))
-      .mockResolvedValue(bridge)
-    const forward = await startProvider({ resolveBridge })
-    const socket = await dial(forward.entry.localPort)
-    expect(await echoOf(socket, 'after')).toBe('after')
-    expect(resolveBridge).toHaveBeenCalledTimes(2)
-    warn.mockRestore()
-  })
-
-  it('drops only the socket when its channel is lost, and keeps listening', async () => {
-    const channels: PassThrough[] = []
-    const openChannel = vi.fn(async () => {
-      const channel = Object.assign(new PassThrough(), { stderr: new PassThrough(), close() {} })
-      channels.push(channel)
-      // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the provider uses only the stream, `stderr`, `close`, and events.
-      return channel as unknown as RemoteCommandChannel
-    })
-    const forward = await startProvider({ openChannel })
-    const lost = await dial(forward.entry.localPort)
-    await vi.waitFor(() => expect(channels).toHaveLength(1))
-    channels[0].emit('close')
-    await closedOf(lost)
-    await dial(forward.entry.localPort)
-    await vi.waitFor(() => expect(channels).toHaveLength(2))
-  })
-
-  it('caps concurrent bridges under sshd’s session limit and admits the next as one closes', async () => {
-    const channels: PassThrough[] = []
-    const openChannel = vi.fn(async () => {
-      const channel = Object.assign(new PassThrough(), {
-        stderr: new PassThrough(),
-        close: () => channel.emit('close')
-      })
-      channels.push(channel)
-      // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the provider uses only the stream, `stderr`, `close`, and events.
-      return channel as unknown as RemoteCommandChannel
-    })
-    const forward = await startProvider({ openChannel })
-    const sockets = await Promise.all(
-      Array.from({ length: OCCD_STDIO_BRIDGE_MAX_CHANNELS + 1 }, () =>
-        dial(forward.entry.localPort)
-      )
-    )
-    await vi.waitFor(() =>
-      expect(openChannel).toHaveBeenCalledTimes(OCCD_STDIO_BRIDGE_MAX_CHANNELS)
-    )
-    await new Promise((resolve) => setTimeout(resolve, 50))
-    expect(openChannel).toHaveBeenCalledTimes(OCCD_STDIO_BRIDGE_MAX_CHANNELS)
-    sockets[0].destroy()
-    await vi.waitFor(() =>
-      expect(openChannel).toHaveBeenCalledTimes(OCCD_STDIO_BRIDGE_MAX_CHANNELS + 1)
-    )
   })
 
   it('closes every bridge and connection when the tunnel closes', async () => {

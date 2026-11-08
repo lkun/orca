@@ -1,60 +1,43 @@
 import { Plus } from 'lucide-react-native'
-import { Fragment, memo, useCallback, type ReactElement } from 'react'
-import { Pressable, ScrollView, Text, View } from 'react-native'
+import { Fragment, memo, useCallback } from 'react'
+import { Pressable, Text, View } from 'react-native'
 import { useMobileTranslation } from '../i18n/use-mobile-translation'
-import { colors, spacing } from '../theme/mobile-theme'
-import { themedStyleSheet } from '../theme/themed-styles'
+import { colors } from '../theme/mobile-theme'
 import { useMobileColorScheme } from '../theme/use-mobile-color-scheme'
-import { classifyConnection } from '../transport/connection-health'
-import { resolveHomeHostConnectionState } from '../transport/home-host-auto-connect'
-import type { ConnectionState, HostCatalogEntry } from '../transport/types'
+import { classifyConnection } from '../transport/connection/connection-health'
+import { resolveHomeHostConnectionState } from '../transport/hosts/home-host-auto-connect'
+import type { ConnectionState } from '../transport/connection/connection-state'
+import type { HostCatalogEntry } from '../transport/hosts/host-profile'
 import type { HostWorktreeInfo } from '../worktree/home-worktree-info'
 import type { HomeHostConnections } from './home-host-connection-projection'
 import { homeListStyles } from './home-list-styles'
 import { MobileHomeDesktopRow } from './MobileHomeDesktopRow'
+import { MobileHomeSectionHeading } from './MobileHomeSectionHeading'
 
 type MobileHomeHostListProps = {
   autoConnectHostIds: string[]
-  bottomInset: number
-  contentMaxWidth: number
-  /** Sections above Desktops (Jump back in); null when there's nothing to resume. */
-  header: ReactElement | null
-  /** Sections after Desktops (Tasks, Automations and the app update notice). */
-  footer: ReactElement
+  first: boolean
   hostAttempts: Record<string, number>
   hostLastConnected: Record<string, number | null>
   hostConnections: HomeHostConnections
   hosts: HostCatalogEntry[]
   hostStates: Record<string, ConnectionState>
-  isWideLayout: boolean
   worktreeInfo: Record<string, HostWorktreeInfo>
   onOpen: (host: HostCatalogEntry) => void
   onOpenActions: (host: HostCatalogEntry) => void
   onPairDesktop: () => void
 }
 
+/** Home's Desktops section: one row per paired desktop, then "Pair a desktop". */
 export function MobileHomeHostList(props: MobileHomeHostListProps) {
   const t = useMobileTranslation()
   useMobileColorScheme()
   return (
-    <ScrollView
-      contentContainerStyle={[
-        styles.content,
-        { paddingBottom: spacing.xl + props.bottomInset },
-        props.isWideLayout && {
-          maxWidth: props.contentMaxWidth,
-          width: '100%',
-          alignSelf: 'center'
-        }
-      ]}
-    >
-      {props.header}
-      <Text
-        style={[homeListStyles.sectionHeading, !props.header && homeListStyles.firstSectionHeading]}
-        accessibilityRole="header"
-      >
-        {t('home.listHeader.desktopsHeading', 'Desktops')}
-      </Text>
+    <>
+      <MobileHomeSectionHeading
+        title={t('home.listHeader.desktopsHeading', 'Desktops')}
+        first={props.first}
+      />
       <View style={homeListStyles.group}>
         {props.hosts.map((host, index) => (
           <Fragment key={host.id}>
@@ -72,6 +55,7 @@ export function MobileHomeHostList(props: MobileHomeHostListProps) {
             <View
               style={[
                 homeListStyles.separator,
+                homeListStyles.tileSeparator,
                 index === props.hosts.length - 1 && homeListStyles.fullSeparator
               ]}
             />
@@ -82,14 +66,13 @@ export function MobileHomeHostList(props: MobileHomeHostListProps) {
           style={({ pressed }) => [homeListStyles.actionRow, pressed && homeListStyles.rowPressed]}
           onPress={props.onPairDesktop}
         >
-          <Plus size={20} color={colors.accentBlue} />
+          <Plus size={18} color={colors.accentBlue} />
           <Text style={homeListStyles.actionLabel}>
             {t('home.desktops.pairDesktop', 'Pair a desktop')}
           </Text>
         </Pressable>
       </View>
-      {props.footer}
-    </ScrollView>
+    </>
   )
 }
 
@@ -139,7 +122,3 @@ const MobileHomeHostRow = memo(function MobileHomeHostRow(props: MobileHomeHostR
     />
   )
 })
-
-const styles = themedStyleSheet(() => ({
-  content: { paddingHorizontal: spacing.lg }
-}))

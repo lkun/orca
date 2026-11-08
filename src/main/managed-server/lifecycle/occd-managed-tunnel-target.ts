@@ -1,19 +1,22 @@
 import {
+  getPreferredPairingOffer,
   getRuntimeSshAccess,
   type KnownRuntimeEnvironment
-} from '../../../shared/runtime-environments'
+} from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import {
+  readManagedOCCdPublishedKey,
   readManagedOCCdPublishedPort,
   resolveManagedOCCdTunnelPort,
   type OCCdTunnelPortInput
 } from './occd-managed-bound-port'
 import {
+  OCCdManagedIdentityError,
   occdIdentityRefusal,
   verifyManagedOCCdTunnelIdentity,
   type OCCdTunnelIdentity
 } from './occd-managed-tunnel-identity'
 import { managedOCCdSlot } from './occd-managed-runtime-context'
-import { wakeStoppedManagedOCCd } from './occd-managed-wake'
+import { OCCdCrashLoopError, wakeManagedOCCdUnlessCrashLooping } from './occd-managed-crash-loop'
 import { resolveOCCdRemoteContext } from '../install/occd-remote-context'
 import type { SshConnection } from '../../ssh/connection/ssh-connection'
 import type { PortForwardEntry } from '../../../shared/ssh-types'
@@ -25,13 +28,21 @@ export type OCCdManagedTunnelTargeting = {
   /** Wake only proven-stopped slots before rereading ports after foreign answers. */
   wakeStoppedServer?: (input: OCCdTunnelPortInput) => Promise<void>
   readPublishedPort?: (input: OCCdTunnelPortInput) => Promise<number | null>
+  /** The server key this host's own slot publishes; null when unreadable. */
+  readPublishedKey?: (input: OCCdTunnelPortInput) => Promise<string | null>
 }
+
+/** `replaced`: the host's own slot answers SSH with a server key other than the pinned one. */
+export type OCCdForwardIdentity =
+  | OCCdTunnelIdentity
+  | { verdict: 'replaced'; detail: string; environment: { id: string; name: string } }
 
 export const MANAGED_OCCD_TUNNEL_TARGETING: OCCdManagedTunnelTargeting = {
   resolveRemotePort: resolveManagedOCCdTunnelPort,
   verifyIdentity: verifyManagedOCCdTunnelIdentity,
   wakeStoppedServer: wakeStoppedManagedOCCdForTunnel,
-  readPublishedPort: readManagedOCCdPublishedPort
+  readPublishedPort: readManagedOCCdPublishedPort,
+  readPublishedKey: readManagedOCCdPublishedKey
 }
 
 // Stopped slots may have lost their port; waking publishes a new free port for the reread.
@@ -40,12 +51,22 @@ async function wakeStoppedManagedOCCdForTunnel(input: OCCdTunnelPortInput): Prom
   if (!access) {
     return
   }
+  let wake: Awaited<ReturnType<typeof wakeManagedOCCdUnlessCrashLooping>>
   try {
     const context = await resolveOCCdRemoteContext(input.target, input.connection)
-    await wakeStoppedManagedOCCd(managedOCCdSlot(context, access.remotePort))
+    wake = await wakeManagedOCCdUnlessCrashLooping(
+      input.environment.id,
+      input.target.label,
+      managedOCCdSlot(context, access.remotePort)
+    )
   } catch (error) {
     // Failed wake does not settle identity; reread and validate the resulting forward.
     console.warn('[ssh] Could not start the managed OCC server behind a foreign answer:', error)
+    return
+  }
+  // The crash-loop reason beats the foreign-port mismatch the reread would report.
+  if (wake.outcome === 'crash-loop') {
+    throw new OCCdCrashLoopError(wake.detail)
   }
 }
 
@@ -65,7 +86,7 @@ type VerifiedOCCdForwardArgs = {
   /** Without a reread, foreign answers fail immediately. */
   rereadRemotePort?: () => Promise<number>
   /** Omit when the caller validates identity itself. */
-  verify?: (localPort: number) => Promise<OCCdTunnelIdentity>
+  verify?: (localPort: number) => Promise<OCCdForwardIdentity>
   stillCurrent: () => boolean
 }
 
@@ -87,7 +108,18 @@ export async function environmentForwardChecks(
       await targeting.wakeStoppedServer?.(input)
       return targeting.resolveRemotePort(input)
     },
-    verify: () => targeting.verifyIdentity(input.environment)
+    verify: async () => {
+      const identity = await targeting.verifyIdentity(input.environment)
+      if (identity.verdict !== 'foreign' || !targeting.readPublishedKey) {
+        return identity
+      }
+      // A refusal from the slot's own new server is a replaced pairing, not a port another OCC took.
+      const publishedKey = await targeting.readPublishedKey(input)
+      return publishedKey &&
+        publishedKey !== getPreferredPairingOffer(input.environment).publicKeyB64
+        ? { verdict: 'replaced', detail: identity.detail, environment: input.environment }
+        : identity
+    }
   }
 }
 
@@ -121,6 +153,10 @@ export async function forwardToVerifiedOCCd(
     // Token refusal from our pinned server is not a moved port; waking cannot repair pairing.
     if (identity.verdict === 'unpaired') {
       throw occdIdentityRefusal(remotePort, identity)
+    }
+    // Rereading the port cannot reach the pinned server once the slot itself serves another key.
+    if (identity.verdict === 'replaced') {
+      throw OCCdManagedIdentityError.replacedServer(identity.environment, identity.detail)
     }
     const reread =
       attempt === 0 && args.rereadRemotePort ? await args.rereadRemotePort() : remotePort

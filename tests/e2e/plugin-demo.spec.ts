@@ -129,7 +129,7 @@ test('runs hello-occ panel, command, and event behind visible consent', async ({
     await expect(consent).toBeVisible()
     await expect(occPage.getByRole('article')).toContainText('Local folder')
     await expect(consent).toContainText(
-      'Full access: runs as a normal program and can read your files, use the network and run other programs.'
+      'Full access: runs as a normal program and can read your files, use the network, run other programs and control OCC, including your terminals and agents.'
     )
     await expect(occPage.getByRole('dialog')).toHaveCount(0)
     await occPage

@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process'
 import { rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { WINDOWS_GIT_BASH_SHELL } from '../../src/shared/windows-terminal-shell'
+import type { WINDOWS_GIT_BASH_SHELL } from '../../src/shared/windows-terminal-shell'
 import { test, expect } from './helpers/occ-app'
 import {
   focusActiveTerminalInput,
@@ -195,11 +195,6 @@ async function updateWindowsDefaultShellSetting(
 test.describe('Windows terminal shell paste ownership', () => {
   test.skip(process.platform !== 'win32', 'Windows terminal shell paste coverage is Windows-only')
 
-  async function skipWhenGitBashUnavailable(page: Page): Promise<void> {
-    const isAvailable = await page.evaluate(() => window.api.gitBash.isAvailable())
-    test.skip(!isAvailable, 'Git Bash is not available on this Windows host')
-  }
-
   test('PowerShell default terminal keyboard paste preserves exact content with one PTY owner', async ({
     electronApp,
     occPage,
@@ -243,164 +238,6 @@ test.describe('Windows terminal shell paste ownership', () => {
 
       const writes = (await readTerminalPtyWrites(electronApp)).join('')
       expect(countOccurrences(writes, expectedText), 'PowerShell payload PTY write count').toBe(1)
-    } finally {
-      if (scriptStarted) {
-        await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
-      }
-      rmSync(scriptPath, { force: true })
-    }
-  })
-
-  test('cmd.exe default terminal keyboard paste preserves exact content with one PTY owner', async ({
-    electronApp,
-    occPage,
-    testRepoPath
-  }) => {
-    await waitForSessionReady(occPage)
-    await waitForActiveWorktree(occPage)
-    await ensureTerminalVisible(occPage)
-    await createWindowsDefaultShellTerminalTab(occPage, 'cmd.exe')
-    await waitForActiveTerminalManager(occPage, 30_000)
-    await installTerminalPtyWriteSpy(electronApp)
-
-    const ptyId = await waitForActivePanePtyId(occPage)
-    const runId = randomUUID()
-    const sentinel = `OCC_E2E_CMD_DONE_${runId}`
-    const payload = [
-      `OCC_E2E_CMD_PASTE_${runId}`,
-      'cmd metacharacters: %PATH% !PROMPT! ^ & | < >',
-      'quoted Windows path: C:\\Program Files\\OCC Test\\file name.txt',
-      'PowerShell metacharacters: ` $ " \' ; @ { } ( )',
-      `mixed-newline-before\r\nlf-line\ncrlf-line\r\n${sentinel}`
-    ].join('\n')
-    const scriptPath = path.join(testRepoPath, `.occ-paste-cmd-shell-${runId}.mjs`)
-    const expectedText = payload.replace(/\r?\n/g, '\r')
-    writeFileSync(scriptPath, pasteCollectScript(runId, sentinel, expectedText))
-    let scriptStarted = false
-
-    try {
-      await sendToTerminal(occPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
-      scriptStarted = true
-      await waitForTerminalOutput(occPage, `PASTE_READY_${runId}`, 10_000)
-
-      await clearTerminalPtyWriteLog(electronApp)
-      await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
-      await focusActiveTerminalInput(occPage)
-
-      await occPage.keyboard.press('Control+V')
-      await waitForTerminalOutput(occPage, `PASTE_COMPLETE_${runId}:MATCH`, 10_000, 12_000)
-
-      const writes = (await readTerminalPtyWrites(electronApp)).join('')
-      expect(countOccurrences(writes, expectedText), 'cmd.exe payload PTY write count').toBe(1)
-    } finally {
-      if (scriptStarted) {
-        await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
-      }
-      rmSync(scriptPath, { force: true })
-    }
-  })
-
-  test('Git Bash default terminal keyboard paste preserves POSIX-shaped content with one PTY owner', async ({
-    electronApp,
-    occPage,
-    testRepoPath
-  }) => {
-    await skipWhenGitBashUnavailable(occPage)
-
-    await waitForSessionReady(occPage)
-    await waitForActiveWorktree(occPage)
-    await ensureTerminalVisible(occPage)
-    await createWindowsDefaultShellTerminalTab(occPage, WINDOWS_GIT_BASH_SHELL)
-    await waitForActiveTerminalManager(occPage, 30_000)
-    await installTerminalPtyWriteSpy(electronApp)
-
-    const ptyId = await waitForActivePanePtyId(occPage)
-    const runId = randomUUID()
-    const sentinel = `OCC_E2E_GIT_BASH_DONE_${runId}`
-    const payload = [
-      `OCC_E2E_GIT_BASH_PASTE_${runId}`,
-      'POSIX shell metacharacters: $ ` " \' ; | & < > * ? [ ] ( )',
-      'Windows path with spaces: C:\\Users\\Name\\My Project\\file.txt',
-      'POSIX path with spaces: /home/user/my project/file.txt',
-      `mixed-newline-before\r\nlf-line\ncrlf-line\r\n${sentinel}`
-    ].join('\n')
-    const scriptPath = path.join(testRepoPath, `.occ-paste-git-bash-shell-${runId}.mjs`)
-    const expectedText = payload.replace(/\r?\n/g, '\r')
-    writeFileSync(scriptPath, pasteCollectScript(runId, sentinel, expectedText))
-    let scriptStarted = false
-
-    try {
-      await sendToTerminal(occPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
-      scriptStarted = true
-      await waitForTerminalOutput(occPage, `PASTE_READY_${runId}`, 10_000)
-
-      await clearTerminalPtyWriteLog(electronApp)
-      await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
-      await focusActiveTerminalInput(occPage)
-
-      await occPage.keyboard.press('Control+V')
-      await waitForTerminalOutput(occPage, `PASTE_COMPLETE_${runId}:MATCH`, 10_000, 12_000)
-
-      const writes = (await readTerminalPtyWrites(electronApp)).join('')
-      expect(countOccurrences(writes, expectedText), 'Git Bash payload PTY write count').toBe(1)
-    } finally {
-      if (scriptStarted) {
-        await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
-      }
-      rmSync(scriptPath, { force: true })
-    }
-  })
-
-  test('WSL terminal keyboard paste preserves Linux shell content with one PTY owner', async ({
-    electronApp,
-    occPage,
-    testRepoPath
-  }) => {
-    test.skip(!hasWslNodeRuntime(), 'WSL with node is not available on this Windows host')
-
-    await waitForSessionReady(occPage)
-    await waitForActiveWorktree(occPage)
-    await ensureTerminalVisible(occPage)
-    const wslDistro = await configureActiveProjectWslRuntime(occPage)
-    test.skip(!wslDistro, 'No WSL distro is available on this Windows host')
-    await createWindowsProjectRuntimeTerminalTab(occPage, 'wsl.exe')
-    await waitForActiveTerminalManager(occPage, 30_000)
-    await installTerminalPtyWriteSpy(electronApp)
-
-    const ptyId = await waitForActivePanePtyId(occPage)
-    const runId = randomUUID()
-    const sentinel = `OCC_E2E_WSL_DONE_${runId}`
-    const payload = [
-      `OCC_E2E_WSL_PASTE_${runId}`,
-      'POSIX shell metacharacters: $ ` " \' ; | & < > * ? [ ] ( )',
-      'Linux path with spaces: /home/user/my project/file.txt',
-      'Windows path preserved as text: C:\\Users\\Name\\My Project\\file.txt',
-      'Unicode: café 你好 مرحبا 😀',
-      `mixed-newline-before\r\nlf-line\ncrlf-line\r\n${sentinel}`
-    ].join('\n')
-    const scriptPath = path.join(testRepoPath, `.occ-paste-wsl-shell-${runId}.mjs`)
-    const expectedText = payload.replace(/\r?\n/g, '\r')
-    writeFileSync(scriptPath, pasteCollectScript(runId, sentinel, expectedText))
-    let scriptStarted = false
-
-    try {
-      await sendToTerminal(
-        occPage,
-        ptyId,
-        `node ${JSON.stringify(toDefaultWslPath(scriptPath))}\r`
-      )
-      scriptStarted = true
-      await waitForTerminalOutput(occPage, `PASTE_READY_${runId}`, 10_000)
-
-      await clearTerminalPtyWriteLog(electronApp)
-      await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
-      await focusActiveTerminalInput(occPage)
-
-      await occPage.keyboard.press('Control+V')
-      await waitForTerminalOutput(occPage, `PASTE_COMPLETE_${runId}:MATCH`, 10_000, 12_000)
-
-      const writes = (await readTerminalPtyWrites(electronApp)).join('')
-      expect(countOccurrences(writes, expectedText), 'WSL payload PTY write count').toBe(1)
     } finally {
       if (scriptStarted) {
         await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)

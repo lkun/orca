@@ -4,8 +4,8 @@ import {
   type OCCdMigrationSourceCutover
 } from '../../shared/occd-migration/occd-migration-source-cutover'
 import type { OCCdDeltaMoveResult } from '../../shared/occd-managed-runtime'
-import { recordManagedOCCdMigration } from '../../shared/runtime-environment-managed-occd-store'
-import type { KnownRuntimeEnvironment } from '../../shared/runtime-environments'
+import { recordManagedOCCdMigration } from '../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
+import type { KnownRuntimeEnvironment } from '../../shared/remote-runtime/host-catalog/runtime-environments'
 import type { SshTarget } from '../../shared/ssh-types'
 import type { Store } from '../persistence/loading-store/store'
 import {

@@ -1,6 +1,6 @@
 /** Injected session identity resolves the orchestration caller without guessing a terminal. Valid only on the same host/user: refuse claims across SSH, pairing or WSL, and omit it from SSH passthrough. */
 import { OCC_SESSION_ADDRESS_PREFIX } from '../../occ-session-address-prefix'
-import { isStructuredWorkerHandle } from '../../structured-worker-handle'
+import { isStructuredWorkerHandle } from '../../orchestration/workers/structured-worker-handle'
 
 export const OCC_AGENT_SESSION_ID_ENV = 'OCC_AGENT_SESSION_ID'
 

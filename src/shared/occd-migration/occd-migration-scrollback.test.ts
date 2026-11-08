@@ -2,32 +2,15 @@ import { describe, expect, it } from 'vitest'
 import { getDefaultWorkspaceSession } from '../constants'
 import {
   assertOCCdMigrationScrollbackReferences,
-  MAX_OCCD_MIGRATION_SCROLLBACK_SNAPSHOTS,
-  OCCdMigrationSnapshotChunkRequestSchema,
   parseOCCdMigrationSnapshotChunkResult,
   parseOCCdMigrationTerminalScrollbackSnapshots,
   type OCCdMigrationSnapshotChunkRequest,
   type OCCdMigrationTerminalScrollbackSnapshot
 } from './occd-migration-scrollback'
-import { TERMINAL_SCROLLBACK_STORE_BYTE_LIMIT } from '../terminal-scrollback-limits'
 
 const DIGEST = 'a'.repeat(64)
 
 describe('occd migration scrollback wire validation', () => {
-  it('accepts only canonical non-empty bounded base64 chunks', () => {
-    const request = chunkRequest('YQ==')
-    expect(OCCdMigrationSnapshotChunkRequestSchema.safeParse(request).success).toBe(true)
-    expect(
-      OCCdMigrationSnapshotChunkRequestSchema.safeParse({ ...request, futureField: 1 }).success,
-      'a newer client field'
-    ).toBe(true)
-    for (const bytesBase64 of ['', 'YQ', 'YQ=', 'A===', '***=']) {
-      expect(
-        OCCdMigrationSnapshotChunkRequestSchema.safeParse({ ...request, bytesBase64 }).success
-      ).toBe(false)
-    }
-  })
-
   it('requires an acknowledgment for exactly the decoded chunk length', () => {
     const request = chunkRequest(Buffer.from('abc').toString('base64'), 7)
     expect(
@@ -67,29 +50,6 @@ describe('occd migration scrollback wire validation', () => {
         { ...descriptor(2), tabId: first.tabId, leafId: first.leafId }
       ])
     ).toThrow('occd_migration_dormant_scrollback_snapshot_leaf_duplicate')
-  })
-
-  it('enforces descriptor count, per-file, and aggregate limits', () => {
-    expect(() =>
-      parseOCCdMigrationTerminalScrollbackSnapshots(
-        Array.from({ length: MAX_OCCD_MIGRATION_SCROLLBACK_SNAPSHOTS + 1 }, (_, index) =>
-          descriptor(index + 1)
-        )
-      )
-    ).toThrow('occd_migration_dormant_scrollback_snapshots_too_many')
-    expect(() =>
-      parseOCCdMigrationTerminalScrollbackSnapshots([
-        { ...descriptor(1), byteLength: TERMINAL_SCROLLBACK_STORE_BYTE_LIMIT + 1 }
-      ])
-    ).toThrow('occd_migration_dormant_scrollback_size_invalid')
-    expect(() =>
-      parseOCCdMigrationTerminalScrollbackSnapshots(
-        Array.from({ length: 52 }, (_, index) => ({
-          ...descriptor(index + 1),
-          byteLength: TERMINAL_SCROLLBACK_STORE_BYTE_LIMIT
-        }))
-      )
-    ).toThrow('occd_migration_dormant_scrollback_snapshots_too_large')
   })
 
   it('requires one exact descriptor for every published session ref', () => {

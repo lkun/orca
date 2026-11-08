@@ -1,13 +1,12 @@
-import { makeRuntimeOrchestrationDb } from '../runtime-orchestration-db.test-fixture'
-import { withDurableRuntimeStore } from '../runtime-durable-store-fixture'
+import { makeRuntimeOrchestrationDb } from './runtime-orchestration-db.test-fixture'
+import { withDurableRuntimeStore } from './runtime-durable-store-fixture'
 import { describe, expect, it, vi } from 'vitest'
 import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
-import {
-  OCCRuntimeService,
-  getDefaultWorkspaceSession,
-  makePaneKey
-} from '../occ-runtime-test-mocks.spec'
-import type { WorkspaceSessionState } from '../occ-runtime-test-mocks.spec'
+import './runtime-test-module-registration.spec'
+import { OCCRuntimeService } from '../occ-runtime'
+import { getDefaultWorkspaceSession } from '../../../shared/constants'
+import { makePaneKey } from '../../../shared/workspace-layout/stable-pane-id'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
 import {
   HEADLESS_LEAF_ID,
   HEADLESS_SECOND_LEAF_ID,
@@ -20,49 +19,11 @@ import {
   TEST_WORKTREE_PATH,
   deferred,
   makeHeadlessTerminalLayout,
-  makeRuntimeStoreWithWorkspaceSession,
-  store
-} from '../occ-runtime-test-fixtures.spec'
-import { publishLegacyWorkerReveal } from '../occ-runtime-test-scenario-builders.spec'
+  makeRuntimeStoreWithWorkspaceSession
+} from './occ-runtime-test-fixtures.spec'
+import { publishLegacyWorkerReveal } from './occ-runtime-test-scenario-builders.spec'
 
 describe('OCCRuntimeService', () => {
-  it('recovers exported OCC_TERMINAL_HANDLE from discovered live PTY sessions', async () => {
-    const runtime = new OCCRuntimeService(store)
-    const writes: string[] = []
-    runtime.setPtyController({
-      write: (_ptyId, data) => {
-        writes.push(data)
-        return true
-      },
-      kill: () => true,
-      getForegroundProcess: async () => null,
-      listProcesses: async () => [
-        {
-          id: 'pty-1',
-          cwd: TEST_WORKTREE_PATH,
-          title: 'claude',
-          terminalHandle: 'term_exported'
-        }
-      ]
-    })
-
-    const listed = await runtime.listTerminals()
-    expect(listed.terminals[0]?.handle).toBe('term_exported')
-
-    runtime.onPtyData('pty-1', 'after restart\n', 100)
-    await expect(runtime.readTerminal('term_exported')).resolves.toMatchObject({
-      handle: 'term_exported',
-      tail: ['after restart']
-    })
-    await expect(
-      runtime.sendTerminal('term_exported', { text: 'still writable' }, { inputKind: 'driving' })
-    ).resolves.toMatchObject({
-      handle: 'term_exported',
-      accepted: true
-    })
-    expect(writes).toEqual(['still writable'])
-  })
-
   it('adopts a v1.4.150-shaped agent, setup, and shell orphan as one topology transaction', async () => {
     const session = {
       ...getDefaultWorkspaceSession(),

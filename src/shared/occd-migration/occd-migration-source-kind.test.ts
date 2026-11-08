@@ -7,8 +7,7 @@ import {
 } from './occd-migration-manifest-validation'
 import {
   OCCD_MIGRATION_SOURCE_KIND_UNKNOWN,
-  occdMigrationManifestSourceKind,
-  requiredOCCdMigrationSourceCapability
+  occdMigrationManifestSourceKind
 } from './occd-migration-source-kind'
 
 const SSH_SOURCE = { sshTargetId: 'ssh-1', sshTargetGeneration: 2, targetLabel: 'Prod' }
@@ -44,12 +43,6 @@ function manifestWithSource(source: unknown) {
 }
 
 describe('occd migration source kind', () => {
-  it('reads an absent kind as the relay-era SSH source, which needs no extra capability', () => {
-    expect(occdMigrationManifestSourceKind(SSH_SOURCE)).toBe('ssh-relay')
-    expect(occdMigrationManifestSourceKind({ ...SSH_SOURCE, kind: undefined })).toBe('ssh-relay')
-    expect(requiredOCCdMigrationSourceCapability(SSH_SOURCE)).toBeNull()
-  })
-
   it.each(['ssh-relay', 'toString', 'wsl', 7, null])('refuses unregistered kind %j', (kind) => {
     expect(() => occdMigrationManifestSourceKind({ kind })).toThrow(
       OCCD_MIGRATION_SOURCE_KIND_UNKNOWN

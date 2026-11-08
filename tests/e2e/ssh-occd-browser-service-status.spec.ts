@@ -17,7 +17,7 @@ import {
 import { createRetentionFixtureDirectory } from './helpers/host-created-terminal-retention-oracle'
 import { reconnect, serverCall } from './helpers/occd-convert-flow'
 import { OCCD_TEMPLATE, skipUnlessManagedDockerHost } from './helpers/occd-managed-workspace'
-import { getOCCdSshDeployment } from '../../src/shared/runtime-environments'
+import { getOCCdSshDeployment } from '../../src/shared/remote-runtime/host-catalog/runtime-environments'
 
 skipUnlessManagedDockerHost()
 

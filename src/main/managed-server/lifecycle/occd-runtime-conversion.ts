@@ -3,13 +3,13 @@
 import { randomUUID } from 'node:crypto'
 import type { OCCdManagedConversionResult } from '../../../shared/occd-managed-runtime'
 import type { OCCdMigrationSourceCutover } from '../../../shared/occd-migration/occd-migration-source-cutover'
-import { recordManagedOCCdMigration } from '../../../shared/runtime-environment-managed-occd-store'
-import { listEnvironments } from '../../../shared/runtime-environment-store'
+import { recordManagedOCCdMigration } from '../../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
+import { listEnvironments } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
 import {
   getOCCdSshDeployment,
   redactRuntimeEnvironment,
   type KnownRuntimeEnvironment
-} from '../../../shared/runtime-environments'
+} from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import { runTargetLifecycle } from '../../ipc/ssh/ssh-target-lifecycle-queue'
 import { environmentMatchesManagedOCCdCutover } from './occd-managed-migration-status'
 import { requireManagedOCCdInfrastructure } from './occd-managed-runtime-context'

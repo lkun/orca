@@ -25,7 +25,7 @@ import {
 } from '../host-state/occd-machine-claim-command'
 import { execOCCdRemote, type OCCdRemoteExecTarget } from './occd-remote-runtime-control'
 import { readRemoteHomeCommand } from '../../ssh/ssh-remote-commands'
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import {
   isWindowsRemoteHost,
   joinRemotePath,

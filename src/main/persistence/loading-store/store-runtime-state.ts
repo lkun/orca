@@ -12,7 +12,7 @@ import type { ActiveViewPreference } from '../preferences/active-view-preference
 import {
   getProfileTerminalScrollbackSnapshotRoot,
   type TerminalScrollbackSnapshotStorage
-} from '../../terminal-scrollback-snapshots'
+} from '../../pty/scrollback/terminal-scrollback-snapshots'
 import { ProtectedSecretPersistence } from '../../credentials/protected-secret-persistence'
 import { getDataFile, getGithubCacheFile } from './user-data-path'
 import { dirname, join } from 'node:path'
@@ -28,7 +28,7 @@ import type {
   AutomationStorageAuthority
 } from '../scheduling-automations/automation-owner-projection'
 import type { ProfileStatePersistenceAuthority } from './profile-state-authority'
-import type { AutomationRun } from '../../../shared/automations-types'
+import type { AutomationRun } from '../../../shared/automations/history/automation-run'
 import { resolveNewPaneShellPath } from '../migrating-occd-catalog/occd-shell-history-installer'
 import { OCCdTerminalRestoreHintStore } from '../migrating-occd-catalog/occd-terminal-restore-hint-store'
 

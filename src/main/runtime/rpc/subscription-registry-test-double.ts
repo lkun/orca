@@ -1,4 +1,4 @@
-import type { SubscriptionRegistration } from '../occ-runtime'
+import type { SubscriptionRegistration } from '../client/runtime-subscription-registry'
 
 type Cleanup = () => void | Promise<void>
 type Entry = {

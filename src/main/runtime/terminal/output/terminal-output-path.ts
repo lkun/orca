@@ -1,6 +1,7 @@
-import type { ApplyLayoutResult, DriverState, PtyLayoutTarget } from '../../occ-runtime-core'
+import type { ApplyLayoutResult, PtyLayoutTarget } from '../layout/terminal-layout-state'
+import type { RuntimeTerminalDriverState as DriverState } from '../../../../shared/runtime-session-contracts'
 import { OCCRuntimeWithGetOrchestrationDispatchAuthority } from './terminal-orchestration-authority'
-import { clampTerminalViewport } from '../../../../shared/terminal-viewport'
+import { clampTerminalViewport } from '../../../../shared/terminal/viewport/terminal-viewport'
 
 export abstract class OCCRuntimeWithHasRecentTerminalOutputPath extends OCCRuntimeWithGetOrchestrationDispatchAuthority {
   protected abstract enqueueLayout(

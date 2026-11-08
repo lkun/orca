@@ -1,7 +1,10 @@
 import { existsSync, readFileSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { OCCProfileCloudSummary, OCCProfileSummary } from '../../shared/occ-profiles'
-import { bestEffortFsyncDirectorySync, writeDurableSecureJsonFile } from '../../shared/secure-file'
+import {
+  bestEffortFsyncDirectorySync,
+  writeDurableSecureJsonFile
+} from '../../shared/secure-storage/secure-file'
 import { clearArtifactCreateIntents } from '../artifacts/artifact-create-intent-store'
 import { clearArtifactShareRecords } from '../artifacts/artifact-share-record-store'
 import { getOCCProfileDirectory } from './profile-storage-paths'

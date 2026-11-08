@@ -11,7 +11,11 @@ import type {
   OCCdMigrationCatalogPayload,
   OCCdMigrationManifestSource
 } from '../../../shared/occd-migration/occd-migration-manifest'
-import { parseWorkspaceKey } from '../../../shared/workspace-scope'
+import {
+  normalizeWorkspaceSessionKeyToWorkspaceId,
+  parseWorkspaceKey
+} from '../../../shared/workspace-scope'
+import type { PersistedState } from '../../../shared/persisted-state-types'
 import {
   getExecutionHostIdFromWorktreeHostIdentity,
   getWorktreeIdFromHostIdentity,
@@ -185,4 +189,18 @@ export function occdMigrationOwnerKeyIsAmbiguous(
 
 export function unqualifyOCCdMigrationOwnerKey(value: string): string {
   return isWorktreeHostIdentity(value) ? getWorktreeIdFromHostIdentity(value) : value
+}
+
+/** Uses the child's own host stamp; a shared repo id with none might be this move's, so it counts. */
+export function occdMigrationMayMoveChild(
+  state: Pick<PersistedState, 'worktreeMeta'>,
+  childKey: string,
+  scope: OCCdMigrationSourceScope
+): boolean {
+  const childHostId =
+    state.worktreeMeta[normalizeWorkspaceSessionKeyToWorkspaceId(childKey)]?.hostId
+  return (
+    occdMigrationOwnerMatchesScope(childKey, scope, childHostId) ||
+    (childHostId === undefined && occdMigrationOwnerKeyIsAmbiguous(childKey, scope))
+  )
 }

@@ -3,13 +3,13 @@ import type {
   OCCdMigrationManifestSource
 } from '../../../shared/occd-migration/occd-migration-manifest'
 import type { PersistedState } from '../../../shared/persisted-state-types'
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
 import type { OCCdMigrationTerminalScrollbackSnapshot } from '../../../shared/occd-migration/occd-migration-scrollback'
 import {
   extractSessionOwnersForTransfer,
   hasTransferredSessionState
 } from '../../occ-profiles/profile-session-owner-transfer'
-import type { TerminalScrollbackSnapshotStorage } from '../../terminal-scrollback-snapshots'
+import type { TerminalScrollbackSnapshotStorage } from '../../pty/scrollback/terminal-scrollback-snapshots'
 import {
   createOCCdMigrationExportScope,
   occdMigrationOwnerMatchesScope,
@@ -36,7 +36,7 @@ import {
   type SessionFragment
 } from './occd-source-session-copy-resolution'
 import { withoutOCCdMigrationDrafts } from './occd-source-draft-rename'
-import { hasClosedTerminalTabRecord } from '../../../shared/closed-terminal-tab-tombstones'
+import { hasClosedTerminalTabRecord } from '../../../shared/workspace-layout/closed-terminal-tab-tombstones'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../shared/execution-host'
 import { normalizeWorkspaceSessionKeyToWorkspaceId } from '../../../shared/workspace-scope'
 import { occdMigrationSessionPartitions } from './occd-source-session-partitions'

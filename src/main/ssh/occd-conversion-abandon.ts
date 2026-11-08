@@ -1,7 +1,7 @@
 /** Registered destinations must abort/prove empty, then unregister before fence release so later starts cannot reclaim the host. Never-registered destinations held nothing. */
-import { removeManagedOCCdEnvironment } from '../../shared/runtime-environment-managed-occd-store'
-import { listEnvironments } from '../../shared/runtime-environment-store'
-import type { KnownRuntimeEnvironment } from '../../shared/runtime-environments'
+import { removeManagedOCCdEnvironment } from '../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
+import { listEnvironments } from '../../shared/remote-runtime/host-store/runtime-environment-store'
+import type { KnownRuntimeEnvironment } from '../../shared/remote-runtime/host-catalog/runtime-environments'
 import { closeOCCdManagedTunnel } from '../managed-server/lifecycle/occd-managed-tunnel'
 import {
   abortOCCdMigrationCutover,

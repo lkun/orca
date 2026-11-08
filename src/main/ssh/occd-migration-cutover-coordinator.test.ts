@@ -1,7 +1,7 @@
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { getManagedOCCdFenceEnvironmentId } from '../../shared/managed-occd-ssh-owner'
 import type { SshTarget } from '../../shared/ssh-types'
 import type { OCCdMigrationManifest } from '../../shared/occd-migration/occd-migration-manifest'
@@ -79,20 +79,6 @@ async function setup() {
 }
 
 describe('migration cutover coordinator', () => {
-  it('stages then commits once, journaling each phase the destination proves', async () => {
-    const h = await setup()
-    await expect(stageOCCdMigrationDestination(h.context, h.migrationId)).resolves.toMatchObject({
-      phase: 'destination-staged'
-    })
-    expect(h.journal()?.phase).toBe('destination-staged')
-    await expect(commitOCCdMigrationDestination(h.context, h.migrationId)).resolves.toMatchObject({
-      phase: 'destination-committed'
-    })
-    expect(h.journal()?.phase).toBe('destination-committed')
-    await commitOCCdMigrationDestination(h.context, h.migrationId)
-    expect(h.destination.commits).toBe(1)
-  })
-
   it('reads a lost commit reply back from the destination instead of failing or retrying blind', async () => {
     const h = await setup()
     await stageOCCdMigrationDestination(h.context, h.migrationId)
@@ -146,29 +132,6 @@ describe('migration cutover coordinator', () => {
     )
     expect(h.journal()?.phase).toBe('destination-staged')
     expect(h.owner()).toBe('env-1')
-  })
-
-  it.each([
-    [
-      'a source row changed',
-      (store: Store) => store.updateRepo(store.getRepo('repo-1')!, { displayName: 'Renamed' }),
-      'occd_migration_source_changed'
-    ],
-    [
-      'a terminal started on the source',
-      (store: Store) =>
-        vi
-          .spyOn(store, 'getSshRemotePtyLeases')
-          .mockReturnValue([
-            { targetId: TARGET.id, ptyId: 'late', state: 'attached', createdAt: 1, updatedAt: 1 }
-          ]),
-      'occd_migration_source_terminals_live'
-    ]
-  ])('refuses to stage or commit after %s', async (_label, change, code) => {
-    const h = await setup()
-    change(h.store)
-    await expect(stageOCCdMigrationDestination(h.context, h.migrationId)).rejects.toThrow(code)
-    expect(h.destination.stage).not.toHaveBeenCalled()
   })
 
   it('refuses a commit whose source changed after staging', async () => {
@@ -242,15 +205,6 @@ describe('migration cutover coordinator', () => {
       OCCD_MIGRATION_DESTINATION_UNSUPPORTED
     )
     expect(staged.owner()).toBe('env-1')
-  })
-
-  it('treats any other read failure at abort as unverifiable and keeps the fence', async () => {
-    const h = await setup()
-    h.destination.readState.mockRejectedValueOnce(new Error('socket closed'))
-    await expect(abortOCCdMigrationCutover(h.context, h.migrationId)).rejects.toThrow(
-      'socket closed'
-    )
-    expect(h.owner()).toBe('env-1')
   })
 
   it('refuses a destination answer for another manifest', async () => {

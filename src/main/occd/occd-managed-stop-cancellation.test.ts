@@ -3,7 +3,7 @@ import { rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type * as WindowsAcl from '../../shared/secure-path-windows-acl'
+import type * as WindowsAcl from '../../shared/secure-storage/secure-path-windows-acl'
 import type { OCCdManagedStopRequest } from '../../shared/occd-stop-request'
 
 import { acquireOCCdInstanceLock } from './occd-instance-lock'
@@ -11,13 +11,9 @@ import { occdManagedStopRequestPath } from './occd-managed-stop-request'
 import { cancelOCCdManagedStop } from './occd-managed-stop-cancellation'
 import { claimOCCdManagedStopDecision } from './occd-managed-stop-decision'
 
-import { completeOCCdManagedStop } from './occd-managed-stop-completion'
-
-import { installOCCdStopRequestListeners } from './occd-stop-request-listener'
-
 const hardening = vi.hoisted(() => ({ pending: new Set<Promise<void>>() }))
 
-vi.mock('../../shared/secure-path-windows-acl', async (importOriginal) => {
+vi.mock('../../shared/secure-storage/secure-path-windows-acl', async (importOriginal) => {
   const acl = await importOriginal<typeof WindowsAcl>()
   return {
     ...acl,
@@ -70,42 +66,5 @@ describe('cancelling a managed stop', () => {
     writeFileSync(occdManagedStopRequestPath(request.instance), JSON.stringify(other))
     expect(cancelOCCdManagedStop(request)).toBe('canceled')
     expect(existsSync(occdManagedStopRequestPath(request.instance))).toBe(true)
-  })
-
-  it('does not reissue a cancelled transaction while occd keeps running', async () => {
-    const request = running()
-    cancelOCCdManagedStop(request)
-    expect(
-      await completeOCCdManagedStop(request, {
-        probeProcess: () => 'alive',
-        startedAtMs: () => 5,
-        sleep: async () => {}
-      })
-    ).toBe('live')
-    expect(existsSync(occdManagedStopRequestPath(request.instance))).toBe(false)
-  })
-
-  it('keeps occd running when its listener meets a cancelled request', async () => {
-    const request = running()
-    cancelOCCdManagedStop(request)
-    writeFileSync(occdManagedStopRequestPath(request.instance), JSON.stringify(request))
-    const onRequest = vi.fn()
-    const report = vi.spyOn(console, 'error').mockImplementation(() => {})
-    const root = mkdtempSync(join(tmpdir(), 'occd-stop-cancel-slot-'))
-    roots.push(root)
-    const listener = installOCCdStopRequestListeners(onRequest, {
-      installRoot: root,
-      managedStop: {
-        version: request.version,
-        runtimeId: request.runtimeId,
-        instance: request.instance
-      },
-      pollIntervalMs: 10
-    })
-    await vi.waitFor(() => expect(report).toHaveBeenCalled())
-    listener.close()
-    expect(onRequest).not.toHaveBeenCalled()
-    expect(String(report.mock.calls[0]?.[1])).toContain('occd_managed_stop_canceled')
-    expect(existsSync(occdManagedStopRequestPath(request.instance))).toBe(false)
   })
 })

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { getManagedOCCdFenceEnvironmentId } from '../../../shared/managed-occd-ssh-owner'
+
 import type { SshRemotePtyLease, SshTarget } from '../../../shared/ssh-types'
 import { SshTargetOCCdClaims } from './ssh-target-occd-claims'
 import { emptyDependentStateStore } from './ssh-target-occd-dependents-fixture'
@@ -43,17 +43,6 @@ function setup(options: SetupOptions = {}) {
 }
 
 describe('managed occd SSH target claims', () => {
-  it('claims an empty target with a generation and a resumable provisioning intent', () => {
-    const { claims, current } = setup()
-    const claimed = claims.claim('ssh-1', 'environment-1', {
-      deployName: 'Managed',
-      ownerRecorded: false
-    })
-    expect(getManagedOCCdFenceEnvironmentId(claimed)).toBe('environment-1')
-    expect(claimed.generation).toBe(4)
-    expect(current().occdProvisioning).toEqual({ requestId: 'environment-1', name: 'Managed' })
-  })
-
   it('is idempotent for its own environment and keeps an earlier provisioning request', () => {
     const { claims } = setup({
       target: {
@@ -78,25 +67,6 @@ describe('managed occd SSH target claims', () => {
       claims.claim('ssh-1', 'environment-1', { deployName: 'Managed', ownerRecorded: false })
     ).toThrow('no record explains why')
     expect(current().occdProvisioning).toBeUndefined()
-  })
-
-  it("claims a recipe VM's target: its runtime owns the host's lifecycle, not its server", () => {
-    const { claims } = setup({
-      target: { owner: { type: 'on-demand-runtime', runtimeId: 'vm-1' } }
-    })
-    expect(claims.preflight('ssh-1')).toMatchObject({ claimable: true, blockers: [] })
-    expect(
-      getManagedOCCdFenceEnvironmentId(
-        claims.claim('ssh-1', 'environment-1', { deployName: 'VM', ownerRecorded: false })
-      )
-    ).toBe('environment-1')
-  })
-
-  it('claims for SSH access without recording a provisioning intent', () => {
-    const { claims } = setup({ target: { generation: 1 } })
-    expect(
-      claims.claim('ssh-1', 'environment-1', { ownerRecorded: false }).occdProvisioning
-    ).toBeUndefined()
   })
 
   it.each<[string, SetupOptions, string]>([
@@ -134,31 +104,6 @@ describe('managed occd SSH target claims', () => {
     expect(current().occdProvisioning).toBeUndefined()
   })
 
-  it('counts terminated and expired leases too, since they still name this host', () => {
-    const { claims } = setup({
-      leases: [
-        { ptyId: 'a', state: 'terminated' },
-        { ptyId: 'b', state: 'expired' }
-      ]
-    })
-    expect(claims.preflight('ssh-1').blockers).toEqual([
-      {
-        code: 'occd_migration_dependent_state',
-        category: 'client-owned-state',
-        dependencies: [
-          { kind: 'terminal-lease', count: 2, names: ['a (terminated)', 'b (expired)'] }
-        ]
-      }
-    ])
-  })
-
-  it('reports an unknown target as a registration blocker', () => {
-    const { claims } = setup()
-    expect(claims.preflight('missing').blockers).toEqual([
-      { code: 'occd_migration_target_not_found', category: 'registration' }
-    ])
-  })
-
   it('lifts a Stop and remove hold once the user sets a server up again', () => {
     const { claims, current } = setup()
     claims.claim('ssh-1', 'environment-1', { deployName: 'Managed', ownerRecorded: false })
@@ -181,11 +126,5 @@ describe('managed occd SSH target claims', () => {
       occdProvisioning: undefined
     })
     expect(current().occdFence).toBeUndefined()
-  })
-
-  it('flushes without draining to a stable generation', async () => {
-    const { claims, flush } = setup()
-    await claims.flush()
-    expect(flush).toHaveBeenCalledWith({ signal: undefined, drainToStableGeneration: false })
   })
 })

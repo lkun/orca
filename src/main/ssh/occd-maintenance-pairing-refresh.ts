@@ -1,10 +1,10 @@
-import { refreshManagedOCCdPairing } from '../../shared/runtime-environment-managed-occd-store'
-import { resolveEnvironment } from '../../shared/runtime-environment-store'
+import { refreshManagedOCCdPairing } from '../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
+import { resolveEnvironment } from '../../shared/remote-runtime/host-store/runtime-environment-store'
 import {
   getOCCdSshDeployment,
   getPreferredPairingOffer,
   type KnownRuntimeEnvironment
-} from '../../shared/runtime-environments'
+} from '../../shared/remote-runtime/host-catalog/runtime-environments'
 import type { ServeReadiness } from '../server/serve-readiness'
 import { tunneledOCCdPairingCode } from './occd-tunneled-pairing'
 

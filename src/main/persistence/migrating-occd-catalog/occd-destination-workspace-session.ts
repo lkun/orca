@@ -1,8 +1,8 @@
 import { serializeOCCdMigrationValue } from '../../../shared/occd-migration/occd-migration-manifest'
 import { isRecord } from '../../../shared/occd-migration/occd-migration-manifest-fields'
 import type { PersistedState } from '../../../shared/persisted-state-types'
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
-import { SESSION_FOCUS_FIELDS } from '../../../shared/workspace-session-host-field-ownership'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
+import { SESSION_FOCUS_FIELDS } from '../../../shared/workspace-session/workspace-session-host-field-ownership'
 import { mergeWorkspaceSessions } from '../../occ-profiles/profile-project-session-state'
 import { collectLayoutLeafIdsInOrder } from '../restoring-sessions/terminal-layout-normalization'
 

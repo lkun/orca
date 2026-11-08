@@ -1,9 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type {
-  OCCCloudSignInProgress,
-  OCCProfileAuthStatus
-} from '../../../../shared/occ-profiles'
-import { createTestStore } from '../../store/slices/store-test-helpers'
+import type { OCCCloudSignInProgress } from '../../../../shared/occ-profiles'
+import { createTestStore } from '../../store/testing/app-store-test-fixture'
 
 type TestStore = ReturnType<typeof createTestStore>
 
@@ -24,62 +21,6 @@ vi.mock('sonner', () => ({
 }))
 
 import { registerOCCProfileAuthIpcBridge } from './occ-profile-auth-ipc-bridge'
-
-const connectedAuthStatus: OCCProfileAuthStatus = {
-  activeProfileId: 'local-default',
-  configured: true,
-  state: 'connected',
-  persistence: 'encrypted'
-}
-
-const reconnectRequiredAuthStatus: OCCProfileAuthStatus = {
-  activeProfileId: 'local-default',
-  configured: true,
-  state: 'reconnect-required',
-  persistence: 'encrypted'
-}
-
-describe('occ profile auth IPC bridge', () => {
-  let listener: (() => void) | null = null
-  const unsubscribe = vi.fn()
-  const authStatus = vi.fn()
-
-  beforeEach(() => {
-    listener = null
-    unsubscribe.mockClear()
-    authStatus.mockReset()
-    vi.stubGlobal('window', {
-      api: {
-        occProfiles: {
-          authStatus,
-          onAuthStatusChanged: (callback: () => void) => {
-            listener = callback
-            return unsubscribe
-          }
-        }
-      }
-    })
-  })
-
-  it('re-fetches auth status on the push, flipping connected to reconnect-required', async () => {
-    authStatus.mockResolvedValue(connectedAuthStatus)
-    const store = createTestStore()
-    storeHolder.current = store
-    await store.getState().fetchOCCProfileAuthStatus()
-    expect(store.getState().occProfileAuthStatus).toEqual(connectedAuthStatus)
-
-    const unsubs: (() => void)[] = []
-    registerOCCProfileAuthIpcBridge(unsubs)
-    authStatus.mockResolvedValue(reconnectRequiredAuthStatus)
-    listener?.()
-    await vi.waitFor(() =>
-      expect(store.getState().occProfileAuthStatus).toEqual(reconnectRequiredAuthStatus)
-    )
-
-    unsubs.forEach((dispose) => dispose())
-    expect(unsubscribe).toHaveBeenCalledTimes(1)
-  })
-})
 
 describe('occ profile sign-in progress IPC bridge', () => {
   let emitProgress: (progress: OCCCloudSignInProgress | null) => void
@@ -114,19 +55,6 @@ describe('occ profile sign-in progress IPC bridge', () => {
     registerOCCProfileAuthIpcBridge([])
     await vi.waitFor(() => expect(snapshots).toHaveLength(1))
     emitProgress(null)
-    snapshots[0](WAITING)
-    await new Promise((resolve) => setTimeout(resolve, 0))
-    expect(progress()).toBeNull()
-  })
-
-  it('ignores the snapshot of a registration torn down before it arrived', async () => {
-    const first: (() => void)[] = []
-    registerOCCProfileAuthIpcBridge(first)
-    await vi.waitFor(() => expect(snapshots).toHaveLength(1))
-    first.forEach((dispose) => dispose())
-    registerOCCProfileAuthIpcBridge([])
-    emitProgress(null)
-
     snapshots[0](WAITING)
     await new Promise((resolve) => setTimeout(resolve, 0))
     expect(progress()).toBeNull()

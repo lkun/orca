@@ -1,6 +1,6 @@
 // Request shutdown without signaling; only kernel identity, owner change or PID absence proves exit.
 import { setTimeout as delay } from 'node:timers/promises'
-import { writeDurableSecureJsonFile } from '../../shared/secure-file'
+import { writeDurableSecureJsonFile } from '../../shared/secure-storage/secure-file'
 import {
   OCCdManagedStopRequestSchema,
   occdManagedStopRequestKey,
@@ -14,7 +14,10 @@ import {
   type OCCdProcessIdentityReaders,
   type OCCdRecordedIdentity
 } from './occd-process-start-time'
-import { hasErrorCode, inspectProcessSignal } from '../daemon/daemon-process-inspection'
+import {
+  hasErrorCode,
+  inspectProcessSignal
+} from '../daemon/endpoint/identity/daemon-process-inspection'
 import { persistOCCdCompletedStopReceipt } from './occd-completed-stop-receipt'
 import { readOCCdManagedStopDecision } from './occd-managed-stop-decision'
 import { withdrawOCCdManagedStopRequest } from './occd-managed-stop-cancellation'

@@ -1,7 +1,10 @@
 import { randomUUID } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { writeDurableSecureJsonFile, writeSecureJsonFile } from '../../shared/secure-file'
+import {
+  writeDurableSecureJsonFile,
+  writeSecureJsonFile
+} from '../../shared/secure-storage/secure-file'
 import { getOCCProfileDirectory } from '../occ-profiles/profile-storage-paths'
 
 export type ArtifactShareScope = {

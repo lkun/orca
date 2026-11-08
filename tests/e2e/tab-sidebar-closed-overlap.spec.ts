@@ -5,11 +5,49 @@ import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady, waitForActiveWorktree, ensureTerminalVisible } from './helpers/store'
 import { pressShortcut } from './helpers/shortcuts'
 
-test.describe('Tab visibility with closed sidebar', () => {
+test.describe('Sidebar boundaries beside terminal content', () => {
   test.beforeEach(async ({ occPage }) => {
     await waitForSessionReady(occPage)
     await waitForActiveWorktree(occPage)
     await ensureTerminalVisible(occPage)
+  })
+
+  test('sidebar resize and scrollbar targets remain reachable over a terminal', async ({
+    occPage
+  }) => {
+    const handle = occPage.locator('[data-sidebar-resize-handle]')
+    const strip = occPage.locator('[data-sidebar-seam-scrollbar-strip]')
+    await expect(handle).toBeVisible()
+    await expect(occPage.locator('.xterm:visible').first()).toBeVisible()
+
+    const terminalBox = await occPage.locator('.xterm:visible').first().boundingBox()
+    const handleBox = await handle.boundingBox()
+    const stripBox = await strip.boundingBox()
+    expect(terminalBox).not.toBeNull()
+    expect(handleBox).not.toBeNull()
+    expect(stripBox).not.toBeNull()
+    const y = terminalBox!.y + terminalBox!.height / 2
+
+    for (const [target, box] of [
+      [handle, handleBox!],
+      [strip, stripBox!]
+    ] as const) {
+      const reachable = await target.evaluate(
+        (element, point) => element.contains(document.elementFromPoint(point.x, point.y)),
+        { x: box.x + box.width / 2, y }
+      )
+      expect(reachable).toBe(true)
+    }
+
+    const x = handleBox!.x + handleBox!.width / 2
+    await occPage.mouse.move(x, y)
+    await occPage.mouse.down()
+    await occPage.mouse.move(x + 40, y, { steps: 5 })
+    await occPage.mouse.up()
+
+    await expect
+      .poll(async () => Math.round((await handle.boundingBox())!.x - handleBox!.x))
+      .toBe(40)
   })
 
   test('first tab stays visible after Cmd+B collapses the sidebar', async ({ occPage }) => {

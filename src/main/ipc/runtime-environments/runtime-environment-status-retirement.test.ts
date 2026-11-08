@@ -2,11 +2,11 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import { resolveEnvironment } from '../../../shared/runtime-environment-store'
+import { resolveEnvironment } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
 import {
   addManagedOCCdEnvironment,
   refreshManagedOCCdPairing
-} from '../../../shared/runtime-environment-managed-occd-store'
+} from '../../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
 import { pairingCode } from './runtime-environments-ipc-test-harness'
 import { REMOTE_RUNTIME_SHARED_CONTROL_CAPABILITY } from '../../../shared/protocol-version'
 import {

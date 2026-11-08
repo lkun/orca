@@ -1,10 +1,10 @@
 /** Census through the managed tunnel before lifecycle changes. Unknown counts never mean zero, so live/uncounted hosts defer update (D7). */
 import { getAppEnvironment } from '../../shared/app-environment'
-import { assertRuntimeEnvironmentNotReconciling } from '../../shared/runtime-environment-reconciliation-record'
+import { assertRuntimeEnvironmentNotReconciling } from '../../shared/remote-runtime/host-catalog/runtime-environment-reconciliation-record'
 import {
   redactRuntimeEnvironment,
   type KnownRuntimeEnvironment
-} from '../../shared/runtime-environments'
+} from '../../shared/remote-runtime/host-catalog/runtime-environments'
 import type {
   OCCdManagedDeployResult,
   OCCdManagedPastLiveTerminals,
@@ -157,13 +157,15 @@ export async function runManagedOCCdUpdate(
     }
     // Policy refusal is final for this host, not a transient update to retry.
     if (result.code !== OCCD_ACTIVATION_POLICY_REFUSED_CODE) {
-      recordManagedOCCdUpdateDeferral(environment.id, deferral)
+      recordManagedOCCdUpdateDeferral(environment.id, deferral, context.activationRecord)
     }
     await pruneSupersededOCCdCandidates(slot, context.serverTarget, result.fullVersion)
     return deferral
   }
   clearManagedOCCdUpdateDeferral(environment.id)
-  const started = result.outcome === 'already-active' && (await wakeAlreadyActiveOCCd(slot))
+  const alreadyActive = result.outcome === 'already-active'
+  const managed = { environmentId: environment.id, hostLabel: context.target.label }
+  const started = alreadyActive && (await wakeAlreadyActiveOCCd(slot, managed))
   const readiness = await probeManagedOCCdReadiness(
     context,
     localOCCdDir,

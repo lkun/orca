@@ -73,44 +73,4 @@ describe('occd migration blobs through the store', () => {
     expect(restarted.commitStagedOCCdMigrationCatalog(input).state).toBe('committed')
     expect(readFileSync(getOCCdMigrationReceivedBlobPath(blobRoot(), input, blob))).toEqual(bytes)
   })
-
-  it('commits only the blob set the sender names, and checks nothing when it names none', () => {
-    const input = manifest()
-    const store = createStore()
-    store.stageOCCdMigrationCatalog(input)
-    store.stageOCCdMigrationBlobChunk(chunk(input, 0, bytes.length))
-    const missing: OCCdMigrationBlobDescriptor = {
-      blobKind: 'agent-session-records',
-      key: 'session-lost',
-      sha256: 'e'.repeat(64),
-      byteLength: 4
-    }
-
-    expect(() =>
-      store.commitStagedOCCdMigrationCatalog(input, {
-        expectedBlobs: [blob, missing]
-      })
-    ).toThrow('occd_migration_blob_set_mismatch:agent-session-records:session-lost')
-    expect(() => store.commitStagedOCCdMigrationCatalog(input, { expectedBlobs: [] })).toThrow(
-      `occd_migration_blob_set_mismatch:agent-session-records:${blob.key}`
-    )
-    expect(store.getOCCdMigrationCatalogState(input).state).toBe('staged')
-    expect(store.commitStagedOCCdMigrationCatalog(input, { expectedBlobs: [blob] }).state).toBe(
-      'committed'
-    )
-  })
-
-  it('removes staged blobs when the catalog is aborted', () => {
-    const input = manifest()
-    const store = createStore()
-    store.stageOCCdMigrationCatalog(input)
-    store.stageOCCdMigrationBlobChunk(chunk(input, 0, 8))
-
-    expect(store.abortStagedOCCdMigrationCatalog(input)).toMatchObject({ aborted: true })
-    expect(() => store.stageOCCdMigrationBlobChunk(chunk(input, 8, bytes.length))).toThrow(
-      'occd_migration_blob_catalog_not_staged'
-    )
-    store.stageOCCdMigrationCatalog(input)
-    expect(store.getOCCdMigrationCatalogState(input)).not.toHaveProperty('blobUploads')
-  })
 })

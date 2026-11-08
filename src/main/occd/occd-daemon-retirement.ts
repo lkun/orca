@@ -4,8 +4,8 @@ import {
   listLiveDaemonSessions,
   releaseDaemonRetirementFence,
   requestIdleDaemonRetirement
-} from '../daemon/daemon-provider-state'
-import type { DaemonIdleRetirementResult } from '../daemon/daemon-pty-runtime-state'
+} from '../daemon/providers/lifecycle/daemon-provider-state'
+import type { DaemonIdleRetirementResult } from '../daemon/providers/adapter/daemon-pty-runtime-state'
 import type { OCCdDaemonRetirementVerdict } from '../../shared/occd-stop-request'
 import { withTimeout } from '../../shared/promise-timeout-fallback'
 import { OCCD_DAEMON_RETIREMENT_TIMEOUT_MS } from './occd-stop-deadlines'

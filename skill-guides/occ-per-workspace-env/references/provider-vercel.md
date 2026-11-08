@@ -138,7 +138,7 @@ vercel sandbox exec "$name" ${vercel_args[@]+"${vercel_args[@]}"} --timeout 20m 
     rm -f /tmp/askpass.sh; \
     c="$(git rev-parse HEAD)"; [ -f .occ-built ] && [ "$(cat .occ-built)" = "$c" ] || { \
       pnpm install --prefer-offline && pnpm run build:cli && \
-      node config/scripts/run-electron-vite-build.mjs --config config/electron-vite.vm-serve.config.ts && \
+      node config/scripts/desktop-build/execution/run-electron-vite-build.mjs --config config/electron-vite.vm-serve.config.ts && \
       printf "%s" "$c" > .occ-built; }' >&2
 
 # 3. (remote) start occ serve in the background, writing recipe JSON to a file; poll until it parses

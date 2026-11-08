@@ -1,9 +1,9 @@
 // Open forwards prove no identity; require an authenticated status call from the pinned server.
-import { parsePairingCode } from '../../../shared/pairing'
+import { parsePairingCode } from '../../../shared/remote-runtime/pairing/pairing'
 import {
   pairedRuntimeConnectionFromOffer,
   type PairedRuntimeConnection
-} from '../../../shared/paired-runtime-connection'
+} from '../../../shared/remote-runtime/pairing/paired-runtime-connection'
 import { OCCD_MANAGED_REMOTE_PORT } from '../../../shared/occd-managed-runtime'
 import {
   isRecoverableRemoteRuntimeConnectionError,
@@ -13,11 +13,14 @@ import { RemoteRuntimeClientError } from '../../../shared/remote-runtime/remote-
 import {
   getPreferredPairedRuntimeConnection,
   type KnownRuntimeEnvironment
-} from '../../../shared/runtime-environments'
-import { verifyRuntimePairingIdentity } from '../../runtime/runtime-environment-identity-verification'
+} from '../../../shared/remote-runtime/host-catalog/runtime-environments'
+import { verifyRuntimePairingIdentity } from '../../runtime/hosts/identity/runtime-environment-identity-verification'
 import type { ServeReadiness } from '../../server/serve-readiness'
 import { occdBoundPort } from './occd-managed-bound-port'
 import { tunneledOCCdPairingCode } from '../../ssh/occd-tunneled-pairing'
+import { OCCdManagedPairingRepairFailedError } from './occd-managed-pairing-repair-failure'
+import { quotePosixShellUnlessPlain } from '../../../shared/shell/launch/shell-argument-quoting'
+import { RUNTIME_SERVER_REPLACED_STATUS_CODE } from '../../../shared/remote-runtime/host-status/runtime-host-status'
 
 /** Unreachable proves no identity; unpaired is a refusal sealed by the pinned server key. */
 export type OCCdTunnelIdentity =
@@ -26,15 +29,56 @@ export type OCCdTunnelIdentity =
 
 export const OCCD_IDENTITY_MISMATCH_CODE = 'occd_identity_mismatch'
 
+/** `foreign-port`: another process answered; `replaced-server`: the host's own slot serves another key. */
+export type OCCdIdentityMismatchKind = 'foreign-port' | 'replaced-server'
+
 export class OCCdManagedIdentityError extends Error {
   readonly code = OCCD_IDENTITY_MISMATCH_CODE
-  constructor(remotePort: number, detail: string) {
-    super(
-      `${OCCD_IDENTITY_MISMATCH_CODE}: the server on remote port ${remotePort} is not this ` +
-        `host’s OCC server (another OCC may be using that port): ${detail}`
-    )
+  private constructor(
+    readonly kind: OCCdIdentityMismatchKind,
+    explanation: string,
+    detail: string
+  ) {
+    super(`${OCCD_IDENTITY_MISMATCH_CODE}: ${explanation}: ${detail}`)
     this.name = 'OCCdManagedIdentityError'
   }
+
+  static foreignPort(remotePort: number, detail: string): OCCdManagedIdentityError {
+    return new OCCdManagedIdentityError(
+      'foreign-port',
+      `the server on remote port ${remotePort} is not this host’s OCC server ` +
+        '(another OCC may be using that port)',
+      detail
+    )
+  }
+
+  /** SSH access alone can't re-pin a different server key, so only the user can re-pair. */
+  static replacedServer(
+    environment: { id: string; name: string },
+    detail: string
+  ): OCCdManagedIdentityError {
+    const environmentName = environment.name
+    // Why the id: a name is free text, so pasting it into a shell could expand or pick another server.
+    const selector = quotePosixShellUnlessPlain(environment.id)
+    return new OCCdManagedIdentityError(
+      'replaced-server',
+      `${environmentName} is not the OCC server this desktop paired with (OCC now connects ` +
+        'to the host as a different SSH user, or the server was reinstalled), so reconnecting ' +
+        `won’t restore access. To pair with the host’s current server, open the ⋯ menu on ` +
+        `${environmentName} in Settings › Remote OCC Servers and choose Forget… (or run ` +
+        `\`occ environment forget --environment ${selector} --yes\`), then click ` +
+        'Connect on the SSH host',
+      detail
+    )
+  }
+}
+
+/** Status code of a refusal automatic retries can't clear (the pairing must change); null otherwise. */
+export function managedOCCdRefusalNeedingUserCode(error: unknown): string | null {
+  if (error instanceof OCCdManagedIdentityError && error.kind === 'replaced-server') {
+    return RUNTIME_SERVER_REPLACED_STATUS_CODE
+  }
+  return error instanceof OCCdManagedPairingRepairFailedError ? 'unauthorized' : null
 }
 
 export const OCCD_PAIRING_REJECTED_CODE = 'occd_pairing_rejected'
@@ -57,7 +101,7 @@ export function occdIdentityRefusal(
 ): Error {
   return identity.verdict === 'unpaired'
     ? new OCCdManagedPairingRejectedError(identity.detail)
-    : new OCCdManagedIdentityError(remotePort, identity.detail)
+    : OCCdManagedIdentityError.foreignPort(remotePort, identity.detail)
 }
 
 // Key rejection closes the socket instead of returning a status reply.

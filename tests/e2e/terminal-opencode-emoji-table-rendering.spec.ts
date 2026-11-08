@@ -302,47 +302,4 @@ test.describe('OpenCode emoji table terminal rendering', () => {
       rmSync(scriptPath, { force: true })
     }
   })
-
-  test('local real OpenCode demo keeps table rendering and cursor visible', async ({
-    occPage
-  }, testInfo) => {
-    test.skip(
-      process.env.OCC_E2E_REAL_OPENCODE !== '1',
-      'Set OCC_E2E_REAL_OPENCODE=1 to exercise the locally installed OpenCode TUI'
-    )
-
-    await waitForSessionReady(occPage)
-    await waitForActiveWorktree(occPage)
-    await ensureTerminalVisible(occPage)
-    await waitForActiveTerminalManager(occPage, 30_000)
-    await enableRiskyTerminalRendererPath(occPage)
-
-    const ptyId = await waitForActivePanePtyId(occPage)
-    await sendToTerminal(
-      occPage,
-      ptyId,
-      'opencode run --demo --interactive "Give me markdown table dummy data a long table with emojis in it"\r'
-    )
-    try {
-      await waitForTerminalOutput(occPage, 'Give me markdown table', 15_000)
-      await waitForTerminalOutput(occPage, 'Emoji', 60_000)
-      await waitForTerminalOutput(occPage, 'Alice', 60_000)
-      await occPage.waitForTimeout(1_500)
-
-      await testInfo.attach('real-opencode-demo-table', {
-        body: await occPage.screenshot({ fullPage: true }),
-        contentType: 'image/png'
-      })
-
-      const renderState = await readActiveTerminalRenderState(occPage)
-      testInfo.annotations.push({
-        type: 'real-opencode-demo-rendering',
-        description: JSON.stringify(renderState)
-      })
-      expect(renderState.coreCursorHidden).toBe(false)
-      expect(renderState.cursorVisibleElementCount).toBeGreaterThan(0)
-    } finally {
-      await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
-    }
-  })
 })

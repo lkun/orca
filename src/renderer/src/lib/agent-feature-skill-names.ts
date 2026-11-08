@@ -1,5 +1,5 @@
 export const OCC_CLI_SKILL_NAME = 'occ-cli'
-export const COMPUTER_USE_SKILL_NAME = 'computer-use'
+export const COMPUTER_USE_SKILL_NAME = 'occ-computer-use'
 export const ORCHESTRATION_SKILL_NAME = 'orchestration'
 export const EPHEMERAL_VMS_SKILL_NAME = 'occ-per-workspace-env'
 export const OCC_LINEAR_SKILL_NAME = 'occ-linear'

@@ -1,8 +1,8 @@
 /** Moves carry automations disabled, which every server version accepts; re-enable those that ran here once the move commits. */
 import { z } from 'zod'
-import type { Automation } from '../../shared/automations-types'
+import type { Automation } from '../../shared/automations/automation-definition'
 import { isRetainedOCCdMigrationSourceCutover } from '../../shared/occd-migration/occd-migration-source-cutover'
-import { parsePairingCode } from '../../shared/pairing'
+import { parsePairingCode } from '../../shared/remote-runtime/pairing/pairing'
 import {
   OCCD_MIGRATION_DESTINATION_UNSUPPORTED,
   sendSupportedMigrationRequest,

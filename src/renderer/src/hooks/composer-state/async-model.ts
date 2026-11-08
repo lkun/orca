@@ -4,7 +4,7 @@ import type { GitHubWorkItem } from '../../../../shared/github/work-item-types'
 import type { OCCHooks, SetupAgentStartupPolicy } from '../../../../shared/occ-yaml-hook-types'
 import type { GitHubRepositoryIdentity } from '../../../../shared/github/pull-request-types'
 import type { WorkspaceCreateErrorDisplay } from '@/lib/workspace-create-error-format'
-import type { IssueCommandReadResult } from '@/runtime/runtime-hooks-client'
+import type { IssueCommandReadResult } from '@/runtime/repo-hooks/runtime-hooks-client'
 import type { SmartSourceSelection } from './source-selection-decisions'
 
 export type ComposerAsyncModel = {

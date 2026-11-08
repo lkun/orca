@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
-import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
+import type { WorkspaceSessionState } from '../../shared/workspace-session/workspace-session-state-types'
 import { Store } from './loading-store/store'
 import { closeTestStores, createSqliteTestStore } from './persistence-test-harness'
 import { OCCRuntimeService } from '../runtime/occ-runtime'
@@ -13,7 +13,7 @@ import {
   WORKTREE_ID,
   WORKTREE_PATH,
   makeSession
-} from '../runtime/__fixtures__/occ-runtime-terminal-close-continuity-fixtures'
+} from '../runtime/__fixtures__/occ-runtime-terminal-close-continuity-state-fixture'
 import { advanceTerminalTopologyRevision } from './terminal-topology/terminal-topology-membership'
 
 const SSH_HOST_ID = 'ssh:target-1'

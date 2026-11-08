@@ -41,7 +41,7 @@ export async function runOCCCli(
 }
 
 async function runOCCCliOnce(args: string[]): Promise<CliResult> {
-  const devCli = join(process.cwd(), 'config/scripts/occ-dev.mjs')
+  const devCli = join(process.cwd(), 'config/scripts/development/launch/occ-dev.mjs')
   const command = process.env.OCC_COMPUTER_CLI ?? process.execPath
   const cliArgs = process.env.OCC_COMPUTER_CLI ? args : [devCli, ...args]
   const env = process.env.OCC_COMPUTER_CLI
@@ -137,7 +137,7 @@ function delay(ms: number): Promise<void> {
 
 async function ensureOCCRuntimeServed(): Promise<void> {
   if (!occServeProcess || occServeProcess.exitCode !== null) {
-    const devCli = join(process.cwd(), 'config/scripts/occ-dev.mjs')
+    const devCli = join(process.cwd(), 'config/scripts/development/launch/occ-dev.mjs')
     const env = await createComputerE2ERuntimeEnv()
     occServeStdout = ''
     occServeStderr = ''

@@ -7,27 +7,24 @@ import {
 } from '../../../shared/agent-session/lifecycle/agent-session-lease-adjudication'
 import type { AgentSessionRecord } from '../../../shared/agent-session/lifecycle/agent-session-record'
 import { OCC_AGENT_SESSION_ID_ENV } from '../../../shared/agent-session/lifecycle/agent-session-caller-env'
-import {
-  OCC_SESSION_ADDRESS_PREFIX,
-  isOCCSessionId,
-  parseOCCSessionAddress
-} from '../../../shared/occ-session-address'
-import { ORCHESTRATION_SESSION_CALLER_ERROR_CODES as CODES } from '../../../shared/orchestration-session-caller-codes'
+import { OCC_SESSION_ADDRESS_PREFIX } from '../../../shared/occ-session-address-prefix'
+import { isOCCSessionId, parseOCCSessionAddress } from '../../../shared/occ-session-address'
+import { ORCHESTRATION_SESSION_CALLER_ERROR_CODES as CODES } from '../../../shared/orchestration/orchestration-session-caller-codes'
 import type { OCCRuntimeService } from '../occ-runtime'
-import type { OrchestrationSessionCaller } from '../orchestration/orchestration-caller-identity'
+import type { OrchestrationSessionCaller } from '../orchestration/addressing/orchestration-caller-identity'
 import { OrchestrationError } from '../orchestration/orchestration-error'
-import { canonicalOCCSessionId } from '../orchestration/canonical-occ-session-id'
-import type { OrchestrationDb } from '../orchestration/db'
+import { canonicalOCCSessionId } from '../orchestration/addressing/session-lineage/canonical-occ-session-id'
+import type { OrchestrationDb } from '../orchestration/db/orchestration-db'
 import {
   resolveDeclaredCallerParty,
   resolveOCCSessionParty,
   resolveOrchestrationParty
-} from '../orchestration/orchestration-party'
-import { lookupOCCAgentSession } from '../orchestration/structured-session-mail-address'
-import { conversationRecordReader } from '../orchestration/structured-session-lineage'
+} from '../orchestration/addressing/orchestration-party'
+import { lookupOCCAgentSession } from '../orchestration/mailbox/routing/structured-session-mail-address'
+import { conversationRecordReader } from '../orchestration/addressing/session-lineage/structured-session-lineage'
 import type { AgentSessionRecordStore } from '../agent-session/records/agent-session-record-store'
-import { getStructuredAgentSessionHost } from '../../native-chat/agent-session-wire/structured-agent-session-registry'
-import { structuredWorkerHostScope } from '../structured-worker-identity'
+import { getStructuredAgentSessionHost } from '../../native-chat/agent-session-wire/host/structured-agent-session-registry'
+import { structuredWorkerHostScope } from '../orchestration/terminal-authority/structured-sessions/structured-worker-identity'
 import type { RpcRequest } from './core'
 
 type CallerParam = 'from' | 'terminal' | 'callerTerminalHandle'

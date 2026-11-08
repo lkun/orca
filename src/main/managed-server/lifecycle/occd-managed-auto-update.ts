@@ -2,6 +2,7 @@ import {
   planManagedOCCdAutoUpdate,
   type ManagedOCCdAutoUpdateSkip
 } from './occd-managed-update-decision'
+import { OCCdCrashLoopError } from './occd-managed-crash-loop'
 import { materializeOCCdArtifact } from '../../occd/occd-artifact-materializer'
 import {
   OCCdArtifactsUnavailableError,
@@ -95,6 +96,10 @@ export function autoUpdateManagedOCCdEnvironment(
         ? { outcome: 'deferred', code: result.code, reason: result.reason }
         : { outcome: 'failed', reason: result.reason }
     } catch (error) {
+      // The host already runs this build; the brake's reason shows on its server status instead.
+      if (error instanceof OCCdCrashLoopError) {
+        return { outcome: 'skipped', reason: 'current' }
+      }
       return { outcome: 'failed', reason: error instanceof Error ? error.message : String(error) }
     }
   })

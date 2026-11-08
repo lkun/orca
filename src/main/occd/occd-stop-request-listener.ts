@@ -12,7 +12,7 @@ import {
 } from './occd-managed-stop-request'
 import { claimOCCdManagedStopDecision } from './occd-managed-stop-decision'
 import { withdrawOCCdManagedStopRequest } from './occd-managed-stop-cancellation'
-import { hasErrorCode } from '../daemon/daemon-process-inspection'
+import { hasErrorCode } from '../daemon/endpoint/identity/daemon-process-inspection'
 
 export type OCCdStopRequestListener = { close(): void }
 

@@ -37,7 +37,7 @@ import {
   openPairedClientTab
 } from './helpers/paired-host-terminal'
 import { expectTerminalAccessibilityText } from './helpers/terminal-accessibility-tree'
-import { getOCCdSshDeployment } from '../../src/shared/runtime-environments'
+import { getOCCdSshDeployment } from '../../src/shared/remote-runtime/host-catalog/runtime-environments'
 
 const HOST = process.env[OCCD_CONVERT_HOST_ENV]
 const TEMPLATE_SOURCE = process.env.OCC_E2E_OCCD_CONVERT_TEMPLATE

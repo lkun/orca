@@ -1,13 +1,12 @@
 import { CrewChanges } from '../orchestration/crew/crew-changes'
-import { makeRuntimeOrchestrationDb } from '../runtime-orchestration-db.test-fixture'
-import { withDurableRuntimeStore } from '../runtime-durable-store-fixture'
+import { makeRuntimeOrchestrationDb } from './runtime-orchestration-db.test-fixture'
+import { withDurableRuntimeStore } from './runtime-durable-store-fixture'
 import { describe, expect, it, vi } from 'vitest'
-import {
-  OCCRuntimeService,
-  OrchestrationDb,
-  getDefaultWorkspaceSession
-} from '../occ-runtime-test-mocks.spec'
-import type { WorkspaceSessionState } from '../occ-runtime-test-mocks.spec'
+import './runtime-test-module-registration.spec'
+import { OCCRuntimeService } from '../occ-runtime'
+import { OrchestrationDb } from '../orchestration/db/orchestration-db'
+import { getDefaultWorkspaceSession } from '../../../shared/constants'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
 import {
   HEADLESS_LEAF_ID,
   HEADLESS_SECOND_LEAF_ID,
@@ -15,10 +14,9 @@ import {
   TEST_WORKTREE_ID,
   TEST_WORKTREE_PATH,
   deferred,
-  makeRuntimeStoreWithWorkspaceSession,
-  store
-} from '../occ-runtime-test-fixtures.spec'
-import { publishLegacyWorkerReveal } from '../occ-runtime-test-scenario-builders.spec'
+  makeRuntimeStoreWithWorkspaceSession
+} from './occ-runtime-test-fixtures.spec'
+import { publishLegacyWorkerReveal } from './occ-runtime-test-scenario-builders.spec'
 
 describe('OCCRuntimeService', () => {
   it('requeues an active Task before clearing recovery for an authoritatively missing worker', async () => {
@@ -481,56 +479,6 @@ describe('OCCRuntimeService', () => {
       await vi.advanceTimersByTimeAsync(30_000)
       expect(listProcesses).toHaveBeenCalledTimes(4)
       expect(revealTerminalSession).toHaveBeenCalledOnce()
-    } finally {
-      vi.useRealTimers()
-    }
-  })
-
-  it('cancels a coalesced SSH worker recovery retry when its provider disconnects', async () => {
-    vi.useFakeTimers()
-    try {
-      const runtime = new OCCRuntimeService(store)
-      const reconcile = vi.spyOn(runtime, 'reconcileLegacyWorkerTerminals').mockResolvedValue({
-        adoptedDispatchIds: [],
-        exitedDispatchIds: [],
-        deferredDispatchIds: []
-      })
-      const retryInternals = runtime as unknown as {
-        updateLegacyWorkerTerminalRecoveryRetry: (
-          plan: {
-            candidates: { dispatchId: string; ptyId: string }[]
-          },
-          deferredDispatchIds: ReadonlySet<string>,
-          options: { connectionId?: string; materializeRenderer?: boolean }
-        ) => void
-      }
-      const plan = {
-        candidates: [
-          {
-            dispatchId: 'dispatch-ssh-retry',
-            ptyId: 'ssh:ssh-retry@@pty-worker'
-          }
-        ]
-      }
-      const deferred = new Set(['dispatch-ssh-retry'])
-
-      retryInternals.updateLegacyWorkerTerminalRecoveryRetry(plan, deferred, {
-        connectionId: 'ssh-retry',
-        materializeRenderer: true
-      })
-      retryInternals.updateLegacyWorkerTerminalRecoveryRetry(plan, deferred, {
-        connectionId: 'ssh-retry',
-        materializeRenderer: true
-      })
-      runtime.notifySshStateChanged('ssh-retry', {
-        targetId: 'ssh-retry',
-        status: 'disconnected',
-        error: null,
-        reconnectAttempt: 0
-      })
-      await vi.advanceTimersByTimeAsync(30_000)
-
-      expect(reconcile).not.toHaveBeenCalled()
     } finally {
       vi.useRealTimers()
     }

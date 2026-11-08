@@ -1,5 +1,5 @@
 import { OCCRuntimeWithRecordPtyWorktree } from '../identity/pty-worktree-record'
-import type { ResolvedWorktree } from '../../runtime-worktree-path-identity'
+import type { ResolvedWorktree } from '../../workspaces/catalog/runtime-worktree-path-identity'
 
 export abstract class OCCRuntimeWithRefreshPtyWorktreeRecordsFromController extends OCCRuntimeWithRecordPtyWorktree {
   protected abstract refreshFloatingWorkspacePtyLiveness(): Set<string> | null

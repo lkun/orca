@@ -7,7 +7,7 @@ import {
   type TestInfo
 } from '@stablyai/playwright-test'
 import { DEFAULT_LOCAL_OCC_PROFILE_ID } from '../../src/shared/occ-profiles'
-import { PTY_SESSION_ID_SEPARATOR } from '../../src/shared/pty-session-id-format'
+import { PTY_SESSION_ID_SEPARATOR } from '../../src/shared/terminal/pty/lifecycle/pty-session-id-format'
 import { forwardElectronProcessLogs, test, expect } from './helpers/occ-app'
 import { TEST_REPO_PATH_FILE } from './global-setup'
 import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'

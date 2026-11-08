@@ -70,7 +70,8 @@ export async function listenOCCdStdioBridge(
     pipeSocketThroughBridge(socket, channel, mode)
   }
 
-  const server = createServer((socket) => {
+  // Why noDelay: bridged occd RPC carries keystroke echo; Nagle would hold small writes behind an unacked segment.
+  const server = createServer({ noDelay: true }, (socket) => {
     sockets.add(socket)
     socket.on('error', () => socket.destroy())
     const entry = {

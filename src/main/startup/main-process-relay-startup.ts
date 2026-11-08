@@ -1,7 +1,7 @@
 import { app, powerMonitor } from 'electron'
 import { getOCCCloudAuthConfig } from '../occ-profiles/profile-cloud-auth-config'
 import { getProfileUserDataPath } from '../occ-profiles/profile-storage-paths'
-import type { OCCRuntimeRpcServer } from '../runtime/runtime-rpc'
+import type { OCCRuntimeRpcServer } from '../runtime/rpc/server/runtime-rpc'
 import { DesktopRelayService } from '../runtime/mobile-cloud-relay/desktop-relay-service'
 import { createDesktopRelayServiceInstaller } from '../runtime/mobile-cloud-relay/desktop-relay-service-installer'
 import { publishDesktopRelayStatus } from './main-process-relay-status'

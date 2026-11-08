@@ -58,7 +58,7 @@ vi.mock('./editor-runtime-file-watch', () => ({
 }))
 
 import { useEditorExternalWatch } from './useEditorExternalWatch'
-import { OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT } from '@/components/editor/editor-autosave'
+import { OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT } from '@/components/editor/autosave/editor-autosave'
 
 function WatchProbe(): null {
   useEditorExternalWatch()

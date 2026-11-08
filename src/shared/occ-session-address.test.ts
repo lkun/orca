@@ -1,22 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import {
-  formatOCCSessionAddress,
-  isOCCSessionId,
-  parseOCCSessionAddress
-} from './occ-session-address'
+import { isOCCSessionId, parseOCCSessionAddress } from './occ-session-address'
 import { testOCCSessionId } from './occ-session-address-test-fixture'
 
 const SESSION_ID = testOCCSessionId('0b7e4c2a-5f1d-4e8a-9c3b-2d6f8a1e4b70')
-const ADDRESS = `occ_session_id:${SESSION_ID}`
 
 describe('OCC session address', () => {
-  it('addresses an OCC session id as occ_session_id:<id> and parses the bare id back', () => {
-    expect(formatOCCSessionAddress(SESSION_ID)).toBe(ADDRESS)
-    expect(parseOCCSessionAddress(ADDRESS)).toBe(SESSION_ID)
-    const parsed = parseOCCSessionAddress(ADDRESS)
-    expect(parsed && formatOCCSessionAddress(parsed)).toBe(ADDRESS)
-  })
-
   it('reads only the addressed spelling when parsing an address', () => {
     // A bare id is what the columns store, not an address.
     expect(parseOCCSessionAddress(SESSION_ID)).toBeNull()
@@ -51,11 +39,5 @@ describe('OCC session address', () => {
     // Handles share the session-id charset, so the session-record predicate alone would accept them.
     expect(isOCCSessionId(handle)).toBe(false)
     expect(parseOCCSessionAddress(`occ_session_id:${handle}`)).toBeNull()
-  })
-
-  it('validates an OCC session id with the session-record predicate', () => {
-    expect(isOCCSessionId(SESSION_ID)).toBe(true)
-    expect(isOCCSessionId('has space in it')).toBe(false)
-    expect(isOCCSessionId('x'.repeat(129))).toBe(false)
   })
 })

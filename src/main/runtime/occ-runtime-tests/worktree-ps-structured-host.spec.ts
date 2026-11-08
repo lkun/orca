@@ -1,7 +1,8 @@
-import { makeStructuredAgentStatusSubject } from '../../../shared/agent-status-subject'
+import { makeStructuredAgentStatusSubject } from '../../../shared/agent-status/contracts/agent-status-subject'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { OCCRuntimeService } from '../occ-runtime-test-mocks.spec'
-import { TEST_WORKTREE_ID, store } from '../occ-runtime-test-fixtures.spec'
+import './runtime-test-module-registration.spec'
+import { OCCRuntimeService } from '../occ-runtime'
+import { TEST_WORKTREE_ID, store } from './occ-runtime-test-fixtures.spec'
 import { AgentHookServer, _internals } from '../../agent-hooks/server'
 
 vi.mock('../../telemetry/client', () => ({ track: vi.fn() }))

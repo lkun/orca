@@ -4,7 +4,7 @@ import {
   OCCD_LAUNCHER_FILENAME,
   OCCD_SERVER_ENTRY_FILENAME
 } from '../../../shared/occd-artifacts'
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import {
   isWindowsRemoteHost,
   joinRemotePath,
@@ -132,7 +132,7 @@ export function occdLaunchCommand(
           '{ umask "$occd_login_umask" &&',
           ...launchEnv,
           // exec keeps $! equal to runtime PID; in-place launcher loading also preserves older clients’ argv checks.
-          `exec nohup "$occd_runtime" ${OCCD_RUNTIME_V8_FLAGS} ${entry}`,
+          `exec nohup "$occd_runtime" $occd_runtime_flags ${OCCD_RUNTIME_V8_FLAGS} ${entry}`,
           `--json --bind ${quotePosixShell(spec.bindHost)} --port ${String(spec.port)};`,
           `} > ${readiness} 2>> ${log} < /dev/null &`,
           `echo $! > ${pidFile} &&`,
@@ -163,7 +163,7 @@ function setsidLaunchTail(
       'else setsid "$@" & fi; }; occd_detach "$@"\' occd-detach',
     `sh -c 'echo $$ > "$1" && umask "$2" && shift 2 && exec "$@"' occd-launch ${pidFile}`,
     '"$occd_login_umask"',
-    `"$occd_runtime" ${OCCD_RUNTIME_V8_FLAGS} ${entry}`,
+    `"$occd_runtime" $occd_runtime_flags ${OCCD_RUNTIME_V8_FLAGS} ${entry}`,
     `--json --bind ${quotePosixShell(spec.bindHost)} --port ${String(spec.port)}`,
     `> ${readiness} 2>> ${log} < /dev/null &&`,
     `occd_wait=0; while [ ! -s ${pidFile} ] && [ "$occd_wait" -lt ${OCCD_SETSID_PID_WAIT_TRIES} ];`,

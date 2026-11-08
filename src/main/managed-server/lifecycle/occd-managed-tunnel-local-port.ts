@@ -1,7 +1,7 @@
 // A saved tunnel port can become unbindable: a Windows excluded port range or another app's listener.
-import { moveManagedOCCdLocalPort } from '../../../shared/runtime-environment-managed-occd-store'
-import { resolveEnvironment } from '../../../shared/runtime-environment-store'
-import { getOCCdSshDeployment } from '../../../shared/runtime-environments'
+import { moveManagedOCCdLocalPort } from '../../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
+import { resolveEnvironment } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
+import { getOCCdSshDeployment } from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import { reserveLocalForwardPort } from '../../ssh/system-transport/system-ssh-forward-port-reservation'
 import { notifyManagedOCCdPairingRepaired } from './occd-managed-pairing-repaired-listener'
 

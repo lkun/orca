@@ -2,8 +2,8 @@
 import { stat } from 'node:fs/promises'
 import { join } from 'node:path'
 import { RELAY_INSTALL_LOCK_NAME } from '../../shared/relay-install-lock-name'
-import { hasErrorCode } from '../daemon/daemon-process-inspection'
-import type { RuntimeRpcClientActivity } from '../runtime/runtime-rpc/runtime-rpc-shutdown'
+import { hasErrorCode } from '../daemon/endpoint/identity/daemon-process-inspection'
+import type { RuntimeRpcClientActivity } from '../runtime/rpc/server/runtime-rpc-shutdown'
 import { OCCD_MANAGED_ACTIVATION_ROOT_ENV } from '../../shared/occd-managed-launch-env'
 import {
   OCCD_IDLE_EXIT_TIMEOUT_MS,

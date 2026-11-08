@@ -30,7 +30,7 @@ test('restores media playback after switching editor tabs without retaining the 
   await openFileExplorer(occPage)
   const row = (name: string) =>
     occPage.locator('[data-file-explorer-row]').filter({
-      has: occPage.locator('[data-file-explorer-row-name]').getByText(name, { exact: true })
+      has: occPage.getByText(name, { exact: true })
     })
   await row('playback.mp4').dblclick()
   const video = occPage.locator('video')

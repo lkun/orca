@@ -242,9 +242,11 @@ yay -S stably-occ-bin
 
 - **Discord:** 加入 **[Discord](https://discord.gg/fzjDKHxv8Q)** 社区。
 - **Twitter / X:** 关注 **[@occ_build](https://x.com/occ_build)** 获取更新和公告。
-- **微信:** 扫码加入 OCC 社区微信群。
+- **微信:** 扫码加入 OCC 社区微信群。如果一个群已满，可以加入其他群。
 
   <img src="../assets/wechat-qr-group14.jpg" alt="OCC 社区微信群二维码" width="160" />
+  <img src="../assets/wechat-qr-group15.jpg" alt="OCC 社区微信群二维码" width="160" />
+  <img src="../assets/wechat-qr-group16.jpg" alt="OCC 社区微信群二维码" width="160" />
 
 - **反馈与想法:** 我们发布很快。缺少什么功能？[提交功能请求](https://github.com/stablyai/occ/issues)。
 - **隐私:** 查看[隐私与遥测文档](https://www.onocc.dev/docs/telemetry)，了解 OCC 收集哪些匿名使用数据以及如何退出。

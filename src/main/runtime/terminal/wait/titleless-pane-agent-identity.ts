@@ -1,4 +1,4 @@
-import { detectTerminalWaitBlockedReason } from '../../terminal-wait-detection'
+import { detectTerminalWaitBlockedReason } from './terminal-wait-detection'
 import {
   OCCRuntimeWithResolveAuthoritativeTerminalWaitPermission,
   type TerminalInteractiveWaitEvidence

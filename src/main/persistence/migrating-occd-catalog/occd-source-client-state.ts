@@ -10,7 +10,7 @@ import type {
   PersistedMobileClientTabSelection,
   PersistedState
 } from '../../../shared/persisted-state-types'
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
 import { sessionPartitions } from './occd-source-workspace-session-fragments'
 import { collectCloseIntents } from './occd-source-client-browser-intents'
 import {
@@ -20,7 +20,7 @@ import {
   occdMigrationOwnsRepoId,
   unqualifyOCCdMigrationOwnerKey
 } from './occd-source-scope'
-import { paneBelongsToTabs } from '../../../shared/workspace-session-pane-ownership'
+import { paneBelongsToTabs } from '../../../shared/workspace-session/workspace-session-pane-ownership'
 
 export type OCCdMigrationSourceClientStateInspection = {
   payload: OCCdMigrationClientStatePayload | undefined

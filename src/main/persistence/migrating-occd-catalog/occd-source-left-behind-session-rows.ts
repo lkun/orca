@@ -1,8 +1,8 @@
 import type { BrowserWorkspace } from '../../../shared/browser-workspace-types'
 import type { TabGroup } from '../../../shared/tab-types'
 import { OCC_BROWSER_PARTITION } from '../../../shared/constants'
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
-import { ownedEditorFileId } from '../../../shared/workspace-session-pane-ownership'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
+import { ownedEditorFileId } from '../../../shared/workspace-session/workspace-session-pane-ownership'
 import { isOCCdSourceTabHost } from './occd-source-workspace-session-eligibility'
 import {
   occdMigrationOwnerMatchesScope,

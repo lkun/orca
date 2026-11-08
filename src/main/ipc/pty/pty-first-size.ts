@@ -1,5 +1,5 @@
 import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
 
 export type PtyGridSize = { cols: number; rows: number }
 

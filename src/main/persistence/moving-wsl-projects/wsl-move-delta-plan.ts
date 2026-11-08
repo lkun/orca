@@ -9,7 +9,7 @@
  * retained row (as SSH's delta does; see `planOCCdDeltaMove`). The same goes for a project the
  * host still holds after its move was dropped from the journal.
  */
-import type { FolderWorkspace } from '../../../shared/folder-workspace-types'
+import type { FolderWorkspace } from '../../../shared/folder-workspaces/folder-workspace-types'
 import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
 import { isOCCdMigrationLocalWslSource } from '../../../shared/occd-migration/occd-migration-source-kind'
 import type { ProjectGroup } from '../../../shared/project-group-types'

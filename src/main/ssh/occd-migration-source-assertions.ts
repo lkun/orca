@@ -4,26 +4,31 @@ import {
   type OCCdMigrationManifest
 } from '../../shared/occd-migration/occd-migration-manifest'
 import type { OCCdMigrationSourceCutover } from '../../shared/occd-migration/occd-migration-source-cutover'
-import { createOCCdMigrationManifest } from './occd-migration-manifest-export'
+import {
+  exportOCCdMigrationManifest,
+  type OCCdMigrationExportedBlob
+} from './occd-migration-manifest-export'
 import { resolveOCCdMigrationFence } from './occd-migration-source-fence'
 import { confirmOCCdMigrationTerminalsUnderFence } from './occd-migration-terminal-gate'
 import { collectUntransferredDependentBlockers } from './targets/ssh-target-occd-dependents'
 import type { OCCdMigrationPreflightStore } from './targets/ssh-target-occd-preflight'
 
+/** Returns the re-read bytes of the blobs the journaled manifest names; unchanged source proves them. */
 export function assertOCCdMigrationSourceUnchanged(
   context: { userDataPath: string; store: OCCdMigrationPreflightStore },
   cutover: OCCdMigrationSourceCutover
-): void {
+): OCCdMigrationExportedBlob[] {
   const target = context.store.getSshTarget(cutover.sshTargetId)
   const fence = target ? resolveOCCdMigrationFence(context.userDataPath, target) : null
   if (!target || fence?.state !== 'fenced' || fence.cutover.migrationId !== cutover.migrationId) {
     throw new Error('occd_migration_source_fence_lost')
   }
   // Re-export with journaled identity/time/destination so only source changes affect comparison.
-  const current = createOCCdMigrationManifest(context.store, target, {
+  const { manifest: current, blobs } = exportOCCdMigrationManifest(context.store, target, {
     migrationId: cutover.migrationId,
     destinationEnvironmentId: cutover.destinationEnvironmentId,
-    now: () => new Date(cutover.manifest.createdAt)
+    now: () => new Date(cutover.manifest.createdAt),
+    inlineAutomationRuns: cutover.manifest.payload.dormantState?.automationRuns !== undefined
   })
   if (frozenSourceDigest(current) !== frozenSourceDigest(cutover.manifest)) {
     throw new Error('occd_migration_source_changed')
@@ -46,6 +51,7 @@ export function assertOCCdMigrationSourceUnchanged(
   if (terminals.verdict === 'live' || terminals.verdict === 'unverifiable') {
     throw new Error(`occd_migration_source_terminals_${terminals.verdict}`)
   }
+  return blobs
 }
 
 /** Ignore mutable UI layout/focus/routing: the destination gets the journaled view, and tab churn must not invalidate migration. */

@@ -1,0 +1,178 @@
+import { useState } from 'react'
+import { BookOpen, Check, CircleUserRound, Files, Smartphone } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { useOCCProfileAuthStatusRefresh } from '@/hooks/use-occ-profile-auth-status-refresh'
+import { cn } from '@/lib/utils'
+import { translate } from '@/i18n/i18n'
+import { useTranslate, type Translate } from '@/i18n/use-translate'
+import { useAppStore } from '@/store/index'
+import { OCCProfileSignOutConfirmDialog } from '../../../occ-profiles/OCCProfileSignOutConfirmDialog'
+import { OCCSignInButton, OCCSignInWaitNotice } from '../../../OCCSignInProgress'
+
+function accountStatusCopy(
+  state: 'local' | 'unconfigured' | 'connected' | 'reconnect-required' | undefined,
+  email: string | undefined,
+  t: Translate = translate
+): string {
+  if (state === 'connected') {
+    return email ?? t('auto.components.settings.occAccount.connected', 'Connected')
+  }
+  if (state === 'reconnect-required') {
+    return t(
+      'auto.components.settings.occAccount.reconnectRequired',
+      'Your session expired. Sign in again to use cloud features.'
+    )
+  }
+  if (state === 'unconfigured') {
+    return t(
+      'auto.components.settings.occAccount.unavailable',
+      'OCC sign-in is unavailable in this build.'
+    )
+  }
+  if (state === 'local') {
+    return t(
+      'auto.components.settings.occAccount.signedOut',
+      'Sign in to extend OCC with cloud features, including Artifacts and OCC Relay.'
+    )
+  }
+  return t('auto.components.settings.occAccount.checking', 'Checking account status…')
+}
+
+function AccountBenefit({
+  icon: Icon,
+  title,
+  description,
+  className
+}: {
+  icon: typeof Files
+  title: string
+  description: string
+  className?: string
+}): React.JSX.Element {
+  return (
+    <div className={cn('flex items-start gap-3', className)}>
+      <Icon className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+      <div className="space-y-1">
+        <p className="text-sm font-medium">{title}</p>
+        <p className="text-xs leading-5 text-muted-foreground">{description}</p>
+      </div>
+    </div>
+  )
+}
+
+export function OCCAccountSettingsPane(): React.JSX.Element {
+  const t = useTranslate()
+  const authStatus = useAppStore((state) => state.occProfileAuthStatus)
+  const signOut = useAppStore((state) => state.signOutCurrentOCCProfile)
+  const [signOutOpen, setSignOutOpen] = useState(false)
+  const [signingOut, setSigningOut] = useState(false)
+  const connected = authStatus?.state === 'connected'
+  const canConnect = authStatus?.configured === true
+
+  useOCCProfileAuthStatusRefresh()
+
+  const confirmSignOut = async (): Promise<void> => {
+    if (signingOut) {
+      return
+    }
+    setSigningOut(true)
+    const result = await signOut()
+    setSigningOut(false)
+    if (result) {
+      setSignOutOpen(false)
+    }
+  }
+
+  return (
+    <>
+      <div className="space-y-6">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
+            <CircleUserRound className="size-5" />
+          </div>
+          <div className="min-w-0 flex-1 space-y-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-sm font-medium">
+                {authStatus?.cloud?.displayName?.trim() ||
+                  t('auto.components.settings.occAccount.account', 'OCC account')}
+              </p>
+              {connected ? (
+                <Badge variant="outline" className="text-[11px] text-muted-foreground">
+                  <Check />
+                  {t('auto.components.settings.occAccount.connected', 'Connected')}
+                </Badge>
+              ) : null}
+            </div>
+            <p className="truncate text-xs text-muted-foreground">
+              {accountStatusCopy(authStatus?.state, authStatus?.cloud?.email, t)}
+            </p>
+          </div>
+          {connected ? (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={signingOut}
+              onClick={() => setSignOutOpen(true)}
+            >
+              {t('auto.components.settings.occAccount.signOut', 'Sign out')}
+            </Button>
+          ) : (
+            <OCCSignInButton size="sm" disabled={!canConnect}>
+              {authStatus?.state === 'reconnect-required'
+                ? t('auto.components.settings.occAccount.signInAgain', 'Sign in again')
+                : t('auto.components.settings.occAccount.signIn', 'Sign in to OCC')}
+            </OCCSignInButton>
+          )}
+          {connected ? null : <OCCSignInWaitNotice className="basis-full" />}
+        </div>
+
+        <div className="space-y-4 border-t border-border/60 pt-5">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.05em] text-muted-foreground">
+            {t('auto.components.settings.occAccount.benefitsTitle', 'Included with your account')}
+          </p>
+          <div className="space-y-5">
+            <div className="grid gap-5 md:grid-cols-2 md:gap-0 md:divide-x md:divide-border/60">
+              <AccountBenefit
+                icon={Files}
+                className="md:pr-6"
+                title={t('auto.components.settings.occAccount.artifactsTitle', 'Artifact sharing')}
+                description={t(
+                  'auto.components.settings.occAccount.artifactsDescription',
+                  'Publish HTML and Markdown files, then manage every shared link from OCC.'
+                )}
+              />
+              <AccountBenefit
+                icon={Smartphone}
+                className="md:pl-6"
+                title={t('auto.components.settings.occAccount.relayTitle', 'OCC Relay')}
+                description={t(
+                  'auto.components.settings.occAccount.relayDescription',
+                  'Connect OCC Mobile to this desktop across cellular or any Wi-Fi.'
+                )}
+              />
+            </div>
+            {/* Put the third benefit below at full width so it cannot squeeze the existing pair. */}
+            <AccountBenefit
+              icon={BookOpen}
+              className="border-t border-border/60 pt-5"
+              title={t('auto.components.settings.occAccount.skillsTitle', 'Skill sharing')}
+              description={t(
+                'auto.components.settings.occAccount.skillsDescription',
+                'Share one skill or a whole set behind an unlisted link, and install them on any machine you use.'
+              )}
+            />
+          </div>
+        </div>
+      </div>
+
+      <OCCProfileSignOutConfirmDialog
+        open={signOutOpen}
+        onOpenChange={setSignOutOpen}
+        onConfirm={() => void confirmSignOut()}
+        signingOut={signingOut}
+      />
+    </>
+  )
+}

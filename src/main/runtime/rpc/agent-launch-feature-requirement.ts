@@ -1,4 +1,4 @@
-import { recognizeAgentLaunchCommand } from '../../../shared/agent-command-line-intent'
+import { recognizeAgentLaunchCommand } from '../../../shared/agent-launch/startup/agent-command-line-intent'
 import type { OCCdFeature } from './occd-feature-readiness'
 
 const ACCOUNTS: readonly OCCdFeature[] = ['accounts']

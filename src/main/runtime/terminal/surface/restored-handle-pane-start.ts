@@ -2,7 +2,7 @@
 import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { OCCRuntimeWithGetTerminalInteractiveWait } from '../wait/terminal-interactive-wait'
 import { startedMainTerminalSurfaces } from './main-terminal-surfaces'
-import { MOBILE_TERMINAL_SURFACE_TIMEOUT_MS } from '../../occ-runtime-core'
+import { MOBILE_TERMINAL_SURFACE_TIMEOUT_MS } from '../view/terminal-surface-deadlines'
 import type { RestoredPane } from '../recovery/restored-pane-start'
 
 export abstract class OCCRuntimeWithRestoredHandlePaneStart extends OCCRuntimeWithGetTerminalInteractiveWait {

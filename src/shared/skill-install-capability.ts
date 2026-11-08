@@ -19,6 +19,8 @@ export const SKILL_DELETE_UPDATE_REQUIRED_MESSAGE =
 
 /** skills.planBundledOCC/executeBundledOCC v1 freezes op/reason enums; unknown values render “Needs attention”. */
 export const BUNDLED_OCC_SKILL_CAPABILITY = 'skills.bundled-occ.v1' as const
+/** The host recognizes canonical names and can migrate former placements. */
+export const BUNDLED_OCC_SKILL_RENAMES_CAPABILITY = 'skills.bundled-occ-renames.v1' as const
 
 /** Gates skills.autoUpdateBundledOCC; older hosts fall back to asking before every update. */
 export const BUNDLED_OCC_SKILL_AUTO_UPDATE_CAPABILITY =
@@ -41,6 +43,7 @@ export const SKILL_RUNTIME_CAPABILITIES = [
   SKILL_INSTALL_PROVIDERS_CAPABILITY,
   SKILL_DELETE_CAPABILITY,
   BUNDLED_OCC_SKILL_CAPABILITY,
+  BUNDLED_OCC_SKILL_RENAMES_CAPABILITY,
   BUNDLED_OCC_SKILL_AUTO_UPDATE_CAPABILITY,
   SKILL_DISCOVER_WORKSPACE_CAPABILITY
 ] as const

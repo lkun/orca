@@ -2,7 +2,7 @@ import { OCCRuntimeWithWorkspaceReviewFacts } from './occ-runtime-workspace-revi
 import { isFolderRepo } from '../../../shared/repo-kind'
 import { worktreeIdsEqual } from '../../../shared/worktree/id'
 import type { WorkspaceLiveContent } from '../../../shared/sidebar-list/workspace-live-content'
-import { runtimeVisibleRepos } from '../runtime-visible-catalog'
+import { runtimeVisibleRepos } from '../workspaces/catalog/runtime-visible-catalog'
 import { DetectedCheckoutsProducer } from './detected-checkouts-producer'
 import { WorkspaceLiveContentProducer } from './workspace-live-content-producer'
 

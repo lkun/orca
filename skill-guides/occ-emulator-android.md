@@ -115,4 +115,4 @@ OCC emulator kill --json
 ```
 
 See also: `occ-emulator` for iOS simulators, `occ-cli` for terminals, worktrees, and the
-built-in browser, and `computer-use` for desktop UI outside the emulator.
+built-in browser, and `occ-computer-use` for desktop UI outside the emulator.

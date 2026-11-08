@@ -1,6 +1,6 @@
 import '../memory/host-malloc-tunables-claim'
 import process from 'node:process'
-import { main } from './occd-entry'
+import { main } from './occd-command-startup'
 import { resolveOCCdExitCode } from './occd-exit-code'
 import { reserveServeStdoutForReadiness } from '../server/serve-stdout-boundary'
 import { runOCCdNativePreflightVerdict } from './occd-native-preflight'

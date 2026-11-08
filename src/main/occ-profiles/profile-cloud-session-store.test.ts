@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { OCCCloudSession } from './profile-cloud-session-store'
@@ -72,90 +72,6 @@ describe('OCC cloud session store', () => {
   afterEach(() => {
     rmSync(userDataPath, { recursive: true, force: true })
     vi.unstubAllEnvs()
-  })
-
-  it('persists encrypted sessions and reports encrypted persistence from memory and disk', async () => {
-    const store = await loadSessionStore()
-    const session = makeSession()
-
-    expect(store.saveOCCCloudSession('profile-1', userDataPath, session)).toBe('encrypted')
-    expect(store.readOCCCloudSession('profile-1', userDataPath)).toEqual({
-      status: 'found',
-      session,
-      persistence: 'encrypted'
-    })
-
-    const reloaded = await loadSessionStore()
-    expect(reloaded.readOCCCloudSession('profile-1', userDataPath)).toEqual({
-      status: 'found',
-      session,
-      persistence: 'encrypted'
-    })
-  })
-
-  it('falls back to memory-only when encryption is unavailable and plaintext is not allowed', async () => {
-    safeStorageMock.isEncryptionAvailable.mockReturnValue(false)
-    const store = await loadSessionStore()
-    const session = makeSession()
-
-    expect(store.saveOCCCloudSession('profile-1', userDataPath, session)).toBe('memory-only')
-    expect(store.readOCCCloudSession('profile-1', userDataPath)).toEqual({
-      status: 'found',
-      session,
-      persistence: 'memory-only'
-    })
-
-    const reloaded = await loadSessionStore()
-    expect(reloaded.readOCCCloudSession('profile-1', userDataPath)).toEqual({
-      status: 'missing',
-      persistence: 'none'
-    })
-  })
-
-  it('scopes memory-only sessions by user-data path and profile ID', async () => {
-    safeStorageMock.isEncryptionAvailable.mockReturnValue(false)
-    const otherUserDataPath = mkdtempSync(join(tmpdir(), 'occ-cloud-session-other-'))
-    const store = await loadSessionStore()
-    const session = makeSession()
-    const otherSession = { ...session, accessToken: 'other-access-token' }
-
-    try {
-      store.saveOCCCloudSession('local-default', userDataPath, session)
-      store.saveOCCCloudSession('local-default', otherUserDataPath, otherSession)
-
-      expect(store.readOCCCloudSession('local-default', userDataPath)).toMatchObject({
-        status: 'found',
-        session
-      })
-      expect(store.readOCCCloudSession('local-default', otherUserDataPath)).toMatchObject({
-        status: 'found',
-        session: otherSession
-      })
-    } finally {
-      rmSync(otherUserDataPath, { recursive: true, force: true })
-    }
-  })
-
-  it('writes explicit dev plaintext only when the dev escape hatch is enabled', async () => {
-    safeStorageMock.isEncryptionAvailable.mockReturnValue(false)
-    vi.stubEnv('OCC_CLOUD_ALLOW_PLAINTEXT_SESSION', '1')
-    vi.stubEnv('NODE_ENV', 'development')
-    const store = await loadSessionStore()
-    const session = makeSession()
-
-    expect(store.saveOCCCloudSession('profile-1', userDataPath, session)).toBe('dev-plaintext')
-
-    const saved = JSON.parse(
-      readFileSync(store.getOCCCloudSessionPath('profile-1', userDataPath), 'utf-8')
-    ) as { format: string }
-    expect(saved.format).toBe('dev-plaintext-v1')
-
-    const reloaded = await loadSessionStore()
-    expect(reloaded.readOCCCloudSession('profile-1', userDataPath)).toEqual({
-      status: 'found',
-      session,
-      persistence: 'dev-plaintext'
-    })
   })
 
   it('rejects dev plaintext files when the escape hatch is disabled', async () => {

@@ -1,5 +1,5 @@
 import { signalProcessTree } from '@occ/process-host/process-tree-termination'
-import { killSpawnedRipgrepProcess } from '../../shared/ripgrep-process-availability'
+import { killSpawnedRipgrepProcess } from '../../shared/ripgrep/ripgrep-process-availability'
 import type { ChildProcessHandle } from '@occ/process-host/process-spec'
 
 const stoppingChildren = new WeakSet<ChildProcessHandle>()

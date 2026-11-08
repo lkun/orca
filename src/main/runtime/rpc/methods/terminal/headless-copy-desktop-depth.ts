@@ -1,5 +1,5 @@
 import type { OCCRuntimeService } from '../../../occ-runtime'
-import { DESKTOP_TERMINAL_SCROLLBACK_ROWS_DEFAULT } from '../../../../../shared/terminal-scrollback-policy'
+import { DESKTOP_TERMINAL_SCROLLBACK_ROWS_DEFAULT } from '../../../../../shared/terminal/replay/terminal-scrollback-policy'
 
 type HeadlessCopySource = Pick<
   OCCRuntimeService,

@@ -33,7 +33,7 @@ runs:
         (runner.arch == 'X64' || runner.arch == 'ARM64')
       continue-on-error: true
       shell: bash
-      run: node config/scripts/occd-windows-prebuild-cache.mjs --fingerprint
+      run: node config/scripts/occd-distribution/prebuilds/occd-windows-prebuild-cache.mjs --fingerprint
 
     - name: Restore the exact Windows server prebuild
       id: occd-prebuild-cache-restore
@@ -55,7 +55,7 @@ runs:
       run: |
         if [ "$RUNNER_OS" = Windows ] && [ "$WINDOWS_PREBUILD_CACHE_HIT" = true ] &&
            [ "$WINDOWS_PREBUILD_CACHE_RESTORE_OUTCOME" = success ] &&
-           node config/scripts/occd-windows-prebuild-cache.mjs --validate; then
+           node config/scripts/occd-distribution/prebuilds/occd-windows-prebuild-cache.mjs --validate; then
           echo 'Using the validated Windows server prebuild'
         else
           if [ "$RUNNER_OS" = Windows ]; then
@@ -63,5 +63,5 @@ runs:
           fi
           pnpm build:occd-prebuilds
         fi
-        node config/scripts/build-occd-prebuilds.mjs --require-slots "$(node config/scripts/build-occd-prebuilds.mjs --print-slot)"
-        node config/scripts/build-occd-prebuilds.mjs --smoke
+        node config/scripts/occd-distribution/prebuilds/build-occd-prebuilds.mjs --require-slots "$(node config/scripts/occd-distribution/prebuilds/build-occd-prebuilds.mjs --print-slot)"
+        node config/scripts/occd-distribution/prebuilds/build-occd-prebuilds.mjs --smoke

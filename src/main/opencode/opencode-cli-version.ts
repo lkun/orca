@@ -3,7 +3,7 @@ import path from 'node:path'
 import {
   OCC_SCRUB_SAFE_LAUNCH_ENV,
   OCC_SCRUB_SAFE_PANE_ENV
-} from '../../shared/agent-hook-scrub-safe-env'
+} from '../../shared/agent-hook-listener/transport/agent-hook-scrub-safe-env'
 import { runProcess } from '@occ/process-host'
 import {
   getOpenCodeCliCapabilities,

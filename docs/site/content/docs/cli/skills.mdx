@@ -6,7 +6,7 @@ keywords:
   - npx skills add
   - occ-cli skill
   - orchestration skill
-  - computer-use skill
+  - OCC Computer Use skill
   - occ-linear skill
   - occ-emulator skill
   - occ-emulator-android skill
@@ -17,13 +17,13 @@ OCC ships **skills** that agents install into their skill directories. Public in
 
 ## Installable OCC skills
 
-Use `npx skills add` with the public OCC repo and the skill name. Default agent setup usually installs `occ-cli`, `computer-use`, and `orchestration`.
+Use `npx skills add` with the public OCC repo and the skill name. Default agent setup usually installs `occ-cli`, `occ-computer-use`, and `orchestration`.
 
 | Skill                                               | Install                                                                                   | Use it for                                                    |
 | --------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
 | [`occ-cli`](#occ-cli)                             | `npx skills add https://github.com/stablyai/occ --skill occ-cli --global`               | Worktrees, terminals, files, automations, embedded browser.   |
 | [`orchestration`](#orchestration)                   | `npx skills add https://github.com/stablyai/occ --skill orchestration --global`          | Multi-agent Runs, tasks, supervised workers, messages, gates. |
-| [`computer-use`](#computer-use)                     | `npx skills add https://github.com/stablyai/occ --skill computer-use --global`           | Desktop apps via accessibility trees and safe UI actions.     |
+| [`occ-computer-use`](#occ-computer-use)           | `npx skills add https://github.com/stablyai/occ --skill occ-computer-use --global`      | Desktop apps via accessibility trees and safe UI actions.     |
 | [`occ-linear`](#occ-linear)                       | `npx skills add https://github.com/stablyai/occ --skill occ-linear --global`            | Linear ticket read/write through `occ linear`.               |
 | [`occ-emulator`](#occ-emulator)                   | `npx skills add https://github.com/stablyai/occ --skill occ-emulator --global`          | iOS Simulator control.                                        |
 | [`occ-emulator-android`](#occ-emulator-android)   | `npx skills add https://github.com/stablyai/occ --skill occ-emulator-android --global`  | Android emulator/device via adb.                              |
@@ -118,10 +118,12 @@ npx skills add https://github.com/stablyai/occ --skill orchestration --global
 
 Use this when an agent should coordinate other agents through Runs, tasks, supervised workers, and decision gates. See [Orchestration](/docs/cli/orchestration). Always load `occ skills get orchestration --full` before mutating orchestration state — the legacy `orchestration run` command is retired.
 
-## computer-use
+<span id="computer-use" />
+
+## occ-computer-use
 
 ```bash
-npx skills add https://github.com/stablyai/occ --skill computer-use --global
+npx skills add https://github.com/stablyai/occ --skill occ-computer-use --global
 ```
 
 Use this when an agent needs to inspect and operate local desktop app windows. See [Computer use](/docs/cli/computer-use).

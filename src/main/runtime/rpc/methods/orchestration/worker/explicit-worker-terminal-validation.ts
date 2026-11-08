@@ -1,8 +1,11 @@
 import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
-import { isStructuredWorkerHandle } from '../../../../../../shared/structured-worker-handle'
-import type { OrchestrationCallerIdentity } from '../../../../orchestration/orchestration-caller-identity'
-import type { OrchestrationDb } from '../../../../orchestration/db'
+import { isStructuredWorkerHandle } from '../../../../../../shared/orchestration/workers/structured-worker-handle'
+import type {
+  OrchestrationPartyIdentity as OrchestrationCallerIdentity,
+  OrchestrationPartyIdentity as OrchestrationParty
+} from '../../../../../../shared/orchestration/mailbox/orchestration-party-identity'
+import type { OrchestrationDb } from '../../../../orchestration/db/orchestration-db'
 import type { OCCSessionId } from '../../../../../../shared/occ-session-address'
 import { formatOCCSessionAddress } from '../../../../../../shared/occ-session-address'
 import {
@@ -10,7 +13,6 @@ import {
   chatAssigneeOf,
   refuseChatSelfAssignment
 } from '../chat-assignee-admission'
-import type { OrchestrationParty } from '../../../../orchestration/orchestration-party'
 
 /** Before any effects, refuse coordinator self-assignment, foreign-workspace panes and terminals without agents. */
 export async function assertExplicitWorkerTerminalUsable(args: {

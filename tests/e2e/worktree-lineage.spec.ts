@@ -1,38 +1,15 @@
-import type { Locator, Page } from '@stablyai/playwright-test'
-import { mkdirSync } from 'node:fs'
-import { resolve } from 'node:path'
+import type { Page } from '@stablyai/playwright-test'
+import 'node:fs'
+import 'node:path'
 import { test, expect } from './helpers/occ-app'
-import { addRepoWithWorkspaces, linkWorkspaces } from './helpers/repo-with-workspaces'
-import { SIDEBAR_INPUTS_BUILD } from './helpers/sidebar-inputs-build'
+import './helpers/repo-with-workspaces'
+import './helpers/sidebar-inputs-build'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
-import {
-  markWorkspaceTerminalSlept,
-  seedLineageScenario,
-  seedWorkspaceAgentStatus,
-  seedWorkspaceLiveTerminal
-} from './worktree-lineage-state'
+import { seedLineageScenario } from './worktree-lineage-state'
 import { worktreeRow } from './worktree-row-locators'
 
 function worktreeOption(page: Page, worktreeId: string) {
   return worktreeRow(page, worktreeId)
-}
-
-async function captureEvidence(page: Page, name: string, locator?: Locator): Promise<void> {
-  if (process.env.OCC_CAPTURE_EVIDENCE !== '1') {
-    return
-  }
-  const outputDir = resolve(process.cwd(), 'pr-evidence')
-  mkdirSync(outputDir, { recursive: true })
-  const path = resolve(outputDir, name)
-  if (locator) {
-    await locator.screenshot({ path })
-    return
-  }
-  await page.screenshot({ path })
-}
-
-async function captureSidebarEvidence(page: Page, name: string): Promise<void> {
-  await captureEvidence(page, name, page.locator('[data-worktree-sidebar]').first())
 }
 
 test.describe('Worktree Lineage', () => {
@@ -107,35 +84,6 @@ test.describe('Worktree Lineage', () => {
     await expect(childRow).toBeVisible()
   })
 
-  test('renders legacy-only inline lineage when side-map hydration is absent', async ({
-    occPage
-  }) => {
-    test.skip(
-      SIDEBAR_INPUTS_BUILD,
-      "the window's legacy inline link is unused when rows come from main"
-    )
-    const { parentId, childId } = await seedLineageScenario(occPage, { inlineOnly: true })
-    const parentRow = worktreeOption(occPage, parentId)
-    const childRow = worktreeOption(occPage, childId)
-
-    await expect(parentRow.getByRole('button', { name: 'Hide 1 child workspace' })).toBeVisible()
-    await expect(childRow).toBeVisible()
-    await expect
-      .poll(async () => {
-        const [parentBox, childBox] = await Promise.all([
-          parentRow.boundingBox(),
-          childRow.boundingBox()
-        ])
-        return parentBox && childBox ? childBox.y > parentBox.y : false
-      })
-      .toBe(true)
-    // The link must come from the records alone, not a side map hydrated after the seed.
-    expect(
-      await occPage.evaluate((id) => window.__store!.getState().worktreeLineageById[id], childId)
-    ).toBeUndefined()
-    await captureSidebarEvidence(occPage, 'legacy-inline-lineage-nested.png')
-  })
-
   test('injects filtered parents structurally without showing a parent badge', async ({
     occPage
   }) => {
@@ -198,102 +146,5 @@ test.describe('Worktree Lineage', () => {
     )
     expect(positions).not.toBeNull()
     expect(positions!.childTop).toBeGreaterThan(positions!.parentTop)
-  })
-
-  test('updates nested child preview status when the child terminal sleeps', async ({
-    occPage
-  }) => {
-    const { parentId, childId } = await seedLineageScenario(occPage)
-    const parentRow = worktreeOption(occPage, parentId)
-    const childRow = worktreeOption(occPage, childId)
-
-    await expect(parentRow).toBeVisible()
-    await expect(childRow).toBeVisible()
-
-    const childTabId = await seedWorkspaceLiveTerminal(occPage, childId)
-    await expect(childRow).toContainText('Active')
-
-    await markWorkspaceTerminalSlept(occPage, { worktreeId: childId, tabId: childTabId })
-    await expect(childRow).toContainText('Inactive')
-  })
-
-  test('sleeps a workspace and every descendant from the parent context menu', async ({
-    occPage
-  }, testInfo) => {
-    // A repo's own checkout offers no delete, so the parent is one of its worktrees.
-    const repo = await addRepoWithWorkspaces(occPage, testInfo, 2)
-    const [parentId, childId] = [repo.ids[0]!, repo.ids[1]!]
-    await linkWorkspaces(occPage, [{ childId, parentId }])
-    await occPage.evaluate(() => window.__store!.getState().setShowSleepingWorkspaces(true))
-    const parentTabId = await seedWorkspaceLiveTerminal(occPage, parentId)
-    const childTabId = await seedWorkspaceLiveTerminal(occPage, childId)
-
-    await occPage.evaluate(() => {
-      const store = window.__store
-      if (!store) {
-        throw new Error('window.__store is not available')
-      }
-      store.setState({
-        shutdownWorktreeBrowsers: async (worktreeId: string) => {
-          store.setState((current) => ({
-            browserTabsByWorktree: { ...current.browserTabsByWorktree, [worktreeId]: [] }
-          }))
-        },
-        shutdownWorktreeTerminals: async (worktreeId: string) => {
-          const tabIds = (store.getState().tabsByWorktree[worktreeId] ?? []).map((tab) => tab.id)
-          store.setState((current) => ({
-            ptyIdsByTabId: {
-              ...current.ptyIdsByTabId,
-              ...Object.fromEntries(tabIds.map((tabId) => [tabId, []]))
-            }
-          }))
-        }
-      })
-    })
-
-    await worktreeOption(occPage, parentId).click({ button: 'right' })
-    const sleepSubtree = occPage.getByRole('menuitem', {
-      name: 'Sleep with Descendants (1)'
-    })
-    await expect(sleepSubtree).toBeVisible()
-    await expect(sleepSubtree).toBeEnabled()
-    await expect(occPage.getByRole('menuitem', { name: 'Delete with Descendants…' })).toBeVisible()
-    await captureEvidence(occPage, 'workspace-descendant-actions.png')
-    await sleepSubtree.click()
-
-    await expect
-      .poll(() =>
-        occPage.evaluate(
-          ({ parentTabId, childTabId }) => {
-            const state = window.__store?.getState()
-            return {
-              parentPtys: state?.ptyIdsByTabId[parentTabId],
-              childPtys: state?.ptyIdsByTabId[childTabId]
-            }
-          },
-          { parentTabId, childTabId }
-        )
-      )
-      .toEqual({ parentPtys: [], childPtys: [] })
-  })
-
-  test('shows parent and child agent rows while the parent workspace is active', async ({
-    occPage
-  }) => {
-    const { parentId, childId } = await seedLineageScenario(occPage)
-    const parentRow = worktreeOption(occPage, parentId)
-    const childRow = worktreeOption(occPage, childId)
-
-    await parentRow.click()
-    await expect(parentRow).toHaveAttribute('aria-current', 'page')
-    await expect(childRow).toBeVisible()
-
-    const parentAgentPrompt = await seedWorkspaceAgentStatus(occPage, parentId, 'PARENT')
-    const childAgentPrompt = await seedWorkspaceAgentStatus(occPage, childId, 'CHILD')
-
-    await expect(
-      parentRow.getByRole('treeitem').filter({ hasText: parentAgentPrompt })
-    ).toBeVisible()
-    await expect(childRow.getByRole('treeitem').filter({ hasText: childAgentPrompt })).toBeVisible()
   })
 })

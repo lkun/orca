@@ -22,6 +22,8 @@ export async function createRuntimeClientModuleMock(mocks: RuntimeClientModuleMo
 
   class RuntimeClient {
     readonly isRemote: boolean
+    readonly environmentSelector: string | null
+    readonly userDataPath = '/tmp/occ-user-data'
     call = mocks.callMock
     getCliStatus = vi.fn()
     openOCC = vi.fn()
@@ -46,6 +48,7 @@ export async function createRuntimeClientModuleMock(mocks: RuntimeClientModuleMo
         )
       }
       this.isRemote = Boolean(effectivePairingCode || effectiveEnvironment)
+      this.environmentSelector = effectiveEnvironment || null
     }
   }
 

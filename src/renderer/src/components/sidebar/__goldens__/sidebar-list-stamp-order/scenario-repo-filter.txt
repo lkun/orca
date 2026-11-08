@@ -150,11 +150,11 @@ ITEM rowKey=pinned:|occ::/w/feat-c depth=2 groupDepth=0 lastChild=true children=
 ITEM rowKey=pinned:|lab::/w/gitlab-mr depth=1 groupDepth=0 lastChild=true children=0 showProject=true placement=pinned owning=project:repo:lab parent=pinned:|occ::/w/feat-a
 HEADER key=project-group:pg-work label="Work" count=2 tone="text-foreground" icon=FolderTree projectGroup=pg-work projectGroupDepth=0
 HEADER key=project:p-occ label="occ" count=6 tone="text-foreground" icon=FolderTree repo=occ projectGroupDepth=1
-ITEM rowKey=project:p-occ:|occ::/occ depth=0 groupDepth=1 children=0 placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
 ITEM rowKey=project:p-occ:|occ::/w/feat-a depth=0 groupDepth=1 children=2 lineageKey=lineage:occ::/w/feat-a placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
 ITEM rowKey=project:p-occ:|occ::/w/feat-b depth=1 groupDepth=1 children=1 lineageKey=lineage:occ::/w/feat-b placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ parent=project:p-occ:|occ::/w/feat-a
 ITEM rowKey=project:p-occ:|occ::/w/feat-c depth=2 groupDepth=1 lastChild=true children=0 placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ parent=project:p-occ:|occ::/w/feat-b
 ITEM rowKey=project:p-occ:|lab::/w/gitlab-mr depth=1 groupDepth=1 lastChild=true children=0 showProject=true placement=natural owning=project:repo:lab path=project-group:pg-work>project:p-occ parent=project:p-occ:|occ::/w/feat-a
+ITEM rowKey=project:p-occ:|occ::/occ depth=0 groupDepth=1 children=0 placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
 ITEM rowKey=project:p-occ:|occ::/w/Zeta depth=0 groupDepth=1 lastChild=true children=0 placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
 HEADER key=project-group:pg-nested label="Nested" count=1 tone="text-foreground" icon=FolderTree projectGroup=pg-nested projectGroupDepth=1
 HEADER key=project:repo:lab label="lab" count=1 tone="text-foreground" icon=FolderTree repo=lab projectGroupDepth=2
@@ -173,10 +173,10 @@ PREFERRED |occ::/w/feat-c -> project:p-occ:|occ::/w/feat-c
 PREFERRED |lab::/w/gitlab-mr -> project:p-occ:|lab::/w/gitlab-mr
 renderedKeys: 26
 placeholders: -
-selectionOrder: |occ::/occ |occ::/w/feat-a |occ::/w/feat-b |occ::/w/feat-c |lab::/w/gitlab-mr |occ::/w/Zeta |lab::/lab local|folder:fw-review local|folder:fw-notes ssh:gpu-vm|folder:fw-remote
-cmd1-9 mounted: 1=occ::/occ 2=occ::/w/feat-a#lineage:occ::/w/feat-a 3=occ::/w/feat-b#lineage:occ::/w/feat-b 4=occ::/w/feat-c 5=lab::/w/gitlab-mr 6=occ::/w/Zeta 7=lab::/lab 8=folder:fw-review@local 9=folder:fw-notes@local
-cmd1-9 unmounted: 1=occ::/occ 2=occ::/w/feat-a 3=occ::/w/feat-b 4=occ::/w/feat-c 5=lab::/w/gitlab-mr 6=occ::/w/Zeta 7=lab::/lab 8=folder:fw-review@local 9=folder:fw-notes@local
-cmd ids unmounted: occ::/occ occ::/w/feat-a occ::/w/feat-b occ::/w/feat-c lab::/w/gitlab-mr occ::/w/Zeta lab::/lab folder:fw-review folder:fw-notes folder:fw-remote
+selectionOrder: |occ::/w/feat-a |occ::/w/feat-b |occ::/w/feat-c |lab::/w/gitlab-mr |occ::/occ |occ::/w/Zeta |lab::/lab local|folder:fw-review local|folder:fw-notes ssh:gpu-vm|folder:fw-remote
+cmd1-9 mounted: 1=occ::/w/feat-a#lineage:occ::/w/feat-a 2=occ::/w/feat-b#lineage:occ::/w/feat-b 3=occ::/w/feat-c 4=lab::/w/gitlab-mr 5=occ::/occ 6=occ::/w/Zeta 7=lab::/lab 8=folder:fw-review@local 9=folder:fw-notes@local
+cmd1-9 unmounted: 1=occ::/w/feat-a 2=occ::/w/feat-b 3=occ::/w/feat-c 4=lab::/w/gitlab-mr 5=occ::/occ 6=occ::/w/Zeta 7=lab::/lab 8=folder:fw-review@local 9=folder:fw-notes@local
+cmd ids unmounted: occ::/w/feat-a occ::/w/feat-b occ::/w/feat-c lab::/w/gitlab-mr occ::/occ occ::/w/Zeta lab::/lab folder:fw-review folder:fw-notes folder:fw-remote
 -- collapsed: pinned project:p-occ project:repo:lab project-group:pg-remote-folders lineage:occ::/w/feat-a --
 visible: occ::/w/feat-a occ::/w/feat-b lab::/w/gitlab-mr occ::/occ occ::/w/Zeta occ::/w/feat-c lab::/lab
 HEADER key=pinned label="Pinned" count=4 tone="text-foreground" icon=Pin hostCounts={local:4} hostIds={local:[occ::/w/feat-a,occ::/w/feat-b,lab::/w/gitlab-mr,occ::/w/feat-c]} ids=[occ::/w/feat-a,occ::/w/feat-b,lab::/w/gitlab-mr,occ::/w/feat-c]
@@ -191,7 +191,7 @@ HEADER key=project-group:pg-remote-folders label="Remote folders" count=1 tone="
 HEADER key=project:repo:api label="api" count=0 tone="text-foreground" icon=FolderTree repo=api projectGroupDepth=0
 PENDING key=pending:creation-1 creation=creation-1 repo=api
 SECTION pinned: pinned:|occ::/w/feat-a pinned:|occ::/w/feat-b pinned:|occ::/w/feat-c pinned:|lab::/w/gitlab-mr
-SECTION project:p-occ: project:p-occ:|occ::/occ project:p-occ:|occ::/w/feat-a project:p-occ:|occ::/w/feat-b project:p-occ:|occ::/w/feat-c project:p-occ:|lab::/w/gitlab-mr project:p-occ:|occ::/w/Zeta
+SECTION project:p-occ: project:p-occ:|occ::/w/feat-a project:p-occ:|occ::/w/feat-b project:p-occ:|occ::/w/feat-c project:p-occ:|lab::/w/gitlab-mr project:p-occ:|occ::/occ project:p-occ:|occ::/w/Zeta
 SECTION project:repo:api: -
 SECTION project:repo:lab: project:repo:lab:|lab::/lab
 PREFERRED |occ::/w/feat-a -> project:p-occ:|occ::/w/feat-a

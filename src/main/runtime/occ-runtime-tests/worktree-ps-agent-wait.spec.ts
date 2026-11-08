@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { makePaneKey } from '../../../shared/stable-pane-id'
-import { OCCRuntimeService } from '../occ-runtime-test-mocks.spec'
-import { TEST_WORKTREE_ID, TEST_WORKTREE_PATH, store } from '../occ-runtime-test-fixtures.spec'
+import { makePaneKey } from '../../../shared/workspace-layout/stable-pane-id'
+import './runtime-test-module-registration.spec'
+import { OCCRuntimeService } from '../occ-runtime'
+import { TEST_WORKTREE_ID, TEST_WORKTREE_PATH, store } from './occ-runtime-test-fixtures.spec'
 import { AgentHookServer, _internals } from '../../agent-hooks/server'
 
 vi.mock('../../telemetry/client', () => ({ track: vi.fn() }))

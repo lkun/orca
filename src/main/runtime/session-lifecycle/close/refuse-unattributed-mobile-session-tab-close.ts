@@ -1,12 +1,14 @@
 import { OCCRuntimeWithResumeAgentSessionInWorkspace } from '../projection/resume-agent-session-in-workspace'
-import type { RuntimeMobileSessionTabCloseResult } from '../../../../shared/runtime-types'
+import type { RuntimeMobileSessionTabCloseResult } from '../../../../shared/runtime-session-contracts'
 
 export abstract class OCCRuntimeWithRefuseUnattributedMobileSessionTabClose extends OCCRuntimeWithResumeAgentSessionInWorkspace {
   async refuseUnattributedMobileSessionTabClose(
     worktreeSelector: string,
     tabId: string
   ): Promise<RuntimeMobileSessionTabCloseResult> {
-    const snapshot = await this.listMobileSessionTabs(worktreeSelector)
+    const snapshot = await this.listMobileSessionTabs(worktreeSelector, undefined, {
+      includeAgentSenders: false
+    })
     const tabExists = snapshot.tabs.some(
       (candidate) =>
         candidate.id === tabId ||

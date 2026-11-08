@@ -1,5 +1,5 @@
-import type { OrchestrationDb } from '../../../../orchestration/db'
-import type { MessageRow } from '../../../../orchestration/types'
+import type { OrchestrationDb } from '../../../../orchestration/db/orchestration-db'
+import type { MessageRow } from '../../../../orchestration/db/orchestration-records'
 import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { remoteRunHomeUnreachable } from '../routing'
 import { sendRemoteMessage } from './send-remote'

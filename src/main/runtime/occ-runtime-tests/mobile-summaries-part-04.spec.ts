@@ -1,11 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import {
-  OCCRuntimeService,
-  setPlatform,
-  worktreePathComparison
-} from '../occ-runtime-test-mocks.spec'
-import type { WorktreeMeta } from '../occ-runtime-test-mocks.spec'
-import { makeWorktreeMeta, store, syncSinglePty } from '../occ-runtime-test-fixtures.spec'
+import './runtime-test-module-registration.spec'
+import { OCCRuntimeService } from '../occ-runtime'
+import { setPlatform } from '../occ-runtime-test-mocks/setup.spec'
+import * as worktreePathComparison from '../../workspaces/catalog/worktree-path-comparison-key'
+import type { WorktreeMeta } from '../../../shared/worktree/meta-types'
+import { makeWorktreeMeta, store, syncSinglePty } from './occ-runtime-test-fixtures.spec'
 
 describe('OCCRuntimeService', () => {
   it('keeps pinned and unread worktrees when active rows fill the mobile summary limit', async () => {

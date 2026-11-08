@@ -1,5 +1,5 @@
 // The manifest omits blobs; descriptor filenames make staged uploads resumable after restart.
-import { readdirSync, rmSync } from 'node:fs'
+import { readFileSync, readdirSync, rmSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import {
   OCCD_MIGRATION_BLOB_KINDS,
@@ -50,7 +50,8 @@ const RECEIVED_BLOB_DESTINATIONS: Record<OCCdMigrationBlobKind, ReceivedBlobPath
   'terminal-restore-hints': receivedDirectoryPath,
   'shell-history': receivedDirectoryPath,
   'agent-session-records': receivedDirectoryPath,
-  'terminal-history': receivedDirectoryPath
+  'terminal-history': receivedDirectoryPath,
+  'automation-run-history': receivedDirectoryPath
 }
 
 export function getOCCdMigrationReceivedBlobPath(
@@ -162,6 +163,23 @@ export function stagedOCCdMigrationBlobFiles(
     descriptor,
     path: stagedBlobPath(root, manifest, descriptor)
   }))
+}
+
+/** A blob's verified bytes, staged or already moved to received by an earlier commit attempt. */
+export function readOCCdMigrationBlob(
+  manifest: OCCdMigrationManifest,
+  root: string,
+  descriptor: OCCdMigrationBlobDescriptor
+): Buffer {
+  for (const path of [
+    stagedBlobPath(root, manifest, descriptor),
+    getOCCdMigrationReceivedBlobPath(root, manifest, descriptor)
+  ]) {
+    if (occdMigrationFileMatches(path, descriptor)) {
+      return readFileSync(path)
+    }
+  }
+  throw new Error(`occd_migration_blob_incomplete:${descriptor.blobKind}:${descriptor.key}`)
 }
 
 /** Reject missing or extra blobs, including leftovers from another capture. */

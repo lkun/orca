@@ -1,5 +1,5 @@
 // Images cloned with one /etc/machine-id look like one machine to every PID check (#32918).
-import { statSync, utimesSync } from 'node:fs'
+import { statSync } from 'node:fs'
 import process from 'node:process'
 import { OCC_MACHINE_NAME_ENV } from '../../shared/occd-managed-launch-env'
 import type { OCCdPeerMachine } from './occd-lock-holder-locality'
@@ -73,17 +73,9 @@ export function occdLockSelf(
   return { ...self, nowMs, ...(bootStartedAtMs === null ? {} : { bootStartedAtMs }) }
 }
 
-/** Keep the lock's mtime fresh so a machine sharing this machine-id can see the holder lives. */
-export function startOCCdLockHeartbeat(lockPath: string): () => void {
-  const heartbeat = setInterval(() => {
-    try {
-      const now = new Date()
-      utimesSync(lockPath, now, now)
-    } catch (error) {
-      // A stalled heartbeat lets a machine sharing this machine-id take the lock.
-      console.warn('[occd] could not refresh the instance lock heartbeat:', error)
-    }
-  }, OCCD_LOCK_HEARTBEAT_MS)
+/** Beat well inside the freshness window so a machine sharing this machine-id can see the holder lives. */
+export function startOCCdLockHeartbeat(beat: () => void): () => void {
+  const heartbeat = setInterval(beat, OCCD_LOCK_HEARTBEAT_MS)
   heartbeat.unref()
   return () => clearInterval(heartbeat)
 }

@@ -24,7 +24,7 @@ import {
   OCCD_READINESS_FILENAME
 } from '../../managed-server/install/occd-remote-host-support'
 import { decommissionRemoteOCCd } from '../../managed-server/install/occd-remote-decommission'
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import {
   forbiddenToolActions,
   type HostileHostCellCore,

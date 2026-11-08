@@ -3,7 +3,7 @@ import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import type { Store } from '../../../persistence/loading-store/store'
 import type { IPtyProvider } from '../../../providers/pty-provider-contract'
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
-import type { TerminalStartupCwdMissingDirFallback } from '../../../../shared/terminal-startup-cwd'
+import type { TerminalStartupCwdMissingDirFallback } from '../../../../shared/shell/launch/terminal-startup-cwd'
 import type {
   CodexHomePtySpawnedLifecycleArgs,
   GetSelectedCodexHomePath,

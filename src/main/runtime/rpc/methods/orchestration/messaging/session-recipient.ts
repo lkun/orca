@@ -1,8 +1,8 @@
 /** Address any host-local chat by OCC session id, including /clear ancestors.
  * Unbound mail belongs to the root mailbox and points at the live session. Released leases may restart; closed/foreign/unknown chats refuse before storage. */
 
+import { OCC_SESSION_ADDRESS_PREFIX } from '../../../../../../shared/occ-session-address-prefix'
 import {
-  OCC_SESSION_ADDRESS_PREFIX,
   formatOCCSessionAddress,
   isOCCSessionId,
   parseOCCSessionAddress,
@@ -10,14 +10,14 @@ import {
   type OCCSessionId
 } from '../../../../../../shared/occ-session-address'
 // The caller codes, reused: each names the same fact about a session, whichever side of the mail it is on.
-import { ORCHESTRATION_SESSION_CALLER_ERROR_CODES as CODES } from '../../../../../../shared/orchestration-session-caller-codes'
+import { ORCHESTRATION_SESSION_CALLER_ERROR_CODES as CODES } from '../../../../../../shared/orchestration/orchestration-session-caller-codes'
 import {
   lookupOCCAgentSession,
   structuredSessionMailReach
-} from '../../../../orchestration/structured-session-mail-address'
-import type { AgentSessionRecordReader } from '../../../../orchestration/structured-session-lineage'
-import type { OrchestrationDb } from '../../../../orchestration/db'
-import { canonicalOCCSessionId } from '../../../../orchestration/canonical-occ-session-id'
+} from '../../../../orchestration/mailbox/routing/structured-session-mail-address'
+import type { AgentSessionRecordReader } from '../../../../orchestration/addressing/session-lineage/structured-session-lineage'
+import type { OrchestrationDb } from '../../../../orchestration/db/orchestration-db'
+import { canonicalOCCSessionId } from '../../../../orchestration/addressing/session-lineage/canonical-occ-session-id'
 
 /** `address` is the named session's own spelling; the mailbox mail lands in is its identity address. */
 export type SessionRecipient = { sessionId: OCCSessionId; address: OCCSessionAddress }

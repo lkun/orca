@@ -1,8 +1,10 @@
-import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
-import { serializeOCCdMigrationValue } from '../../../shared/occd-migration/occd-migration-manifest'
+import {
+  type OCCdMigrationManifest,
+  serializeOCCdMigrationValue
+} from '../../../shared/occd-migration/occd-migration-manifest'
 import { requireOCCdMigrationSshSource } from '../../../shared/occd-migration/occd-migration-source-kind'
-import { parsePersistedAutomationHostFilter } from '../../../shared/automation-host-filter'
-import { hostStableKey } from '../../../shared/automation-owner-key'
+import { parsePersistedAutomationHostFilter } from '../../../shared/automations/ownership/automation-host-filter'
+import { hostStableKey } from '../../../shared/automations/ownership/automation-owner-key'
 import { toRuntimeExecutionHostId } from '../../../shared/execution-host'
 import { composeWorktreeHostIdentity } from '../../../shared/worktree/host-qualified-identity'
 import type { OCCdMigrationClientStatePayload } from '../../../shared/occd-migration/occd-migration-client-state'
@@ -10,7 +12,7 @@ import type { PersistedState } from '../../../shared/persisted-state-types'
 import {
   MAX_CLIENT_HOSTED_BROWSER_CLOSE_INTENTS,
   type ClientHostedBrowserCloseIntent
-} from '../../../shared/client-hosted-browser-close-intent'
+} from '../../../shared/workspace-session/client-hosted-browser-close-intent'
 import {
   createOCCdMigrationSourceScope,
   occdMigrationOwnerMatchesScope,

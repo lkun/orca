@@ -1,6 +1,7 @@
 import {
   cancelManagedOCCdStop,
   forgetManagedOCCdEnvironment,
+  forgetRedundantManagedOCCdEnvironment,
   stopManagedOCCdEnvironment
 } from '../../managed-server/lifecycle/occd-runtime-decommission'
 import { getManagedOCCdRuntimeStatus } from '../../managed-server/lifecycle/occd-runtime-status'
@@ -9,18 +10,24 @@ import {
   rollbackManagedOCCdEnvironment,
   updateManagedOCCdEnvironment
 } from '../../ssh/occd-runtime-maintenance'
-import { getOCCdSshDeployment } from '../../../shared/runtime-environments'
-import { resolveEnvironment } from '../../../shared/runtime-environment-store'
+import { getOCCdSshDeployment } from '../../../shared/remote-runtime/host-catalog/runtime-environments'
+import { resolveEnvironment } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
 import type {
   OCCdManagedRestartResult,
   OCCdManagedStaleLockReclaimRequest,
   OCCdManagedStaleLockReclaimResult
 } from '../../../shared/occd-managed-runtime'
 import { restartManagedOCCdEnvironment } from '../../managed-server/lifecycle/occd-managed-launch-session'
+import { forgetManagedOCCdAutomaticFailures } from '../../managed-server/lifecycle/occd-managed-tunnel'
 import { runManagedOCCdStaleLockReclaim } from '../../managed-server/lifecycle/occd-managed-stale-lock-reclaim'
 import { clearLaunchSessionNote } from './runtime-environment-managed-tunnel'
 import { forgetLaunchSessionVerdict } from '../ssh/ssh-host-launch-session-note'
-import type { ManagedServerActions } from '../../runtime/managed-server-actions-registry'
+import {
+  liftUserHoldsForServerAction,
+  resumeRuntimeEnvironmentStatus
+} from '../ssh/ssh-host-user-disconnect'
+import { releaseUnlinkedHostTransport } from '../ssh/ssh-session-teardown'
+import type { ManagedServerActions } from '../../runtime/hosts/management/managed-server-actions-registry'
 import {
   retireRemovedRuntimeEnvironment,
   type RemovedServerStore
@@ -48,44 +55,48 @@ export function createManagedOCCdActions(
         options.invalidateTransport,
         options.store,
         userDataPath()
-      )
+      ),
+    releaseHostTransport: releaseUnlinkedHostTransport
   }
   return {
     status: (selector) => getManagedOCCdRuntimeStatus(userDataPath(), selector),
-    update: async (selector, force, pastLiveTerminals) => {
-      const result = await updateManagedOCCdEnvironment(userDataPath(), {
-        selector,
-        force,
-        ...(pastLiveTerminals ? { pastLiveTerminals } : {})
-      })
-      if (result.outcome === 'updated') {
-        await options.invalidateTransport(result.environment.id)
-      }
-      if (result.outcome !== 'deferred') {
-        const targetId = getOCCdSshDeployment(result.environment)?.sshTargetId
-        if (targetId) {
-          options.clearHostServerNotes(targetId, result.environment.id)
+    update: (selector, force, pastLiveTerminals) =>
+      asExplicitServerAction(userDataPath(), selector, async () => {
+        const result = await updateManagedOCCdEnvironment(userDataPath(), {
+          selector,
+          force,
+          ...(pastLiveTerminals ? { pastLiveTerminals } : {})
+        })
+        if (result.outcome === 'updated') {
+          await options.invalidateTransport(result.environment.id)
         }
-      }
-      return result
-    },
-    rollback: async (selector) => {
-      const result = await rollbackManagedOCCdEnvironment(userDataPath(), { selector })
-      if (result.outcome === 'rolled-back') {
-        await options.invalidateTransport(result.environment.id)
-      }
-      return result
-    },
-    recover: async (selector, acceptChangedState) => {
-      const result = await recoverManagedOCCdEnvironment(userDataPath(), {
-        selector,
-        acceptChangedState: acceptChangedState === true
-      })
-      if (result.outcome === 'recovered' && result.activeVersion) {
-        await options.invalidateTransport(result.environment.id)
-      }
-      return result
-    },
+        if (result.outcome !== 'deferred') {
+          const targetId = getOCCdSshDeployment(result.environment)?.sshTargetId
+          if (targetId) {
+            options.clearHostServerNotes(targetId, result.environment.id)
+          }
+        }
+        return result
+      }),
+    rollback: (selector) =>
+      asExplicitServerAction(userDataPath(), selector, async () => {
+        const result = await rollbackManagedOCCdEnvironment(userDataPath(), { selector })
+        if (result.outcome === 'rolled-back') {
+          await options.invalidateTransport(result.environment.id)
+        }
+        return result
+      }),
+    recover: (selector, acceptChangedState) =>
+      asExplicitServerAction(userDataPath(), selector, async () => {
+        const result = await recoverManagedOCCdEnvironment(userDataPath(), {
+          selector,
+          acceptChangedState: acceptChangedState === true
+        })
+        if (result.outcome === 'recovered' && result.activeVersion) {
+          await options.invalidateTransport(result.environment.id)
+        }
+        return result
+      }),
     stop: async (selector) => {
       const result = await stopManagedOCCdEnvironment(userDataPath(), { selector }, unlinkPolicy)
       if (result.outcome === 'unlinked') {
@@ -100,6 +111,17 @@ export function createManagedOCCdActions(
         options.clearHostServerStatus(result.sshTargetId)
       }
       return result
+    },
+    forgetRedundant: async (selector) => {
+      const result = await forgetRedundantManagedOCCdEnvironment(
+        userDataPath(),
+        { selector },
+        unlinkPolicy
+      )
+      if (result.outcome === 'forgotten') {
+        options.clearHostServerStatus(result.sshTargetId)
+      }
+      return result
     }
   }
 }
@@ -108,11 +130,13 @@ export async function restartManagedOCCd(
   options: ManagedOCCdActionOptions,
   selector: string
 ): Promise<OCCdManagedRestartResult> {
-  const result = await restartManagedOCCdEnvironment(options.getUserDataPath(), selector)
-  if (result.outcome === 'restarted') {
-    await reconnectRestartedManagedOCCd(options, result.environmentId)
-  }
-  return result
+  return asExplicitServerAction(options.getUserDataPath(), selector, async () => {
+    const result = await restartManagedOCCdEnvironment(options.getUserDataPath(), selector)
+    if (result.outcome === 'restarted') {
+      await reconnectRestartedManagedOCCd(options, result.environmentId)
+    }
+    return result
+  })
 }
 
 export async function reclaimManagedOCCdStaleLock(
@@ -139,5 +163,36 @@ async function reconnectRestartedManagedOCCd(
     options.clearHostServerNotes(targetId, environmentId)
     forgetLaunchSessionVerdict(targetId)
     clearLaunchSessionNote(targetId, environmentId)
+  }
+}
+
+/** A user's Update, Rollback, Recover or Restart is a Connect: it re-arms automatic starts and lifts a Disconnect. */
+async function asExplicitServerAction<T>(
+  userDataPath: string,
+  selector: string,
+  action: () => Promise<T>
+): Promise<T> {
+  let lifted: string[] = []
+  try {
+    const environment = resolveEnvironment(userDataPath, selector)
+    forgetManagedOCCdAutomaticFailures(userDataPath, environment.id)
+    lifted = liftUserHoldsForServerAction(environment)
+  } catch {
+    // An unknown selector fails in the action itself with its own error.
+  }
+  try {
+    // `action` includes its transport invalidation, so resumed status never probes the old transport.
+    return await action()
+  } finally {
+    resumeLiftedStatus(lifted)
+  }
+}
+
+function resumeLiftedStatus(environmentIds: readonly string[]): void {
+  try {
+    resumeRuntimeEnvironmentStatus(environmentIds)
+  } catch (error) {
+    // A server removed during the action has no status to resume; keep the action's own result.
+    console.warn('[managed-occd] Could not resume status after an explicit action:', error)
   }
 }
