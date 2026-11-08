@@ -11,6 +11,10 @@ import type {
   OCCdMigrationSnapshotChunkResult
 } from '../../shared/occd-migration/occd-migration-scrollback'
 import type {
+  OCCdMigrationBlobChunkRequest,
+  OCCdMigrationBlobChunkResult
+} from '../../shared/occd-migration/occd-migration-blob-transfer'
+import type {
   OCCdMigrationSourceCutover,
   OCCdMigrationSourceCutoverPhase
 } from '../../shared/occd-migration/occd-migration-source-cutover'
@@ -26,6 +30,11 @@ import {
   transferOCCdMigrationSnapshots,
   type OCCdMigrationSnapshotSource
 } from './occd-migration-snapshot-coordinator'
+import {
+  exportedOCCdMigrationBlobSource,
+  transferOCCdMigrationBlobs
+} from './occd-migration-blob-coordinator'
+import type { OCCdMigrationExportedBlob } from './occd-migration-manifest-export'
 import type { OCCdMigrationPreflightStore } from './targets/ssh-target-occd-preflight'
 import { sshRelayMigrationCutoverPort } from './occd-migration-ssh-relay-source'
 import type { SshTargetOCCdClaims } from './targets/ssh-target-occd-claims'
@@ -42,6 +51,11 @@ export type OCCdMigrationDestinationCatalog = {
   stageChunk: (
     request: OCCdMigrationSnapshotChunkRequest
   ) => Promise<OCCdMigrationSnapshotChunkResult>
+  /** Read fresh before blobs are sent: each blob kind needs its own capability. */
+  readCapabilities: () => Promise<readonly string[]>
+  stageBlobChunk: (
+    request: OCCdMigrationBlobChunkRequest
+  ) => Promise<OCCdMigrationBlobChunkResult>
 }
 
 export type OCCdMigrationCutoverContext = {
@@ -68,7 +82,7 @@ export async function stageOCCdMigrationDestination(
   if (cutover.phase === 'destination-committed' || cutover.phase === 'source-retired') {
     return cutover
   }
-  assertSourceUnchanged(context, cutover)
+  const blobs = assertSourceUnchanged(context, cutover)
   const { destination } = context
   const read = await destination.readState(cutover.manifest)
   const state =
@@ -86,6 +100,16 @@ export async function stageOCCdMigrationDestination(
       manifest: cutover.manifest,
       state,
       destination: { readState: destination.readState, stageChunk: destination.stageChunk }
+    })
+    await transferOCCdMigrationBlobs({
+      source: exportedOCCdMigrationBlobSource(blobs),
+      manifest: cutover.manifest,
+      blobs: blobs.map((blob) => blob.descriptor),
+      destination: {
+        readCapabilities: destination.readCapabilities,
+        readState: destination.readState,
+        stageChunk: destination.stageBlobChunk
+      }
     })
   }
   return cutover
@@ -178,8 +202,8 @@ export async function confirmDurableCommit(
 function assertSourceUnchanged(
   context: OCCdMigrationCutoverContext,
   cutover: OCCdMigrationSourceCutover
-): void {
-  cutoverSource(context).verifyFence(cutover)
+): OCCdMigrationExportedBlob[] {
+  return cutoverSource(context).verifyFence(cutover)
 }
 
 /** Persist observed state before returning. */

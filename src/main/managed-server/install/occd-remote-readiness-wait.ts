@@ -1,5 +1,5 @@
 // Wait on-host in one bounded exec; repeated SSH polling spawned process bursts and triggered Windows EDR.
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import {
   isWindowsRemoteHost,
   joinRemotePath,
@@ -10,7 +10,8 @@ import {
   OCCD_PID_MACHINE_FILENAME,
   OCCD_READINESS_FILENAME,
   OCCD_READINESS_MAX_BYTES,
-  OCCD_LAUNCH_MACHINE_COMMAND
+  OCCD_LAUNCH_MACHINE_COMMAND,
+  POSIX_NO_SUCH_PROCESS_CASE
 } from './occd-remote-host-support'
 import {
   parseOCCdReadinessOutput,
@@ -43,7 +44,7 @@ function posixReadinessWaitCommand(
     // Fail early only on proven exit from the launching machine; shared homes and unverified PIDs must keep waiting.
     `occd_launch_here() { occd_recorded=$(cat ${pidMachine} 2>/dev/null) && [ -n "$occd_recorded" ] && [ "$occd_recorded" = "$(${OCCD_LAUNCH_MACHINE_COMMAND} 2>/dev/null)" ]; };`,
     `occd_launch_exited() { occd_launch_here || return 1; pid=$(cat ${pidFile} 2>/dev/null); case "$pid" in "" | *[!0-9]*) return 1;; esac;`,
-    'probe_error=$(LC_ALL=C kill -0 "$pid" 2>&1) || { case "$probe_error" in *"No such process"*) return 0;; esac; return 1; };',
+    `probe_error=$(LC_ALL=C kill -0 "$pid" 2>&1) || { case "$probe_error" in ${POSIX_NO_SUCH_PROCESS_CASE}) return 0;; esac; return 1; };`,
     'case "$(ps -o stat= -p "$pid" 2>/dev/null)" in Z*) return 0;; esac; return 1; };',
     // Probe fractional sleep once; POSIX hosts may support only integer seconds.
     'if sleep 0.25 2>/dev/null; then occd_readiness_wait_step=0.25;',

@@ -1,5 +1,5 @@
 /** macOS pins Local Network attribution at spawn: SSH-launched terminals can lose LAN access after sshd-session exits (#25934; Apple TN3179). Record the nearest session plus start time and matching slot PID; preserve earlier attribution while a live terminal daemon survives occd restarts. */
-import { quotePosixShell } from '../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../shared/shell/launch/shell-argument-quoting'
 import { joinRemotePath, type RemoteHostPlatform } from './ssh-remote-platform'
 import { OCCD_PID_FILENAME } from '../managed-server/install/occd-remote-host-support'
 

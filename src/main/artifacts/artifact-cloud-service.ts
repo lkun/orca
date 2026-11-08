@@ -8,8 +8,8 @@ import type {
   ArtifactPublishedLink,
   ArtifactPublishResult,
   ArtifactWriteRequest
-} from '../../shared/artifacts'
-import { assertArtifactSharingAllowed } from '../../shared/artifact-sharing-gate'
+} from '../../shared/artifacts/artifacts'
+import { assertArtifactSharingAllowed } from '../../shared/artifacts/artifact-sharing-gate'
 import { ensureActiveOCCProfile } from '../occ-profiles/profile-index-store'
 import { getOCCCloudAuthConfig } from '../occ-profiles/profile-cloud-auth-config'
 import { prepareArtifactCloudUse } from '../occ-profiles/profile-artifact-cloud-cleanup'

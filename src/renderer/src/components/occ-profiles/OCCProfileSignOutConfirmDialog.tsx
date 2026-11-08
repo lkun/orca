@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { translate } from '@/i18n/i18n'
+import { useTranslate } from '@/i18n/use-translate'
 
 export function OCCProfileSignOutConfirmDialog({
   open,
@@ -21,15 +21,16 @@ export function OCCProfileSignOutConfirmDialog({
   onConfirm: () => void
   signingOut: boolean
 }): React.JSX.Element {
+  const t = useTranslate()
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[420px]">
         <DialogHeader>
           <DialogTitle>
-            {translate('auto.components.occ.profiles.signout.confirm.title', 'Sign out of OCC?')}
+            {t('auto.components.occ.profiles.signout.confirm.title', 'Sign out of OCC?')}
           </DialogTitle>
           <DialogDescription>
-            {translate(
+            {t(
               'auto.components.occ.profiles.signout.confirm.description',
               "Artifacts and OCC Relay will be unavailable until you sign in again. Your local projects and worktrees won't be affected."
             )}
@@ -43,11 +44,11 @@ export function OCCProfileSignOutConfirmDialog({
             onClick={() => onOpenChange(false)}
             disabled={signingOut}
           >
-            {translate('auto.components.occ.profiles.signout.confirm.cancel', 'Cancel')}
+            {t('auto.components.occ.profiles.signout.confirm.cancel', 'Cancel')}
           </Button>
           <Button size="sm" onClick={onConfirm} disabled={signingOut}>
             {signingOut ? <Loader2 className="size-4 animate-spin" /> : null}
-            {translate('auto.components.occ.profiles.signout.confirm.action', 'Sign out')}
+            {t('auto.components.occ.profiles.signout.confirm.action', 'Sign out')}
           </Button>
         </DialogFooter>
       </DialogContent>

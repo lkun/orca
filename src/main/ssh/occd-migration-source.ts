@@ -5,7 +5,10 @@ import type {
   OCCdMigrationManifest
 } from '../../shared/occd-migration/occd-migration-manifest'
 import type { OCCdMigrationSourceCutover } from '../../shared/occd-migration/occd-migration-source-cutover'
-import type { OCCdMigrationManifestExportOptions } from './occd-migration-manifest-export'
+import type {
+  OCCdMigrationExportedBlob,
+  OCCdMigrationManifestExportOptions
+} from './occd-migration-manifest-export'
 import type {
   OCCdMigrationFenceResult,
   OCCdMigrationFenceState
@@ -13,8 +16,9 @@ import type {
 import type { OCCdMigrationTerminalVerdict } from './occd-migration-terminal-gate'
 
 export type OCCdMigrationSourceCutoverPort = {
-  /** Before every stage and commit; throws unless the fenced source still matches the journal. */
-  verifyFence: (cutover: OCCdMigrationSourceCutover) => void
+  /** Before every stage and commit; throws unless the fenced source still matches the journal.
+   * Returns the bytes of the blobs its manifest names, which that match proves are the journaled ones. */
+  verifyFence: (cutover: OCCdMigrationSourceCutover) => OCCdMigrationExportedBlob[]
   /** Drops the fence, then the journal; only on proof the destination holds nothing. */
   releaseFence: (cutover: OCCdMigrationSourceCutover) => Promise<void>
 }

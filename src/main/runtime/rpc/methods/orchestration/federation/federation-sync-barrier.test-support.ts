@@ -1,5 +1,5 @@
 import type { OCCRuntimeService } from '../../../../occ-runtime'
-import type { OrchestrationDb } from '../../../../orchestration/db'
+import type { OrchestrationDb } from '../../../../orchestration/db/orchestration-db'
 
 // Await the next relay round: the current coalesced tick may have read peers before the latest mutation.
 export async function syncFederationBarrier(

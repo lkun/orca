@@ -1,4 +1,5 @@
 import { posixCurlCommand } from '../agent-hooks/hook-post-command'
+import { buildHookProcessCapture } from '../agent-hooks/hook-process-capture'
 import {
   buildPosixHookPayloadCapture,
   POSIX_HOOK_JSON_STDIN,
@@ -48,6 +49,7 @@ export function getManagedScript(
     'esac',
     // Events without stdin still need a status post.
     ...buildPosixHookPayloadCapture('empty-object', POSIX_HOOK_JSON_STDIN),
+    ...buildHookProcessCapture(),
     ...buildPosixHookSpoolLines('antigravity', 'OCC_ANTIGRAVITY_EVENT'),
     'if [ -n "$OCC_AGENT_HOOK_ENDPOINT" ] && [ -r "$OCC_AGENT_HOOK_ENDPOINT" ]; then',
     '  . "$OCC_AGENT_HOOK_ENDPOINT" 2>/dev/null || :',
@@ -68,6 +70,8 @@ export function getManagedScript(
     '  --data-urlencode "env=${OCC_AGENT_HOOK_ENV}" \\',
     '  --data-urlencode "version=${OCC_AGENT_HOOK_VERSION}" \\',
     '  --data-urlencode "hook_event_name=${OCC_ANTIGRAVITY_EVENT}" \\',
+    '  --data-urlencode "agentProcess=${occ_agent_process}" \\',
+    '  --data-urlencode "tmuxPane=${occ_tmux_pane}" \\',
     '  --data-urlencode "payload@-" >/dev/null 2>&1 || spool_hook_event',
     'exit 0',
     ''

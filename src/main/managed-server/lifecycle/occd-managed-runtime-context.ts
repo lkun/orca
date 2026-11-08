@@ -1,10 +1,10 @@
-import { resolveEnvironment } from '../../../shared/runtime-environment-store'
+import { resolveEnvironment } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
 import { OCCD_UPDATE_TERMINALS_RUNNING_CODE } from '../../../shared/occd-managed-runtime'
 import {
   getOCCdSshDeployment,
   type KnownRuntimeEnvironment,
   type OCCdSshDeploymentLink
-} from '../../../shared/runtime-environments'
+} from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import { getManagedOCCdFenceEnvironmentId } from '../../../shared/managed-occd-ssh-owner'
 import type { ServeReadiness } from '../../server/serve-readiness'
 import { computeLocalOCCdBuildHash } from '../../ssh/occd-local-build-hash'

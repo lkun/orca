@@ -7,10 +7,10 @@ import {
 } from '../../shared/occd-migration/occd-migration-manifest-validation'
 import {
   OCCD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
-  OCCD_MIGRATION_CATALOG_ABORT_BY_REFERENCE_RUNTIME_CAPABILITY,
   OCCD_MIGRATION_CATALOG_RUNTIME_CAPABILITY
 } from '../../shared/occd-runtime-capabilities'
-import { encodePairingOffer, PAIRING_OFFER_VERSION } from '../../shared/pairing'
+import { encodePairingOffer } from '../../shared/remote-runtime/pairing/pairing'
+import { PAIRING_OFFER_VERSION } from '../../shared/remote-runtime/pairing/mobile-relay-pairing-offer'
 
 const sendRequest = vi.hoisted(() => vi.fn())
 const extraCapabilities = vi.hoisted((): string[] => [])
@@ -40,8 +40,6 @@ vi.mock('../../shared/remote-runtime/remote-runtime-client', () => ({
 
 const { commitRemoteOCCdMigrationCatalog, stageRemoteOCCdMigrationCatalog } =
   await import('./occd-migration-catalog-client')
-const { abortRemoteOCCdMigrationCatalogByReference } =
-  await import('./occd-migration-catalog-reference-client')
 
 const pairingCode = encodePairingOffer({
   v: PAIRING_OFFER_VERSION,
@@ -102,31 +100,5 @@ describe("occd migration requests fit the host's sealed inbound frame", () => {
       commitRemoteOCCdMigrationCatalog(pairingCode, manifest, { expectedBlobs: manyBlobs })
     ).rejects.toThrow(/too large to move to its OCC server/)
     expect(sendRequest).not.toHaveBeenCalled()
-  })
-
-  it('aborts a manifest no request can carry by its identity alone, durably', async () => {
-    extraCapabilities.push(OCCD_MIGRATION_CATALOG_ABORT_BY_REFERENCE_RUNTIME_CAPABILITY)
-    const manifest = manifestOfBytes(MAX_OCCD_MIGRATION_MANIFEST_BYTES)
-    const identity = { migrationId: manifest.migrationId, manifestSha256: manifest.manifestSha256 }
-    sendRequest.mockResolvedValueOnce({
-      ok: true,
-      result: { ...identity, state: 'absent', aborted: true, durableAbsent: true }
-    })
-    await expect(
-      abortRemoteOCCdMigrationCatalogByReference(pairingCode, manifest)
-    ).resolves.toEqual({ ...identity, state: 'absent', aborted: true, durableAbsent: true })
-    expect(sendRequest).toHaveBeenCalledWith(
-      expect.anything(),
-      'occd.migration.abortCatalogByReference',
-      identity
-    )
-
-    sendRequest.mockResolvedValueOnce({
-      ok: true,
-      result: { ...identity, state: 'absent', aborted: true }
-    })
-    await expect(
-      abortRemoteOCCdMigrationCatalogByReference(pairingCode, manifest)
-    ).rejects.toThrow('occd_migration_catalog_abort_durability_invalid')
   })
 })

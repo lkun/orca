@@ -1,4 +1,4 @@
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import { isWindowsRemoteHost, type RemoteHostPlatform } from '../../ssh/ssh-remote-platform'
 import { occdWindowsHostOpCommand } from '../install/occd-remote-windows-node'
 import { OCCD_SNAPSHOT_MEMBERS } from './occd-state-snapshot-members'

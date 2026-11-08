@@ -24,7 +24,7 @@ import {
 } from '../../ssh/ssh-remote-platform'
 import { RELAY_REMOTE_DIR } from '../../ssh/remote-exec/remote-frame-protocol'
 import { occdWindowsHomeOpCommand } from './occd-remote-windows-node'
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import { OCCD_INSTALL_COMPLETE_FILENAME } from '../../../shared/occd-artifacts'
 import { OCCD_WINDOWS_LIVENESS_MANY_MARKER } from '../host-state/occd-windows-host-script'
 

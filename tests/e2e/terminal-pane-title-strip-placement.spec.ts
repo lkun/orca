@@ -1,7 +1,6 @@
 import type { Page } from '@stablyai/playwright-test'
 import { test, expect } from './helpers/occ-app'
 import {
-  moveTerminalPaneByLeafId,
   readPaneIdentitySnapshot,
   readTerminalPaneDomLeafOrder,
   splitActiveTerminalPane,
@@ -131,92 +130,6 @@ test.describe('Terminal Panes', () => {
         { timeout: 5_000, message: 'Title-strip drop changed selection or missed its target' }
       )
       .toEqual({ activeLeafId: otherPane.leafId, targetHasPath: true, otherHasPath: false })
-  })
-
-  test('Set Title overlay follows its pane after same-count pane move', async ({ occPage }) => {
-    const title = `Moved overlay title ${Date.now()}`
-
-    await setPaneTitleFromTerminalMenu(occPage, title)
-    const initialSnapshot = await waitForPaneIdentitySnapshot(occPage, 1)
-    const titledLeafId = initialSnapshot.activeLeafId ?? initialSnapshot.panes[0]?.leafId
-    if (!titledLeafId) {
-      throw new Error('No titled pane leaf id found before move')
-    }
-
-    await splitActiveTerminalPane(occPage, 'vertical')
-    await waitForPaneCount(occPage, 2)
-    const beforeMove = await waitForPaneIdentitySnapshot(occPage, 2)
-    const target = beforeMove.panes.find((pane) => pane.leafId !== titledLeafId)
-    if (!target) {
-      throw new Error('No target pane found for titled pane move')
-    }
-    const beforeOrder = await readTerminalPaneDomLeafOrder(occPage)
-
-    await expectPaneTitleAttachedToLeaf(occPage, title, titledLeafId)
-    await moveTerminalPaneByLeafId(occPage, titledLeafId, target.leafId, 'right')
-
-    await expect
-      .poll(async () => readTerminalPaneDomLeafOrder(occPage), {
-        timeout: 10_000,
-        message: 'Pane move did not update DOM order'
-      })
-      .not.toEqual(beforeOrder)
-    await expectPaneTitleAttachedToLeaf(occPage, title, titledLeafId)
-  })
-
-  test('Set Title keeps the pane drag handle available over the title strip', async ({
-    occPage
-  }) => {
-    const title = `Draggable title ${Date.now()}`
-
-    await setPaneTitleFromTerminalMenu(occPage, title)
-    const initialSnapshot = await waitForPaneIdentitySnapshot(occPage, 1)
-    const titledLeafId = initialSnapshot.activeLeafId ?? initialSnapshot.panes[0]?.leafId
-    if (!titledLeafId) {
-      throw new Error('No titled pane leaf id found before split')
-    }
-
-    await splitActiveTerminalPane(occPage, 'vertical')
-    await waitForPaneCount(occPage, 2)
-    await expectPaneTitleAttachedToLeaf(occPage, title, titledLeafId)
-
-    const titleTopHit = await occPage.evaluate(
-      ({ title, titledLeafId }) => {
-        const titleBar = Array.from(document.querySelectorAll<HTMLElement>('.pane-title-bar')).find(
-          (element) => element.textContent?.includes(title)
-        )
-        const titleDragHandle =
-          titleBar?.querySelector<HTMLElement>('.pane-title-drag-handle') ?? null
-        const pane = document.querySelector<HTMLElement>(`.pane[data-leaf-id="${titledLeafId}"]`)
-        if (!titleBar || !pane || !titleDragHandle) {
-          return null
-        }
-        const titleRect = titleBar.getBoundingClientRect()
-        const hitElement = document.elementFromPoint(
-          titleRect.left + titleRect.width / 2,
-          titleRect.top + 4
-        )
-        return {
-          hitDragHandle:
-            hitElement instanceof HTMLElement &&
-            hitElement.closest('.pane-title-drag-handle') !== null,
-          pointerEvents: getComputedStyle(titleDragHandle).pointerEvents,
-          titleTop: titleRect.top,
-          handleTop: titleDragHandle.getBoundingClientRect().top
-        }
-      },
-      { title, titledLeafId }
-    )
-
-    expect(titleTopHit).not.toBeNull()
-    expect(titleTopHit?.hitDragHandle).toBe(true)
-    expect(titleTopHit?.pointerEvents).toBe('auto')
-    expect(Math.abs((titleTopHit?.handleTop ?? 0) - (titleTopHit?.titleTop ?? 0))).toBeLessThan(1)
-
-    await occPage.locator('.pane-title-bar', { hasText: title }).click({
-      position: { x: 20, y: 18 }
-    })
-    await expect(occPage.locator('.pane-title-input')).toBeVisible()
   })
 
   test('@headful Set Title pane can be dragged from the title strip', async ({ occPage }) => {

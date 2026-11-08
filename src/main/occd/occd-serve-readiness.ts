@@ -1,5 +1,5 @@
 import type { ServeReadiness } from '../server/serve-readiness'
-import type { OCCRuntimeRpcServer } from '../runtime/runtime-rpc'
+import type { OCCRuntimeRpcServer } from '../runtime/rpc/server/runtime-rpc'
 import { buildServePairingReadiness } from '../server/serve-pairing-readiness'
 import type { OCCdHealth } from './occd-health'
 import type { OCCdOptions } from './occd-start-contract'

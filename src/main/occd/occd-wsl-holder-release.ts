@@ -5,7 +5,7 @@
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { OCCD_WSL_HOLDER_RELEASE_FILENAME } from '../../shared/occd-idle-exit'
-import { writeSecureFile } from '../../shared/secure-file'
+import { writeSecureFile } from '../../shared/secure-storage/secure-file'
 import { OCCD_WSL_HOST_ENV } from '../ipc/wsl-guest-windows-drive-path'
 import type { OCCdDaemonRetirement } from './occd-daemon-retirement'
 

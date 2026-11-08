@@ -1,6 +1,6 @@
 import { OrchestrationError } from '../../orchestration-error'
 import type { OrchestrationDb } from '../orchestration-db'
-import { dispatchAssigneeOCCSessionId } from '../../dispatch-assignee-occ-session-id'
+import { dispatchAssigneeOCCSessionId } from '../../addressing/session-lineage/dispatch-assignee-occ-session-id'
 
 export function prepareStartingWorkerAuthority(
   this: OrchestrationDb,

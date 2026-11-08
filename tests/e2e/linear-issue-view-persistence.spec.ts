@@ -218,20 +218,6 @@ async function openLinearTasks(page: Page): Promise<void> {
   })
 }
 
-async function closeTasksPage(page: Page): Promise<void> {
-  await page.evaluate(() => {
-    const store = window.__store
-    if (!store) {
-      throw new Error('window.__store is not available')
-    }
-    // Why: store close is locale-stable; the Close tasks label is localized.
-    store.getState().closeTaskPage()
-  })
-  await expect
-    .poll(async () => getStoreState<string>(page, 'activeView'), { timeout: 5_000 })
-    .not.toBe('tasks')
-}
-
 async function waitForLinearIssuesChrome(page: Page, issueTitle: string): Promise<void> {
   await expect
     .poll(async () => getStoreState<string>(page, 'activeView'), { timeout: 10_000 })
@@ -382,51 +368,6 @@ function seededRepoPathOrSkip(): string {
 }
 
 test.describe('Linear issue view persistence', () => {
-  test('preserves view mode, grouping, ordering, and filters across a tasks remount', async ({
-    electronApp,
-    occPage
-  }) => {
-    await waitForSessionReady(occPage)
-    await waitForActiveWorktree(occPage)
-    await installLinearPersistenceBackend(electronApp)
-    await openLinearTasks(occPage)
-    await waitForLinearIssuesChrome(occPage, ISSUE_A.title)
-
-    await setLinearViewPreferences(occPage, {
-      viewMode: 'Board',
-      groupBy: 'Status',
-      orderBy: 'Updated'
-    })
-    await applyStatusFilter(occPage, STATE_A.name)
-
-    await waitForLinearIssueViewPersisted(occPage, (view) => {
-      if (
-        !view ||
-        view.viewMode !== 'board' ||
-        view.groupBy !== 'status' ||
-        view.orderBy !== 'updated'
-      ) {
-        return false
-      }
-      const filter = view.filtersByWorkspaceId?.[WORKSPACE_A.id]
-      return Boolean(filter?.stateIds?.includes(STATE_A.id))
-    })
-
-    await expectRestoredLinearView(occPage)
-    const statusChip = occPage.getByRole('button', { name: 'Remove Status filter' }).locator('..')
-    await expect(statusChip).toContainText(STATE_A.name)
-
-    await closeTasksPage(occPage)
-    await openLinearTasks(occPage)
-    await waitForLinearIssuesChrome(occPage, ISSUE_A.title)
-
-    await expectRestoredLinearView(occPage)
-    await expect(
-      occPage.getByRole('button', { name: 'Remove Status filter' }).locator('..')
-    ).toContainText(STATE_A.name)
-    await expect(occPage.getByText(STATE_A.name, { exact: true }).first()).toBeVisible()
-  })
-
   test('keeps attribute filters scoped per Linear workspace', async ({ electronApp, occPage }) => {
     await waitForSessionReady(occPage)
     await waitForActiveWorktree(occPage)

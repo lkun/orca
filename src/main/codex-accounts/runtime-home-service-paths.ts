@@ -9,7 +9,10 @@ import {
 } from 'node:fs'
 import { getAppEnvironment } from '../../shared/app-environment'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
-import { getOCCManagedCodexHomePath, getOCCUserDataPath } from '../codex/codex-home-paths'
+import {
+  getOCCManagedCodexHomePath,
+  getOCCUserDataPath
+} from '../codex/configuration/homes/codex-home-paths'
 import type { CodexMirroredHomeStatus } from './runtime-home-service-types'
 import { CodexRuntimeHomeState } from './runtime-home-service-state'
 

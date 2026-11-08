@@ -1,5 +1,5 @@
 import type { OCCHooks } from '../../shared/occ-yaml-hook-types'
-import type { PublicKnownRuntimeEnvironment } from '../../shared/runtime-environments'
+import type { PublicKnownRuntimeEnvironment } from '../../shared/remote-runtime/host-catalog/runtime-environments'
 import type { EphemeralVmRecipeDoctorResult } from '../../shared/ephemeral-vm-recipes'
 import type { EphemeralVmRecipeResultWarning } from '../../shared/ephemeral-vm-recipe-diagnostics'
 import type { EphemeralVmRuntimeRecord } from '../../shared/ephemeral-vm-runtimes'

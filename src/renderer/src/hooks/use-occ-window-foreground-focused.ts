@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import { isOCCWindowForegroundFocused } from '@/components/terminal-pane/terminal-notification-pane-visibility'
+import { isOCCWindowForegroundFocused } from '@/attention/occ-window-foreground-focus'
 
 function subscribe(onChange: () => void): () => void {
   window.addEventListener('focus', onChange)

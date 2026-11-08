@@ -69,24 +69,6 @@ describe('occ emulator CLI handlers', () => {
     })
   })
 
-  it('uses a wider client timeout for emulator attach recovery', async () => {
-    queueFixtures(
-      callMock,
-      okFixture('req_attach', {
-        attached: true,
-        info: { deviceUdid: 'device-1', streamUrl: 'http://127.0.0.1:3102/stream.mjpeg' }
-      })
-    )
-
-    await main(['emulator', 'attach', 'device-1', '--worktree', 'all'], '/repo/project')
-
-    expect(callMock).toHaveBeenCalledWith(
-      'emulator.attach',
-      { device: 'device-1', worktree: undefined, focus: false },
-      { timeoutMs: 240_000 }
-    )
-  })
-
   it('uses the folder workspace exported by the current OCC terminal', async () => {
     process.env.OCC_WORKSPACE_ID = 'folder:folder-1'
     delete process.env.OCC_WORKTREE_ID

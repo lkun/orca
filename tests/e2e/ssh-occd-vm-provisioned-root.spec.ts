@@ -14,7 +14,7 @@ import {
 } from './helpers/docker-ssh-host-target'
 import { ensureTerminalVisible, waitForSessionReady } from './helpers/store'
 import { OCCD_TEMPLATE, skipUnlessManagedDockerHost } from './helpers/occd-managed-workspace'
-import { quotePosixShell } from '../../src/shared/shell-argument-quoting'
+import { quotePosixShell } from '../../src/shared/shell/launch/shell-argument-quoting'
 
 /** A recipe VM's SSH root, served by a managed occd the first connect deploys. */
 skipUnlessManagedDockerHost()

@@ -1,18 +1,19 @@
 import { createHash } from 'node:crypto'
-import type { OCCdMigrationTerminalScrollbackSnapshot } from '../../../shared/occd-migration/occd-migration-scrollback'
+
 import {
+  type OCCdMigrationTerminalScrollbackSnapshot,
   MAX_OCCD_MIGRATION_SCROLLBACK_SNAPSHOTS,
   MAX_OCCD_MIGRATION_SCROLLBACK_TOTAL_BYTES
 } from '../../../shared/occd-migration/occd-migration-scrollback'
 import type { PersistedState } from '../../../shared/persisted-state-types'
-import { TERMINAL_SCROLLBACK_STORE_BYTE_LIMIT } from '../../../shared/terminal-scrollback-limits'
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
+import { TERMINAL_SCROLLBACK_STORE_BYTE_LIMIT } from '../../../shared/terminal/replay/terminal-scrollback-limits'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
 import {
   makeTerminalScrollbackSnapshotRef,
   readTerminalScrollbackStoredBytesSync,
   readTerminalScrollbackStoredSnapshotSync,
   type TerminalScrollbackSnapshotStorage
-} from '../../terminal-scrollback-snapshots'
+} from '../../pty/scrollback/terminal-scrollback-snapshots'
 import { compareKeys } from './occd-source-key-order'
 
 export type ProjectedOCCdMigrationScrollback = {

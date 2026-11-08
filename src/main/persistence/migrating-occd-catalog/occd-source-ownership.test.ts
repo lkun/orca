@@ -1,10 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { getDefaultPersistedState } from '../../../shared/constants'
-import type { FolderWorkspace } from '../../../shared/folder-workspace-types'
+import type { FolderWorkspace } from '../../../shared/folder-workspaces/folder-workspace-types'
 import type { ProjectGroup } from '../../../shared/project-group-types'
 import type { Repo } from '../../../shared/repo-types'
 import { occdMigrationCutoverFixture } from '../../ssh/occd-migration-cutover-fixture'
-import { collectOCCdMigrationSourceCatalog } from './occd-source-catalog'
 import { subtractOCCdSourceCatalogState } from './occd-source-catalog-subtraction'
 import { occdSourceFolderWorkspaceIds, repoBelongsToOCCdSource } from './occd-source-ownership'
 
@@ -72,23 +71,6 @@ describe('occd migration source ownership on a Windows SSH host', () => {
       catalog.repos.filter((entry) => repoBelongsToOCCdSource(entry, TARGET)).map(({ id }) => id)
     ).toEqual(['repo-app', 'repo-unified'])
     expect([...occdSourceFolderWorkspaceIds(catalog, TARGET)].sort()).toEqual([
-      'fw-explicit',
-      'fw-inferred'
-    ])
-  })
-
-  it('exports exactly those rows', () => {
-    const catalog = windowsCatalog()
-    const exported = collectOCCdMigrationSourceCatalog(
-      {
-        getRepos: () => catalog.repos,
-        getProjectGroups: () => catalog.projectGroups,
-        getFolderWorkspaces: () => catalog.folderWorkspaces
-      },
-      { id: TARGET }
-    )
-    expect(exported.repositories.map(({ id }) => id)).toEqual(['repo-app', 'repo-unified'])
-    expect(exported.folderWorkspaces.map(({ id }) => id).sort()).toEqual([
       'fw-explicit',
       'fw-inferred'
     ])

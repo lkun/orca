@@ -1,9 +1,9 @@
 import { OCCD_MIGRATION_BLOB_KIND_CONTRACTS } from '../../../shared/occd-migration/occd-migration-blob-transfer'
 import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
 import type { PersistedState } from '../../../shared/persisted-state-types'
-import { parsePaneKey } from '../../../shared/stable-pane-id'
-import { getDaemonHistoryDir } from '../../daemon/daemon-launch-paths'
-import { getHistoryRoot } from '../../terminal-history-paths'
+import { parsePaneKey } from '../../../shared/workspace-layout/stable-pane-id'
+import { getDaemonHistoryDir } from '../../daemon/launch/daemon-launch-paths'
+import { getHistoryRoot } from '../../pty/history/terminal-history-paths'
 import type { StoreRuntimeState } from '../loading-store/store-runtime-state'
 import {
   findOCCdMigrationImportReceipt,

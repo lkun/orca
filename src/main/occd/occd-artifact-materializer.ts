@@ -23,6 +23,7 @@ import { pinnedNodeRuntimeAsset, type NodeRuntimeTarget } from '../../shared/nod
 import { findOCCdCachePath } from '../node-runtime/occd-cache-path'
 import type { PinnedRuntimeMaterializeOptions } from '../node-runtime/pinned-runtime-materializer'
 import { readOCCdArtifactVerificationRecord } from './occd-artifact-verification-record'
+import { occdArtifactSlotName } from './occd-artifact-slot-name'
 import {
   isCompleteArtifact,
   rememberVerification,
@@ -104,7 +105,7 @@ export async function assembleOCCdArtifact(args: {
       : null
   let slotFromRecord = false
   const cached = await findOCCdCachePath(
-    (attempt) => join(targetRoot, `${fullVersion}${attempt ? `.repair-${attempt}` : ''}`),
+    (attempt) => join(targetRoot, occdArtifactSlotName(fullVersion, attempt)),
     async (path) => {
       slotFromRecord = await slotMatchesRecord(path, fullVersion, sources, recordedSlot, nowMs)
       return slotFromRecord || isCompleteArtifact(path, fullVersion, sources, sourceHashes)

@@ -146,9 +146,9 @@ HEADER key=pinned label="Pinned" count=1 tone="text-foreground" icon=Pin hostCou
 ITEM rowKey=pinned:|occ::/w/feat-a depth=0 groupDepth=0 lastChild=true children=0 hostLabel="Local Linux" placement=pinned owning=project:p-occ
 HEADER key=project-group:pg-work label="Work" count=2 tone="text-foreground" icon=FolderTree projectGroup=pg-work projectGroupDepth=0
 HEADER key=project:p-occ label="occ" count=3 tone="text-foreground" icon=FolderTree repo=occ projectGroupDepth=1 hostCounts={local:2 ssh:gpu-vm:1} hostIds={local:[occ::/w/feat-a,occ::/occ] ssh:gpu-vm:[occ-ssh::/occ-ssh]}
+ITEM rowKey=project:p-occ:|occ::/w/feat-a depth=0 groupDepth=1 children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
 ITEM rowKey=project:p-occ:|occ::/occ depth=0 groupDepth=1 children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
-ITEM rowKey=project:p-occ:|occ-ssh::/occ-ssh depth=0 groupDepth=1 children=0 hostLabel="GPU VM" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
-ITEM rowKey=project:p-occ:|occ::/w/feat-a depth=0 groupDepth=1 lastChild=true children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
+ITEM rowKey=project:p-occ:|occ-ssh::/occ-ssh depth=0 groupDepth=1 lastChild=true children=0 hostLabel="GPU VM" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
 HEADER key=project-group:pg-nested label="Nested" count=1 tone="text-foreground" icon=FolderTree projectGroup=pg-nested projectGroupDepth=1
 HEADER key=project:repo:lab label="lab" count=1 tone="text-foreground" icon=FolderTree repo=lab projectGroupDepth=2
 ITEM rowKey=project:repo:lab:|lab::/lab depth=0 groupDepth=2 lastChild=true children=0 hostLabel="Local Linux" placement=natural owning=project:repo:lab path=project-group:pg-work>project-group:pg-nested>project:repo:lab
@@ -168,10 +168,10 @@ SECTION project:repo:empty: -
 PREFERRED |occ::/w/feat-a -> project:p-occ:|occ::/w/feat-a
 renderedKeys: 25
 placeholders: empty
-selectionOrder: |occ::/occ |occ-ssh::/occ-ssh |occ::/w/feat-a |lab::/lab local|folder:fw-review local|folder:fw-notes ssh:gpu-vm|folder:fw-remote runtime:env-1|api::/api |ext::/ext
-cmd1-9 mounted: 1=occ::/occ 2=occ-ssh::/occ-ssh 3=occ::/w/feat-a 4=lab::/lab 5=folder:fw-review@local 6=folder:fw-notes@local 7=folder:fw-remote@ssh:gpu-vm 8=api::/api@runtime:env-1 9=ext::/ext
-cmd1-9 unmounted: 1=occ::/occ 2=occ-ssh::/occ-ssh 3=occ::/w/feat-a 4=lab::/lab 5=folder:fw-review@local 6=folder:fw-notes@local 7=folder:fw-remote@ssh:gpu-vm 8=api::/api@runtime:env-1 9=ext::/ext
-cmd ids unmounted: occ::/occ occ-ssh::/occ-ssh occ::/w/feat-a lab::/lab folder:fw-review folder:fw-notes folder:fw-remote api::/api ext::/ext
+selectionOrder: |occ::/w/feat-a |occ::/occ |occ-ssh::/occ-ssh |lab::/lab local|folder:fw-review local|folder:fw-notes ssh:gpu-vm|folder:fw-remote runtime:env-1|api::/api |ext::/ext
+cmd1-9 mounted: 1=occ::/w/feat-a 2=occ::/occ 3=occ-ssh::/occ-ssh 4=lab::/lab 5=folder:fw-review@local 6=folder:fw-notes@local 7=folder:fw-remote@ssh:gpu-vm 8=api::/api@runtime:env-1 9=ext::/ext
+cmd1-9 unmounted: 1=occ::/w/feat-a 2=occ::/occ 3=occ-ssh::/occ-ssh 4=lab::/lab 5=folder:fw-review@local 6=folder:fw-notes@local 7=folder:fw-remote@ssh:gpu-vm 8=api::/api@runtime:env-1 9=ext::/ext
+cmd ids unmounted: occ::/w/feat-a occ::/occ occ-ssh::/occ-ssh lab::/lab folder:fw-review folder:fw-notes folder:fw-remote api::/api ext::/ext
 -- collapsed: pinned project:p-occ project:repo:lab project-group:pg-remote-folders project:repo:empty --
 visible: occ::/w/feat-a occ::/occ occ-ssh::/occ-ssh api::/api lab::/lab ext::/ext
 HEADER key=pinned label="Pinned" count=1 tone="text-foreground" icon=Pin hostCounts={local:1} hostIds={local:[occ::/w/feat-a]} ids=[occ::/w/feat-a]
@@ -191,7 +191,7 @@ HEADER key=project:repo:ext label="ext" count=1 tone="text-foreground" icon=Fold
 IMPORTED key=imported-worktrees-card:repo-group:ext repo=ext placement=repo-group hidden=ext::/w/detected-hidden
 ITEM rowKey=project:repo:ext:|ext::/ext depth=0 groupDepth=0 lastChild=true children=0 hostLabel="Local Linux" placement=natural owning=project:repo:ext
 SECTION pinned: pinned:|occ::/w/feat-a
-SECTION project:p-occ: project:p-occ:|occ::/occ project:p-occ:|occ-ssh::/occ-ssh project:p-occ:|occ::/w/feat-a
+SECTION project:p-occ: project:p-occ:|occ::/w/feat-a project:p-occ:|occ::/occ project:p-occ:|occ-ssh::/occ-ssh
 SECTION project:repo:lab: project:repo:lab:|lab::/lab
 SECTION project:repo:empty: -
 PREFERRED |occ::/w/feat-a -> project:p-occ:|occ::/w/feat-a

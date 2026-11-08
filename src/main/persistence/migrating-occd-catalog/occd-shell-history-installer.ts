@@ -15,7 +15,7 @@ import {
 import { dirname, join, resolve } from 'node:path'
 import { OCCD_MIGRATION_BLOB_KIND_CONTRACTS } from '../../../shared/occd-migration/occd-migration-blob-transfer'
 import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
-import { projectGroupIdFromRepoId } from '../../../shared/folder-workspace-worktree'
+import { projectGroupIdFromRepoId } from '../../../shared/folder-workspaces/folder-workspace-worktree'
 import { folderWorkspaceKey } from '../../../shared/workspace-scope'
 import { splitWorktreeId } from '../../../shared/worktree/id'
 import {
@@ -23,9 +23,9 @@ import {
   syncDirectoryDurablySync,
   writeFileDurableSync
 } from '../../filesystem/durable-file-write'
-import { resolveUnixPaneShellPath } from '../../daemon/shell-ready'
+import { resolveUnixPaneShellPath } from '../../daemon/shell-readiness/shell-ready'
 import { resolveUnixShellPath } from '../../providers/local-pty/local-pty-executable-spawn'
-import { readHistoryMeta, resolveShellKind } from '../../terminal-history'
+import { readHistoryMeta, resolveShellKind } from '../../pty/history/terminal-history'
 import {
   getOCCdMigrationReceivedBlobPath,
   listOCCdMigrationReceivedBlobNames

@@ -5,7 +5,7 @@ import type {
 } from '../../../shared/occd-migration/occd-migration-manifest'
 import type { OCCdMigrationDependencyKind } from '../../../shared/occd-migration/occd-migration-preflight'
 import type { PersistedState } from '../../../shared/persisted-state-types'
-import type { TerminalScrollbackSnapshotStorage } from '../../terminal-scrollback-snapshots'
+import type { TerminalScrollbackSnapshotStorage } from '../../pty/scrollback/terminal-scrollback-snapshots'
 import { projectHostSetupProjectionFromRepos } from '../../../shared/project-host-setup-projection'
 import { isEmptyRetiredNameRegistry } from '../../../shared/worktree/retired-name-registry'
 import { getRepoIdFromWorktreeId } from '../../../shared/worktree/id'
@@ -15,12 +15,14 @@ import { collectOCCdMigrationSourceAutomationState } from './occd-source-automat
 import { collectOCCdMigrationSourceWorkspaceSession } from './occd-source-workspace-session'
 import {
   createOCCdMigrationExportScope,
+  occdMigrationMayMoveChild,
   occdMigrationOwnerMatchesScope,
   unqualifyOCCdMigrationOwnerKey
 } from './occd-source-scope'
 import { collectOCCdMigrationSourceClientState } from './occd-source-client-state'
 import { inspectOCCdSourceWorktreeMetadata } from './occd-source-worktree-metadata'
 import { compareKeys } from './occd-source-key-order'
+import { assertNoCrossStoreLinkedWorkspaceInMove } from '../../../shared/worktree/cross-store-lineage-move-refusal'
 
 export const OCCD_MIGRATION_TRANSFERRED_DORMANT_KINDS = [
   'worktree-metadata',
@@ -75,6 +77,9 @@ export function collectOCCdMigrationSourceDormantState(
   daemonHistoryLeaf?: (tabId: string, leafId: string) => boolean
 ): OCCdMigrationSourceDormantInspection {
   const scope = createOCCdMigrationExportScope({ source, catalog, repos: state.repos })
+  assertNoCrossStoreLinkedWorkspaceInMove(state, (childKey) =>
+    occdMigrationMayMoveChild(state, childKey, scope)
+  )
   const blockedCounts = emptyBlockedCounts()
   const destinationRepos = catalog.repositories.map(toOCCdDestinationRepository)
   const setupByRepoId = new Map(

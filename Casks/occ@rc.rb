@@ -29,12 +29,21 @@ cask "occ@rc" do
   # Use OCC’s prerelease-aware updater between frequent RCs.
   auto_updates true
   conflicts_with cask: "occ"
-  depends_on macos: :big_sur
+  depends_on macos: :ventura
 
   app "OCC.app"
 
   # Expose the symlink-resolving bundled CLI on PATH so headless hosts can use occ serve without the in-app installer.
   binary "#{appdir}/OCC.app/Contents/Resources/bin/occ"
+
+  # depends_on can't say 13.4, and Homebrew upgrades auto_updates casks past the in-app updater's macOS gate.
+  preflight_steps do
+    run "/bin/sh", args: [
+      "-c",
+      'case "$(/usr/bin/sw_vers -productVersion)" in 13|13.[0-3]|13.[0-3].*) ' \
+      'echo "OCC needs macOS 13.4 or later. Update macOS to upgrade OCC." >&2; exit 1;; esac',
+    ]
+  end
 
   # Zap app-created ~/.occ and Electron userData for a clean uninstall.
   zap trash: [

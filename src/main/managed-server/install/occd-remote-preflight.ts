@@ -17,7 +17,7 @@ import { readWindowsOCCdSlotEntry } from './occd-remote-launch-windows'
 import { OCCD_WINDOWS_RUNTIME_MARKER } from '../host-state/occd-windows-host-script'
 import { occdNodeSlotRuntimeCommand, selectOCCdSlotEntryCommand } from './occd-remote-runtime'
 import { execCommand } from '../../ssh/remote-exec/remote-exec-command'
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import {
   isWindowsRemoteHost,
   joinRemotePath,

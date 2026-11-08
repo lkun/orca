@@ -1,11 +1,14 @@
 // Restart only proven-stopped slots; unverifiable serving state never proves terminal exit.
-import type { KnownRuntimeEnvironment } from '../../../shared/runtime-environments'
+import type { KnownRuntimeEnvironment } from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import type { SshTarget } from '../../../shared/ssh-types'
 import { occdBoundPort } from './occd-managed-bound-port'
 import { managedOCCdSlot } from './occd-managed-runtime-context'
-import { wakeStoppedManagedOCCd } from './occd-managed-wake'
 import { resolveOCCdRemoteContext } from '../install/occd-remote-context'
 import type { OCCdHostTransport } from '../../ssh/occd-host-transport'
+import {
+  getManagedOCCdCrashLoopBrake,
+  wakeManagedOCCdUnlessCrashLooping
+} from './occd-managed-crash-loop'
 
 export type OCCdManagedServing =
   | { state: 'serving' }
@@ -76,7 +79,13 @@ export function ensureManagedOCCdServing(
   const answeredAt = input.answeredAt?.(id) ?? null
   const answerAge = answeredAt === null ? null : now() - answeredAt
   // Clock rollback must not extend the proof window.
-  if (answerAge !== null && answerAge >= 0 && answerAge < LIVE_ANSWER_PROOF_MS) {
+  if (
+    answeredAt !== null &&
+    answerAge !== null &&
+    answerAge >= 0 &&
+    answerAge < LIVE_ANSWER_PROOF_MS
+  ) {
+    getManagedOCCdCrashLoopBrake().noteServing(id, answeredAt)
     return Promise.resolve({ state: 'serving' })
   }
   const next: ServingCheck = { ...transport, check: checkAndStart(input) }
@@ -92,20 +101,28 @@ export function ensureManagedOCCdServing(
   return next.check
 }
 
+/** An explicit Connect must not reuse a cached verdict from before it. */
+export function forgetManagedOCCdServingVerdict(environmentId: string): void {
+  checks.delete(environmentId)
+}
+
 export function resetManagedOCCdServingForTests(): void {
   checks.clear()
 }
 
 async function checkAndStart(input: OCCdManagedServingInput): Promise<OCCdManagedServing> {
   if (await input.probe(input.environment, PROBE_TIMEOUT_MS)) {
+    getManagedOCCdCrashLoopBrake().noteServing(input.environment.id)
     return { state: 'serving' }
   }
   let starting = false
+  // Braked hosts publish why they were not started.
+  const braked = getManagedOCCdCrashLoopBrake().engaged(input.environment.id)
   const serving = await wakeIfStopped(input, () => {
     starting = true
     startListener?.starting(input.target)
   })
-  if (starting) {
+  if (starting || braked) {
     startListener?.settled(input.target, input.environment.id, serving)
   }
   return serving
@@ -118,10 +135,15 @@ async function wakeIfStopped(
   const label = input.target.label
   try {
     const context = await resolveOCCdRemoteContext(input.target, input.connection)
-    const wake = await wakeStoppedManagedOCCd(
+    const wake = await wakeManagedOCCdUnlessCrashLooping(
+      input.environment.id,
+      label,
       managedOCCdSlot(context, input.remotePort),
       onStarting
     )
+    if (wake.outcome === 'crash-loop') {
+      return { state: 'unverifiable', detail: wake.detail }
+    }
     if (wake.outcome === 'started') {
       const idle = wake.readiness.health?.previousIdleStop
       const cause = idle
@@ -134,6 +156,7 @@ async function wakeIfStopped(
     if (wake.outcome === 'serving') {
       // A live PID alone does not prove the server answers.
       if (await input.probe(input.environment, PROBE_TIMEOUT_MS)) {
+        getManagedOCCdCrashLoopBrake().noteServing(input.environment.id)
         return { state: 'serving' }
       }
       const detail = 'This host’s OCC server process is live but is not answering.'

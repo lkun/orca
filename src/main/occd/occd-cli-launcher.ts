@@ -6,7 +6,7 @@ import {
   OCCD_CLI_ENTRY_FILENAME,
   OCCD_WINDOWS_CLI_LAUNCHER_FILENAME
 } from '../../shared/occd-artifacts'
-import { nodeFileContentsEqual } from '../../shared/node-file-content-equality'
+import { nodeFileContentsEqual } from '../../shared/file-content/node-file-content-equality'
 import { buildUnixCliLauncher } from '../cli/cli-dev-launcher'
 import { writeFileAtomically } from '../codex-accounts/fs-utils'
 import { resolveOCCdInstallRoot, resolveUserDataPath } from './occd-app-paths'

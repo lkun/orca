@@ -1,10 +1,6 @@
-import { execFileSync } from 'node:child_process'
-import { mkdirSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
-import { mkdtemp } from 'node:fs/promises'
-import os from 'node:os'
-import path from 'node:path'
-import type { ElectronApplication, Page } from '@stablyai/playwright-test'
+import type { Page } from '@stablyai/playwright-test'
 import { test, expect } from './helpers/occ-app'
+import { chooseOnboardingAgentSurface } from './helpers/onboarding-navigation'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   focusActiveTerminalInput,
@@ -15,65 +11,28 @@ import {
 
 test.use({ dismissOnboarding: false, seedTestRepo: false })
 
-async function createGitRepo(): Promise<string> {
-  const root = realpathSync.native(await mkdtemp(path.join(os.tmpdir(), 'occ-e2e-golden-fresh-')))
-  const repoPath = path.join(root, 'golden-fresh-project')
-  mkdirSync(repoPath)
-  execFileSync('git', ['init'], { cwd: repoPath, stdio: 'pipe' })
-  execFileSync('git', ['config', 'user.email', 'e2e@test.local'], { cwd: repoPath })
-  execFileSync('git', ['config', 'user.name', 'E2E Test'], { cwd: repoPath })
-  writeFileSync(path.join(repoPath, 'README.md'), '# golden-fresh-project\n')
-  execFileSync('git', ['add', 'README.md'], { cwd: repoPath })
-  execFileSync('git', ['commit', '-m', 'Initial commit'], { cwd: repoPath })
-  return repoPath
-}
-
-async function stubFolderPicker(
-  electronApp: ElectronApplication,
-  selectedPath: string
-): Promise<void> {
-  await electronApp.evaluate(({ dialog }, folderPath) => {
-    dialog.showOpenDialog = async () => ({
-      canceled: false,
-      filePaths: [folderPath],
-      bookmarks: []
-    })
-  }, selectedPath)
-}
-
-async function selectCodexAndSkipToProject(page: Page): Promise<void> {
-  const codexButton = page.getByRole('button', { name: 'Codex', exact: true }).first()
-  if (!(await codexButton.isVisible())) {
-    await page.getByText(/Show \d+ more agents/).click()
+async function completeOnboarding(page: Page): Promise<void> {
+  const footer = page.locator('[data-onboarding-modal] footer')
+  const heading = page.locator('[data-onboarding-modal]').getByRole('heading').first()
+  for (let step = 0; step < 5; step += 1) {
+    const title = await heading.innerText()
+    await footer.getByRole('button', { name: /^Continue\b/ }).click()
+    if (/Set up notifications/i.test(title)) {
+      break
+    }
+    await expect(heading).not.toHaveText(title)
   }
-  await codexButton.click()
-  const footer = page.locator('footer').filter({ has: page.getByRole('button', { name: /Skip/i }) })
-  await footer.getByRole('button', { name: /^Skip to project setup$/i }).click()
-  await expect(page.getByRole('dialog', { name: /Add a project/i })).toBeVisible()
+  await expect(page.locator('[data-onboarding-overlay]')).toHaveCount(0)
+  await expect(page.getByRole('dialog', { name: /Add a project/i })).toHaveCount(0)
 }
 
-test('fresh profile opens a live project terminal @golden', async ({
-  electronApp,
-  occPage,
-  registerPostElectronShutdownCleanup
-}) => {
+test('fresh profile opens a live Home terminal @golden', async ({ electronApp, occPage }) => {
   await waitForSessionReady(occPage)
   await expect(occPage.locator('#root')).toBeVisible()
-  await expect(occPage.getByRole('heading', { name: /Pick your default agent/i })).toBeVisible()
+  await chooseOnboardingAgentSurface(occPage)
 
-  await selectCodexAndSkipToProject(occPage)
-  const repoPath = await createGitRepo()
-  registerPostElectronShutdownCleanup(async () =>
-    rmSync(path.dirname(repoPath), { recursive: true, force: true })
-  )
-  await stubFolderPicker(electronApp, repoPath)
-  await occPage
-    .getByRole('button', { name: /Browse for a folder|Open a folder|Browse folder/i })
-    .click()
-
-  await expect(occPage.getByText(path.basename(repoPath), { exact: true }).first()).toBeVisible({
-    timeout: 30_000
-  })
+  await completeOnboarding(occPage)
+  const homePath = await electronApp.evaluate(({ app }) => app.getPath('home'))
   await waitForActiveWorktree(occPage)
   await ensureTerminalVisible(occPage, 30_000)
   await waitForActiveTerminalManager(occPage, 30_000)
@@ -90,12 +49,28 @@ test('fresh profile opens a live project terminal @golden', async ({
     })
     .toBeGreaterThanOrEqual(2)
 
+  const begin = `occ-cwd-begin-${Date.now()}`
+  const end = `occ-cwd-end-${Date.now()}`
+  const normalizePath = (value: string): string => {
+    const normalized = value.trim().replaceAll('\\', '/')
+    const withoutTrailingSeparator =
+      normalized.length > 1 ? normalized.replace(/\/+$/, '') : normalized
+    return process.platform === 'win32'
+      ? withoutTrailingSeparator.toLowerCase()
+      : withoutTrailingSeparator
+  }
   await focusActiveTerminalInput(occPage)
-  await occPage.keyboard.type('git rev-parse --show-toplevel')
+  await occPage.keyboard.type(`echo "${begin}$(pwd)${end}"`)
   await occPage.keyboard.press('Enter')
   await expect
-    .poll(async () => (await getTerminalContent(occPage)).replaceAll('\\', '/'), {
-      message: 'fresh project terminal should start in the selected repository'
-    })
-    .toContain(repoPath.replaceAll('\\', '/'))
+    .poll(
+      async () => {
+        const content = await getTerminalContent(occPage)
+        return [...content.matchAll(new RegExp(`${begin}(.*?)${end}`, 'gs'))].map((match) =>
+          normalizePath(match[1].replace(/[\r\n]/g, ''))
+        )
+      },
+      { message: 'fresh Home terminal should report exactly the home directory' }
+    )
+    .toContain(normalizePath(homePath))
 })

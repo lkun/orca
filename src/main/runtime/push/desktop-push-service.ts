@@ -6,9 +6,9 @@ import type {
   MobilePushRegisterResult
 } from '../../../shared/mobile-push-contract'
 import { runKeyedSerializedOperation } from '../../cli/keyed-promise-queue'
-import type { DeviceRegistry } from '../device-registry'
+import type { DeviceRegistry } from '../rpc/server/pairing/device-registry'
 import type { OCCRuntimeService } from '../occ-runtime'
-import type { OCCRuntimeRpcServer } from '../runtime-rpc'
+import type { OCCRuntimeRpcServer } from '../rpc/server/runtime-rpc'
 import { PushDispatcher } from './push-dispatcher'
 import { PushGatewayClient } from './push-gateway-client'
 import { PushRegisterThrottle } from './push-register-throttle'

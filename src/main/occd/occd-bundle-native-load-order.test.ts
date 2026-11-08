@@ -18,7 +18,9 @@ it('loads a fresh production import graph before requiring native PTY code', () 
   const directory = mkdtempSync(join(tmpdir(), 'occd-load-order-'))
   directories.push(directory)
   const bundle = join(directory, 'occd.js')
-  const builder = pathToFileURL(join(REPO_ROOT, 'config/scripts/occd-entry-build.mjs')).href
+  const builder = pathToFileURL(
+    join(REPO_ROOT, 'config/scripts/occd-distribution/server-bundle/occd-entry-build.mjs')
+  ).href
   const built = runProcessSync({
     program: process.execPath,
     args: [

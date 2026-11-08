@@ -9,3 +9,12 @@ export function occdSessionScannerIdleTimeoutMs(
 ): number | null {
   return isWslHost() ? WSL_HOST_SESSION_SCANNER_IDLE_TIMEOUT_MS : null
 }
+
+export async function applyOCCdSessionScannerIdleTimeout(): Promise<void> {
+  const timeoutMs = occdSessionScannerIdleTimeoutMs()
+  if (timeoutMs !== null) {
+    const { setAiVaultServiceIdleTimeoutMs } =
+      await import('../ai-vault/scan-service/session-scanner-service-spawn')
+    setAiVaultServiceIdleTimeoutMs(timeoutMs)
+  }
+}

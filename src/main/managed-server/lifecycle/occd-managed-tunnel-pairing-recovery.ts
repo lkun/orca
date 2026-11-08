@@ -1,7 +1,10 @@
 // Only refusals sealed by the pinned key may trigger repair; foreign servers fail identity checks.
-import type { KnownRuntimeEnvironment } from '../../../shared/runtime-environments'
+import type { KnownRuntimeEnvironment } from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import { pairingRevisionOf, type ManagedOCCdPairingGate } from './occd-managed-pairing-repair'
-import { OCCdManagedPairingRejectedError } from './occd-managed-tunnel-identity'
+import {
+  OCCdManagedIdentityError,
+  OCCdManagedPairingRejectedError
+} from './occd-managed-tunnel-identity'
 
 export type ManagedOCCdPairingRecovery = {
   resolve: (environmentId: string) => KnownRuntimeEnvironment
@@ -25,6 +28,14 @@ export async function buildWithPairingRepair(
     await build(refused)
     return 'built'
   } catch (error) {
+    if (error instanceof OCCdManagedIdentityError && error.kind === 'replaced-server') {
+      throw recovery.repairs.recordStandingRefusal(
+        environmentId,
+        pairingRevisionOf(refused),
+        epoch,
+        error
+      )
+    }
     if (!(error instanceof OCCdManagedPairingRejectedError)) {
       throw error
     }

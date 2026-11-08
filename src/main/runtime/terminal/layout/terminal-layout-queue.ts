@@ -1,5 +1,5 @@
 import { OCCRuntimeWithReclaimTerminalForDesktop } from './terminal-desktop-reclaim'
-import type { ApplyLayoutResult, PtyLayoutState, PtyLayoutTarget } from '../../occ-runtime-core'
+import type { ApplyLayoutResult, PtyLayoutState, PtyLayoutTarget } from './terminal-layout-state'
 
 export abstract class OCCRuntimeWithPickMostRecentActor extends OCCRuntimeWithReclaimTerminalForDesktop {
   protected abstract applyLayout(ptyId: string, target: PtyLayoutTarget): Promise<ApplyLayoutResult>

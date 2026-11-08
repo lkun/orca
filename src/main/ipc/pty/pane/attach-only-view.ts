@@ -1,5 +1,5 @@
 import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
-import { SessionNotFoundError } from '../../../daemon/daemon-errors'
+import { SessionNotFoundError } from '../../../daemon/protocol/daemon-errors'
 import { PANE_NOT_LIVE_ERROR } from '../../../../shared/pane-attach-only-view'
 import {
   consumeHiddenRendererPtyDropMemory,

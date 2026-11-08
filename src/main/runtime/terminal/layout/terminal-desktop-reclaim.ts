@@ -1,8 +1,9 @@
 import { OCCRuntimeWithMobileTookFloor } from './mobile-terminal-activity'
-import {
-  MOBILE_AUTO_RESTORE_FIT_MAX_MS,
-  MOBILE_AUTO_RESTORE_FIT_MIN_MS
-} from '../../occ-runtime-postlude'
+
+// Finite holds must exceed legacy 300ms debounce and cannot exceed one hour.
+const MOBILE_AUTO_RESTORE_FIT_MIN_MS = 5_000
+
+const MOBILE_AUTO_RESTORE_FIT_MAX_MS = 60 * 60 * 1000
 
 export abstract class OCCRuntimeWithReclaimTerminalForDesktop extends OCCRuntimeWithMobileTookFloor {
   abstract isMobileSubscriberActive(ptyId: string): boolean

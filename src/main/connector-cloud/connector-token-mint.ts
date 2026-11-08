@@ -4,7 +4,7 @@ import type { OCCCloudAuthConfig } from '../occ-profiles/profile-cloud-auth-conf
 import { OCCCloudRequestError } from '../occ-profiles/profile-cloud-client'
 import { runWithFreshOCCCloudSession } from '../occ-profiles/profile-cloud-session-refresh'
 import { ensureActiveOCCProfile } from '../occ-profiles/profile-index-store'
-import { loadOrCreateHostInstallationId } from '../runtime/host-descriptor'
+import { loadOrCreateHostInstallationId } from '../runtime/hosts/platform-probe/host-descriptor'
 import { requestConnector, type ConnectorFailure } from './connector-cloud-request'
 import type { ConnectorTokenMint } from './connector-transport'
 

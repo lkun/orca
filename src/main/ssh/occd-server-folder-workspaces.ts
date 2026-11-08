@@ -3,8 +3,8 @@ import { normalizeRuntimePathForComparison } from '../../shared/cross-platform-p
 import {
   resolveFolderWorkspaceHost,
   type FolderHostCatalog
-} from '../../shared/folder-workspace-execution-host'
-import type { FolderWorkspace } from '../../shared/folder-workspace-types'
+} from '../../shared/folder-workspaces/folder-workspace-execution-host'
+import type { FolderWorkspace } from '../../shared/folder-workspaces/folder-workspace-types'
 import { listServerRows, type CatalogRequestOptions } from './occd-migration-catalog-client'
 import type { OCCdServerRepository } from './occd-migration-repository-link'
 

@@ -11,7 +11,7 @@ import { waitForSessionReady, waitForStartupWorktreeRefresh } from './store'
 import { dismissTransientAnnouncement } from './ssh-config-host-picker'
 import { focusActiveTerminalInput } from './terminal'
 import { toRuntimeExecutionHostId } from '../../../src/shared/execution-host'
-import { getManagedOCCdSshTargetId } from '../../../src/shared/managed-occd-execution-host'
+import { getManagedOCCdSshTargetId } from '../../../src/shared/execution-host/managed-occd-execution-host'
 
 export const OCCD_TEMPLATE = process.env.OCC_E2E_OCCD_CONVERT_TEMPLATE
 

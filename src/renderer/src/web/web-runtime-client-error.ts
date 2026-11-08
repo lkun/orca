@@ -37,10 +37,15 @@ function webRuntimeAuthFailureMessage(reason: WebRuntimeAuthFailureReason): stri
         'This OCC server no longer supports this browser’s sign-in key (it may have been downgraded). Update the server, or pair this browser again.'
       )
     case 'device-revoked':
-    case 'unauthorized':
       return translate(
         'auto.web.runtimeAuth.unauthorized',
         'Unauthorized. Pair this web client again.'
+      )
+    // A pairing link that expired, was replaced or was already used (single use) lands here too.
+    case 'unauthorized':
+      return translate(
+        'auto.web.runtimeAuth.unauthorizedLinkUsedOrExpired',
+        'Unauthorized. This pairing link may have expired or already been used. Create a new pairing link in OCC and open it.'
       )
   }
 }

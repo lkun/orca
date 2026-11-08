@@ -1,15 +1,15 @@
 // Repair over trusted host access, but accept only offers matching the desktop's pinned server key.
-import { parsePairingCode } from '../../../shared/pairing'
+import { parsePairingCode } from '../../../shared/remote-runtime/pairing/pairing'
 import { errorMessage } from '../../../shared/error-message'
 import { getManagedOCCdFenceEnvironmentId } from '../../../shared/managed-occd-ssh-owner'
-import { refreshManagedOCCdPairing } from '../../../shared/runtime-environment-managed-occd-store'
-import { assertRuntimeEnvironmentNotReconciling } from '../../../shared/runtime-environment-reconciliation-record'
-import { resolveEnvironment } from '../../../shared/runtime-environment-store'
+import { refreshManagedOCCdPairing } from '../../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
+import { assertRuntimeEnvironmentNotReconciling } from '../../../shared/remote-runtime/host-catalog/runtime-environment-reconciliation-record'
+import { resolveEnvironment } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
 import {
   getOCCdSshDeployment,
   getPreferredPairingOffer,
   type KnownRuntimeEnvironment
-} from '../../../shared/runtime-environments'
+} from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import type { ServeReadiness } from '../../server/serve-readiness'
 import type { OCCdHostTarget, OCCdHostTransport } from '../../ssh/occd-host-transport'
 import { tunneledOCCdPairingCode } from '../../ssh/occd-tunneled-pairing'
@@ -21,6 +21,7 @@ import { readActiveManagedOCCdReadiness } from './occd-managed-bound-port'
 import { OCCdManagedIdentityError } from './occd-managed-tunnel-identity'
 import { OCCdManagedPairingRepairFailedError } from './occd-managed-pairing-repair-failure'
 import { notifyManagedOCCdPairingRepaired } from './occd-managed-pairing-repaired-listener'
+import { ManagedOCCdEventWindow } from './occd-managed-event-window'
 
 // Cap servers that keep refusing fresh pairing offers to avoid endless repair.
 export const MAX_PAIRING_REPAIRS_PER_WINDOW = 3
@@ -88,12 +89,14 @@ export class ManagedOCCdPairingRepairs<
   Access extends ManagedOCCdHostAccess = ManagedOCCdHostAccess
 > {
   private readonly inFlight = new Map<string, Promise<KnownRuntimeEnvironment>>()
-  private readonly attemptedAt = new Map<string, number[]>()
+  private readonly attempts: ManagedOCCdEventWindow
   private readonly standing = new Map<string, StandingFailure>()
   // In-flight repairs must not undo an explicit user reset.
   private readonly resets = new Map<string, number>()
 
-  constructor(private readonly deps: ManagedOCCdPairingRepairDeps<Access>) {}
+  constructor(private readonly deps: ManagedOCCdPairingRepairDeps<Access>) {
+    this.attempts = new ManagedOCCdEventWindow(PAIRING_REPAIR_WINDOW_MS, () => deps.now())
+  }
 
   /** Check before building to avoid SSH, forwarding and handshake work for a known refusal. */
   standingFailure(environmentId: string, revision: number): Error | null {
@@ -125,10 +128,20 @@ export class ManagedOCCdPairingRepairs<
     )
   }
 
+  /** Hold a refusal no repair can clear (another server key) so callers stop instead of rebuilding. */
+  recordStandingRefusal(
+    environmentId: string,
+    revision: number,
+    epoch: number,
+    error: Error
+  ): Error {
+    return this.stand(environmentId, revision, epoch, error)
+  }
+
   /** Explicit connects clear both cached failure and attempt cap. */
   forgetFailures(environmentId: string): void {
     this.standing.delete(environmentId)
-    this.attemptedAt.delete(environmentId)
+    this.attempts.forget(environmentId)
     this.resets.set(environmentId, this.resetsOf(environmentId) + 1)
   }
 
@@ -146,7 +159,7 @@ export class ManagedOCCdPairingRepairs<
     if (standing) {
       throw standing
     }
-    const recent = this.recentAttempts(environmentId)
+    const recent = this.attempts.recent(environmentId)
     if (recent.length >= MAX_PAIRING_REPAIRS_PER_WINDOW) {
       throw fail(capSpentError(recent.length))
     }
@@ -163,15 +176,16 @@ export class ManagedOCCdPairingRepairs<
       return current
     }
     if (this.resetsOf(environmentId) === epoch) {
-      this.attemptedAt.set(environmentId, [...this.recentAttempts(environmentId), this.deps.now()])
+      this.attempts.record(environmentId)
     }
     const pairingCode = publishedPairingCode(readiness, deployment.localPort, fail)
     const offer = parsePairingCode(pairingCode)
     const pinned = getPreferredPairingOffer(environment)
-    // Host access alone cannot authorize a different server key.
+    // Host access alone cannot authorize a different server key. Never call this a replaced server:
+    // the refusal that led here was sealed by the pinned key, so a server holding it just answered.
     if (!offer || offer.publicKeyB64 !== pinned.publicKeyB64) {
       throw fail(
-        new OCCdManagedIdentityError(
+        OCCdManagedIdentityError.foreignPort(
           deployment.remotePort,
           "the host's server now publishes a different host key than the one this desktop pinned"
         )
@@ -195,13 +209,6 @@ export class ManagedOCCdPairingRepairs<
     return repaired
   }
 
-  private recentAttempts(environmentId: string): number[] {
-    const now = this.deps.now()
-    return (this.attemptedAt.get(environmentId) ?? []).filter(
-      (at) => now - at < PAIRING_REPAIR_WINDOW_MS
-    )
-  }
-
   /** Prevent pre-Connect failures from surviving the user's reset. */
   resetEpoch(environmentId: string): number {
     return this.resetsOf(environmentId)
@@ -216,7 +223,7 @@ export class ManagedOCCdPairingRepairs<
     if (this.resetsOf(environmentId) !== epoch) {
       return error
     }
-    const recent = this.recentAttempts(environmentId)
+    const recent = this.attempts.recent(environmentId)
     const capSpent = recent.length >= MAX_PAIRING_REPAIRS_PER_WINDOW
     this.standing.set(environmentId, {
       // Later callers need the cap reason until repair becomes possible again.
@@ -235,7 +242,12 @@ export class ManagedOCCdPairingRepairs<
 
 export type ManagedOCCdPairingGate = Pick<
   ManagedOCCdPairingRepairs,
-  'standingFailure' | 'repair' | 'recordRefusedAfterRepair' | 'resetEpoch' | 'forgetFailures'
+  | 'standingFailure'
+  | 'repair'
+  | 'recordRefusedAfterRepair'
+  | 'recordStandingRefusal'
+  | 'resetEpoch'
+  | 'forgetFailures'
 >
 
 function capSpentError(attempts: number): Error {

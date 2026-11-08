@@ -20,12 +20,12 @@ import {
 import { createRetentionFixtureDirectory } from './helpers/host-created-terminal-retention-oracle'
 import { toSshExecutionHostId } from '../../src/shared/execution-host'
 import { DEFAULT_LOCAL_OCC_PROFILE_ID } from '../../src/shared/occ-profiles'
-import { deriveBrowserRoutePartition } from '../../src/main/browser/browser-route-identity'
-import { sshExecutionHostStorageIdentity } from '../../src/main/browser/browser-execution-host-storage-identity'
+import { deriveBrowserRoutePartition } from '../../src/main/browser/routing/partitions/browser-route-identity'
+import { sshExecutionHostStorageIdentity } from '../../src/main/browser/routing/identity/browser-execution-host-storage-identity'
 import { reconnect } from './helpers/occd-convert-flow'
 import { navigateGuest } from './helpers/browser-split-guest-probes'
 import { OCCD_TEMPLATE, skipUnlessManagedDockerHost } from './helpers/occd-managed-workspace'
-import { getOCCdSshDeployment } from '../../src/shared/runtime-environments'
+import { getOCCdSshDeployment } from '../../src/shared/remote-runtime/host-catalog/runtime-environments'
 
 skipUnlessManagedDockerHost()
 

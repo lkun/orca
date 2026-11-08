@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { spawnProcess } from '@occ/process-host'
 import { relayBundleCandidates } from '../ssh/relay-bundle-paths'
-import { withWslGuestLauncherRevision } from '../wsl/wsl-guest-launcher-revision'
+import { withWslGuestLauncherRevision } from '../wsl/execution/wsl-guest-launcher-revision'
 import { occdPosixNodeRuntimeGlobs } from '../managed-server/install/occd-node-runtime-globs'
 
 import type { MultiplexerTransport } from '../ssh/ssh-channel-multiplexer'
@@ -12,11 +12,11 @@ import {
   type waitForWslRelaySentinel,
   type WslRelayStartupFailure
 } from './wsl-hook-relay-sentinel'
-import { addOCCWslInteropEnv } from '../pty/wsl-occ-env'
-import { runWslProcess } from '../wsl/wsl-runner'
-import { resolveWslExecutablePath } from '../wsl/wsl-executable-path'
+import { addOCCWslInteropEnv } from '../pty/shell-startup/wsl-occ-env'
+import { runWslProcess } from '../wsl/execution/wsl-runner'
+import { resolveWslExecutablePath } from '../wsl/execution/wsl-executable-path'
 import { buildWslExecArgs } from '../../shared/wsl-login-shell-command'
-import { resolveWslInteropSpawnCwd } from '../wsl-interop-spawn-directory'
+import { resolveWslInteropSpawnCwd } from '../wsl/execution/wsl-interop-spawn-directory'
 import {
   WSL_HOOK_RELAY_BUNDLE_NAME,
   WSL_HOOK_RELAY_DIR,

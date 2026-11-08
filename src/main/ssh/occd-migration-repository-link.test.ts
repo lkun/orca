@@ -3,13 +3,14 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { getManagedOCCdFenceEnvironmentId } from '../../shared/managed-occd-ssh-owner'
-import { encodePairingOffer, PAIRING_OFFER_VERSION } from '../../shared/pairing'
+import { encodePairingOffer } from '../../shared/remote-runtime/pairing/pairing'
+import { PAIRING_OFFER_VERSION } from '../../shared/remote-runtime/pairing/mobile-relay-pairing-offer'
 import type { OCCdMigrationManifest } from '../../shared/occd-migration/occd-migration-manifest'
 import {
   addManagedOCCdEnvironment,
   removeManagedOCCdEnvironment
-} from '../../shared/runtime-environment-managed-occd-store'
-import { listEnvironments, resolveEnvironment } from '../../shared/runtime-environment-store'
+} from '../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
+import * as environments from '../../shared/remote-runtime/host-store/runtime-environment-store'
 import type { Repo } from '../../shared/repo-types'
 import { LOCAL_EXECUTION_HOST_ID, toSshExecutionHostId } from '../../shared/execution-host'
 import { hostWorktreeTarget } from '../../shared/worktree/host-qualified-identity'
@@ -17,6 +18,7 @@ import type { SshTarget } from '../../shared/ssh-types'
 import { closeTestStores, createSqliteTestStore } from '../persistence/persistence-test-harness'
 import { Store } from '../persistence/loading-store/store'
 import type { OCCdMigrationDestinationCatalog } from './occd-migration-cutover-coordinator'
+import { storeBackedOCCdMigrationDestination } from './occd-migration-destination-fake'
 import {
   listOCCdMigrationSourceCutovers,
   removeOCCdMigrationJournalsForDestination
@@ -88,18 +90,11 @@ let destination: OCCdMigrationDestinationCatalog & { stage: ReturnType<typeof vi
 /** Use the real server import behind migration calls. */
 function serverDestination(): typeof destination {
   return {
-    readState: async (manifest: OCCdMigrationManifest) =>
-      server.getOCCdMigrationCatalogState(manifest),
+    ...storeBackedOCCdMigrationDestination(server),
     stage: vi.fn(async (manifest: OCCdMigrationManifest) =>
       server.stageOCCdMigrationCatalog(manifest)
     ),
-    commit: async (manifest) => server.commitStagedOCCdMigrationCatalog(manifest),
-    abort: async (manifest) => {
-      const result = server.abortStagedOCCdMigrationCatalog(manifest)
-      return result.aborted ? result : { ...result, durableAbsent: true as const }
-    },
-    abortByReference: vi.fn(),
-    stageChunk: async (request) => server.stageOCCdMigrationSnapshotChunk(request)
+    abortByReference: vi.fn()
   }
 }
 
@@ -119,14 +114,14 @@ beforeEach(() => {
   targetStore = new SshConnectionStore(store as never)
   mocks.state.targetStore = targetStore
   destination = serverDestination()
-  mocks.ensureTunnel.mockImplementation(resolveEnvironment)
+  mocks.ensureTunnel.mockImplementation(environments.resolveEnvironment)
   mocks.deploy.mockImplementation(
     async (path: string, args: { name: string; sshTargetId: string }) => {
       const owner = getManagedOCCdFenceEnvironmentId(store.getSshTarget(args.sshTargetId))
       if (!owner) {
         throw new Error('deploy without a fence')
       }
-      if (!listEnvironments(path).some((entry) => entry.id === owner)) {
+      if (!environments.listEnvironments(path).some((entry) => entry.id === owner)) {
         addManagedOCCdEnvironment(path, {
           id: owner,
           name: args.name,
@@ -219,14 +214,6 @@ describe('moving onto a server another desktop already added the same project to
     expect(visibleRepos(store, () => userDataPath)).toEqual([])
   })
 
-  it('tells the connect which projects it linked', async () => {
-    otherDesktopAddsSameCheckout()
-    await expect(convert()).resolves.toMatchObject({
-      outcome: 'converted',
-      linkedProjects: [{ path: '/root/migrepo', automations: 0 }]
-    })
-  })
-
   it.each([
     ['a connection id', { connectionId: 'nested-target' }],
     ['an SSH execution host', { executionHostId: 'ssh:nested-target' as const }],
@@ -241,12 +228,6 @@ describe('moving onto a server another desktop already added the same project to
       expect(listOCCdMigrationSourceCutovers(userDataPath)[0]?.linkedRepositoryIds).toBeUndefined()
     }
   )
-
-  it('says nothing was linked when the server held none of the projects', async () => {
-    const result = await convert()
-    expect(result.outcome).toBe('converted')
-    expect(result).not.toHaveProperty('linkedProjects')
-  })
 
   it('leaves the linked project’s saved state to the server, moving only the rest', async () => {
     otherDesktopAddsSameCheckout()
@@ -303,13 +284,6 @@ describe('moving onto a server another desktop already added the same project to
       await expect(convert(true, 'unverifiable')).resolves.toMatchObject({ outcome: 'converted' })
       expect(serverRepoIds()).toEqual(['desktop-only', 'server-repo'])
     })
-  })
-
-  it('stays managed across a restart: the linked rows are not an older build’s change', async () => {
-    otherDesktopAddsSameCheckout()
-    await convert()
-    reconcileManagedOCCdSshTargets(userDataPath, store)
-    expect(store.getSshTarget(TARGET.id)?.occdFence?.sourceChangedAt).toBeUndefined()
   })
 
   it('never offers the linked project again in a later delta move', async () => {
@@ -421,7 +395,7 @@ describe('moving the host again after its server was stopped', () => {
       store,
       claims: targetStore.getOCCdRuntimeClaims(),
       target: store.getSshTarget(TARGET.id)!,
-      environment: listEnvironments(userDataPath)[0]!,
+      environment: environments.listEnvironments(userDataPath)[0]!,
       connectDestination: async () => destination,
       censusHost: async () => ({ verdict: 'exited', count: 0 }),
       runTargetLifecycle

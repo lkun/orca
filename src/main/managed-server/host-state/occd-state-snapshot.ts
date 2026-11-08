@@ -7,7 +7,7 @@ import {
   posixOCCdFenceOwnedTest,
   type OCCdFence
 } from '../activation/occd-activation-fence-scope'
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import {
   isWindowsRemoteHost,
   joinRemotePath,

@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { usePluginViewCaptureStore } from '@/store/plugin-view-capture'
+import { usePluginViewCaptureStore } from '@/store/plugins/capture/plugin-view-capture'
 
 /** What `occ plugin shot --editor` waits on, per open file: the frame's load and its document. */
 export type PluginEditoccptureStatus = {

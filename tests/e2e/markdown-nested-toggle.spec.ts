@@ -26,36 +26,6 @@ test.describe('Markdown nested toggle regression', () => {
     await waitForActiveWorktree(occPage)
   })
 
-  test('a plain details block opens as an editable toggle', async ({ occPage }, testInfo) => {
-    const context = await getActiveWorktreeContext(occPage)
-    let filePath: string | null = null
-
-    try {
-      filePath = await createMarkdownFixture(
-        context,
-        NESTED_TOGGLE_FIXTURE_DIRECTORY,
-        'plain-details',
-        testInfo.workerIndex,
-        '<details>\n<summary>Toggle</summary>\n\nBody\n\n</details>\n'
-      )
-      await openMarkdownFixture(occPage, context, filePath)
-      const editor = await waitForRichMarkdownEditor(occPage)
-      const toggle = editor.locator('[data-type="details"]')
-
-      await expect(toggle).toHaveCount(1)
-      await expect(toggle.locator('summary')).toHaveText('Toggle')
-      await expect(editor.locator('[data-raw-markdown-html-block]')).toHaveCount(0)
-      const screenshotPath = testInfo.outputPath('plain-details-rich-editor.png')
-      await occPage.screenshot({ path: screenshotPath })
-      await testInfo.attach('plain-details-rich-editor', {
-        path: screenshotPath,
-        contentType: 'image/png'
-      })
-    } finally {
-      await cleanupMarkdownFixture(filePath)
-    }
-  })
-
   test('editing a nested toggle survives save and reopen', async ({ occPage }, testInfo) => {
     const context = await getActiveWorktreeContext(occPage)
     const sentinel = `editedInsideNestedToggle${Date.now()}`

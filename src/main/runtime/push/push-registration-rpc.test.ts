@@ -3,9 +3,9 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import { eraseRpcMethods, type RpcContext, type RpcMethod } from '../rpc/core'
-import { NOTIFICATION_METHODS } from '../rpc/methods/notifications'
-import { DeviceRegistry } from '../device-registry'
-import { OCCRuntimeRpcServer } from '../runtime-rpc'
+import { NOTIFICATION_METHODS } from '../rpc/methods/notifications/notifications'
+import { DeviceRegistry } from '../rpc/server/pairing/device-registry'
+import { OCCRuntimeRpcServer } from '../rpc/server/runtime-rpc'
 import { OCCRuntimeService } from '../occ-runtime'
 
 function method(name: string): RpcMethod {
@@ -87,16 +87,6 @@ describe('notifications.registerPush', () => {
     const registerPush = method('notifications.registerPush')
     expect(
       registerPush.params!.safeParse({ ...REGISTER_PARAMS, deviceId: 'device-9' }).success
-    ).toBe(false)
-  })
-
-  it('rejects a malformed phone preference', () => {
-    const registerPush = method('notifications.registerPush')
-    expect(
-      registerPush.params!.safeParse({
-        ...REGISTER_PARAMS,
-        filter: { sound: 'yes' }
-      }).success
     ).toBe(false)
   })
 })

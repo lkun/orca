@@ -7,6 +7,7 @@ import {
 } from './occd-migration/occd-migration-dormant-session-validation'
 import {
   assertOCCdMigrationDormantAutomationReferences,
+  parseOCCdMigrationAutomationRunHistoryRef,
   parseOCCdMigrationDormantAutomationRuns,
   parseOCCdMigrationDormantAutomations
 } from './occd-migration/occd-migration-dormant-automation-validation'
@@ -85,9 +86,19 @@ export function parseOCCdMigrationDormantState(value: unknown): OCCdMigrationDor
     ...(record.automationRuns === undefined
       ? {}
       : { automationRuns: parseOCCdMigrationDormantAutomationRuns(record.automationRuns) }),
+    ...(record.automationRunHistory === undefined
+      ? {}
+      : {
+          automationRunHistory: parseOCCdMigrationAutomationRunHistoryRef(
+            record.automationRunHistory
+          )
+        }),
     ...(record.clientState === undefined
       ? {}
       : { clientState: parseOCCdMigrationClientState(record.clientState) })
+  }
+  if (payload.automationRuns && payload.automationRunHistory) {
+    throw new Error('occd_migration_dormant_automation_run_history_conflict')
   }
   assertUnique(payload.worktreeMeta, (entry) => entry.worktreeId, 'worktree_meta')
   assertUnique(payload.worktreeMeta, (entry) => entry.sourceKey, 'worktree_meta_source')

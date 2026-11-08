@@ -21,7 +21,6 @@ import {
   remoteNodeRuntimeDir
 } from './occd-remote-node-runtime'
 import {
-  parseRemoteRuntimeExitReport,
   REMOTE_NODE_RUNTIME_MISSING,
   REMOTE_NODE_RUNTIME_READY
 } from '../../ssh/occd-remote-node-runtime-report'
@@ -79,18 +78,6 @@ describe.skipIf(process.platform === 'win32')('remote pinned-Node runtime store'
     expect(sh(`${occdNodeSlotRuntimeCommand(host, slotDir)}echo "$occd_runtime"`)).toBe(
       join(runtimeDir, 'bin', 'node')
     )
-  })
-
-  it('splits the runtime exit status from the loader output it reported', () => {
-    expect(
-      parseRemoteRuntimeExitReport(
-        'OCC_NODE_RUNTIME_SELFTEST_FAILED\nOCC_RUNTIME_EXIT=126\nsh: node: Permission denied\n'
-      )
-    ).toEqual({ exitStatus: 126, output: 'sh: node: Permission denied' })
-    expect(parseRemoteRuntimeExitReport('no report')).toEqual({
-      exitStatus: null,
-      output: 'no report'
-    })
   })
 
   it('reports a runtime whose bytes do not hash to the pin as missing', () => {

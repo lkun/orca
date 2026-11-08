@@ -245,9 +245,11 @@ yay -S stably-occ-bin
 
 - **Discord:** Присоединяйтесь к сообществу в **[Discord](https://discord.gg/fzjDKHxv8Q)**.
 - **Twitter / X:** Подпишитесь на **[@occ_build](https://x.com/occ_build)**, чтобы узнавать об обновлениях и анонсах.
-- **WeChat:** Отсканируйте QR-код, чтобы присоединиться к группе сообщества OCC в WeChat.
+- **WeChat:** Отсканируйте QR-код, чтобы присоединиться к группе сообщества OCC в WeChat. Если одна группа заполнена, присоединяйтесь к другой.
 
   <img src="../assets/wechat-qr-group14.jpg" alt="QR-код группы сообщества OCC в WeChat" width="160" />
+  <img src="../assets/wechat-qr-group15.jpg" alt="QR-код группы сообщества OCC в WeChat" width="160" />
+  <img src="../assets/wechat-qr-group16.jpg" alt="QR-код группы сообщества OCC в WeChat" width="160" />
 
 - **Отзывы и идеи:** Мы быстро выпускаем обновления. Чего-то не хватает? [Предложите новую возможность](https://github.com/stablyai/occ/issues).
 - **Конфиденциальность:** В [документации о конфиденциальности и телеметрии](https://www.onocc.dev/docs/telemetry) описано, какие анонимные данные об использовании собирает OCC и как отказаться от их сбора.

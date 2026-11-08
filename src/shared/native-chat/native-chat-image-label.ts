@@ -23,6 +23,12 @@ export function isNativeChatPastedImagePath(path: string): boolean {
   return PASTED_IMAGE_NAME.test(base)
 }
 
+/** True for a long text paste OCC saved as a file (`occ-paste-<ts>-<uuid>.txt`). */
+export function isNativeChatPastedTextPath(path: string): boolean {
+  const base = path.split(/[\\/]/).findLast(Boolean) ?? path
+  return /^occ-paste-.+\.txt$/i.test(base)
+}
+
 /** What a chat image is called where it is not drawn: its alt text, else its file's name. */
 export function nativeChatImageLabel(
   block: NativeChatImageRefBlock,

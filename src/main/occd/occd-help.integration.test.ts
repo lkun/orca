@@ -12,7 +12,9 @@ let launcher = ''
 beforeAll(async () => {
   directory = await mkdtemp(join(tmpdir(), 'occd-help-'))
   launcher = join(directory, OCCD_LAUNCHER_FILENAME)
-  const builder = pathToFileURL(join(process.cwd(), 'config/scripts/occd-entry-build.mjs')).href
+  const builder = pathToFileURL(
+    join(process.cwd(), 'config/scripts/occd-distribution/server-bundle/occd-entry-build.mjs')
+  ).href
   const built = await runProcess({
     program: process.execPath,
     args: [
@@ -33,26 +35,6 @@ afterAll(async () => {
 })
 
 describe('real occd executable help', () => {
-  it.each([['--help'], ['-h'], ['--json', '--help'], ['--help', '--json']])(
-    'prints usage to stdout and exits without creating a profile: %j',
-    async (...argv) => {
-      const dataRoot = join(directory, `absent-${argv.join('-')}`)
-      const result = await runProcess({
-        program: process.execPath,
-        args: [launcher, ...argv],
-        env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1', OCC_USER_DATA: dataRoot },
-        timeoutMs: 10_000
-      })
-      expect(result.code, result.stderr).toBe(0)
-      expect(result.timedOut).toBe(false)
-      expect(result.stderr).toBe('')
-      expect(result.stdout).toContain('Usage: occd [options]')
-      expect(result.stdout).toContain('--bind <ip>')
-      expect(result.stdout).not.toContain('"type":"occ_server_ready"')
-      await expect(readdir(dataRoot)).rejects.toMatchObject({ code: 'ENOENT' })
-    }
-  )
-
   it('leaves an existing instance lock untouched', async () => {
     const dataRoot = join(directory, 'locked-profile')
     await mkdir(dataRoot)

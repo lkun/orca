@@ -1,5 +1,5 @@
 import { OCCD_LAUNCHER_FILENAME } from '../../../shared/occd-artifacts'
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import { execOCCdRemote, type OCCdRemoteExecTarget } from './occd-remote-runtime-control'
 import { occdWindowsSlotOpCommand } from './occd-remote-windows-node'
 import { OCCD_BUILD_HASH_MARKER as BUILD_HASH_MARKER } from '../host-state/occd-windows-host-script'

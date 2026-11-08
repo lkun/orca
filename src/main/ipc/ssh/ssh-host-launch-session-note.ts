@@ -1,6 +1,6 @@
 /** Flag macOS managed servers that outlive their launching SSH session. */
 import { getAppEnvironment } from '../../../shared/app-environment'
-import { listEnvironments } from '../../../shared/runtime-environment-store'
+import { listEnvironments } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
 import { readManagedOCCdLaunchSshSession } from '../../managed-server/lifecycle/occd-managed-launch-session'
 import { knownSshHostPlatform } from '../../ssh/ssh-host-platform-memo'
 import { getSshHostServerStatus } from '../../ssh/ssh-host-server-status'

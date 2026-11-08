@@ -3,18 +3,20 @@ import { hashOCCdLauncher } from '../../shared/occd-build-identity'
 import {
   confirmPtyProcessCeiling,
   type PtyProcessCeilingState
-} from '../../shared/pty-process-ceiling-state'
+} from '../../shared/terminal/pty/native-process/pty-process-ceiling-state'
 import process from 'node:process'
-import { checkDaemonHealthWithCoverage, type DaemonHealth } from '../daemon/daemon-health'
-import { ptySpawnHealthPlatformCoverage } from '../daemon/daemon-health-identity'
+import { checkDaemonHealthWithCoverage, type DaemonHealth } from '../daemon/health/daemon-health'
+import { ptySpawnHealthPlatformCoverage } from '../daemon/health/daemon-health-identity'
 import {
   daemonOwnsFreshPersistentPtys,
   getDaemonEndpointFacts,
   readDaemonPidRecord
-} from '../daemon/daemon-provider-state'
+} from '../daemon/providers/lifecycle/daemon-provider-state'
 import type { OCCdProfileStateAuthoritySelection } from './occd-profile-state-telemetry'
 import { OCCD_STOP_REQUESTS_CAPABILITY } from '../../shared/occd-stop-request'
 import type { OCCdIdleStopRecord } from '../../shared/occd-idle-exit'
+import type { OCCdUnexpectedExit } from '../../shared/occd-unexpected-exit'
+import { occdPreviousUnexpectedExit } from './occd-unexpected-exit'
 
 /** Distinguish real PTY spawn coverage from handshake-only platform probes. */
 type PtySelfTestCoverage = 'pty-spawn' | 'handshake'
@@ -58,6 +60,8 @@ export type OCCdHealth = {
   stopRequests?: typeof OCCD_STOP_REQUESTS_CAPABILITY
   /** Managed launches only; older/user-started builds omit prior idle-stop outcomes. */
   previousIdleStop?: OCCdIdleStopRecord | null
+  /** Older builds omit it; null means the previous run stopped cleanly or its boot is unknown. */
+  previousUnexpectedExit?: OCCdUnexpectedExit | null
 }
 
 /** Hash launcher contents: inherited version strings cannot prove that rollback replaced a build. */
@@ -146,6 +150,7 @@ export async function collectOCCdHealth(
     terminalDaemon: await collectTerminalDaemonHealth(),
     ...(profileStateAuthority ? { profileStateAuthority } : {}),
     stopRequests: OCCD_STOP_REQUESTS_CAPABILITY,
-    ...(previousIdleStop !== undefined ? { previousIdleStop } : {})
+    ...(previousIdleStop !== undefined ? { previousIdleStop } : {}),
+    previousUnexpectedExit: occdPreviousUnexpectedExit()
   }
 }

@@ -3,6 +3,10 @@ import type {
   OCCdMigrationCatalogState,
   OCCdMigrationManifest
 } from '../../shared/occd-migration/occd-migration-manifest'
+import { parseOCCdMigrationManifest } from '../../shared/occd-migration/occd-migration-manifest-validation'
+import { advertisedOCCdMigrationDestinationCapabilities } from '../occd/occd-migration-destination-capabilities'
+import { assertOCCdMigrationManifestDigest } from '../occd/occd-migration-manifest-digest'
+import type { Store } from '../persistence/loading-store/store'
 import type { OCCdMigrationDestinationCatalog } from './occd-migration-cutover-coordinator'
 
 type Catalog = OCCdMigrationDestinationCatalog
@@ -76,7 +80,32 @@ export function fakeOCCdMigrationDestination(): FakeOCCdMigrationDestination {
       states.delete(manifest.migrationId)
       return { ...identity, state: 'absent', aborted, durableAbsent: true }
     }),
-    stageChunk: vi.fn<Catalog['stageChunk']>()
+    stageChunk: vi.fn<Catalog['stageChunk']>(),
+    readCapabilities: vi.fn<Catalog['readCapabilities']>(async () => []),
+    stageBlobChunk: vi.fn<Catalog['stageBlobChunk']>()
   }
   return destination
+}
+
+/** A host server's real import, behind manifests sent as the RPC handler receives them. */
+export function storeBackedOCCdMigrationDestination(server: Store): Catalog {
+  const sent = (manifest: OCCdMigrationManifest): OCCdMigrationManifest => {
+    const raw = JSON.parse(JSON.stringify(manifest))
+    assertOCCdMigrationManifestDigest(raw)
+    return parseOCCdMigrationManifest(raw)
+  }
+  return {
+    readState: async (manifest) => server.getOCCdMigrationCatalogState(sent(manifest)),
+    stage: async (manifest) => server.stageOCCdMigrationCatalog(sent(manifest)),
+    commit: async (manifest) => server.commitStagedOCCdMigrationCatalog(sent(manifest)),
+    abort: async (manifest) => {
+      const result = server.abortStagedOCCdMigrationCatalog(sent(manifest))
+      return result.aborted ? result : { ...result, durableAbsent: true as const }
+    },
+    abortByReference: async (reference) =>
+      server.abortStagedOCCdMigrationCatalogByReference(reference),
+    stageChunk: async (request) => server.stageOCCdMigrationSnapshotChunk(request),
+    readCapabilities: async () => advertisedOCCdMigrationDestinationCapabilities(),
+    stageBlobChunk: async (request) => server.stageOCCdMigrationBlobChunk(request)
+  }
 }

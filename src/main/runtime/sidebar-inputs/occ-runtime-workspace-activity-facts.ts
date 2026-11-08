@@ -1,5 +1,5 @@
-import { OCCRuntimeWithAgentTransitions } from '../occ-runtime-agent-transitions'
-import type { PtyLivenessVerdict } from '../../../shared/pty-liveness-verdict'
+import { OCCRuntimeWithAgentTransitions } from '../construction/occ-runtime-agent-transitions'
+import type { PtyLivenessVerdict } from '../../../shared/terminal/pty/lifecycle/pty-liveness-verdict'
 import type {
   WorkspaceActivityFactsSnapshot,
   WorkspaceTerminalLiveness

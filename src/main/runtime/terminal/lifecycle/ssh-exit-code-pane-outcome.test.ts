@@ -3,13 +3,14 @@ import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-await import('../../occ-runtime-test-mocks.spec')
-await import('../../occ-runtime-test-lifecycle.spec')
-const { makePaneKey } = await import('../../occ-runtime-test-mocks.spec')
+await import('../../occ-runtime-tests/runtime-test-module-registration.spec')
+await import('../../occ-runtime-tests/occ-runtime-test-lifecycle.spec')
+await import('../../occ-runtime-tests/runtime-test-module-registration.spec')
+const { makePaneKey } = await import('../../../../shared/workspace-layout/stable-pane-id')
 const { HEADLESS_LEAF_ID, TEST_WORKTREE_ID, createRuntimeWithSshLease } =
-  await import('../../occ-runtime-test-fixtures.spec')
-const { registerBoundPty } = await import('../../bind-first-pane.test-fixture')
-const { boundSessionOf } = await import('../../profile-session-store.test-fixture')
+  await import('../../occ-runtime-tests/occ-runtime-test-fixtures.spec')
+const { registerBoundPty } = await import('../../occ-runtime-tests/bind-first-pane.test-fixture')
+const { boundSessionOf } = await import('../layout/profile-session-store.test-fixture')
 
 function exitedSshPane(tabId: string, ptyId: string, exitCode: number) {
   const runtime = createRuntimeWithSshLease(ptyId, tabId)

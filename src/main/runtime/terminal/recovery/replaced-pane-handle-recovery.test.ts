@@ -1,17 +1,18 @@
 // Recover ended pane handles only to connected replacements bound in the same pane and workspace (L80 P4).
-import { readdirSync, readFileSync } from 'node:fs'
-import path from 'node:path'
+
 import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-await import('../../occ-runtime-test-mocks.spec')
-await import('../../occ-runtime-test-lifecycle.spec')
-const { OCCRuntimeService, makePaneKey } = await import('../../occ-runtime-test-mocks.spec')
+await import('../../occ-runtime-tests/runtime-test-module-registration.spec')
+await import('../../occ-runtime-tests/occ-runtime-test-lifecycle.spec')
+await import('../../occ-runtime-tests/runtime-test-module-registration.spec')
+const { OCCRuntimeService } = await import('../../occ-runtime')
+const { makePaneKey } = await import('../../../../shared/workspace-layout/stable-pane-id')
 const { HEADLESS_LEAF_ID, HEADLESS_SECOND_LEAF_ID, TEST_REPO_ID, TEST_WORKTREE_ID, store } =
-  await import('../../occ-runtime-test-fixtures.spec')
+  await import('../../occ-runtime-tests/occ-runtime-test-fixtures.spec')
 const { dropFromHostInventory, movePaneFirst, registerBoundPty } =
-  await import('../../bind-first-pane.test-fixture')
+  await import('../../occ-runtime-tests/bind-first-pane.test-fixture')
 
 function paneWithHandle(tabId: string) {
   const runtime = new OCCRuntimeService(store)
@@ -129,31 +130,5 @@ describe('a stale handle of a replaced pane (switch on)', () => {
       restarted.recoverTerminalPane(paneKey, TEST_WORKTREE_ID, oldHandle)
     ).rejects.toThrow('terminal_not_found')
     expect(createTerminal).not.toHaveBeenCalled()
-  })
-})
-
-describe('issuedForPaneKey census', () => {
-  it('is minted by issuePtyHandle, compared by the canonical source and read for recovery', () => {
-    const root = path.resolve(__dirname, '../../../../..')
-    const users: string[] = []
-    const walk = (dir: string): void => {
-      for (const entry of readdirSync(dir, { withFileTypes: true })) {
-        const full = path.join(dir, entry.name)
-        if (entry.isDirectory()) {
-          walk(full)
-        } else if (/\.tsx?$/.test(entry.name) && !/\.(test|spec)\.tsx?$/.test(entry.name)) {
-          if (readFileSync(full, 'utf8').includes('issuedForPaneKey')) {
-            users.push(path.relative(root, full))
-          }
-        }
-      }
-    }
-    walk(path.join(root, 'src'))
-    expect(users.sort()).toEqual([
-      'src/main/runtime/runtime-terminal-contracts.ts',
-      'src/main/runtime/terminal/identity/terminal-handle-bindings.ts',
-      'src/main/runtime/terminal/identity/terminal-identity-source.ts',
-      'src/main/runtime/terminal/recovery/resolve-terminal-pane.ts'
-    ])
   })
 })

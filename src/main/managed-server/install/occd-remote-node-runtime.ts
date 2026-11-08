@@ -15,7 +15,7 @@ import {
   occdNodeRuntimeExecutable
 } from '../../../shared/occd-artifacts'
 import type { OCCdHostTransport } from '../../ssh/occd-host-transport'
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import {
   execCommand,
   isUnconfirmedSshCommandTermination

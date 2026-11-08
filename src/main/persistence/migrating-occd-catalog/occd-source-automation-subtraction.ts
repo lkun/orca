@@ -1,4 +1,4 @@
-import { getAutomationRunRepoId } from '../../../shared/automation-run-identity'
+import { getAutomationRunRepoId } from '../../../shared/automations/history/automation-run-identity'
 import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
 import type { PersistedState } from '../../../shared/persisted-state-types'
 import { createOCCdMigrationSourceScope, occdMigrationOwnsRepoId } from './occd-source-scope'

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { isOCCSessionId, type OCCSessionId } from '../../../../shared/occ-session-address'
-import type { OrchestrationDb } from '../db'
+import type { OrchestrationDb } from '../db/orchestration-db'
 import {
   RUN_PANE_KEY_MATCH_SUFFIX_SQL,
   DISPATCH_PANE_KEY_MATCH_SUFFIX_SQL

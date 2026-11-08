@@ -1,5 +1,5 @@
 import type { SshTarget } from '../../shared/ssh-types'
-import type { WslOCCdHostTarget } from '../wsl/wsl-occd-host-target'
+import type { WslOCCdHostTarget } from '../wsl/occd/wsl-occd-host-target'
 import type { RemoteInstallTransport } from '../managed-server/install/remote-install-transport'
 import type { OCCdLaunchDetach } from '../managed-server/install/occd-remote-launch'
 

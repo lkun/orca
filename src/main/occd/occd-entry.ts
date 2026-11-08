@@ -1,38 +1,34 @@
 // Compose the Node-host runtime; paired desktop pages work even without a local browser engine.
 import process from 'node:process'
 import { getAppEnvironment } from '../../shared/app-environment'
-import { resolveOCCdInstallRoot, resolveUserDataPath } from './occd-app-paths'
+import { resolveUserDataPath } from './occd-app-paths'
 import { prepareOCCdCliLauncher } from './occd-cli-launcher'
 import { installOCCdHostAdapters, runOCCdQuitHandlers } from './occd-host-adapters'
 import { prepareOCCdSecretStoreAndMigrate } from './occd-secret-store-startup'
-import { describeOCCdBindExposure, resolveOCCdBindHost } from './occd-bind-address'
+import { describeOCCdBindExposure, resolveOCCdBindHost } from '../../shared/occd-bind-address'
 import {
   flushOCCdProfileStoreForShutdown,
-  installOCCdShutdownSignals,
   startOCCdWithHost,
-  stopOCCdStructuredAgentSessions,
-  type OCCdShutdownTrigger
+  stopOCCdStructuredAgentSessions
 } from './occd-lifecycle'
-import { OCCD_USAGE, parseArgs, resolveOCCdWebClientRoot } from './occd-command-arguments'
+import { resolveOCCdWebClientRoot } from './occd-command-arguments'
 import type { OCCdRuntimeCleanup } from './occd-runtime-lifetime'
-import { installOCCdStopRequestListeners } from './occd-stop-request-listener'
-import { prepareOCCdManagedStop } from './occd-managed-stop-admission'
 import { bindOCCdStopTerminalAdmission } from './occd-stop-terminal-admission'
 import type { OCCdHandle, OCCdOptions } from './occd-start-contract'
-import { beginOCCdIdleExit, bindOCCdIdleShutdown } from './occd-managed-idle-exit-host'
+import { beginOCCdIdleExit } from './occd-managed-idle-exit-host'
 import { occdAutomationsKeepHostBusy, startOCCdAutomations } from './occd-automations'
-import { changedAiVaultSearchSettings } from '../../shared/ai-vault-search-settings'
-import type { AiVaultSearchSettings } from '../../shared/ai-vault-search-settings'
+import {
+  changedAiVaultSearchSettings,
+  type AiVaultSearchSettings
+} from '../../shared/ai-vault/search/ai-vault-search-settings'
 import { stampRuntimeSourceEnv } from '../../shared/runtime-source-env'
 import { adoptWslHostLoginEnvironmentLogged } from './occd-wsl-host-login-environment'
-import { installOCCdProcessErrorGuards } from './occd-process-error-guards'
 import { occdWsPortOptions } from './occd-ws-port-policy'
 import { createOCCdStartupTiming } from './occd-startup-timing'
 import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { restoreOCCdTerminalAuthority } from './occd-restored-terminal-authority'
 import { installOCCdFeatureReadiness } from '../runtime/rpc/occd-feature-readiness'
-
-export { parseArgs }
+import { isAgentStatusHooksEnabled } from '../../shared/agent-hook-listener/configuration/agent-status-hooks-setting'
 
 let closeOCCdObservability = (): Promise<void> => Promise.resolve()
 
@@ -71,7 +67,7 @@ async function startOCCdRuntime(
   const loginEnvironment = adoptWslHostLoginEnvironmentLogged()
   const { startOCCdDaemon, stopOCCdDaemon } = await import('./occd-daemon-supervision')
   // The daemon and its PTYs inherit the adopted login env and nothing later startup writes, so it
-  // spawns as soon as that lands, in parallel with the imports, stores and hook server. Never rejects.
+  // spawns as soon as that lands, alongside imports, stores and hooks. Rejects only when supervised.
   const daemonStartup = loginEnvironment.then(() => timed('daemon', () => startOCCdDaemon()))
   // Observed now: an early abort may never reach the await below.
   void daemonStartup.catch(() => {})
@@ -80,7 +76,7 @@ async function startOCCdRuntime(
   // in-flight spawn settles; a failed one leaves only the disconnect to do.
   registerCleanup(() => daemonStartup.catch(() => {}).then(() => stopOCCdDaemon()))
   const { OCCRuntimeService } = await import('../runtime/occ-runtime')
-  const { OCCRuntimeRpcServer } = await import('../runtime/runtime-rpc')
+  const { OCCRuntimeRpcServer } = await import('../runtime/rpc/server/runtime-rpc')
   const { registerHeadlessPtyRuntime } = await import('../ipc/pty/register-headless-runtime')
   const { getLocalPtyProvider } = await import('../ipc/pty/provider/registry')
   const { installOCCdObservability } = await import('./occd-observability')
@@ -89,27 +85,26 @@ async function startOCCdRuntime(
   const { servePublishMode } = await import('../server/serve-pairing-readiness')
   const { buildOCCdServeReadiness } = await import('./occd-serve-readiness')
   const { createOCCdProfileStateStartup } = await import('./occd-profile-state-startup')
-  const { daemonOwnsFreshPersistentPtys } = await import('../daemon/daemon-provider-state')
+  const { daemonOwnsFreshPersistentPtys } =
+    await import('../daemon/providers/lifecycle/daemon-provider-state')
   const { resolveDaemonSessionScrollbackRows } =
-    await import('../daemon/daemon-session-scrollback-window')
+    await import('../daemon/sessions/daemon-session-scrollback-window')
   const { collectOCCdHealth } = await import('./occd-health')
   const { agentHookServer } = await import('../agent-hooks/server')
-  const { isAgentStatusHooksEnabled } = await import('../agent-hooks/managed-agent-hook-controls')
+  await import('../agent-hooks/managed-agent-hook-controls')
   const { agentHookRuntimeDeps } = await import('../agent-hooks/agent-hook-runtime-deps')
   const { installHookStatusSessionTabsRepublish } =
     await import('../agent-hooks/hook-status-session-tabs-republish')
   const { startOCCdAgentHookServer, startOCCdManagedAgentHooks } =
     await import('./occd-managed-agent-hooks')
   const { AgentStatusObservedPaneIdentities, AgentStatusObservedPaneIdentityCapture } =
-    await import('../runtime/agent-status-observed-pane-identity')
+    await import('../runtime/terminal/identity/agent-status-observed-pane-identity')
 
   const { disposeWatcherProcessAndWait } =
     await import('../ipc/filesystem/watcher-process/parcel-watcher-process')
 
   let paneGridsForShutdown: { flushPaneGrids(): Promise<void> | null } | null = null
-  let profileStoreForShutdown:
-    | { flushFinalOrThrowAsync(): Promise<void>; freezeWritesAsync(): Promise<void> }
-    | undefined
+  let profileStoreForShutdown: Parameters<typeof flushOCCdProfileStoreForShutdown>[0] | undefined
   let uninstallHookStatusRepublish = (): void => {}
   let uninstallObservedStatusIdentity = (): void => {}
   // Cleanups run in reverse: RPC, then recovery and watchers, then the final flush; the daemon
@@ -135,13 +130,8 @@ async function startOCCdRuntime(
     console.warn('[occd] Could not prepare the profile CLI launcher', error)
   })
   const idleExitStartup = beginOCCdIdleExit(runtimeUserDataPath)
-  const { occdSessionScannerIdleTimeoutMs } = await import('./occd-session-scanner-idle')
-  const scannerIdleTimeoutMs = occdSessionScannerIdleTimeoutMs()
-  if (scannerIdleTimeoutMs !== null) {
-    const { setAiVaultServiceIdleTimeoutMs } =
-      await import('../ai-vault/session-scanner-service-spawn')
-    setAiVaultServiceIdleTimeoutMs(scannerIdleTimeoutMs)
-  }
+  const { applyOCCdSessionScannerIdleTimeout } = await import('./occd-session-scanner-idle')
+  await applyOCCdSessionScannerIdleTimeout()
   // Initialize sealing before Store load unseals protected settings.
   await timed('secret-store', () => prepareOCCdSecretStoreAndMigrate(runtimeUserDataPath))
   const { store: profileStore, authority: profileStateAuthority } = await timed('profile', () =>
@@ -195,6 +185,8 @@ async function startOCCdRuntime(
 
   const { loadAgentSessionClaimSigner } =
     await import('../runtime/agent-session/ownership/agent-session-claim-identity')
+  const { createOCCdPairedEnvironmentOptions } = await import('./occd-paired-environment-options')
+  const pairedEnvironments = createOCCdPairedEnvironmentOptions()
   const runtime = new OCCRuntimeService(profileStore, stats, {
     // Persistent signatures let restarted runtimes adopt PTYs owned before restart.
     agentSessionClaimSigner: loadAgentSessionClaimSigner(runtimeUserDataPath, runtimeUserDataPath),
@@ -209,6 +201,7 @@ async function startOCCdRuntime(
     ),
     // Resolve lazily because daemon swaps replace the provider after construction.
     getLocalProvider: () => getLocalPtyProvider(),
+    ...pairedEnvironments.runtimeOptions,
     // Read current daemon ownership; failed/degraded launch cannot claim fresh PTY persistence.
     canRecoverPersistentLocalPtys: () => daemonOwnsFreshPersistentPtys(),
     // Node hosts cannot promote into desktop windows; override the constructor’s openable default.
@@ -247,8 +240,12 @@ async function startOCCdRuntime(
   startAgentStateRulesLiveUpdates(profileStore, (rules) =>
     console.info(`[occd] agent state rules ${rules.version} (${rules.source})`)
   )
+  // Paired phones dictate through this host; keep its model loaded the same way the desktop does.
+  const { startSpeechModelWarmup } = await import('../speech/speech-model-warmup')
+  startSpeechModelWarmup(profileStore)
   if (OCC_LAYOUT_OWNER_IS_MAIN) {
-    const { repairDuplicatePtyPanesOnStart } = await import('../runtime/moved-pane-owner-rekey')
+    const { repairDuplicatePtyPanesOnStart } =
+      await import('../runtime/terminal/identity/moved-pane-owner-rekey')
     // Wait behind earlier writes and persist repair before reconciliation/RPC admission.
     await repairDuplicatePtyPanesOnStart(profileStore, runtime)
   }
@@ -289,7 +286,8 @@ async function startOCCdRuntime(
   observedStatusCapture.attach(runtime)
   agentHookServer.setCliWriterExecutionMatcher(observedPaneIdentities, runtime)
   // First RPC clients must see a fully published graph.
-  const { publishHeadlessRuntimeGraph } = await import('../runtime/headless-runtime-graph')
+  const { publishHeadlessRuntimeGraph } =
+    await import('../runtime/session-graph/headless-runtime-graph')
   publishHeadlessRuntimeGraph(runtime)
   // Only the runtime can identify running shells and install deferred migrated history.
   void runtime.installPendingOCCdMigrationShellHistory().catch((error: unknown) => {
@@ -304,12 +302,21 @@ async function startOCCdRuntime(
     enableWebSocket: true,
     // Pin operator exposure across restarts; pairing must not silently widen a loopback bind.
     pinnedBindHost: bindHost,
+    serveNetworkSources: {
+      allowPublic: options.allowPublic === true,
+      refusePublic: options.refusePublic === true,
+      pairingAddress: options.pairingAddress ?? null
+    },
     webClientRoot: resolveOCCdWebClientRoot(options.webClientRoot),
     ...occdWsPortOptions(options.port)
   })
+  pairedEnvironments.bindRpc(rpc)
+  runtime.setAgentSenderPeerKey(() => rpc.getE2EEPublicKey())
   // Stop RPC before cleanup can tear down writers and runtime state.
   registerCleanup(() => rpc.stop())
   await timed('rpc', () => rpc.start())
+  // The daemon has no window to wait for; its CI-line watches start with the runtime.
+  runtime.startPullRequestWatches()
   startOCCdAutomations(runtime, profileStore, registerCleanup)
   const pushService = DesktopPushService.create({
     runtime,
@@ -346,26 +353,4 @@ async function startOCCdRuntime(
     registerCleanup
   })
   return { readiness }
-}
-
-export async function main(argv: string[] = process.argv.slice(2)): Promise<void> {
-  const options = parseArgs(argv)
-  if (options.help) {
-    console.log(OCCD_USAGE)
-    return
-  }
-  let shutdownTrigger: OCCdShutdownTrigger | null = null
-  // Fire-and-forget startup work can reject before its first await completes.
-  installOCCdProcessErrorGuards(() => shutdownTrigger)
-  const startup = startOCCd(options)
-  const requestShutdown = installOCCdShutdownSignals(async () => (await startup).stop())
-  shutdownTrigger = requestShutdown
-  const handle = await startup
-  // Stop requests must name the runtime/instance established by startup.
-  installOCCdStopRequestListeners(() => requestShutdown('stop request'), {
-    installRoot: resolveOCCdInstallRoot(),
-    managedStop: handle.managedStop,
-    beforeManagedStop: prepareOCCdManagedStop
-  })
-  bindOCCdIdleShutdown(requestShutdown)
 }

@@ -6,9 +6,9 @@ import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-
 import { folderWorkspaceKey } from '../../../shared/workspace-scope'
 import { getOCCdMigrationReceivedBlobPath } from './occd-migration-blob-staging'
 import { buildWslMoveShellHistoryBlobs } from '../moving-wsl-projects/wsl-move-shell-history-blobs'
-import { commitStagedOCCdMigrationCatalogDurably } from '../../runtime/occd-migration-catalog-import'
-import { getHistoryRoot } from '../../terminal-history-paths'
-import { hashWorktreeId } from '../../terminal-history-id'
+import { commitStagedOCCdMigrationCatalogDurably } from '../../runtime/hosts/migration/occd-migration-catalog-import'
+import { getHistoryRoot } from '../../pty/history/terminal-history-paths'
+import { hashWorktreeId } from '../../pty/history/terminal-history-id'
 import { FOLDER_WORKSPACE } from './persistence-occd-migration-catalog-fixture'
 import { testState, type createStore } from '../persistence-test-harness'
 

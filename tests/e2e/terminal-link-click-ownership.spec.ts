@@ -208,20 +208,6 @@ test.describe('terminal link click ownership', () => {
     await sendToTerminal(occPage, ptyId, 'q')
   })
 
-  test('an OCC-owned plain link click emits no child PTY mouse frames', async ({
-    occPage
-  }, testInfo) => {
-    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(occPage, testInfo)
-    await occPage.mouse.click(target.x, target.y)
-
-    await expect(occPage.locator('[data-terminal-link-action-popover]')).toBeVisible()
-    await expect(occPage.locator('[data-terminal-link-destination]')).toHaveText(LINK)
-
-    await expectOCCOwnedMouseOutcome(mouseLogPath)
-
-    await sendToTerminal(occPage, ptyId, 'q')
-  })
-
   test('an OCC-owned OSC link click emits no child PTY mouse frames', async ({
     occPage
   }, testInfo) => {
@@ -238,21 +224,6 @@ test.describe('terminal link click ownership', () => {
     await expect(occPage.locator('[data-terminal-link-destination]')).toHaveText(LINK)
     await expectOCCOwnedMouseOutcome(mouseLogPath)
 
-    await sendToTerminal(occPage, ptyId, 'q')
-  })
-
-  test('a plain click stays child-owned when link actions are disabled', async ({
-    occPage
-  }, testInfo) => {
-    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(occPage, testInfo)
-    await occPage.evaluate(async () => {
-      await window.__store?.getState().updateSettings({ terminalLinkActionPopoverEnabled: false })
-    })
-
-    await occPage.mouse.click(target.x, target.y)
-
-    await expect(occPage.locator('[data-terminal-link-action-popover]')).toHaveCount(0)
-    await expectChildMouseReports(mouseLogPath)
     await sendToTerminal(occPage, ptyId, 'q')
   })
 

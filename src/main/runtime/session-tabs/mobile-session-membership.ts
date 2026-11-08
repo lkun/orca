@@ -1,20 +1,50 @@
+import type { OCCRuntimeWithScheduleMobileSessionTabsChanged as SessionTabsPublication } from './session-tabs-change-publication'
+import type { OCCRuntimeWithPruneMobileSessionTabGroupLayout as SessionTabsProjection } from '../session-lifecycle/projection/prune-mobile-session-tab-group-layout'
 import type { OCCRuntimeWithGetTerminalInteractiveWait as GetTerminalInteractiveWaitMethods } from '../terminal/wait/terminal-interactive-wait'
 import { OCCRuntimeWithPublishPtyBackedMobileSessionTerminal } from './pty-backed-session-publication'
 import { getRepoIdFromWorktreeId } from '../../../shared/worktree/id'
-import { parsePaneKey } from '../../../shared/stable-pane-id'
+import { parsePaneKey } from '../../../shared/workspace-layout/stable-pane-id'
 import { hasHostAuthoritativeTerminalMembership } from '../../persistence/terminal-topology/terminal-topology-membership'
 import type {
   RuntimeMobileSessionTabsSnapshot,
   RuntimeSyncedLeaf
-} from '../../../shared/runtime-types'
-import { retireTerminalSurfacesFromSnapshot } from '../mobile-session-terminal-retirement'
+} from '../../../shared/runtime-session-contracts'
+import { retireTerminalSurfacesFromSnapshot } from '../terminal/surface/mobile-session-terminal-retirement'
 import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { startedMainTerminalSurfaces } from '../terminal/surface/main-terminal-surfaces'
 
 export abstract class OCCRuntimeWithTouchMobileSessionTabsForWorktree extends OCCRuntimeWithPublishPtyBackedMobileSessionTerminal {
+  protected abstract createMobileSessionTabsDelivery(): ReturnType<
+    SessionTabsPublication['createMobileSessionTabsDelivery']
+  >
+
+  protected abstract toMobileSessionTabsResult(
+    ...args: Parameters<SessionTabsProjection['toMobileSessionTabsResult']>
+  ): ReturnType<SessionTabsProjection['toMobileSessionTabsResult']>
+
+  protected abstract hasAgentSenderListeners(): boolean
+
   abstract getTerminalWorktreeIdForPaneKey(
     ...args: Parameters<GetTerminalInteractiveWaitMethods['getTerminalWorktreeIdForPaneKey']>
   ): ReturnType<GetTerminalInteractiveWaitMethods['getTerminalWorktreeIdForPaneKey']>
+
+  /** The RPC server owns the pairing key clients authenticate this host by. */
+  setAgentSenderPeerKey(read: () => string | null): void {
+    this.agentProjections.setPeerKey(read)
+  }
+
+  /** Republish only worktrees whose sender scope differs from the one their last frame carried. */
+  refreshAgentSenderAssociations(): void {
+    if (!this.hasAgentSenderListeners()) {
+      return
+    }
+    const changed = this.agentProjections.senders.changedScopes(
+      this.mobileSessionTabsByWorktree.keys()
+    )
+    for (const worktreeId of changed) {
+      this.touchMobileSessionTabsForWorktree(worktreeId)
+    }
+  }
 
   /** Bump snapshotVersion before emitting (coalesced unless immediate); clients discard re-emits at the same version. */
   touchMobileSessionTabsForWorktree(

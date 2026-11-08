@@ -28,16 +28,31 @@ import {
 
 type OCCdManagedWake =
   | { outcome: 'serving' | 'not-activated' | 'unverifiable' }
-  | { outcome: 'fenced' }
+  /** A recovery launch that failed is still a failed run. */
+  | { outcome: 'fenced'; launchFailure?: Error }
   | { outcome: 'started'; readiness: ServeReadiness }
-  | { outcome: 'recovery-refused'; reason: string }
+  | { outcome: 'recovery-refused'; reason: string; launchFailure?: Error }
+
+/** Proven stopped, but the caller's gate refused a new launch; only gated wakes can see it. */
+type OCCdManagedGatedWake = OCCdManagedWake | { outcome: 'launch-refused' }
 
 /** Start only proven-stopped active slots; leave live or unverifiable processes alone. */
 export function wakeStoppedManagedOCCd(
   options: OCCdSlotOptions,
-  onStarting: () => void = () => {}
-): Promise<OCCdManagedWake> {
-  return serializedWake(options, (host) => wakeAfterPrior(options, host, onStarting))
+  onStarting?: () => void
+): Promise<OCCdManagedWake>
+/** `mayLaunch` is checked under the fence, at the launch decision itself. */
+export function wakeStoppedManagedOCCd(
+  options: OCCdSlotOptions,
+  onStarting: (() => void) | undefined,
+  mayLaunch: () => boolean
+): Promise<OCCdManagedGatedWake>
+export function wakeStoppedManagedOCCd(
+  options: OCCdSlotOptions,
+  onStarting: () => void = () => {},
+  mayLaunch: () => boolean = () => true
+): Promise<OCCdManagedGatedWake> {
+  return serializedWake(options, (host) => wakeAfterPrior(options, host, onStarting, mayLaunch))
 }
 
 /**
@@ -105,8 +120,9 @@ function serializedWake<T>(
 async function wakeAfterPrior(
   options: OCCdSlotOptions,
   host: string,
-  onStarting: () => void
-): Promise<OCCdManagedWake> {
+  onStarting: () => void,
+  mayLaunch: () => boolean
+): Promise<OCCdManagedGatedWake> {
   const before = await readOCCdActivationRecord(options)
   if (!before.active) {
     return { outcome: 'not-activated' }
@@ -119,6 +135,10 @@ async function wakeAfterPrior(
   if (!(await occdActivationFenceExists(options))) {
     interruptedWakes.delete(host)
   } else if (!(await releaseOwnInterruptedWakeFence(options, host))) {
+    // Recovery can relaunch the slot, so a refused launch skips it too.
+    if (!mayLaunch()) {
+      return { outcome: 'launch-refused' }
+    }
     const recovered = await recoverAbandonedFence(options, onStarting)
     if (recovered) {
       return recovered
@@ -129,11 +149,14 @@ async function wakeAfterPrior(
   interruptedWakes.set(host, token)
   const result = await withOCCdActivationLock(
     options,
-    async (): Promise<OCCdManagedWake> => {
+    async (): Promise<OCCdManagedGatedWake> => {
       // Other clients may change the active slot; reread under the fence.
       const active = (await readOCCdActivationRecord(options)).active
       if (!active) {
         return { outcome: 'not-activated' }
+      }
+      if (!mayLaunch()) {
+        return { outcome: 'launch-refused' }
       }
       const identity = await resolveOCCdSlotIdentity(options, active)
       onStarting()
@@ -159,11 +182,14 @@ async function recoverAbandonedFence(
       return null
     case 'pending':
       return { outcome: 'fenced' }
-    case 'refused':
+    case 'refused': {
+      // A failed launch inside recovery is still a failed run.
+      const failure = recovery.launchFailure ? { launchFailure: recovery.launchFailure } : {}
       // Retry unverifiable recovery at the next fence check, as with a busy owner.
       return recovery.code === OCCD_RECOVERY_UNVERIFIABLE_CODE
-        ? { outcome: 'fenced' }
-        : { outcome: 'recovery-refused', reason: recovery.reason }
+        ? { outcome: 'fenced', ...failure }
+        : { outcome: 'recovery-refused', reason: recovery.reason, ...failure }
+    }
     case 'recovered':
       if (!recovery.readiness) {
         return { outcome: 'not-activated' }

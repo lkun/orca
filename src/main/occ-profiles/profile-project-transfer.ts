@@ -2,7 +2,11 @@ import type {
   TransferOCCProfileProjectArgs,
   TransferOCCProfileProjectResult
 } from '../../shared/occ-profiles'
-import { getOCCProfileListState } from './profile-index-store'
+import {
+  getOCCProfileIndexPath,
+  getOCCProfileListState,
+  readProfileIndex
+} from './profile-index-store'
 import {
   readProfileProjectTransferState,
   writeProfileProjectDomainChanges
@@ -16,6 +20,7 @@ import { removeSourceRepo } from './profile-project-source-removal'
 import {
   applyPayloadToTarget,
   createTargetRepo,
+  assertRepoHasNoCrossStoreLinkedWorkspace,
   createTransferPayload
 } from './profile-project-transfer-payload'
 import { repoPhysicalKey } from './profile-project-worktree-identity'
@@ -45,8 +50,20 @@ export function transferOCCProfileProject(
   args: TransferOCCProfileProjectArgs,
   userDataPath: string
 ): TransferOCCProfileProjectResult {
-  recoverPendingProfileProjectMoves(userDataPath)
+  // Refuse a linked move before the profile lookup, recovery or storage migration can write anything.
+  const indexedIds = new Set(
+    readProfileIndex(getOCCProfileIndexPath(userDataPath))?.profiles.map((profile) => profile.id)
+  )
+  if (
+    indexedIds.has(args.sourceProfileId) &&
+    indexedIds.has(args.targetProfileId) &&
+    args.sourceProfileId !== args.targetProfileId
+  ) {
+    const unrecoveredSource = readProfileProjectTransferState(args.sourceProfileId, userDataPath)
+    assertRepoHasNoCrossStoreLinkedWorkspace(unrecoveredSource.state, args.repoId)
+  }
   assertKnownProfiles(args, userDataPath)
+  recoverPendingProfileProjectMoves(userDataPath)
   let sourceSnapshot = readProfileProjectTransferState(args.sourceProfileId, userDataPath)
   let targetSnapshot = readProfileProjectTransferState(args.targetProfileId, userDataPath)
   const sourceRepo = sourceSnapshot.state.repos.find((repo) => repo.id === args.repoId)

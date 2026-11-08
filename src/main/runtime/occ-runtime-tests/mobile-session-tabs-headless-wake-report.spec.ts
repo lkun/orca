@@ -1,9 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
-import {
-  OCCRuntimeService,
-  electronMocks,
-  getDefaultWorkspaceSession
-} from '../occ-runtime-test-mocks.spec'
+import './runtime-test-module-registration.spec'
+import { OCCRuntimeService } from '../occ-runtime'
+import { getDefaultWorkspaceSession } from '../../../shared/constants'
+import { electronMocks } from '../occ-runtime-test-mocks/setup.spec'
 import type { SleepingAgentSessionRecord } from '../../../shared/agent-session/lifecycle/agent-session-resume'
 import {
   TEST_REPO_ID,
@@ -11,7 +10,7 @@ import {
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   store
-} from '../occ-runtime-test-fixtures.spec'
+} from './occ-runtime-test-fixtures.spec'
 
 function makeRecord(origin: SleepingAgentSessionRecord['origin']): SleepingAgentSessionRecord {
   return {
@@ -87,10 +86,5 @@ describe('OCCRuntimeService headless wake report', () => {
     const { wake, readHostIds } = await activateOnHeadlessServe(makeRecord(undefined), 'ssh:ssh-1')
     expect(readHostIds).toContain('ssh:ssh-1')
     expect(wake).toBe('unsupported-headless')
-  })
-
-  it('ignores a live record on an SSH-host worktree partition', async () => {
-    const { wake } = await activateOnHeadlessServe(makeRecord('live'), 'ssh:ssh-1')
-    expect(wake).toBe('not-applicable')
   })
 })

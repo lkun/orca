@@ -18,12 +18,13 @@ import {
   slotLiveness
 } from './occd-recovery-slot'
 import type { OCCdIncumbentRecoveryOptions } from './occd-incumbent-recovery'
+import { isOCCdLaunchFailure } from './occd-launch-failure'
 
-/** Under the held fence, return null for undo; a refusal leaves the host untouched for an operator. */
+/** Under the held fence, return null (or the candidate's launch failure) for undo; a refusal leaves the host untouched for an operator. */
 export async function resumeInterruptedOCCdCandidate(
   options: OCCdIncumbentRecoveryOptions,
   transaction: OCCdActivateTransaction
-): Promise<ServeReadiness | OCCdManagedRefusal | null> {
+): Promise<ServeReadiness | OCCdManagedRefusal | { launchFailure: Error } | null> {
   const snapshotState = transaction.snapshot.state
   const incumbent = transaction.recordBefore.active
   if (
@@ -66,7 +67,8 @@ export async function resumeInterruptedOCCdCandidate(
   } catch (error) {
     // Only candidate evidence permits undo; unanswered hosts retain the fence.
     if (error instanceof OCCdActiveReadinessError && error.verdict !== 'unverifiable') {
-      return null
+      // Undo still follows; the failed candidate launch is a failed run all the same.
+      return isOCCdLaunchFailure(error) ? { launchFailure: error } : null
     }
     throw error
   }

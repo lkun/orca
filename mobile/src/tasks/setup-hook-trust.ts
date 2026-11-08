@@ -5,7 +5,7 @@ import {
   withOCCHookRepoAlwaysTrusted,
   withOCCHookScriptConfirmed
 } from '../../../src/shared/occ-hook-trust-entries'
-import type { RpcClient } from '../transport/rpc-client'
+import type { RpcClient } from '../transport/rpc/rpc-client-contract'
 import { taskUiStateWrite } from './mobile-task-runtime-operations'
 
 export type SetupHookTrust = {

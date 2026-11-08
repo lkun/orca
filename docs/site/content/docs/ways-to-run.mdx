@@ -55,7 +55,7 @@ Keep OCC running on a machine you control—an old laptop, Mac mini, home server
 For a headless Linux server or service-managed VM, use `occ serve` as the alternative. On Linux the CLI is named `occ-ide`, so the first launch is:
 
 ```bash
-occ-ide serve --pairing-address <reachable-tailscale-ip-or-hostname>
+occ-ide serve --bind <server-tailscale-ip> --pairing-address <server-tailscale-ip>
 ```
 
 Full detail: [Remote OCC Servers](/docs/remote-servers).

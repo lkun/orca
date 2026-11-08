@@ -1,23 +1,23 @@
-import type { RuntimeTerminalSend } from '../../../../../../shared/runtime-terminal-contracts'
+import type { RuntimeTerminalSend } from '../../../../../../shared/runtime-terminal-send-contract'
 import type { OCCRuntimeService } from '../../../../occ-runtime'
-import type { OrchestrationDb } from '../../../../orchestration/db'
+import type { OrchestrationDb } from '../../../../orchestration/db/orchestration-db'
 import {
   formatOCCSessionAddress,
   isOCCSessionId
 } from '../../../../../../shared/occ-session-address'
-import { canonicalOCCSessionId } from '../../../../orchestration/canonical-occ-session-id'
+import { canonicalOCCSessionId } from '../../../../orchestration/addressing/session-lineage/canonical-occ-session-id'
 import {
   occSessionIdOrHandle,
   resolveDispatchAssigneeParty
-} from '../../../../orchestration/orchestration-party'
-import { buildDispatchPreamble } from '../../../../orchestration/preamble'
-import { sendAgentTurn } from '../../../../orchestration/send-agent-turn'
-import { createWorkerBriefWriteGuard } from '../../../../launched-agent-write-guard'
-import { sendStructuredWorkerPreamble } from '../../orchestration-structured-worker-session'
+} from '../../../../orchestration/addressing/orchestration-party'
+import { buildDispatchPreamble } from '../../../../orchestration/workers/launch/worker-dispatch-preamble'
+import { sendAgentTurn } from '../../../../orchestration/turn-delivery/send-agent-turn'
+import { createWorkerBriefWriteGuard } from '../../../../terminal/wait/launched-agent-write-guard'
+import { sendStructuredWorkerPreamble } from '../structured-workers/orchestration-structured-worker-session'
 import { chatAssigneeOf } from '../chat-assignee-admission'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import { sendChatTask, type ChatTaskDelivery } from '../chat-task-delivery'
-import { dispatchTaskSource } from '../../../../orchestration/dispatch-task-source'
+import { dispatchTaskSource } from '../../../../orchestration/coordinator/dispatch/dispatch-task-source'
 import type { AgentMessageSource } from '../../../../../../shared/agent-session/agent-session-message-source'
 import type { WorkerTurnStartObservation } from './worker-start-turn-observation'
 import type { createStructuredWorkerSessionForWorktree } from './worker-topology'

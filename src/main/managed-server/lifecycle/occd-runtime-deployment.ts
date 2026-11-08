@@ -1,13 +1,13 @@
 // Target claims preserve environment identity so interrupted deploys resume the same registration.
 import { getAppEnvironment } from '../../../shared/app-environment'
 import { randomUUID } from 'node:crypto'
-import { assertRuntimeEnvironmentNotReconciling } from '../../../shared/runtime-environment-reconciliation-record'
-import { listEnvironments } from '../../../shared/runtime-environment-store'
-import { addManagedOCCdEnvironment } from '../../../shared/runtime-environment-managed-occd-store'
+import { assertRuntimeEnvironmentNotReconciling } from '../../../shared/remote-runtime/host-catalog/runtime-environment-reconciliation-record'
+import { listEnvironments } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
+import { addManagedOCCdEnvironment } from '../../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
 import {
   getOCCdSshDeployment,
   redactRuntimeEnvironment
-} from '../../../shared/runtime-environments'
+} from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import {
   OCCD_MANAGED_REMOTE_PORT,
   type OCCdManagedDeferral,
@@ -37,7 +37,7 @@ import { pruneManagedOCCdVersions } from './occd-managed-version-gc'
 import { tunneledOCCdPairingCode } from '../../ssh/occd-tunneled-pairing'
 import { resolveOCCdMigrationFence } from '../../ssh/occd-migration-source-fence'
 import type { SshTarget } from '../../../shared/ssh-types'
-import { findCollidingEnvironmentName } from '../../../shared/runtime-environment-name-collision'
+import { findCollidingEnvironmentName } from '../../../shared/remote-runtime/host-catalog/runtime-environment-name-collision'
 import { deployedOCCdTunnelChecks } from './occd-managed-tunnel-identity'
 import {
   isForceableOCCdDeferral,

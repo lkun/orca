@@ -15,11 +15,11 @@ import { mapRuntimeError } from '../../../src/main/runtime/rpc/errors'
 import {
   withWslOCCdAccountEnv,
   type WslOCCdAccountEnvDependencies
-} from '../../../src/main/wsl/wsl-occd-account-env'
+} from '../../../src/main/wsl/occd/wsl-occd-account-env'
 import {
   RuntimeRpcCallError,
   unwrapRuntimeRpcResult
-} from '../../../src/renderer/src/runtime/runtime-rpc-result'
+} from '../../../src/renderer/src/runtime/rpc/calls/runtime-rpc-result'
 import {
   importReleaseCheckoutModule,
   materializeReleaseCheckout,

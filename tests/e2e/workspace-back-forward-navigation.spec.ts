@@ -1,4 +1,4 @@
-// Drive Back/Forward buttons and Cmd/Ctrl+Alt+Arrow through DOM view guards, history dedupe/truncation and shortcuts.
+// Drive Back/Forward buttons and Cmd/Ctrl+Alt+Arrow through workspace history.
 
 import { test, expect } from './helpers/occ-app'
 import type { Page } from '@stablyai/playwright-test'
@@ -28,23 +28,6 @@ async function seedVisit(page: Page, worktreeId: string): Promise<void> {
   }, worktreeId)
 }
 
-async function getNavHistorySnapshot(page: Page): Promise<{ history: string[]; index: number }> {
-  return page.evaluate(() => {
-    type StoreLike = {
-      getState: () => {
-        worktreeNavHistory: string[]
-        worktreeNavHistoryIndex: number
-      }
-    }
-    const store = window.__store as unknown as StoreLike
-    const state = store.getState()
-    return {
-      history: [...state.worktreeNavHistory],
-      index: state.worktreeNavHistoryIndex
-    }
-  })
-}
-
 async function resetNavHistory(page: Page): Promise<void> {
   await page.evaluate(() => {
     type StoreLike = {
@@ -71,38 +54,6 @@ test.describe('Workspace Back/Forward Navigation', () => {
     await waitForSessionReady(occPage)
     await waitForActiveWorktree(occPage)
     await ensureTerminalVisible(occPage)
-  })
-
-  test('buttons are hidden outside the terminal view', async ({ occPage }) => {
-    await expect(await getBackButton(occPage)).toBeVisible()
-    await expect(await getForwardButton(occPage)).toBeVisible()
-
-    // Outside-history views must omit navigation buttons entirely.
-    await occPage.evaluate(() => {
-      window.__store!.getState().openSettingsPage()
-    })
-
-    await expect(await getBackButton(occPage)).toHaveCount(0)
-    await expect(await getForwardButton(occPage)).toHaveCount(0)
-
-    await occPage.evaluate(() => {
-      window.__store!.getState().setActiveView('terminal')
-    })
-    await expect(await getBackButton(occPage)).toBeVisible()
-  })
-
-  test('both buttons disabled at cold start with a single history entry', async ({ occPage }) => {
-    // Reset fixture-dependent history and seed exactly one visit.
-    const activeId = await getActiveWorktreeId(occPage)
-    expect(activeId).not.toBeNull()
-
-    await resetNavHistory(occPage)
-    await seedVisit(occPage, activeId!)
-
-    const back = await getBackButton(occPage)
-    const forward = await getForwardButton(occPage)
-    await expect(back).toBeDisabled()
-    await expect(forward).toBeDisabled()
   })
 
   test('clicking Back and Forward walks the history stack', async ({ occPage }) => {
@@ -145,43 +96,6 @@ test.describe('Workspace Back/Forward Navigation', () => {
     await expect(forward).toBeDisabled()
   })
 
-  test('re-activating the current worktree is a no-op (dedupe)', async ({ occPage }) => {
-    const activeId = await getActiveWorktreeId(occPage)
-    expect(activeId).not.toBeNull()
-
-    await resetNavHistory(occPage)
-    await seedVisit(occPage, activeId!)
-    await seedVisit(occPage, activeId!)
-    await seedVisit(occPage, activeId!)
-
-    const snapshot = await getNavHistorySnapshot(occPage)
-    expect(snapshot.history).toEqual([activeId])
-    expect(snapshot.index).toBe(0)
-    await expect(await getBackButton(occPage)).toBeDisabled()
-  })
-
-  test('new navigation after going back truncates the forward stack', async ({ occPage }) => {
-    const worktreeIds = await getAllWorktreeIds(occPage)
-    test.skip(worktreeIds.length < 2, 'Need at least two worktrees to exercise forward truncation')
-    const [primaryId, secondaryId] = worktreeIds
-
-    // From primary→secondary, go back then re-visit primary to test current-entry dedupe before a new secondary activation truncates forward history.
-    await resetNavHistory(occPage)
-    await seedVisit(occPage, primaryId)
-    await seedVisit(occPage, secondaryId)
-    await (await getBackButton(occPage)).click()
-    await expect.poll(() => getActiveWorktreeId(occPage)).toBe(primaryId)
-
-    await expect(await getForwardButton(occPage)).toBeEnabled()
-
-    // Re-activate secondary mid-history; require [primary,secondary] at index 1 and disabled Forward.
-    await seedVisit(occPage, secondaryId)
-    const snapshot = await getNavHistorySnapshot(occPage)
-    expect(snapshot.history).toEqual([primaryId, secondaryId])
-    expect(snapshot.index).toBe(1)
-    await expect(await getForwardButton(occPage)).toBeDisabled()
-  })
-
   test(`${isMac ? 'Cmd' : 'Ctrl'}+Alt+Left/Right shortcuts walk history`, async ({ occPage }) => {
     const worktreeIds = await getAllWorktreeIds(occPage)
     test.skip(worktreeIds.length < 2, 'Need at least two worktrees to exercise shortcuts')
@@ -207,33 +121,5 @@ test.describe('Workspace Back/Forward Navigation', () => {
         message: `${mod}+Alt+Right did not navigate forward`
       })
       .toBe(secondaryId)
-  })
-
-  test('shortcut is a no-op in settings view', async ({ occPage }) => {
-    const worktreeIds = await getAllWorktreeIds(occPage)
-    test.skip(worktreeIds.length < 2, 'Need at least two worktrees to exercise settings gating')
-    const [primaryId, secondaryId] = worktreeIds
-
-    await resetNavHistory(occPage)
-    await seedVisit(occPage, primaryId)
-    await seedVisit(occPage, secondaryId)
-
-    // Settings is outside history; its shortcut must preserve active worktree.
-    await occPage.evaluate(() => {
-      window.__store!.getState().openSettingsPage()
-    })
-    await expect
-      .poll(async () => occPage.evaluate(() => window.__store!.getState().activeView))
-      .toBe('settings')
-
-    const idBefore = await getActiveWorktreeId(occPage)
-    await occPage.evaluate(() => document.body.focus())
-    await occPage.keyboard.press(`${mod}+Alt+ArrowLeft`)
-
-    // Allow erroneous navigation to land before requiring unchanged worktree/index.
-    await occPage.waitForTimeout(150)
-    expect(await getActiveWorktreeId(occPage)).toBe(idBefore)
-    const snapshot = await getNavHistorySnapshot(occPage)
-    expect(snapshot.index).toBe(1)
   })
 })

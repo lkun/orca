@@ -1,6 +1,6 @@
 import type { RefObject } from 'react'
 import type { OCCHooks, SetupAgentStartupPolicy } from '../../../../shared/occ-yaml-hook-types'
-import type { HookCheckResult } from '@/runtime/runtime-hooks-client'
+import type { HookCheckResult } from '@/runtime/repo-hooks/runtime-hooks-client'
 
 export type ComposerProviderSyncModel = {
   persistedSetupAgentStartupPolicy: SetupAgentStartupPolicy

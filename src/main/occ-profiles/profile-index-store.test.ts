@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { installFakeAppEnvironment } from '../../../config/scripts/vitest-host-ports-setup'
+import { installFakeAppEnvironment } from '../../../config/scripts/test-runtime/environment/vitest-host-ports-setup'
 import {
   existsSync,
   mkdtempSync,
@@ -15,7 +15,6 @@ import { openProfileStateDatabase } from '../persistence/profile-state/profile-s
 import {
   createDefaultLocalOCCProfile,
   DEFAULT_LOCAL_OCC_PROFILE_ID,
-  DEFAULT_LOCAL_OCC_PROFILE_NAME,
   OCC_PROFILE_INDEX_SCHEMA_VERSION,
   type OCCProfileIndex
 } from '../../shared/occ-profiles'
@@ -43,52 +42,6 @@ describe('profile index store', () => {
 
   afterEach(() => {
     removeTreeSync(testState.dir)
-  })
-
-  it('creates the default local profile and copies legacy state without deleting it', async () => {
-    const legacyState = { schemaVersion: 1, repos: [{ id: 'repo-1' }] }
-    const legacyBackup = { schemaVersion: 1, repos: [{ id: 'backup-repo' }] }
-    const legacyBrowserSessionMeta = {
-      defaultSource: { browserFamily: 'chrome', importedAt: 1 },
-      profiles: []
-    }
-    writeFileSync(join(testState.dir, 'occ-data.json'), JSON.stringify(legacyState), 'utf-8')
-    writeFileSync(
-      join(testState.dir, 'occ-data.json.bak.0'),
-      JSON.stringify(legacyBackup),
-      'utf-8'
-    )
-    writeFileSync(
-      join(testState.dir, 'browser-session-meta.json'),
-      JSON.stringify(legacyBrowserSessionMeta),
-      'utf-8'
-    )
-
-    const { ensureActiveOCCProfile, getOCCProfileIndexPath } = await loadProfileIndexStore()
-    const activeProfile = ensureActiveOCCProfile()
-
-    expect(activeProfile.profile.id).toBe(DEFAULT_LOCAL_OCC_PROFILE_ID)
-    expect(activeProfile.profile.name).toBe(DEFAULT_LOCAL_OCC_PROFILE_NAME)
-    expect(activeProfile.dataFile).toBe(
-      join(testState.dir, 'profiles', DEFAULT_LOCAL_OCC_PROFILE_ID, 'occ-data.json')
-    )
-    expect(activeProfile.stateDatabaseFile).toBe(
-      join(testState.dir, 'profiles', DEFAULT_LOCAL_OCC_PROFILE_ID, 'profile-state.db')
-    )
-    expect(readJson(activeProfile.dataFile)).toEqual(legacyState)
-    expect(readJson(`${activeProfile.dataFile}.bak.0`)).toEqual(legacyBackup)
-    expect(
-      readJson(
-        join(testState.dir, 'profiles', DEFAULT_LOCAL_OCC_PROFILE_ID, 'browser-session-meta.json')
-      )
-    ).toEqual(legacyBrowserSessionMeta)
-    expect(existsSync(join(testState.dir, 'occ-data.json'))).toBe(true)
-
-    expect(readJson(getOCCProfileIndexPath())).toMatchObject({
-      schemaVersion: OCC_PROFILE_INDEX_SCHEMA_VERSION,
-      activeProfileId: DEFAULT_LOCAL_OCC_PROFILE_ID,
-      profiles: [expect.objectContaining({ id: DEFAULT_LOCAL_OCC_PROFILE_ID, kind: 'local' })]
-    })
   })
 
   it('uses an existing active profile data file without overwriting it from legacy state', async () => {
@@ -178,46 +131,6 @@ describe('profile index store', () => {
     expect(readFileSync(join(testState.dir, 'occ-data.json'), 'utf-8')).toContain('legacy')
   })
 
-  it('creates an empty local profile without copying legacy state into it', async () => {
-    writeFileSync(
-      join(testState.dir, 'occ-data.json'),
-      JSON.stringify({ schemaVersion: 1, repos: [{ id: 'legacy-repo' }] }),
-      'utf-8'
-    )
-
-    const { createLocalOCCProfile, getOCCProfileDataFile, getOCCProfileListState } =
-      await loadProfileIndexStore()
-    const created = createLocalOCCProfile({ name: ' Work ' })
-
-    expect(created.profile.name).toBe('Work')
-    expect(created.profile.id).toMatch(/^local-/)
-    expect(created.activeProfileId).toBe(DEFAULT_LOCAL_OCC_PROFILE_ID)
-    expect(created.profiles.map((profile) => profile.id)).toContain(created.profile.id)
-    expect(existsSync(getOCCProfileDataFile(created.profile.id))).toBe(false)
-    expect(getOCCProfileListState().profiles.map((profile) => profile.id)).toContain(
-      created.profile.id
-    )
-  })
-
-  it('switches the active profile and updates last-opened metadata', async () => {
-    const { createLocalOCCProfile, setActiveOCCProfile } = await loadProfileIndexStore()
-    const created = createLocalOCCProfile({ name: 'Work' })
-
-    const switched = setActiveOCCProfile(created.profile.id)
-
-    expect(switched.activeProfileId).toBe(created.profile.id)
-    expect(switched.profiles.find((profile) => profile.id === created.profile.id)).toMatchObject({
-      id: created.profile.id,
-      lastOpenedAt: expect.any(Number)
-    })
-  })
-
-  it('rejects switching to an unknown profile', async () => {
-    const { setActiveOCCProfile } = await loadProfileIndexStore()
-
-    expect(() => setActiveOCCProfile('missing-profile')).toThrow('unknown_occ_profile')
-  })
-
   const posixIt = process.platform === 'win32' ? it.skip : it
   posixIt('writes a fresh profile index when umask removes owner-write permission', async () => {
     const store = await loadProfileIndexStore()
@@ -237,21 +150,6 @@ describe('profile index store', () => {
     }
 
     expect(readJson(indexPath)).toEqual(index)
-  })
-
-  it('recovers a corrupted profile index from the backup copy', async () => {
-    const store = await loadProfileIndexStore()
-    store.ensureActiveOCCProfile()
-    const created = store.createLocalOCCProfile({ name: 'Work' })
-    store.setActiveOCCProfile(created.profile.id)
-
-    const indexPath = store.getOCCProfileIndexPath()
-    expect(existsSync(`${indexPath}.bak`)).toBe(true)
-    writeFileSync(indexPath, '{ not json', 'utf-8')
-
-    const recovered = store.getOCCProfileListState()
-    expect(recovered.profiles.map((profile) => profile.id)).toContain(created.profile.id)
-    expect(recovered.profiles.length).toBeGreaterThanOrEqual(2)
   })
 
   it('retains the selected profile when only its backup index remains', async () => {

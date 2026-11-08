@@ -1,6 +1,7 @@
 import { OCCRuntimeWithMarkPtyLivenessUnverifiable } from './terminal-input-floor'
-import type { ApplyLayoutResult, DriverState } from '../../occ-runtime-core'
-import { clampTerminalViewport } from '../../../../shared/terminal-viewport'
+import type { ApplyLayoutResult } from './terminal-layout-state'
+import type { RuntimeTerminalDriverState as DriverState } from '../../../../shared/runtime-session-contracts'
+import { clampTerminalViewport } from '../../../../shared/terminal/viewport/terminal-viewport'
 
 export abstract class OCCRuntimeWithMobileTookFloor extends OCCRuntimeWithMarkPtyLivenessUnverifiable {
   abstract applyMobileDisplayMode(ptyId: string): Promise<boolean>

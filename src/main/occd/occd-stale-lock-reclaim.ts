@@ -16,11 +16,11 @@ import { occdLockHolderLocality } from './occd-lock-holder-locality'
 import { OCCD_LOCK_FRESH_MS, occdLockPeer, occdLockSelf } from './occd-lock-clone-machine'
 import { occdDataRootIsOnLocalDisk } from './occd-data-root-locality'
 import { readOCCdProcessIncarnation } from './occd-process-start-time'
-import { hasErrorCode } from '../daemon/daemon-process-inspection'
+import { hasErrorCode } from '../daemon/endpoint/identity/daemon-process-inspection'
 import { resolveUserDataPath } from './occd-app-paths'
 import { profileStateAccessMachineIdentity } from '../persistence/profile-state/profile-state-access-identity'
-import { readRuntimeMetadata } from '../runtime/runtime-metadata'
-import { RUNTIME_SOCKET_NAME_REGEX } from '../runtime/runtime-rpc/runtime-rpc-socket-metadata'
+import { readRuntimeMetadata } from '../runtime/rpc/server/runtime-metadata'
+import { RUNTIME_SOCKET_NAME_REGEX } from '../runtime/rpc/server/runtime-rpc-socket-metadata'
 import {
   OCCD_RECLAIM_STALE_LOCK_FLAG,
   OCCD_STALE_LOCK_DATA_ROOT_FLAG,

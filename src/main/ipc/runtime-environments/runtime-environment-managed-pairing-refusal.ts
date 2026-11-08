@@ -1,7 +1,7 @@
 import { errorMessage } from '../../../shared/error-message'
-import { resolveEnvironment } from '../../../shared/runtime-environment-store'
-import { getOCCdSshDeployment } from '../../../shared/runtime-environments'
-import { OCCdManagedPairingRepairFailedError } from '../../managed-server/lifecycle/occd-managed-pairing-repair-failure'
+import { resolveEnvironment } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
+import { getOCCdSshDeployment } from '../../../shared/remote-runtime/host-catalog/runtime-environments'
+import { managedOCCdRefusalNeedingUserCode } from '../../managed-server/lifecycle/occd-managed-tunnel-identity'
 import {
   managedOCCdPairingFailureStands,
   recoverRefusedManagedOCCdPairing
@@ -40,14 +40,13 @@ export function handleManagedSharedControlRefusal(
     (outcome) => (outcome === 'repaired' ? 'stop' : 'retry'),
     (error: unknown) => {
       // A concurrent pairing has a successor owner this failure never judged.
-      if (
-        error instanceof OCCdManagedPairingRepairFailedError &&
-        failureStands(userDataPath, environmentId)
-      ) {
+      const code = managedOCCdRefusalNeedingUserCode(error)
+      if (code && error instanceof Error && failureStands(userDataPath, environmentId)) {
         // Authentication refusal blocks retries until an explicit user connect.
         try {
           getRuntimeEnvironmentStatusOwner(userDataPath, environmentId).authenticationRejected(
-            error.message
+            error.message,
+            code
           )
         } catch {
           // Removed while it re-paired: nothing is left to report on.

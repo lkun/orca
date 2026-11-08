@@ -1,7 +1,7 @@
 import { getOCCPushGatewayUrl } from '../occ-profiles/profile-cloud-auth-config'
 import { DesktopPushService } from '../runtime/push/desktop-push-service'
 import type { OCCRuntimeService } from '../runtime/occ-runtime'
-import type { OCCRuntimeRpcServer } from '../runtime/runtime-rpc'
+import type { OCCRuntimeRpcServer } from '../runtime/rpc/server/runtime-rpc'
 import { mainProcessState as state } from './main-process-state'
 
 // Push authenticates by host keypair, so accountless hosts must register phones too; shared startup state supplies the runtime in both modes.

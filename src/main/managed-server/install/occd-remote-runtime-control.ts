@@ -6,6 +6,7 @@ import {
   type OCCdReadinessParse
 } from './occd-remote-launch'
 import {
+  hasWindowsOCCdLaunchReport,
   readWindowsOCCdLaunchReport,
   readWindowsOCCdSlotRuntime,
   readWindowsOCCdSlotEntry,
@@ -22,6 +23,7 @@ import type { OCCdHostTransport } from '../../ssh/occd-host-transport'
 import { errorMessage } from '../../../shared/error-message'
 import {
   execCommand,
+  isSshCommandExitError,
   isUnconfirmedSshCommandTermination
 } from '../../ssh/remote-exec/remote-exec-command'
 import {
@@ -114,7 +116,7 @@ export async function launchOCCdAndAwaitReadiness(
     const slotRuntime = readWindowsOCCdSlotRuntime(slotAnswer)
     const slotEntry = readWindowsOCCdSlotEntry(slotAnswer, target.host, spec.remoteInstallDir)
     readWindowsOCCdLaunchReport(
-      await execOCCdRemote(
+      await windowsLaunchReportOutput(
         target,
         windowsOCCdLaunchCommand(target.host, spec, slotRuntime, slotEntry)
       )
@@ -174,4 +176,20 @@ export async function launchOCCdAndAwaitReadiness(
     throw lastWaitError
   }
   return last
+}
+
+/** The launcher writes its report before exiting nonzero, so a failed launch still names its cause. */
+async function windowsLaunchReportOutput(
+  target: OCCdRemoteExecTarget,
+  command: string
+): Promise<string> {
+  try {
+    return await execOCCdRemote(target, command)
+  } catch (error) {
+    // Without a report the command error carries the better diagnostic.
+    if (isSshCommandExitError(error) && hasWindowsOCCdLaunchReport(error.stdout)) {
+      return error.stdout
+    }
+    throw error
+  }
 }

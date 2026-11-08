@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import {
   HostAccountLaunchEnvParams,
   type HostAccountLaunchEnv
-} from '../../shared/host-account-launch-env'
+} from '../../shared/agent-launch/startup/host-account-launch-env'
 import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { isWslHostOCCdProcess } from '../ipc/wsl-guest-windows-drive-path'
 import { createWslHostClaudeProfileRefresh } from './occd-wsl-host-claude-profile-refresh'

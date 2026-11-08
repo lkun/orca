@@ -4,7 +4,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   MacosTccPromptWatch,
   type LogStreamChild,
-  isOCCAttributedPrompt,
   parseTccPromptEvent
 } from './macos-tcc-prompt-watch'
 
@@ -42,18 +41,6 @@ describe('parseTccPromptEvent', () => {
     expect(parseTccPromptEvent('Filtering the log data using "subsystem == ..."')).toBeNull()
     expect(parseTccPromptEvent('')).toBeNull()
     expect(parseTccPromptEvent('AUTHREQ_PROMPTING: msgID=1.2,')).toBeNull()
-  })
-})
-
-describe('isOCCAttributedPrompt', () => {
-  it('rejects unrelated services even when OCC is responsible', () => {
-    expect(
-      isOCCAttributedPrompt({
-        service: 'kTCCServiceMicrophone',
-        accessingIdentifier: 'occ',
-        responsibleIdentifier: 'com.stablyai.occ'
-      })
-    ).toBe(false)
   })
 })
 

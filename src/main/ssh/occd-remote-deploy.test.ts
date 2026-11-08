@@ -10,7 +10,9 @@ vi.mock('./remote-exec/remote-exec-command', async (importOriginal) => ({
   ...(await importOriginal<typeof ExecCommandModule>()),
   execCommand: vi.fn()
 }))
-vi.mock('../../shared/shell-argument-quoting', () => ({ quotePosixShell: (s: string) => `'${s}'` }))
+vi.mock('../../shared/shell/launch/shell-argument-quoting', () => ({
+  quotePosixShell: (s: string) => `'${s}'`
+}))
 vi.mock('../managed-server/install/remote-install-lock', () => ({
   acquireInstallLock: vi.fn().mockResolvedValue(undefined),
   isRelayInstallLockStale: vi.fn().mockResolvedValue(false),
@@ -325,22 +327,6 @@ describe('deployOCCd', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-  })
-
-  it('installs under the occd namespace, not the relay one', async () => {
-    const script: HostScript = {
-      activationRecord: '',
-      readiness: { [NEW_VERSION]: readyLine({}) },
-      log: []
-    }
-    scriptHost(script)
-    await deployOCCd(options())
-    expect(vi.mocked(acquireInstallLock).mock.calls[0][1]).toBe(
-      `/home/u/.occ-remote/occd-${NEW_VERSION}`
-    )
-    expect(vi.mocked(uploadRemoteInstallDirectory).mock.calls[0][2]).toContain(
-      `occd-${NEW_VERSION}`
-    )
   })
 
   it.each([

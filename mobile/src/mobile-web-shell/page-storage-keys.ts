@@ -21,6 +21,13 @@ export const TERMINAL_SHORTCUT_STORAGE_KEYS = [
   'occ:custom-accessory-keys'
 ] as const
 
+export const TERMINAL_SETTINGS_STORAGE_KEYS = [
+  ...TERMINAL_SHORTCUT_STORAGE_KEYS,
+  'occ:terminalTextScale',
+  'occ:terminalAutocompleteEnabled',
+  'occ:terminalLinkOpenMode'
+] as const
+
 export const PAGE_STORAGE_EXACT_KEYS = [
   'occ:last-visited-worktree',
   'occ:hostSidebarWidth',
@@ -114,7 +121,7 @@ const WORKSPACE_KEY_PREFIXES = [
   'occ:terminalDrafts:'
 ] as const
 
-function workspaceScopedKey(prefix: string, hostId: string, worktreeId: string): string {
+export function workspaceScopedKey(prefix: string, hostId: string, worktreeId: string): string {
   return `${prefix}${encodeURIComponent(hostId)}:${encodeURIComponent(worktreeId)}`
 }
 

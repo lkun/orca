@@ -1,12 +1,12 @@
 import { getAppEnvironment } from '../../shared/app-environment'
 import { parseExecutionHostId, toSshExecutionHostId } from '../../shared/execution-host'
 import { getManagedOCCdFenceEnvironmentId } from '../../shared/managed-occd-ssh-owner'
-import { listEnvironments } from '../../shared/runtime-environment-store'
+import { listEnvironments } from '../../shared/remote-runtime/host-store/runtime-environment-store'
 import {
   getOCCdSshDeployment,
   getRuntimeSshAccess,
   type KnownRuntimeEnvironment
-} from '../../shared/runtime-environments'
+} from '../../shared/remote-runtime/host-catalog/runtime-environments'
 import type { SshTarget } from '../../shared/ssh-types'
 import { fingerprintRuntimeSshTarget } from '../ssh/runtime-ssh-target-fingerprint'
 

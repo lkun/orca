@@ -1,4 +1,4 @@
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
 import type { OCCRuntimeService } from '../occ-runtime'
 import {
   CANARY_LEAF_ID,
@@ -13,7 +13,7 @@ import {
   canarySyncedLeaf,
   canarySyncedTab
 } from './occ-runtime-terminal-close-continuity-state-fixture'
-import { makePaneKey } from '../../../shared/stable-pane-id'
+import { makePaneKey } from '../../../shared/workspace-layout/stable-pane-id'
 
 export type CloseContinuityGraphOptions = {
   ptyId: string

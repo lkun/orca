@@ -2,7 +2,7 @@ import { isRuntimeOwnedSshTargetId, parseExecutionHostId } from '../../../shared
 import {
   getManagedOCCdSshTargetId,
   type ManagedOCCdEnvironmentSummary
-} from '../../../shared/managed-occd-execution-host'
+} from '../../../shared/execution-host/managed-occd-execution-host'
 
 /** The hidden SSH target of the recipe VM whose managed server is `hostId`, or null. */
 export function getRecipeVmSshTargetForHost(

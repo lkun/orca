@@ -1,5 +1,6 @@
-import type { FolderWorkspace } from '../folder-workspace-types'
-import type { Automation, AutomationRun } from '../automations-types'
+import type { FolderWorkspace } from '../folder-workspaces/folder-workspace-types'
+import type { Automation } from '../automations/automation-definition'
+import type { AutomationRun } from '../automations/history/automation-run'
 import type { OCCdMigrationManifestVersion } from './occd-migration-manifest-validation'
 import type { ProjectGroup } from '../project-group-types'
 import type { Repo } from '../repo-types'
@@ -7,7 +8,7 @@ import type { SparsePreset } from '../worktree/create-types'
 import type { WorkspaceLineage, WorktreeLineage } from '../worktree/lineage-types'
 import type { WorktreeMeta } from '../worktree/meta-types'
 import type { RetiredNameRegistry } from '../worktree/retired-name-registry'
-import type { WorkspaceSessionState } from '../workspace-session-state-types'
+import type { WorkspaceSessionState } from '../workspace-session/workspace-session-state-types'
 import type { OCCdMigrationClientStatePayload } from './occd-migration-client-state'
 import type {
   OCCdMigrationSnapshotUploadState,
@@ -75,6 +76,11 @@ export type OCCdMigrationDormantRetirementNamespace = {
   registry: RetiredNameRegistry
 }
 
+export type OCCdMigrationAutomationRunHistoryRef = {
+  sha256: string
+  byteLength: number
+}
+
 export type OCCdMigrationDormantStatePayload = {
   version: 1
   worktreeMeta: OCCdMigrationDormantWorktreeMeta[]
@@ -86,7 +92,10 @@ export type OCCdMigrationDormantStatePayload = {
   workspaceSession?: WorkspaceSessionState
   terminalScrollbackSnapshots?: OCCdMigrationTerminalScrollbackSnapshot[]
   automations?: Automation[]
+  /** Inline runs, as older desktops send them; never alongside `automationRunHistory`. */
   automationRuns?: AutomationRun[]
+  /** Digest of the runs sent as an `automation-run-history` blob, so history never bounds the manifest. */
+  automationRunHistory?: OCCdMigrationAutomationRunHistoryRef
   /** Client-owned durable intent projected to the destination authority. */
   clientState?: OCCdMigrationClientStatePayload
 }

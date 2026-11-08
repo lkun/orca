@@ -1,13 +1,14 @@
 import { describe, expect, it, vi } from 'vitest'
-import { OCCRuntimeService } from '../occ-runtime-test-mocks.spec'
+import './runtime-test-module-registration.spec'
+import { OCCRuntimeService } from '../occ-runtime'
 import {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   makeHeadlessTerminalLayout,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} from '../occ-runtime-test-fixtures.spec'
-import { getRuntimeBrowserPageRegistry } from '../runtime-browser-page-registry'
+} from './occ-runtime-test-fixtures.spec'
+import { getRuntimeBrowserPageRegistry } from '../browser/client-pages/runtime-browser-page-registry'
 
 // #25900: empty windowless snapshots hid persisted live agents and stranded clients on Reconnecting.
 

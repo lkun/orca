@@ -5,7 +5,7 @@ import {
 import {
   getOCCdSshDeployment,
   type KnownRuntimeEnvironment
-} from '../../../shared/runtime-environments'
+} from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import { listOCCdMigrationSourceCutovers } from '../../ssh/occd-migration-cutover-journal'
 
 type OCCdManagedPendingMigration = {

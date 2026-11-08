@@ -2,8 +2,7 @@ import type { OCCRuntimeWithResolveExitWaiters as ResolveExitWaitersMethods } fr
 import type { OCCRuntimeWithHasTerminalsForWorktree as HasTerminalsForWorktreeMethods } from './session-graph-reload-lifecycle'
 import type { OCCRuntimeWithBindPtyIncarnationHandle as BindPtyIncarnationHandleMethods } from '../terminal/identity/terminal-handle-bindings'
 import type { OCCRuntimeWithCollectMobileVisibleGraphChangedWorktrees as CollectMobileVisibleGraphChangedWorktreesMethods } from '../session-tabs/session-tabs-inventory'
-import type { OCCRuntimeWithGetPtyRecordForPaneKey as GetPtyRecordForPaneKeyMethods } from '../orchestration/terminal-pane-mail-routing'
-import type { OCCRuntimeWithResolveWaiter as ResolveWaiterMethods } from '../occ-runtime-resolve-waiter'
+import type { OCCRuntimeWithGetPtyRecordForPaneKey as GetPtyRecordForPaneKeyMethods } from '../orchestration/mailbox/routing/terminal-pane-mail-routing'
 import type { OCCRuntimeWithMarkPtyLivenessUnverifiable as MarkPtyLivenessUnverifiableMethods } from '../terminal/layout/terminal-input-floor'
 import type { OCCRuntimeWithRecordPtyWorktree as RecordPtyWorktreeMethods } from '../terminal/identity/pty-worktree-record'
 import type { RuntimeSessionTabsInventoryPublication as SessionTabsInventoryPublicationMethods } from '../session-tabs/session-tabs-inventory-publication'
@@ -12,13 +11,24 @@ import type { OCCRuntimeWithTouchMobileSessionTabsForWorktree as TouchMobileSess
 import type { OCCRuntimeWithScheduleMobileSessionTabsChanged as ScheduleMobileSessionTabsChangedMethods } from '../session-tabs/session-tabs-change-publication'
 import type { OCCRuntimeWithSyncMobileSessionTabs as SyncMobileSessionTabsMethods } from '../session-tabs/mobile-session-reconciliation'
 import { OCCRuntimeWithNotifySshStateChanged } from '../workspaces/workspace-host-notifications'
-import { HEADLESS_RUNTIME_WINDOW_ID } from '../../../shared/runtime-types'
+import { HEADLESS_RUNTIME_WINDOW_ID } from '../../../shared/runtime-session-contracts'
 import { ActiveGroupViewFacts } from '../view-facts/active-group-view-facts'
 import type { ExecutionHostId } from '../../../shared/execution-host'
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
-import type { RuntimePtyWorktreeRecord } from '../runtime-terminal-state-records'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
+import type { RuntimePtyWorktreeRecord } from '../terminal/records/runtime-terminal-state-records'
+import type { SessionTitleAuthority } from '../session-tabs/session-title-publisher'
 
 export abstract class OCCRuntimeWithAttachWindow extends OCCRuntimeWithNotifySshStateChanged {
+  protected abstract captureSessionTitleAuthority(): SessionTitleAuthority
+  protected abstract republishSessionTitleAuthorityChanges(
+    before: SessionTitleAuthority,
+    alreadyChanged?: ReadonlySet<string>
+  ): void
+
+  protected abstract agentSenderGraphReply(
+    ...args: Parameters<ScheduleMobileSessionTabsChangedMethods['agentSenderGraphReply']>
+  ): ReturnType<ScheduleMobileSessionTabsChangedMethods['agentSenderGraphReply']>
+
   protected abstract mainDecidesLiveness(worktreeId: string): boolean
 
   /** Main-owned panes do not prove liveness or override certified exits; terminal records decide (L80). */
@@ -79,10 +89,6 @@ export abstract class OCCRuntimeWithAttachWindow extends OCCRuntimeWithNotifySsh
   protected abstract deliverPendingMessagesForPty(
     ...args: Parameters<ResolveExitWaitersMethods['deliverPendingMessagesForPty']>
   ): ReturnType<ResolveExitWaitersMethods['deliverPendingMessagesForPty']>
-
-  protected abstract getLeafKey(
-    ...args: Parameters<ResolveWaiterMethods['getLeafKey']>
-  ): ReturnType<ResolveWaiterMethods['getLeafKey']>
 
   abstract getPtyLivenessVerdict(
     ...args: Parameters<MarkPtyLivenessUnverifiableMethods['getPtyLivenessVerdict']>

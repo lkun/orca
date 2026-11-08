@@ -4,7 +4,7 @@ import type {
   OCCdDeltaMovePreview,
   OCCdDeltaMoveResult
 } from '../../../shared/occd-managed-runtime'
-import { listEnvironments } from '../../../shared/runtime-environment-store'
+import { listEnvironments } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
 import { requireManagedOCCdInfrastructure } from '../../managed-server/lifecycle/occd-managed-runtime-context'
 import { ensureOCCdManagedTunnel } from '../../managed-server/lifecycle/occd-managed-tunnel'
 import { keepOCCdServerVersion, runOCCdDeltaMove } from '../../ssh/occd-migration-delta-move'

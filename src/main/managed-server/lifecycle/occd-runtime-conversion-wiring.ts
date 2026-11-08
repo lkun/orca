@@ -1,8 +1,8 @@
-import { encodePairingOffer } from '../../../shared/pairing'
+import { encodePairingOffer } from '../../../shared/remote-runtime/pairing/pairing'
 import {
   getPreferredPairingOffer,
   type KnownRuntimeEnvironment
-} from '../../../shared/runtime-environments'
+} from '../../../shared/remote-runtime/host-catalog/runtime-environments'
 import { disconnectRegisteredSshTarget } from '../../ipc/ssh/ssh-session-teardown'
 import type { OCCdMigrationDestinationCatalog } from '../../ssh/occd-migration-cutover-coordinator'
 import {
@@ -10,9 +10,11 @@ import {
   commitRemoteOCCdMigrationCatalog,
   listRemoteOCCdRepositories,
   readRemoteOCCdMigrationCatalogState,
+  stageRemoteOCCdMigrationBlobChunk,
   stageRemoteOCCdMigrationCatalog,
   stageRemoteOCCdMigrationSnapshotChunk
 } from '../../ssh/occd-migration-catalog-client'
+import { readRemoteOCCdMigrationCapabilities } from '../../ssh/occd-migration-capabilities-client'
 import { abortRemoteOCCdMigrationCatalogByReference } from '../../ssh/occd-migration-catalog-reference-client'
 import {
   enableRemoteOCCdAutomation,
@@ -39,7 +41,9 @@ export function occdMigrationDestinationFor(
     abort: (manifest) => abortRemoteOCCdMigrationCatalog(pairingCode, manifest, options),
     abortByReference: (manifest) =>
       abortRemoteOCCdMigrationCatalogByReference(pairingCode, manifest, options),
-    stageChunk: (request) => stageRemoteOCCdMigrationSnapshotChunk(pairingCode, request, options)
+    stageChunk: (request) => stageRemoteOCCdMigrationSnapshotChunk(pairingCode, request, options),
+    readCapabilities: () => readRemoteOCCdMigrationCapabilities(pairingCode, options),
+    stageBlobChunk: (request) => stageRemoteOCCdMigrationBlobChunk(pairingCode, request, options)
   }
 }
 

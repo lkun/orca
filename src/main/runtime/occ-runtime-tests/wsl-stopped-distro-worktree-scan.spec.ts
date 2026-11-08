@@ -1,8 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import * as repoWorktreeAdminFingerprint from '../repo-worktree-admin-fingerprint'
-import * as wslUncAccessGate from '../../wsl/wsl-unc-access-gate'
-import { OCCRuntimeService, listWorktrees } from '../occ-runtime-test-mocks.spec'
-import { makeWorktreeInfo, makeWorktreeMeta, store } from '../occ-runtime-test-fixtures.spec'
+import * as repoWorktreeAdminFingerprint from '../workspaces/catalog/repo-worktree-admin-fingerprint'
+import * as wslUncAccessGate from '../../wsl/filesystem/wsl-unc-access-gate'
+import './runtime-test-module-registration.spec'
+import { OCCRuntimeService } from '../occ-runtime'
+import { listWorktrees } from '../../git/worktrees/catalog/worktree-scan-cache'
+import { makeWorktreeInfo, makeWorktreeMeta, store } from './occ-runtime-test-fixtures.spec'
 
 const WSL_REPO_PATH = '\\\\wsl.localhost\\Ubuntu\\home\\me\\repo'
 

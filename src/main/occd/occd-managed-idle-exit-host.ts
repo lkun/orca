@@ -1,5 +1,5 @@
 import { getAppEnvironment } from '../../shared/app-environment'
-import type { RuntimeRpcClientActivity } from '../runtime/runtime-rpc/runtime-rpc-shutdown'
+import type { RuntimeRpcClientActivity } from '../runtime/rpc/server/runtime-rpc-shutdown'
 import type { OCCdIdleExitEvidence } from './occd-idle-exit-monitor'
 import {
   activationFenceExists,
@@ -23,7 +23,7 @@ import {
   withdrawOCCdWslHolderRelease
 } from './occd-wsl-holder-release'
 import type { OCCdIdleStopRecord } from '../../shared/occd-idle-exit'
-import { getStructuredAgentSessionHost } from '../native-chat/agent-session-wire/structured-agent-session-registry'
+import { getStructuredAgentSessionHost } from '../native-chat/agent-session-wire/host/structured-agent-session-registry'
 
 let requestIdleShutdown: OCCdShutdownTrigger | null = null
 
@@ -72,7 +72,7 @@ async function startOCCdManagedIdleExit(
 ): Promise<void> {
   const { getLocalPtyProvider } = await import('../ipc/pty/provider/registry')
   const { getCurrentDaemonPid, getDaemonEndpointFacts, isDaemonTerminalAdmissionClosed } =
-    await import('../daemon/daemon-provider-state')
+    await import('../daemon/providers/lifecycle/daemon-provider-state')
   const { countLiveOCCdDaemonSessions, retireOCCdDaemonIfIdle } =
     await import('./occd-daemon-retirement')
   const idleRecord = createIdleStopRecordOwnership(input.userDataPath)
@@ -129,7 +129,8 @@ async function startOCCdManagedIdleExit(
             if (retiringPid === null) {
               throw new Error('the retiring daemon never identified itself')
             }
-            const { restartDaemon } = await import('../daemon/daemon-provider-restart')
+            const { restartDaemon } =
+              await import('../daemon/providers/lifecycle/daemon-provider-restart')
             await restartDaemon({ expectedDaemonPid: retiringPid, endpointMayBeGone: true })
           }
         })

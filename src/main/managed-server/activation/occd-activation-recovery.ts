@@ -23,6 +23,7 @@ import {
 import type { OCCdManagedRefusal } from '../../../shared/occd-managed-runtime'
 import { resumeInterruptedOCCdCandidate } from '../../ssh/occd-interrupted-candidate-resume'
 import { errorMessage } from '../../../shared/error-message'
+import { isOCCdLaunchFailure } from '../../ssh/occd-launch-failure'
 
 export type OCCdActivationRecoveryResult =
   | { outcome: 'none' }
@@ -33,7 +34,8 @@ export type OCCdActivationRecoveryResult =
       activeVersion: string | null
       readiness: ServeReadiness | null
     }
-  | OCCdManagedRefusal
+  /** A launch failure behind an unverifiable refusal still ended a run. */
+  | (OCCdManagedRefusal & { launchFailure?: Error })
 
 type OCCdActivationRecoveryOptions = OCCdIncumbentRecoveryOptions
 
@@ -84,7 +86,8 @@ export async function recoverInterruptedOCCdActivation(
       code: OCCD_RECOVERY_UNVERIFIABLE_CODE,
       reason:
         `The interrupted activation could not be reconciled safely: ${errorMessage(error)} ` +
-        'The host remains fenced.'
+        'The host remains fenced.',
+      ...(isOCCdLaunchFailure(error) ? { launchFailure: error } : {})
     }
   }
 }
@@ -121,12 +124,15 @@ async function reconcileOCCdTransaction(
       readiness: await ensureOCCdSlotServing(options, identity)
     }
   }
+  let launchFailure: Error | undefined
   if (transaction.operation === 'activate' && plan.launchedVersion) {
     const readiness = await resumeInterruptedOCCdCandidate(options, transaction)
     if (readiness && 'outcome' in readiness) {
       return readiness
     }
-    if (readiness) {
+    if (readiness && 'launchFailure' in readiness) {
+      launchFailure = readiness.launchFailure
+    } else if (readiness) {
       return {
         outcome: 'recovered',
         resolution: 'committed',
@@ -145,7 +151,7 @@ async function reconcileOCCdTransaction(
     launchedFromState: plan.launchedFromState
   })
   return recovery.outcome === 'refused'
-    ? recovery
+    ? { ...recovery, ...(launchFailure ? { launchFailure } : {}) }
     : {
         outcome: 'recovered',
         resolution: 'restored-incumbent',

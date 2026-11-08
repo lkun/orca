@@ -134,8 +134,8 @@ ITEM rowKey=pinned:ssh:gpu-vm|shared::/w/same depth=0 groupDepth=0 lastChild=tru
 HEADER key=project-group:pg-work label="Work" count=2 tone="text-foreground" icon=FolderTree projectGroup=pg-work projectGroupDepth=0
 HEADER key=project:p-occ label="occ" count=3 tone="text-foreground" icon=FolderTree repo=occ projectGroupDepth=1 hostCounts={local:2 ssh:gpu-vm:1} hostIds={local:[occ::/occ,occ::/w/Zeta] ssh:gpu-vm:[occ-ssh::/occ-ssh]}
 ITEM rowKey=project:p-occ:|occ::/occ depth=0 groupDepth=1 children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
-ITEM rowKey=project:p-occ:|occ-ssh::/occ-ssh depth=0 groupDepth=1 children=0 hostLabel="GPU VM" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
-ITEM rowKey=project:p-occ:|occ::/w/Zeta depth=0 groupDepth=1 lastChild=true children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
+ITEM rowKey=project:p-occ:|occ::/w/Zeta depth=0 groupDepth=1 children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
+ITEM rowKey=project:p-occ:|occ-ssh::/occ-ssh depth=0 groupDepth=1 lastChild=true children=0 hostLabel="GPU VM" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
 HEADER key=project-group:pg-nested label="Nested" count=1 tone="text-foreground" icon=FolderTree projectGroup=pg-nested projectGroupDepth=1
 HEADER key=project:repo:lab label="lab" count=1 tone="text-foreground" icon=FolderTree repo=lab projectGroupDepth=2
 ITEM rowKey=project:repo:lab:|lab::/lab depth=0 groupDepth=2 lastChild=true children=0 hostLabel="Local Linux" placement=natural owning=project:repo:lab path=project-group:pg-work>project-group:pg-nested>project:repo:lab
@@ -146,8 +146,8 @@ HEADER key=project-group:pg-remote-folders label="Remote folders" count=1 tone="
 FOLDER key=folder-workspace:ssh:gpu-vm|folder:fw-remote projectGroup=pg-remote-folders depth=0 groupDepth=1
 HEADER key=project:repo:api label="api" count=2 tone="text-foreground" icon=FolderTree repo=api projectGroupDepth=0
 PENDING key=pending:creation-1 creation=creation-1 repo=api
-ITEM rowKey=project:repo:api:runtime:env-1|api::/api depth=0 groupDepth=0 children=0 hostLabel="env-1" placement=natural owning=project:repo:api
-ITEM rowKey=project:repo:api:runtime:env-1|api::/w/api-y depth=0 groupDepth=0 lastChild=true children=0 hostLabel="env-1" placement=natural owning=project:repo:api
+ITEM rowKey=project:repo:api:runtime:env-1|api::/w/api-y depth=0 groupDepth=0 children=0 hostLabel="env-1" placement=natural owning=project:repo:api
+ITEM rowKey=project:repo:api:runtime:env-1|api::/api depth=0 groupDepth=0 lastChild=true children=0 hostLabel="env-1" placement=natural owning=project:repo:api
 HEADER key=project:repo:shared label="shared" count=1 tone="text-foreground" icon=FolderTree repo=shared projectGroupDepth=0
 ITEM rowKey=project:repo:shared:local|shared::/w/same depth=0 groupDepth=0 lastChild=true children=0 hostLabel="Local Linux" placement=natural owning=project:repo:shared
 HEADER key=project:repo:empty label="empty" count=0 tone="text-foreground" icon=FolderTree repo=empty projectGroupDepth=0
@@ -157,10 +157,10 @@ ITEM rowKey=project:repo:ext:|ext::/ext depth=0 groupDepth=0 lastChild=true chil
 SECTION project:repo:empty: -
 renderedKeys: 33
 placeholders: empty
-selectionOrder: |occ::/w/feat-a |occ::/w/feat-b |occ::/w/feat-c |lab::/w/gitlab-mr ssh:gpu-vm|occ-ssh::/w/remote-x ssh:gpu-vm|shared::/w/same |occ::/occ |occ-ssh::/occ-ssh |occ::/w/Zeta |lab::/lab local|folder:fw-review local|folder:fw-notes ssh:gpu-vm|folder:fw-remote runtime:env-1|api::/api runtime:env-1|api::/w/api-y local|shared::/w/same |ext::/ext
-cmd1-9 mounted: 1=occ::/w/feat-a#lineage:occ::/w/feat-a 2=occ::/w/feat-b#lineage:occ::/w/feat-b 3=occ::/w/feat-c 4=lab::/w/gitlab-mr 5=occ-ssh::/w/remote-x@ssh:gpu-vm 6=shared::/w/same@ssh:gpu-vm 7=occ::/occ 8=occ-ssh::/occ-ssh 9=occ::/w/Zeta
-cmd1-9 unmounted: 1=occ::/w/feat-a 2=occ::/w/feat-b 3=occ::/w/feat-c 4=lab::/w/gitlab-mr 5=occ-ssh::/w/remote-x@ssh:gpu-vm 6=shared::/w/same@ssh:gpu-vm 7=occ::/occ 8=occ-ssh::/occ-ssh 9=occ::/w/Zeta
-cmd ids unmounted: occ::/w/feat-a occ::/w/feat-b occ::/w/feat-c lab::/w/gitlab-mr occ-ssh::/w/remote-x shared::/w/same occ::/occ occ-ssh::/occ-ssh occ::/w/Zeta lab::/lab folder:fw-review folder:fw-notes folder:fw-remote api::/api api::/w/api-y ext::/ext
+selectionOrder: |occ::/w/feat-a |occ::/w/feat-b |occ::/w/feat-c |lab::/w/gitlab-mr ssh:gpu-vm|occ-ssh::/w/remote-x ssh:gpu-vm|shared::/w/same |occ::/occ |occ::/w/Zeta |occ-ssh::/occ-ssh |lab::/lab local|folder:fw-review local|folder:fw-notes ssh:gpu-vm|folder:fw-remote runtime:env-1|api::/w/api-y runtime:env-1|api::/api local|shared::/w/same |ext::/ext
+cmd1-9 mounted: 1=occ::/w/feat-a#lineage:occ::/w/feat-a 2=occ::/w/feat-b#lineage:occ::/w/feat-b 3=occ::/w/feat-c 4=lab::/w/gitlab-mr 5=occ-ssh::/w/remote-x@ssh:gpu-vm 6=shared::/w/same@ssh:gpu-vm 7=occ::/occ 8=occ::/w/Zeta 9=occ-ssh::/occ-ssh
+cmd1-9 unmounted: 1=occ::/w/feat-a 2=occ::/w/feat-b 3=occ::/w/feat-c 4=lab::/w/gitlab-mr 5=occ-ssh::/w/remote-x@ssh:gpu-vm 6=shared::/w/same@ssh:gpu-vm 7=occ::/occ 8=occ::/w/Zeta 9=occ-ssh::/occ-ssh
+cmd ids unmounted: occ::/w/feat-a occ::/w/feat-b occ::/w/feat-c lab::/w/gitlab-mr occ-ssh::/w/remote-x shared::/w/same occ::/occ occ::/w/Zeta occ-ssh::/occ-ssh lab::/lab folder:fw-review folder:fw-notes folder:fw-remote api::/w/api-y api::/api ext::/ext
 -- collapsed: pinned project:p-occ project:repo:lab project-group:pg-remote-folders project:repo:shared project:repo:ext lineage:occ::/w/feat-a --
 visible: occ::/w/feat-a occ-ssh::/w/remote-x occ::/w/feat-b api::/w/api-y lab::/w/gitlab-mr shared::/w/same shared::/w/same occ::/occ occ::/w/Zeta occ-ssh::/occ-ssh api::/api occ::/w/feat-c lab::/lab ext::/ext
 HEADER key=pinned label="Pinned" count=6 tone="text-foreground" icon=Pin hostCounts={local:4 ssh:gpu-vm:2} hostIds={local:[occ::/w/feat-a,occ::/w/feat-b,lab::/w/gitlab-mr,occ::/w/feat-c] ssh:gpu-vm:[occ-ssh::/w/remote-x,shared::/w/same]} ids=[occ::/w/feat-a,occ-ssh::/w/remote-x,occ::/w/feat-b,lab::/w/gitlab-mr,shared::/w/same,occ::/w/feat-c]
@@ -174,23 +174,23 @@ FOLDER key=folder-workspace:local|folder:fw-notes projectGroup=pg-folders depth=
 HEADER key=project-group:pg-remote-folders label="Remote folders" count=1 tone="text-foreground" icon=FolderTree projectGroup=pg-remote-folders projectGroupDepth=0
 HEADER key=project:repo:api label="api" count=2 tone="text-foreground" icon=FolderTree repo=api projectGroupDepth=0
 PENDING key=pending:creation-1 creation=creation-1 repo=api
-ITEM rowKey=project:repo:api:runtime:env-1|api::/api depth=0 groupDepth=0 children=0 hostLabel="env-1" placement=natural owning=project:repo:api
-ITEM rowKey=project:repo:api:runtime:env-1|api::/w/api-y depth=0 groupDepth=0 lastChild=true children=0 hostLabel="env-1" placement=natural owning=project:repo:api
+ITEM rowKey=project:repo:api:runtime:env-1|api::/w/api-y depth=0 groupDepth=0 children=0 hostLabel="env-1" placement=natural owning=project:repo:api
+ITEM rowKey=project:repo:api:runtime:env-1|api::/api depth=0 groupDepth=0 lastChild=true children=0 hostLabel="env-1" placement=natural owning=project:repo:api
 HEADER key=project:repo:shared label="shared" count=1 tone="text-foreground" icon=FolderTree repo=shared projectGroupDepth=0
 HEADER key=project:repo:empty label="empty" count=0 tone="text-foreground" icon=FolderTree repo=empty projectGroupDepth=0
 HEADER key=project:repo:ext label="ext" count=1 tone="text-foreground" icon=FolderTree repo=ext projectGroupDepth=0
 SECTION pinned: pinned:|occ::/w/feat-a pinned:|occ::/w/feat-b pinned:|occ::/w/feat-c pinned:|lab::/w/gitlab-mr pinned:ssh:gpu-vm|occ-ssh::/w/remote-x pinned:ssh:gpu-vm|shared::/w/same
-SECTION project:p-occ: project:p-occ:|occ::/occ project:p-occ:|occ-ssh::/occ-ssh project:p-occ:|occ::/w/Zeta
+SECTION project:p-occ: project:p-occ:|occ::/occ project:p-occ:|occ::/w/Zeta project:p-occ:|occ-ssh::/occ-ssh
 SECTION project:repo:lab: project:repo:lab:|lab::/lab
 SECTION project:repo:shared: project:repo:shared:local|shared::/w/same
 SECTION project:repo:empty: -
 SECTION project:repo:ext: project:repo:ext:|ext::/ext
 renderedKeys: 18
 placeholders: empty
-selectionOrder: local|folder:fw-review local|folder:fw-notes runtime:env-1|api::/api runtime:env-1|api::/w/api-y
-cmd1-9 mounted: 1=folder:fw-review@local 2=folder:fw-notes@local 3=api::/api@runtime:env-1 4=api::/w/api-y@runtime:env-1
-cmd1-9 unmounted: 1=folder:fw-review@local 2=folder:fw-notes@local 3=api::/api@runtime:env-1 4=api::/w/api-y@runtime:env-1
-cmd ids unmounted: folder:fw-review folder:fw-notes api::/api api::/w/api-y
+selectionOrder: local|folder:fw-review local|folder:fw-notes runtime:env-1|api::/w/api-y runtime:env-1|api::/api
+cmd1-9 mounted: 1=folder:fw-review@local 2=folder:fw-notes@local 3=api::/w/api-y@runtime:env-1 4=api::/api@runtime:env-1
+cmd1-9 unmounted: 1=folder:fw-review@local 2=folder:fw-notes@local 3=api::/w/api-y@runtime:env-1 4=api::/api@runtime:env-1
+cmd ids unmounted: folder:fw-review folder:fw-notes api::/w/api-y api::/api
 === groupBy=repo pinnedInGroups=true ===
 visible: occ::/w/feat-a occ-ssh::/w/remote-x occ::/w/feat-b api::/w/api-y lab::/w/gitlab-mr shared::/w/same shared::/w/same occ::/occ occ::/w/Zeta occ-ssh::/occ-ssh api::/api occ::/w/feat-c lab::/lab ext::/ext
 HEADER key=pinned label="Pinned" count=6 tone="text-foreground" icon=Pin hostCounts={local:4 ssh:gpu-vm:2} hostIds={local:[occ::/w/feat-a,occ::/w/feat-b,lab::/w/gitlab-mr,occ::/w/feat-c] ssh:gpu-vm:[occ-ssh::/w/remote-x,shared::/w/same]} ids=[occ::/w/feat-a,occ-ssh::/w/remote-x,occ::/w/feat-b,lab::/w/gitlab-mr,shared::/w/same,occ::/w/feat-c]
@@ -202,14 +202,14 @@ ITEM rowKey=pinned:ssh:gpu-vm|occ-ssh::/w/remote-x depth=0 groupDepth=0 children
 ITEM rowKey=pinned:ssh:gpu-vm|shared::/w/same depth=0 groupDepth=0 lastChild=true children=0 hostLabel="GPU VM" placement=pinned owning=project:repo:shared
 HEADER key=project-group:pg-work label="Work" count=2 tone="text-foreground" icon=FolderTree projectGroup=pg-work projectGroupDepth=0
 HEADER key=project:p-occ label="occ" count=8 tone="text-foreground" icon=FolderTree repo=occ projectGroupDepth=1 hostCounts={local:6 ssh:gpu-vm:2} hostIds={local:[occ::/w/feat-a,occ::/w/feat-b,lab::/w/gitlab-mr,occ::/occ,occ::/w/Zeta,occ::/w/feat-c] ssh:gpu-vm:[occ-ssh::/w/remote-x,occ-ssh::/occ-ssh]}
-ITEM rowKey=project:p-occ:|occ::/occ depth=0 groupDepth=1 children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
-ITEM rowKey=project:p-occ:|occ-ssh::/occ-ssh depth=0 groupDepth=1 children=0 hostLabel="GPU VM" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
 ITEM rowKey=project:p-occ:|occ::/w/feat-a depth=0 groupDepth=1 children=2 lineageKey=lineage:occ::/w/feat-a hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
 ITEM rowKey=project:p-occ:|occ::/w/feat-b depth=1 groupDepth=1 children=1 lineageKey=lineage:occ::/w/feat-b hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ parent=project:p-occ:|occ::/w/feat-a
 ITEM rowKey=project:p-occ:|occ::/w/feat-c depth=2 groupDepth=1 lastChild=true children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ parent=project:p-occ:|occ::/w/feat-b
 ITEM rowKey=project:p-occ:|lab::/w/gitlab-mr depth=1 groupDepth=1 lastChild=true children=0 hostLabel="Local Linux" showProject=true placement=natural owning=project:repo:lab path=project-group:pg-work>project:p-occ parent=project:p-occ:|occ::/w/feat-a
 ITEM rowKey=project:p-occ:ssh:gpu-vm|occ-ssh::/w/remote-x depth=0 groupDepth=1 children=0 hostLabel="GPU VM" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
-ITEM rowKey=project:p-occ:|occ::/w/Zeta depth=0 groupDepth=1 lastChild=true children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
+ITEM rowKey=project:p-occ:|occ::/occ depth=0 groupDepth=1 children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
+ITEM rowKey=project:p-occ:|occ::/w/Zeta depth=0 groupDepth=1 children=0 hostLabel="Local Linux" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
+ITEM rowKey=project:p-occ:|occ-ssh::/occ-ssh depth=0 groupDepth=1 lastChild=true children=0 hostLabel="GPU VM" placement=natural owning=project:p-occ path=project-group:pg-work>project:p-occ
 HEADER key=project-group:pg-nested label="Nested" count=1 tone="text-foreground" icon=FolderTree projectGroup=pg-nested projectGroupDepth=1
 HEADER key=project:repo:lab label="lab" count=1 tone="text-foreground" icon=FolderTree repo=lab projectGroupDepth=2
 ITEM rowKey=project:repo:lab:|lab::/lab depth=0 groupDepth=2 lastChild=true children=0 hostLabel="Local Linux" placement=natural owning=project:repo:lab path=project-group:pg-work>project-group:pg-nested>project:repo:lab
@@ -220,8 +220,8 @@ HEADER key=project-group:pg-remote-folders label="Remote folders" count=1 tone="
 FOLDER key=folder-workspace:ssh:gpu-vm|folder:fw-remote projectGroup=pg-remote-folders depth=0 groupDepth=1
 HEADER key=project:repo:api label="api" count=2 tone="text-foreground" icon=FolderTree repo=api projectGroupDepth=0
 PENDING key=pending:creation-1 creation=creation-1 repo=api
-ITEM rowKey=project:repo:api:runtime:env-1|api::/api depth=0 groupDepth=0 children=0 hostLabel="env-1" placement=natural owning=project:repo:api
-ITEM rowKey=project:repo:api:runtime:env-1|api::/w/api-y depth=0 groupDepth=0 lastChild=true children=0 hostLabel="env-1" placement=natural owning=project:repo:api
+ITEM rowKey=project:repo:api:runtime:env-1|api::/w/api-y depth=0 groupDepth=0 children=0 hostLabel="env-1" placement=natural owning=project:repo:api
+ITEM rowKey=project:repo:api:runtime:env-1|api::/api depth=0 groupDepth=0 lastChild=true children=0 hostLabel="env-1" placement=natural owning=project:repo:api
 HEADER key=project:repo:shared label="shared" count=2 tone="text-foreground" icon=FolderTree repo=shared projectGroupDepth=0 hostCounts={ssh:gpu-vm:1 local:1} hostIds={ssh:gpu-vm:[shared::/w/same] local:[shared::/w/same]}
 ITEM rowKey=project:repo:shared:ssh:gpu-vm|shared::/w/same depth=0 groupDepth=0 children=0 hostLabel="GPU VM" placement=natural owning=project:repo:shared
 ITEM rowKey=project:repo:shared:local|shared::/w/same depth=0 groupDepth=0 lastChild=true children=0 hostLabel="Local Linux" placement=natural owning=project:repo:shared
@@ -238,10 +238,10 @@ PREFERRED ssh:gpu-vm|occ-ssh::/w/remote-x -> project:p-occ:ssh:gpu-vm|occ-ssh::/
 PREFERRED ssh:gpu-vm|shared::/w/same -> project:repo:shared:ssh:gpu-vm|shared::/w/same
 renderedKeys: 39
 placeholders: empty
-selectionOrder: |occ::/occ |occ-ssh::/occ-ssh |occ::/w/feat-a |occ::/w/feat-b |occ::/w/feat-c |lab::/w/gitlab-mr ssh:gpu-vm|occ-ssh::/w/remote-x |occ::/w/Zeta |lab::/lab local|folder:fw-review local|folder:fw-notes ssh:gpu-vm|folder:fw-remote runtime:env-1|api::/api runtime:env-1|api::/w/api-y ssh:gpu-vm|shared::/w/same local|shared::/w/same |ext::/ext
-cmd1-9 mounted: 1=occ::/occ 2=occ-ssh::/occ-ssh 3=occ::/w/feat-a#lineage:occ::/w/feat-a 4=occ::/w/feat-b#lineage:occ::/w/feat-b 5=occ::/w/feat-c 6=lab::/w/gitlab-mr 7=occ-ssh::/w/remote-x@ssh:gpu-vm 8=occ::/w/Zeta 9=lab::/lab
-cmd1-9 unmounted: 1=occ::/occ 2=occ-ssh::/occ-ssh 3=occ::/w/feat-a 4=occ::/w/feat-b 5=occ::/w/feat-c 6=lab::/w/gitlab-mr 7=occ-ssh::/w/remote-x@ssh:gpu-vm 8=occ::/w/Zeta 9=lab::/lab
-cmd ids unmounted: occ::/occ occ-ssh::/occ-ssh occ::/w/feat-a occ::/w/feat-b occ::/w/feat-c lab::/w/gitlab-mr occ-ssh::/w/remote-x occ::/w/Zeta lab::/lab folder:fw-review folder:fw-notes folder:fw-remote api::/api api::/w/api-y shared::/w/same ext::/ext
+selectionOrder: |occ::/w/feat-a |occ::/w/feat-b |occ::/w/feat-c |lab::/w/gitlab-mr ssh:gpu-vm|occ-ssh::/w/remote-x |occ::/occ |occ::/w/Zeta |occ-ssh::/occ-ssh |lab::/lab local|folder:fw-review local|folder:fw-notes ssh:gpu-vm|folder:fw-remote runtime:env-1|api::/w/api-y runtime:env-1|api::/api ssh:gpu-vm|shared::/w/same local|shared::/w/same |ext::/ext
+cmd1-9 mounted: 1=occ::/w/feat-a#lineage:occ::/w/feat-a 2=occ::/w/feat-b#lineage:occ::/w/feat-b 3=occ::/w/feat-c 4=lab::/w/gitlab-mr 5=occ-ssh::/w/remote-x@ssh:gpu-vm 6=occ::/occ 7=occ::/w/Zeta 8=occ-ssh::/occ-ssh 9=lab::/lab
+cmd1-9 unmounted: 1=occ::/w/feat-a 2=occ::/w/feat-b 3=occ::/w/feat-c 4=lab::/w/gitlab-mr 5=occ-ssh::/w/remote-x@ssh:gpu-vm 6=occ::/occ 7=occ::/w/Zeta 8=occ-ssh::/occ-ssh 9=lab::/lab
+cmd ids unmounted: occ::/w/feat-a occ::/w/feat-b occ::/w/feat-c lab::/w/gitlab-mr occ-ssh::/w/remote-x occ::/occ occ::/w/Zeta occ-ssh::/occ-ssh lab::/lab folder:fw-review folder:fw-notes folder:fw-remote api::/w/api-y api::/api shared::/w/same ext::/ext
 -- collapsed: pinned project:p-occ project:repo:lab project-group:pg-remote-folders project:repo:shared project:repo:ext lineage:occ::/w/feat-a --
 visible: occ::/w/feat-a occ-ssh::/w/remote-x occ::/w/feat-b api::/w/api-y lab::/w/gitlab-mr shared::/w/same shared::/w/same occ::/occ occ::/w/Zeta occ-ssh::/occ-ssh api::/api occ::/w/feat-c lab::/lab ext::/ext
 HEADER key=pinned label="Pinned" count=6 tone="text-foreground" icon=Pin hostCounts={local:4 ssh:gpu-vm:2} hostIds={local:[occ::/w/feat-a,occ::/w/feat-b,lab::/w/gitlab-mr,occ::/w/feat-c] ssh:gpu-vm:[occ-ssh::/w/remote-x,shared::/w/same]} ids=[occ::/w/feat-a,occ-ssh::/w/remote-x,occ::/w/feat-b,lab::/w/gitlab-mr,shared::/w/same,occ::/w/feat-c]
@@ -255,13 +255,13 @@ FOLDER key=folder-workspace:local|folder:fw-notes projectGroup=pg-folders depth=
 HEADER key=project-group:pg-remote-folders label="Remote folders" count=1 tone="text-foreground" icon=FolderTree projectGroup=pg-remote-folders projectGroupDepth=0
 HEADER key=project:repo:api label="api" count=2 tone="text-foreground" icon=FolderTree repo=api projectGroupDepth=0
 PENDING key=pending:creation-1 creation=creation-1 repo=api
-ITEM rowKey=project:repo:api:runtime:env-1|api::/api depth=0 groupDepth=0 children=0 hostLabel="env-1" placement=natural owning=project:repo:api
-ITEM rowKey=project:repo:api:runtime:env-1|api::/w/api-y depth=0 groupDepth=0 lastChild=true children=0 hostLabel="env-1" placement=natural owning=project:repo:api
+ITEM rowKey=project:repo:api:runtime:env-1|api::/w/api-y depth=0 groupDepth=0 children=0 hostLabel="env-1" placement=natural owning=project:repo:api
+ITEM rowKey=project:repo:api:runtime:env-1|api::/api depth=0 groupDepth=0 lastChild=true children=0 hostLabel="env-1" placement=natural owning=project:repo:api
 HEADER key=project:repo:shared label="shared" count=2 tone="text-foreground" icon=FolderTree repo=shared projectGroupDepth=0 hostCounts={ssh:gpu-vm:1 local:1} hostIds={ssh:gpu-vm:[shared::/w/same] local:[shared::/w/same]}
 HEADER key=project:repo:empty label="empty" count=0 tone="text-foreground" icon=FolderTree repo=empty projectGroupDepth=0
 HEADER key=project:repo:ext label="ext" count=1 tone="text-foreground" icon=FolderTree repo=ext projectGroupDepth=0
 SECTION pinned: pinned:|occ::/w/feat-a pinned:|occ::/w/feat-b pinned:|occ::/w/feat-c pinned:|lab::/w/gitlab-mr pinned:ssh:gpu-vm|occ-ssh::/w/remote-x pinned:ssh:gpu-vm|shared::/w/same
-SECTION project:p-occ: project:p-occ:|occ::/occ project:p-occ:|occ-ssh::/occ-ssh project:p-occ:|occ::/w/feat-a project:p-occ:|occ::/w/feat-b project:p-occ:|occ::/w/feat-c project:p-occ:|lab::/w/gitlab-mr project:p-occ:ssh:gpu-vm|occ-ssh::/w/remote-x project:p-occ:|occ::/w/Zeta
+SECTION project:p-occ: project:p-occ:|occ::/w/feat-a project:p-occ:|occ::/w/feat-b project:p-occ:|occ::/w/feat-c project:p-occ:|lab::/w/gitlab-mr project:p-occ:ssh:gpu-vm|occ-ssh::/w/remote-x project:p-occ:|occ::/occ project:p-occ:|occ::/w/Zeta project:p-occ:|occ-ssh::/occ-ssh
 SECTION project:repo:lab: project:repo:lab:|lab::/lab
 SECTION project:repo:shared: project:repo:shared:ssh:gpu-vm|shared::/w/same project:repo:shared:local|shared::/w/same
 SECTION project:repo:empty: -
@@ -274,10 +274,10 @@ PREFERRED ssh:gpu-vm|occ-ssh::/w/remote-x -> project:p-occ:ssh:gpu-vm|occ-ssh::/
 PREFERRED ssh:gpu-vm|shared::/w/same -> project:repo:shared:ssh:gpu-vm|shared::/w/same
 renderedKeys: 18
 placeholders: empty
-selectionOrder: local|folder:fw-review local|folder:fw-notes runtime:env-1|api::/api runtime:env-1|api::/w/api-y
-cmd1-9 mounted: 1=folder:fw-review@local 2=folder:fw-notes@local 3=api::/api@runtime:env-1 4=api::/w/api-y@runtime:env-1
-cmd1-9 unmounted: 1=folder:fw-review@local 2=folder:fw-notes@local 3=api::/api@runtime:env-1 4=api::/w/api-y@runtime:env-1
-cmd ids unmounted: folder:fw-review folder:fw-notes api::/api api::/w/api-y
+selectionOrder: local|folder:fw-review local|folder:fw-notes runtime:env-1|api::/w/api-y runtime:env-1|api::/api
+cmd1-9 mounted: 1=folder:fw-review@local 2=folder:fw-notes@local 3=api::/w/api-y@runtime:env-1 4=api::/api@runtime:env-1
+cmd1-9 unmounted: 1=folder:fw-review@local 2=folder:fw-notes@local 3=api::/w/api-y@runtime:env-1 4=api::/api@runtime:env-1
+cmd ids unmounted: folder:fw-review folder:fw-notes api::/w/api-y api::/api
 === groupBy=workspace-status pinnedInGroups=false ===
 visible: occ::/w/feat-a occ-ssh::/w/remote-x occ::/w/feat-b api::/w/api-y lab::/w/gitlab-mr shared::/w/same shared::/w/same occ::/occ occ::/w/Zeta occ-ssh::/occ-ssh api::/api occ::/w/feat-c lab::/lab ext::/ext
 PENDING key=pending:creation-1 creation=creation-1 repo=api

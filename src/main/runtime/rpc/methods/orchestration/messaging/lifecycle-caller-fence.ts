@@ -1,6 +1,6 @@
-import type { OrchestrationCompatibilityEvidence } from '../../../../../../shared/orchestration-compatibility-evidence'
+import type { OrchestrationCompatibilityEvidence } from '../../../../../../shared/orchestration/orchestration-compatibility-evidence'
 import type { OCCRuntimeService } from '../../../../occ-runtime'
-import type { OrchestrationDb } from '../../../../orchestration/db'
+import type { OrchestrationDb } from '../../../../orchestration/db/orchestration-db'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import { isEquivalentPaneKey } from '../../../../orchestration/db/pane-key-match'
 

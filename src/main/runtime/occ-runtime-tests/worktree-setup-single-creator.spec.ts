@@ -1,21 +1,22 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { RuntimeClientEvent } from '../../../shared/runtime-client-events'
 import type { WorktreeStartupLaunch } from '../../../shared/worktree/launch-types'
+import './runtime-test-module-registration.spec'
 import {
   computeWorktreePathMock,
-  createSetupRunnerScript,
-  ensurePathWithinWorkspaceMock,
-  getEffectiveHooks,
-  listWorktrees,
-  setRuntimeDesktopSurface,
-  shouldRunSetupForCreate
-} from '../occ-runtime-test-mocks.spec'
-import { makeRuntimeStoreWithWorkspaceSession, store } from '../occ-runtime-test-fixtures.spec'
+  ensurePathWithinWorkspaceMock
+} from '../occ-runtime-test-mocks/setup.spec'
+import { createSetupRunnerScript } from '../../workspace-hooks/worktree-runner-script'
+import { getEffectiveHooks } from '../../workspace-hooks/hooks'
+import { listWorktrees } from '../../git/worktrees/catalog/worktree-scan-cache'
+import { setRuntimeDesktopSurface } from '../construction/runtime-desktop-surface'
+import { shouldRunSetupForCreate } from '../../workspace-hooks/effective-hook-config'
+import { makeRuntimeStoreWithWorkspaceSession, store } from './occ-runtime-test-fixtures.spec'
 import { getDefaultWorkspaceSession } from '../../../shared/constants'
-import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
+import type { WorkspaceSessionState } from '../../../shared/workspace-session/workspace-session-state-types'
 import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
-import { collectLeafIds } from '../../../shared/terminal-pane-layout-tree'
-import { ProvisioningRuntime } from '../occ-runtime-layout-owner-start-fixture'
+import { collectLeafIds } from '../../../shared/workspace-layout/terminal-pane-layout-tree'
+import { ProvisioningRuntime } from './occ-runtime-layout-owner-start-fixture'
 
 const WORKTREE_PATH = '/tmp/workspaces/runtime-setup-all'
 const RUNNER = '/tmp/repo/.git/occ/setup-runner.sh'

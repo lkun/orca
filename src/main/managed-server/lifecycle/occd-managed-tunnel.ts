@@ -1,9 +1,13 @@
-import type { KnownRuntimeEnvironment } from '../../../shared/runtime-environments'
-import { resolveEnvironment } from '../../../shared/runtime-environment-store'
+import type { KnownRuntimeEnvironment } from '../../../shared/remote-runtime/host-catalog/runtime-environments'
+import { resolveEnvironment } from '../../../shared/remote-runtime/host-store/runtime-environment-store'
 import type { SshTarget } from '../../../shared/ssh-types'
 import type { SshConnection } from '../../ssh/connection/ssh-connection'
 import { probeManagedOCCdTunnel } from './occd-managed-tunnel-resume'
-import { ensureManagedOCCdServing } from './occd-managed-serving'
+import {
+  ensureManagedOCCdServing,
+  forgetManagedOCCdServingVerdict
+} from './occd-managed-serving'
+import { getManagedOCCdCrashLoopBrake } from './occd-managed-crash-loop'
 import { OCCdManagedTunnelManager } from './occd-managed-tunnel-manager'
 import { buildOnBindableLocalPort } from './occd-managed-tunnel-local-port'
 import { getRemoteRuntimeSharedControlAnsweredAt } from '../../ipc/runtime-environments/runtime-environment-shared-control-answers'
@@ -103,12 +107,14 @@ export function managedOCCdPairingFailureStands(
   )
 }
 
-/** Explicit connect clears recent repair failures. */
-export function forgetFailedManagedOCCdPairingRepair(
+/** Explicit connect clears recent repair failures and re-arms automatic starts. */
+export function forgetManagedOCCdAutomaticFailures(
   userDataPath: string,
   environmentId: string
 ): void {
   pairingRepairs.get(userDataPath)?.forgetFailures(environmentId)
+  getManagedOCCdCrashLoopBrake().forget(environmentId)
+  forgetManagedOCCdServingVerdict(environmentId)
 }
 
 function resolveEnvironmentOrNull(userDataPath: string, id: string) {

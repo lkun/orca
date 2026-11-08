@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { OCCRuntimeService } from '../../occ-runtime'
 import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
-import { TerminalSplitOutcomeError } from '../../../../shared/terminal-split-outcome'
+import { TerminalSplitOutcomeError } from '../../../../shared/workspace-layout/terminal-split-outcome'
 
 const WORKTREE_ID = 'repo-1::/workspace'
 const TAB_ID = 'tab-1'

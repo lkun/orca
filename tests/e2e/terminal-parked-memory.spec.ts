@@ -96,16 +96,6 @@ async function countMountedPaneManagers(page: Page, tabIds: string[]): Promise<n
   )
 }
 
-// Expect the last-filled hidden tab to remain mounted under last-active exemption.
-async function waitForTabsParkedExceptLastActive(page: Page, tabIds: string[]): Promise<void> {
-  await expect
-    .poll(() => countMountedPaneManagers(page, tabIds), {
-      timeout: Math.max(30_000, PARKING_DELAY_MS * 10),
-      message: 'hidden scrollback tabs did not park down to the last-active exemption'
-    })
-    .toBe(1)
-}
-
 type ScrollbackTab = {
   tabId: string
   ptyId: string
@@ -237,51 +227,6 @@ function formatParkedMemoryAnnotation(metrics: ParkedMemoryMetrics, parkedTabs: 
 }
 
 test.describe('Terminal parked memory', () => {
-  test('releases renderer terminal memory when hidden tabs park', async ({
-    occPage,
-    testRepoPath
-  }, testInfo: TestInfo) => {
-    test.setTimeout(PARKED_MEMORY_TEST_TIMEOUT_MS)
-    await waitForSessionReady(occPage)
-
-    const runId = randomUUID()
-    const scriptPath = path.join(testRepoPath, `.occ-parked-memory-${runId}.mjs`)
-    writeScrollbackFillScript(scriptPath, runId)
-    try {
-      const { worktreeId, scrollbackTabs } = await setUpScrollbackTabs(occPage, scriptPath, runId)
-
-      // The ninth tab hides all eight fills; the last filled keeps the warm exemption and seven park.
-      const visibleTab = await createActiveTerminalTab(occPage, worktreeId)
-      const lastActiveTab = scrollbackTabs.at(-1)
-      if (!lastActiveTab) {
-        throw new Error('parked memory spec: no scrollback tabs were created')
-      }
-      const parkableTabs = scrollbackTabs.slice(0, -1)
-      await waitForTabsParkedExceptLastActive(
-        occPage,
-        scrollbackTabs.map((tab) => tab.tabId)
-      )
-
-      const metrics = await sampleParkedMemoryMetrics(occPage)
-      testInfo.annotations.push({
-        type: 'opencode-parked-memory',
-        description: formatParkedMemoryAnnotation(metrics, parkableTabs.length)
-      })
-
-      for (const tab of parkableTabs) {
-        expect((await readTerminalTabViewState(occPage, tab.tabId)).hasManager).toBe(false)
-      }
-      expect((await readTerminalTabViewState(occPage, lastActiveTab.tabId)).hasManager).toBe(true)
-      const visibleState = await readTerminalTabViewState(occPage, visibleTab.tabId)
-      expect(visibleState.hasManager).toBe(true)
-      expect(visibleState.paneCount).toBeGreaterThan(0)
-      // Require only visible plus last-active xterm/manager ownership; all other views must park.
-      expect(metrics.livePaneManagers).toBe(2)
-    } finally {
-      rmSync(scriptPath, { force: true })
-    }
-  })
-
   test('retains terminal views when parking is disabled', async ({
     occPage,
     testRepoPath

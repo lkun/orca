@@ -1,6 +1,6 @@
 /** Release conversion setups stranded before staging by refused SSH forwarding. Stop any activated slot, unregister, then use undeployed-fence release; source rows remain intact for retry. */
-import { listEnvironments } from '../../shared/runtime-environment-store'
-import { removeManagedOCCdEnvironment } from '../../shared/runtime-environment-managed-occd-store'
+import { listEnvironments } from '../../shared/remote-runtime/host-store/runtime-environment-store'
+import { removeManagedOCCdEnvironment } from '../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
 import { findOCCdMigrationSourceCutoverForTarget } from './occd-migration-cutover-journal'
 import { releaseUndeployedMigrationFence } from './occd-migration-source-fence'
 import { closeOCCdManagedTunnel } from '../managed-server/lifecycle/occd-managed-tunnel'

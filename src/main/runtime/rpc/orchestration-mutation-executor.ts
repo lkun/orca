@@ -1,7 +1,7 @@
 import {
   isDurableMutation,
   isTerminalPromptMutation
-} from '../../../shared/orchestration-rpc-contract'
+} from '../../../shared/orchestration/orchestration-rpc-contract'
 import type { OCCRuntimeService } from '../occ-runtime'
 import type { OCCSessionId } from '../../../shared/occ-session-address'
 import { OrchestrationError } from '../orchestration/orchestration-error'
@@ -57,7 +57,12 @@ export class OrchestrationMutationExecutor {
     }
     const callerFingerprint =
       callerFingerprintOverride ?? this.getLocalAuthenticatedCallerFingerprint()
-    const stableParams = replayStableCallerParams(this.runtime, params, callerOCCSessionId)
+    const stableParams = replayStableCallerParams(
+      this.runtime,
+      params,
+      callerOCCSessionId,
+      request.method
+    )
     const basePayloadHash = hashCanonical({ method: request.method, params: stableParams })
     const key = `${callerFingerprint}:${requestId}`
     const db = this.runtime.getOrchestrationDb()

@@ -1,6 +1,7 @@
 import type { BrowserWindow } from 'electron'
 import type { Store } from '../../persistence/loading-store/store'
-import type { OCCRuntimeService, RuntimeWorktreeLifecycleEvent } from '../../runtime/occ-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
+import type { RuntimeWorktreeLifecycleEvent } from '../../runtime/workspaces/lifecycle/worktree-lifecycle-event'
 import type { SenderScopedRequestCancellations } from '../sender-scoped-request-cancellation'
 import type { WorktreeRemovalInFlight } from './removal/worktree-removal-coordinator'
 

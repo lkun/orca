@@ -1,7 +1,7 @@
 /** Before first activation, rule out hand-started occd/headless owners of the data root. Live, unreadable or unexpected PID records defer to avoid concurrent owners. */
 import { OCCD_LOCK_FILE_NAME } from '../occd/occd-instance-lock'
 import { PRIMARY_RUNTIME_METADATA_FILE } from '../../shared/runtime-bootstrap'
-import { quotePosixShell } from '../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../shared/shell/launch/shell-argument-quoting'
 import { selectOCCdSlotRuntimeCommand } from '../managed-server/install/occd-remote-runtime'
 import { isWindowsRemoteHost, joinRemotePath, type RemoteHostPlatform } from './ssh-remote-platform'
 import { occdWindowsSlotOpCommand } from '../managed-server/install/occd-remote-windows-node'

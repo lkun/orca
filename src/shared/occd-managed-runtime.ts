@@ -1,4 +1,4 @@
-import type { PublicKnownRuntimeEnvironment } from './runtime-environments'
+import type { PublicKnownRuntimeEnvironment } from './remote-runtime/host-catalog/runtime-environments'
 import type { OCCdTerminalCensus } from './occd-terminal-census'
 import type { OCCdMigrationBlocker } from './occd-migration/occd-migration-preflight'
 import type { OCCdMigrationSourceCutoverPhase } from './occd-migration/occd-migration-source-cutover'

@@ -6,7 +6,8 @@ import {
   OCCD_MIGRATION_CATALOG_RUNTIME_CAPABILITY,
   OCCD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY
 } from '../../shared/occd-runtime-capabilities'
-import { encodePairingOffer, PAIRING_OFFER_VERSION } from '../../shared/pairing'
+import { encodePairingOffer } from '../../shared/remote-runtime/pairing/pairing'
+import { PAIRING_OFFER_VERSION } from '../../shared/remote-runtime/pairing/mobile-relay-pairing-offer'
 import { computeOCCdMigrationManifestSha256 } from '../occd/occd-migration-manifest-digest'
 
 const sendRequest = vi.hoisted(() => vi.fn())

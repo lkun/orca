@@ -30,6 +30,21 @@ export type OCCdMigrationBlobDestination = {
   stageChunk: (request: OCCdMigrationBlobChunkRequest) => Promise<OCCdMigrationBlobChunkResult>
 }
 
+/** Serve exported bytes, refusing any descriptor they were not exported as. */
+export function exportedOCCdMigrationBlobSource(
+  blobs: readonly { descriptor: OCCdMigrationBlobDescriptor; bytes: Buffer }[]
+): OCCdMigrationBlobSource {
+  return {
+    readChunk: async (descriptor, offset, maxBytes) => {
+      const blob = blobs.find((entry) => sameOCCdMigrationBlob(entry.descriptor, descriptor))
+      if (!blob) {
+        throw new Error(`occd_migration_source_blob_changed:${descriptor.blobKind}`)
+      }
+      return blob.bytes.subarray(offset, offset + maxBytes)
+    }
+  }
+}
+
 type OCCdMigrationBlobTransfer = {
   source: OCCdMigrationBlobSource
   manifest: OCCdMigrationManifest

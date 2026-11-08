@@ -22,7 +22,7 @@ import {
   type OCCdMigrationDestinationCatalog
 } from '../../ssh/occd-migration-cutover-coordinator'
 import { occdMigrationRequestFits } from '../../ssh/occd-migration-manifest-export'
-import { wslHostsServing } from '../../wsl/wsl-host-gate'
+import { wslHostsServing } from '../../wsl/host-lifecycle/wsl-host-gate'
 import {
   listWslMoveCutovers,
   removeUncommittedWslMoveCutover,

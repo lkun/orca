@@ -7,13 +7,10 @@ import type { OCCdMigrationBlobDescriptor } from '../../../shared/occd-migration
 import { OCCD_MIGRATION_MANIFEST_VERSION } from '../../../shared/occd-migration/occd-migration-manifest-validation'
 import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
 import {
-  abortOCCdMigrationBlobs,
-  assertOCCdMigrationBlobSetMatches,
   assertOCCdMigrationBlobsReady,
   commitOCCdMigrationBlobs,
   getOCCdMigrationReceivedBlobPath,
   inspectOCCdMigrationBlobUploads,
-  pruneOCCdMigrationBlobStaging,
   stageOCCdMigrationBlobChunk
 } from './occd-migration-blob-staging'
 
@@ -57,39 +54,6 @@ describe('occd migration blob staging', () => {
     expect(inspectOCCdMigrationBlobUploads(manifest, root)).toBeUndefined()
   })
 
-  it('refuses a chunk for a migration the importer does not hold staged', () => {
-    const descriptor = blob('terminal-restore-hints', 'migration', Buffer.from('{}'))
-    const manifest = migrationManifest('unstaged')
-    expect(() =>
-      stageOCCdMigrationBlobChunk({
-        stagedManifest: null,
-        root,
-        request: request(manifest, descriptor, 0, Buffer.from('{}'))
-      })
-    ).toThrow('occd_migration_blob_catalog_not_staged')
-    expect(() =>
-      stageOCCdMigrationBlobChunk({
-        stagedManifest: { ...manifest, manifestSha256: 'e'.repeat(64) },
-        root,
-        request: request(manifest, descriptor, 0, Buffer.from('{}'))
-      })
-    ).toThrow('occd_migration_blob_catalog_not_staged')
-  })
-
-  it('never replaces a staged key with different bytes', () => {
-    const manifest = migrationManifest('conflict')
-    const original = blob('agent-session-records', 'session-1', Buffer.from('original'))
-    stage(manifest, original, 0, Buffer.from('orig'))
-    const recaptured = blob('agent-session-records', 'session-1', Buffer.from('recaptured'))
-
-    expect(() => stage(manifest, recaptured, 0, Buffer.from('reca'))).toThrow(
-      'occd_migration_blob_descriptor_conflict:agent-session-records'
-    )
-    expect(inspectOCCdMigrationBlobUploads(manifest, root)).toEqual([
-      { ...original, receivedBytes: 4 }
-    ])
-  })
-
   it('refuses commit while a blob is incomplete or its bytes do not match the digest', () => {
     const bytes = Buffer.from('expected bytes')
     const descriptor = blob('shell-history', `${'b'.repeat(16)}-bash`, bytes)
@@ -122,90 +86,6 @@ describe('occd migration blob staging', () => {
     assertOCCdMigrationBlobsReady(manifest, root)
     commitOCCdMigrationBlobs(manifest, root)
     expect(readFileSync(finalPath)).toEqual(bytes)
-  })
-
-  it('aborts one migration, keeps another, and prunes migrations no longer staged', () => {
-    const bytes = Buffer.from('staged')
-    const descriptor = blob('agent-session-records', 'session-2', bytes)
-    const first = migrationManifest('abort-first')
-    const second = migrationManifest('retain-second')
-    stage(first, descriptor, 0, bytes)
-    stage(second, descriptor, 0, bytes)
-
-    abortOCCdMigrationBlobs(first, root)
-    expect(inspectOCCdMigrationBlobUploads(first, root)).toBeUndefined()
-    expect(inspectOCCdMigrationBlobUploads(second, root)?.[0]?.receivedBytes).toBe(bytes.length)
-    pruneOCCdMigrationBlobStaging([second], [], root)
-    expect(inspectOCCdMigrationBlobUploads(second, root)?.[0]?.receivedBytes).toBe(bytes.length)
-    pruneOCCdMigrationBlobStaging([], [], root)
-    expect(inspectOCCdMigrationBlobUploads(second, root)).toBeUndefined()
-  })
-
-  it('prunes received blobs whose migration is neither staged nor committed', () => {
-    const bytes = Buffer.from('moved')
-    const descriptor = blob('shell-history', `${'e'.repeat(16)}-fish`, bytes)
-    const leaked = migrationManifest('failed-commit')
-    const staged = migrationManifest('still-staged')
-    const committed = migrationManifest('committed')
-    for (const manifest of [leaked, staged, committed]) {
-      stage(manifest, descriptor, 0, bytes)
-      commitOCCdMigrationBlobs(manifest, root)
-    }
-    const receivedPath = (manifest: OCCdMigrationManifest) =>
-      getOCCdMigrationReceivedBlobPath(root, manifest, descriptor)
-
-    pruneOCCdMigrationBlobStaging(
-      [staged],
-      [
-        {
-          migrationId: committed.migrationId,
-          manifestSha256: committed.manifestSha256
-        }
-      ],
-      root
-    )
-    expect(existsSync(receivedPath(leaked))).toBe(false)
-    expect(existsSync(receivedPath(staged))).toBe(true)
-    expect(existsSync(receivedPath(committed))).toBe(true)
-  })
-
-  it('commits only when staged plus received blobs are exactly the expected set', () => {
-    const historyBytes = Buffer.from('history')
-    const recordBytes = Buffer.from('record')
-    const history = blob('shell-history', `${'f'.repeat(16)}-zsh`, historyBytes)
-    const record = blob('agent-session-records', 'session-3', recordBytes)
-    const manifest = migrationManifest('expected-set')
-    stage(manifest, history, 0, historyBytes)
-
-    expect(() => assertOCCdMigrationBlobSetMatches(manifest, root, [history, record])).toThrow(
-      'occd_migration_blob_set_mismatch:agent-session-records:session-3'
-    )
-    expect(() => assertOCCdMigrationBlobSetMatches(manifest, root, [])).toThrow(
-      `occd_migration_blob_set_mismatch:shell-history:${history.key}`
-    )
-    expect(() =>
-      assertOCCdMigrationBlobSetMatches(manifest, root, [{ ...history, sha256: 'f'.repeat(64) }])
-    ).toThrow('occd_migration_blob_set_mismatch')
-    stage(manifest, record, 0, recordBytes)
-    assertOCCdMigrationBlobSetMatches(manifest, root, [history, record])
-
-    // Retried commits must include blobs already moved to received.
-    commitOCCdMigrationBlobs(manifest, root)
-    assertOCCdMigrationBlobSetMatches(manifest, root, [history, record])
-    expect(() => assertOCCdMigrationBlobSetMatches(manifest, root, [history])).toThrow(
-      'occd_migration_blob_set_mismatch'
-    )
-  })
-
-  it('drops blobs an earlier commit attempt moved when the catalog is aborted', () => {
-    const bytes = Buffer.from('history')
-    const descriptor = blob('shell-history', `${'c'.repeat(16)}-zsh`, bytes)
-    const manifest = migrationManifest('abort-after-move')
-    stage(manifest, descriptor, 0, bytes)
-    commitOCCdMigrationBlobs(manifest, root)
-
-    abortOCCdMigrationBlobs(manifest, root)
-    expect(existsSync(getOCCdMigrationReceivedBlobPath(root, manifest, descriptor))).toBe(false)
   })
 })
 

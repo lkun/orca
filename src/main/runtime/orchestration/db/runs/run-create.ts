@@ -1,8 +1,8 @@
-import type { RunRow } from '../../types'
+import type { RunRow } from '../orchestration-records'
 import { generateId } from '../generated-id'
 import type { OrchestrationDb } from '../orchestration-db'
 import type { OCCSessionId } from '../../../../../shared/occ-session-address'
-import { mailboxAddressOf } from '../../orchestration-caller-identity'
+import { mailboxAddressOf } from '../../addressing/orchestration-caller-identity'
 
 export function createRun(
   this: OrchestrationDb,

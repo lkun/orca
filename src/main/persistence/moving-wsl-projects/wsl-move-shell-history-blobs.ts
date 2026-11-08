@@ -10,8 +10,8 @@ import {
   type OCCdMigrationBlobDescriptor
 } from '../../../shared/occd-migration/occd-migration-blob-transfer'
 import type { OCCdMigrationBlobSource } from '../../ssh/occd-migration-blob-coordinator'
-import { getHistoryRootWsl } from '../../terminal-history-paths'
-import { hashWorktreeId } from '../../terminal-history-id'
+import { getHistoryRootWsl } from '../../pty/history/terminal-history-paths'
+import { hashWorktreeId } from '../../pty/history/terminal-history-id'
 import {
   MAX_OCCD_MIGRATION_SHELL_HISTORY_BYTES,
   OCCD_MIGRATION_SHELL_HISTORY_SHELLS,

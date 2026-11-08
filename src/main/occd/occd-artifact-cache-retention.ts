@@ -6,7 +6,8 @@ import { nodeRuntimeAsset } from '../../shared/node-runtime-pin'
 import { OCCD_LOCK_FILE_NAME, readOCCdInstanceLockRecord } from './occd-instance-lock'
 import { occdPeerPidIsJudgeableHere } from './occd-lock-holder-locality'
 import { materializedOCCdArtifactVersions } from './occd-artifact-materializer'
-import { isProcessAlive } from '../daemon/daemon-process-inspection'
+import { occdArtifactSlotVersion } from './occd-artifact-slot-name'
+import { isProcessAlive } from '../daemon/endpoint/identity/daemon-process-inspection'
 import {
   defaultOCCdSlotPeerJudge,
   liveDaemonOCCdSlots,
@@ -16,13 +17,13 @@ import {
 /** In-use slot plus two others, or the newest three when none is in use. */
 const OCCD_ARTIFACT_CACHE_KEEP = 3
 
-const REPAIR_SUFFIX = /\.repair-\d+$/u
-
 type OCCdArtifactCachePruneOptions = {
   keep?: number
   inUseVersions?: ReadonlySet<string>
 }
 
+/** Evict old version slots per target, keeping the in-use version and the newest others.
+ *  Only names that parse as slots are candidates: `runtimes/` and staging dirs are never evicted (#38181). */
 export async function pruneOCCdArtifactCache(
   cacheRoot: string,
   options: OCCdArtifactCachePruneOptions = {}
@@ -37,19 +38,20 @@ export async function pruneOCCdArtifactCache(
     }
     const targetRoot = join(cacheRoot, target)
     const slots = await Promise.all(
-      // Dot entries are staging directories another process may be filling right now.
-      (await listNames(targetRoot))
-        .filter((name) => !name.startsWith('.'))
-        .map(async (name) => ({ name, mtimeMs: await mtimeOf(join(targetRoot, name)) }))
+      (await listNames(targetRoot)).flatMap((name) => {
+        const version = occdArtifactSlotVersion(name)
+        return version
+          ? [mtimeOf(join(targetRoot, name)).then((mtimeMs) => ({ name, version, mtimeMs }))]
+          : []
+      })
     )
     const present = slots.filter(
-      (slot): slot is { name: string; mtimeMs: number } => slot.mtimeMs !== null
+      (slot): slot is { name: string; version: string; mtimeMs: number } => slot.mtimeMs !== null
     )
-    const isInUse = (name: string): boolean => inUse.has(name.replace(REPAIR_SUFFIX, ''))
     // The in-use version consumes one keep slot; otherwise retain the newest keep versions.
-    const othersToKeep = present.some((slot) => isInUse(slot.name)) ? keep - 1 : keep
+    const othersToKeep = present.some((slot) => inUse.has(slot.version)) ? keep - 1 : keep
     const others = present
-      .filter((slot) => !isInUse(slot.name))
+      .filter((slot) => !inUse.has(slot.version))
       .sort((left, right) => right.mtimeMs - left.mtimeMs)
     for (const [index, slot] of others.entries()) {
       if (index < othersToKeep) {
@@ -83,7 +85,7 @@ export function pruneDesktopOCCdArtifactCache(
     inUseVersions: new Set([
       ...materializedOCCdArtifactVersions(),
       ...(live ? [live] : []),
-      ...daemonSlots.map((slot) => slot.replace(REPAIR_SUFFIX, '')),
+      ...daemonSlots.flatMap((slot) => occdArtifactSlotVersion(slot) ?? []),
       ...alsoInUse
     ])
   })

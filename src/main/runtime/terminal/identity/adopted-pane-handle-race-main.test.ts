@@ -1,19 +1,20 @@
 // Restart adoption can publish a pane before its exported handle registers; any handle issued in that gap must stay valid or become stale.
 import { expect, it, vi } from 'vitest'
-import { HEADLESS_RUNTIME_WINDOW_ID } from '../../../../shared/runtime-types'
+import { HEADLESS_RUNTIME_WINDOW_ID } from '../../../../shared/runtime-session-contracts'
 
 vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-await import('../../occ-runtime-test-mocks.spec')
-await import('../../occ-runtime-test-lifecycle.spec')
+await import('../../occ-runtime-tests/runtime-test-module-registration.spec')
+await import('../../occ-runtime-tests/occ-runtime-test-lifecycle.spec')
 const { HEADLESS_LEAF_ID, TEST_WORKTREE_ID, TEST_WORKTREE_PATH } =
-  await import('../../occ-runtime-test-fixtures.spec')
-const { OCCRuntimeService } = await import('../../occ-runtime-test-mocks.spec')
+  await import('../../occ-runtime-tests/occ-runtime-test-fixtures.spec')
+await import('../../occ-runtime-tests/runtime-test-module-registration.spec')
+const { OCCRuntimeService } = await import('../../occ-runtime')
 const {
   makeHeadlessTerminalLayout,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('../../occ-runtime-test-fixtures.spec')
+} = await import('../../occ-runtime-tests/occ-runtime-test-fixtures.spec')
 
 const TAB = '44444444-4444-4444-8444-444444444444'
 // A daemon session id names its worktree, so a record can exist before registration.

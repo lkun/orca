@@ -3,11 +3,11 @@ import { isOCCSessionId } from '../../../../../shared/occ-session-address'
 import {
   STRUCTURED_WORKER_HANDLE_PREFIX,
   isStructuredWorkerHandle
-} from '../../../../../shared/structured-worker-handle'
+} from '../../../../../shared/orchestration/workers/structured-worker-handle'
 import {
   STRUCTURED_WORKER_INCARNATION_PREFIX,
   sessionIdFromStructuredWorkerIncarnation
-} from '../../../structured-worker-identity'
+} from '../../terminal-authority/structured-sessions/structured-worker-identity'
 import { currentRunCoordinatorOCCSessionIdSql } from '../runs/run-coordinator-occ-session'
 
 const CURRENT_COORDINATOR_OCC_SESSION_ID_SQL = currentRunCoordinatorOCCSessionIdSql('runs')

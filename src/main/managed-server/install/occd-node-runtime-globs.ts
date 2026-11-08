@@ -3,7 +3,7 @@ import {
   OCCD_NODE_RUNTIME_POSIX_EXECUTABLE,
   OCCD_RUNTIMES_DIRNAME
 } from '../../../shared/occd-artifacts'
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import { RELAY_REMOTE_DIR } from '../../ssh/remote-exec/remote-frame-protocol'
 import { OCCD_MACHINE_HOMES_DIRNAME } from '../host-state/occd-machine-home'
 

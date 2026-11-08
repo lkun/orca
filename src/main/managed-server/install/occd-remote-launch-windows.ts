@@ -39,6 +39,14 @@ export class OCCdWindowsLaunchRefusedError extends Error {
   }
 }
 
+/** The launcher reported that it could not start occd. */
+export class OCCdWindowsLaunchFailedError extends Error {
+  constructor(detail: string) {
+    super(`occd's Windows launcher did not start the candidate: ${detail}.`)
+    this.name = 'OCCdWindowsLaunchFailedError'
+  }
+}
+
 /** Resolve pinned slot runtime and remove stale instance-stop intent before launch. */
 export function windowsOCCdLaunchRuntimeCommand(
   host: RemoteHostPlatform,
@@ -103,6 +111,10 @@ export function windowsOCCdLaunchCommand(
   ])
 }
 
+export function hasWindowsOCCdLaunchReport(output: string): boolean {
+  return parseWindowsBreakawayLaunchReport(OCCD_WINDOWS_BREAKAWAY_CONTRACT, output) !== null
+}
+
 /** Return launched PID or surface native-breakaway refusal/failure. */
 export function readWindowsOCCdLaunchReport(output: string): number {
   const report = parseWindowsBreakawayLaunchReport(OCCD_WINDOWS_BREAKAWAY_CONTRACT, output)
@@ -114,9 +126,10 @@ export function readWindowsOCCdLaunchReport(output: string): number {
       report.step ? `${report.reason} at ${report.step}` : report.reason
     )
   }
-  const detail =
-    report?.method === 'failed'
-      ? `${report.reason}${report.step ? ` at ${report.step}` : ''} (code ${String(report.code ?? 0)})`
-      : 'no launch report'
-  throw new Error(`occd's Windows launcher did not start the candidate: ${detail}.`)
+  if (report?.method === 'failed') {
+    throw new OCCdWindowsLaunchFailedError(
+      `${report.reason}${report.step ? ` at ${report.step}` : ''} (code ${String(report.code ?? 0)})`
+    )
+  }
+  throw new Error("occd's Windows launcher did not start the candidate: no launch report.")
 }

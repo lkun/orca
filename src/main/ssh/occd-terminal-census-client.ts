@@ -1,11 +1,11 @@
 /** Unknown failures, including older hosts without census support, stay unverifiable and never mean zero live terminals. */
 import { OCCD_TERMINAL_CENSUS_RUNTIME_CAPABILITY } from '../../shared/occd-runtime-capabilities'
 import { ELECTRON_REMOTE_RUNTIME_CLIENT_CAPABILITIES } from '../../shared/electron-remote-runtime-client-capabilities'
-import type { PairedRuntimeConnection } from '../../shared/paired-runtime-connection'
+import type { PairedRuntimeConnection } from '../../shared/remote-runtime/pairing/paired-runtime-connection'
 import {
   getPreferredPairedRuntimeConnection,
   type KnownRuntimeEnvironment
-} from '../../shared/runtime-environments'
+} from '../../shared/remote-runtime/host-catalog/runtime-environments'
 import {
   OCCD_TERMINAL_CENSUS_METHOD,
   OCCdTerminalCensusSchema,

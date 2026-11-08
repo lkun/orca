@@ -33,6 +33,14 @@ export class OCCdActiveReadinessError extends Error {
   }
 }
 
+/** A launched occd that did not publish acceptable readiness; inspection failures stay the base error. */
+export class OCCdLaunchReadinessError extends OCCdActiveReadinessError {
+  constructor(verdict: OCCdReadinessFailureVerdict, message: string) {
+    super(verdict, message)
+    this.name = 'OCCdLaunchReadinessError'
+  }
+}
+
 function gatedReadiness(
   parsed: OCCdReadinessParse,
   expectation: OCCdActivationExpectation,
@@ -148,6 +156,6 @@ export async function launchOCCdSlotAndAwaitReadiness(
       throw error
     }
     const message = await withOCCdLogTail(target, spec.remoteInstallDir, error.message)
-    throw new OCCdActiveReadinessError(error.verdict, message)
+    throw new OCCdLaunchReadinessError(error.verdict, message)
   }
 }

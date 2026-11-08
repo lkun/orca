@@ -2,7 +2,8 @@
   "ios": {
     "NSCameraUsageDescription": "Allow OCC to use the camera for QR code scanning.",
     "NSLocalNetworkUsageDescription": "OCC connects to the desktop app on your LAN.",
-    "NSMicrophoneUsageDescription": "Allow OCC to use your microphone for voice dictation sent to your paired desktop for transcription.",
+    "NSMicrophoneUsageDescription": "Allow OCC to use your microphone for voice dictation, transcribed on this phone or on your paired computer.",
+    "NSPhotoLibraryAddUsageDescription": "Allow OCC to save images from your sessions to Photos.",
     "NSPhotoLibraryUsageDescription": "Allow OCC to attach photos from your library to a terminal session on your paired desktop."
   }
 }

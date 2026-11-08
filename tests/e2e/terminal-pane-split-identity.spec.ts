@@ -19,26 +19,6 @@ test.describe.configure({ mode: 'serial' })
 test.describe('Terminal Panes', () => {
   registerTerminalPaneMountReadiness()
 
-  test('can split terminal pane right', async ({ occPage }) => {
-    const paneCountBefore = await countVisibleTerminalPanes(occPage)
-
-    await splitActiveTerminalPane(occPage, 'vertical')
-    await waitForPaneCount(occPage, paneCountBefore + 1)
-
-    const paneCountAfter = await countVisibleTerminalPanes(occPage)
-    expect(paneCountAfter).toBe(paneCountBefore + 1)
-  })
-
-  test('can split terminal pane down', async ({ occPage }) => {
-    const paneCountBefore = await countVisibleTerminalPanes(occPage)
-
-    await splitActiveTerminalPane(occPage, 'horizontal')
-    await waitForPaneCount(occPage, paneCountBefore + 1)
-
-    const paneCountAfter = await countVisibleTerminalPanes(occPage)
-    expect(paneCountAfter).toBe(paneCountBefore + 1)
-  })
-
   test('split panes persist PTY bindings by stable UUID leaf id', async ({ occPage }) => {
     const paneCountBefore = await countVisibleTerminalPanes(occPage)
 

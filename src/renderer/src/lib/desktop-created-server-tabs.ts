@@ -3,7 +3,7 @@
 import type { Tab } from '../../../shared/tab-types'
 import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type { AppState } from '@/store/types'
-import type { HeldDrawnTabs } from '@/store/workspace-layout-frame-held-tabs'
+import type { HeldDrawnTabs } from '@/store/workspace-layout/frames/workspace-layout-frame-held-tabs'
 
 const STORAGE_KEY = 'occ.desktop-created-server-tabs.v1'
 

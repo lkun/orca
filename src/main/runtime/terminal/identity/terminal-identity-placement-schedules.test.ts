@@ -1,4 +1,4 @@
-import '../../occ-runtime-test-lifecycle.spec'
+import '../../occ-runtime-tests/occ-runtime-test-lifecycle.spec'
 import { expect, it, vi } from 'vitest'
 import {
   identityFixture,
@@ -10,7 +10,7 @@ import {
   makeRuntimeStoreWithWorkspaceSession,
   TEST_WORKTREE_ID,
   TEST_WORKTREE_PATH
-} from '../../occ-runtime-test-fixtures.spec'
+} from '../../occ-runtime-tests/occ-runtime-test-fixtures.spec'
 import { getDefaultWorkspaceSession } from '../../../../shared/constants'
 
 function sessions() {

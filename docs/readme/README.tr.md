@@ -242,9 +242,11 @@ Ajanlarınızı telefonunuzdan izlemek ve yönlendirmek için masaüstü uygulam
 
 - **Discord:** Topluluğa **[Discord](https://discord.gg/fzjDKHxv8Q)** üzerinden katılın.
 - **Twitter / X:** Güncellemeler ve duyurular için **[@occ_build](https://x.com/occ_build)** hesabını takip edin.
-- **WeChat:** OCC topluluğunun WeChat grubuna katılmak için karekodu okutun.
+- **WeChat:** OCC topluluğunun bir WeChat grubuna katılmak için karekodu okutun. Bir grup doluysa başka bir gruba katılabilirsiniz.
 
   <img src="../assets/wechat-qr-group14.jpg" alt="OCC topluluğunun WeChat grubu karekodu" width="160" />
+  <img src="../assets/wechat-qr-group15.jpg" alt="OCC topluluğunun WeChat grubu karekodu" width="160" />
+  <img src="../assets/wechat-qr-group16.jpg" alt="OCC topluluğunun WeChat grubu karekodu" width="160" />
 
 - **Geri bildirim ve fikirler:** Hızlı sürüm çıkarıyoruz. Eksik bulduğunuz bir şey mi var? [Yeni bir özellik isteyin](https://github.com/stablyai/occ/issues).
 - **Gizlilik:** OCC'nın hangi anonim kullanım verisini topladığını ve bunu nasıl kapatacağınızı [gizlilik ve telemetri dokümanlarında](https://www.onocc.dev/docs/telemetry) bulabilirsiniz.

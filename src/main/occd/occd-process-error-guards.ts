@@ -1,6 +1,6 @@
 // Survive rejected tasks and known-benign exceptions; unknown exceptions require bounded shutdown.
 import process from 'node:process'
-import { isNativePtyException } from '../daemon/daemon-native-pty-exception'
+import { isNativePtyException } from '../daemon/pty-subprocess/daemon-native-pty-exception'
 import { OCCD_EXIT_FAILED } from './occd-exit-code'
 import type { OCCdShutdownTrigger } from './occd-lifecycle'
 

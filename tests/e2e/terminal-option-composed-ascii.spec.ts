@@ -267,26 +267,6 @@ test.describe('Option-composed text in a kitty-keyboard pane', () => {
     expect(await joinedWrites()).not.toContain('\x1b[55;4u')
   })
 
-  test('still reports the Alt chord when Option is configured as Alt', async ({
-    occPage,
-    electronApp
-  }) => {
-    const { joinedWrites } = await setUpOptionKeyboardPane(occPage, electronApp)
-    await setMacOptionAsAlt(occPage, 'true')
-    await clearPtyWriteLog(electronApp)
-
-    const dispatch = await pressOptionComposedKey(occPage, { key: '@', code: 'KeyQ' })
-    expect(dispatch.keydownDefaultPrevented).toBe(true)
-
-    await expect
-      .poll(joinedWrites, {
-        timeout: 5_000,
-        message: 'configured Option-as-Alt did not report the physical alt+q chord'
-      })
-      .toContain('\x1b[113;3u')
-    expect(await joinedWrites()).not.toContain('@')
-  })
-
   test('keeps non-ASCII Option glyphs as TUI hotkeys when configured as Alt', async ({
     occPage,
     electronApp

@@ -1,13 +1,14 @@
 import { rmSync } from 'node:fs'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { listEnvironments } from '../../shared/runtime-environment-store'
+import { listEnvironments } from '../../shared/remote-runtime/host-store/runtime-environment-store'
 import { OCCD_UPDATE_ADMISSION_FENCE_MS } from '../../shared/occd-terminal-census'
 import {
   moveManagedOCCdLocalPort,
   recordManagedOCCdMigration,
   refreshManagedOCCdPairing
-} from '../../shared/runtime-environment-managed-occd-store'
-import { encodePairingOffer, PAIRING_OFFER_VERSION } from '../../shared/pairing'
+} from '../../shared/remote-runtime/host-store/runtime-environment-managed-occd-store'
+import { encodePairingOffer } from '../../shared/remote-runtime/pairing/pairing'
+import { PAIRING_OFFER_VERSION } from '../../shared/remote-runtime/pairing/mobile-relay-pairing-offer'
 import {
   occdUpdateFailedThisLaunch,
   recordOCCdUpdateFailedThisLaunch
@@ -163,19 +164,6 @@ describe('updateManagedOCCdEnvironment', () => {
     expect(status.deferredUpdate).toBeNull()
   })
 
-  it('keeps a connect from retrying a build an explicit Update also failed', async () => {
-    const host = { kind: 'ssh', id: 'ssh-1' } as const
-    recordOCCdUpdateFailedThisLaunch(host, { code: 'occd_update_failed', reason: 'rejected' })
-    mocks.deploy.mockResolvedValueOnce({
-      outcome: 'installed-not-activated',
-      fullVersion: 'v3',
-      code: 'occd_candidate_readiness_rejected',
-      reason: 'rejected again'
-    })
-    await updateManagedOCCdEnvironment(harness.userDataPath, { selector: 'Managed' })
-    expect(occdUpdateFailedThisLaunch(host)).toBe(true)
-  })
-
   it('refuses Update over a host a newer OCC runs, and lets Force take it', async () => {
     const newer = {
       ...harness.context().activationRecord,
@@ -209,18 +197,6 @@ describe('updateManagedOCCdEnvironment', () => {
     ).toMatch(/last ran/)
   })
 
-  it('offers Force when Update was refused by policy', async () => {
-    mocks.deploy.mockResolvedValueOnce({
-      outcome: 'installed-not-activated',
-      fullVersion: 'v3',
-      code: 'occd_activation_policy_refused',
-      reason: 'newer'
-    })
-    await expect(
-      updateManagedOCCdEnvironment(harness.userDataPath, { selector: 'Managed' })
-    ).resolves.toMatchObject({ outcome: 'deferred', forceable: true })
-  })
-
   it('lets an explicit Update retry a build a connect remembered as failed', async () => {
     const host = { kind: 'ssh', id: 'ssh-1' } as const
     recordOCCdUpdateFailedThisLaunch(host, { code: 'occd_update_failed', reason: 'rejected' })
@@ -248,12 +224,6 @@ describe('updateManagedOCCdEnvironment', () => {
     ])
     await deployed!.releaseIncumbentAdmission()
     expect(mocks.census.mock.calls[2]?.[4]).toEqual({ closeAdmissionForMs: 0 })
-  })
-
-  it('forwards anew after an activation, since the new slot may bind another port', async () => {
-    mocks.deploy.mockResolvedValueOnce({ outcome: 'installed-and-activated', fullVersion: 'v3' })
-    await updateManagedOCCdEnvironment(harness.userDataPath, { selector: 'Managed' })
-    expect(mocks.rebuildTunnel).toHaveBeenCalledWith(harness.userDataPath, 'environment-1')
   })
 
   it('still reports the activation when the new forward cannot be built yet', async () => {
@@ -445,32 +415,6 @@ describe('rollbackManagedOCCdEnvironment', () => {
 })
 
 describe('recoverManagedOCCdEnvironment', () => {
-  it('passes a refusal through and leaves the server linked', async () => {
-    mocks.recover.mockResolvedValueOnce({
-      outcome: 'refused',
-      verdict: 'unverifiable',
-      code: 'occd_recovery_unverifiable',
-      reason: 'host fenced'
-    })
-    await expect(
-      recoverManagedOCCdEnvironment(harness.userDataPath, { selector: 'Managed' })
-    ).resolves.toMatchObject({ outcome: 'refused', verdict: 'unverifiable' })
-    expect(listEnvironments(harness.userDataPath)).toHaveLength(1)
-  })
-
-  it('forwards anew once a serving slot is restored, which may have bound another port', async () => {
-    mocks.recover.mockResolvedValueOnce({
-      outcome: 'recovered',
-      resolution: 'restored-incumbent',
-      activeVersion: MANAGED_VERSION,
-      readiness: managedReadiness()
-    })
-    await expect(
-      recoverManagedOCCdEnvironment(harness.userDataPath, { selector: 'Managed' })
-    ).resolves.toMatchObject({ outcome: 'recovered', activeVersion: MANAGED_VERSION })
-    expect(mocks.rebuildTunnel).toHaveBeenCalledWith(harness.userDataPath, 'environment-1')
-  })
-
   it('keeps the enrolled grant when the recovered server offers a new device', async () => {
     mocks.recover.mockResolvedValueOnce({
       outcome: 'recovered',

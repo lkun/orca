@@ -1,5 +1,5 @@
 // Prune unreferenced captures and check disk space before stopping the incumbent, preserving service when no snapshot fits (#30491).
-import { quotePosixShell } from '../../../shared/shell-argument-quoting'
+import { quotePosixShell } from '../../../shared/shell/launch/shell-argument-quoting'
 import { isWindowsRemoteHost, type RemoteHostPlatform } from '../../ssh/ssh-remote-platform'
 import { OCCD_SNAPSHOT_FAILURE, OCCD_SNAPSHOT_MEMBERS } from './occd-state-snapshot-members'
 import { dfAvailableKb, formatKb } from './remote-filesystem-space'
